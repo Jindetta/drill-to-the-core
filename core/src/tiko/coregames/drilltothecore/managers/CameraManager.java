@@ -1,6 +1,5 @@
 package tiko.coregames.drilltothecore.managers;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -29,13 +28,5 @@ public class CameraManager {
     public void applyHudCamera(SpriteBatch batch) {
         batch.setProjectionMatrix(hudCamera.combined);
         hudCamera.update();
-    }
-
-    public OrthographicCamera getCamera() {
-        return hudCamera;
-    }
-
-    public void updatePosition(float x, float y) {
-        hudCamera.position.set(x, y, 0);
     }
 }
