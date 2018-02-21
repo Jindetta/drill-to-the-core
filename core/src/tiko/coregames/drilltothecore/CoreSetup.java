@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.math.Rectangle;
 import tiko.coregames.drilltothecore.managers.CameraManager;
+import tiko.coregames.drilltothecore.managers.LevelManager;
 import tiko.coregames.drilltothecore.utilities.Utilities.*;
 
 public class CoreSetup extends ApplicationAdapter {
@@ -17,6 +19,8 @@ public class CoreSetup extends ApplicationAdapter {
 
 		// TODO: Initialize managers
 		cameraManager = new CameraManager();
+
+		Gdx.graphics.setTitle("Drill to the Core");
 	}
 
     @Override
@@ -31,8 +35,11 @@ public class CoreSetup extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		batch.begin();
+
 		cameraManager.applyHudCamera(batch);
+
         Debug.render(batch);
+
 		batch.end();
 	}
 	

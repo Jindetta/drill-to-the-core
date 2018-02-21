@@ -1,10 +1,18 @@
 package tiko.coregames.drilltothecore.managers;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.maps.tiled.TideMapLoader;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapLayers;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 
 public class LevelManager implements Disposable {
@@ -12,25 +20,22 @@ public class LevelManager implements Disposable {
     private TiledMapRenderer levelRenderer;
 
     public LevelManager(int level) {
-        initializeLevel(level);
-
+        // Debug test
+        tileMap = new TmxMapLoader().load("leveldata/tutorial.tmx");
         levelRenderer = new OrthogonalTiledMapRenderer(tileMap);
     }
 
-    private void initializeLevel(int level) {
-        TideMapLoader loader = new TideMapLoader();
-        StringBuilder path = new StringBuilder("leveldata/");
+    public Rectangle getPlayerSpawnRectangle() {
+        try {
+            RectangleMapObject object = (RectangleMapObject) tileMap.getLayers().get("spawns").getObjects().get("player");
 
-        switch (level) {
-            default:
-                path.append("tutorial.tmx");
-                break;
+            return object.getRectangle();
+        } catch (Exception e) {
+            return null;
         }
-
-        tileMap = loader.load(path.toString());
     }
 
-    public void renderLevel(OrthographicCamera camera, float delta) {
+    public void renderLevel(OrthographicCamera camera) {
         levelRenderer.setView(camera);
         levelRenderer.render();
     }

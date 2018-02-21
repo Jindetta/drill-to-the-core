@@ -26,22 +26,27 @@ public class Utilities {
 
         private static final int SAFEZONE_SIZE = 5;
 
-        private static String debugInfo(float delta) {
+        private static String debugInfo() {
             long frameId = Gdx.graphics.getFrameId();
             int framesPerSecond = Gdx.graphics.getFramesPerSecond();
+            float delta = Gdx.graphics.getDeltaTime();
+
+            timeElapsed += delta;
+
+            float timeLeft = timeElapsed;
+            int hours = (int) timeLeft / (60 * 60);
+            int minutes = (int) timeLeft / 60 % 60;
+            int seconds = (int) timeLeft % 60;
 
             return String.format(
                 Locale.ENGLISH,
-                "FPS: %d, FrameID: %d, Delta: %.3f, TimeElapsed: %.3f",
-                framesPerSecond, frameId, delta, timeElapsed
+                "Frames/second: %d, Current frame: %d%n%d:%02d:%02d -> %.3f (+%.3f)",
+                framesPerSecond, frameId, hours, minutes, seconds, timeElapsed, delta
             );
         }
 
         public static void render(SpriteBatch batch) {
-            float delta = Gdx.graphics.getDeltaTime();
-            timeElapsed += delta;
-
-            font.draw(batch, debugInfo(delta), SAFEZONE_SIZE, Gdx.graphics.getHeight() - SAFEZONE_SIZE);
+            font.draw(batch, debugInfo(), SAFEZONE_SIZE, Gdx.graphics.getHeight() - SAFEZONE_SIZE);
         }
 
         public static void dispose() {

@@ -13,6 +13,8 @@ public class CameraManager {
     public CameraManager() {
         hudCamera = new OrthographicCamera();
         worldCamera = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT);
+
+        worldCamera.position.set(WORLD_WIDTH / 2, WORLD_HEIGHT / 2, 0);
     }
 
     public void resizeHud(int width, int height) {
@@ -27,5 +29,13 @@ public class CameraManager {
     public void applyHudCamera(SpriteBatch batch) {
         batch.setProjectionMatrix(hudCamera.combined);
         hudCamera.update();
+    }
+
+    public OrthographicCamera getCamera() {
+        return hudCamera;
+    }
+
+    public void updatePosition(float x, float y) {
+        hudCamera.position.set(x, y, 0);
     }
 }
