@@ -110,6 +110,7 @@ gradle-app.setting
 /html/build/
 /ios/build/
 /ios-moe/build/
+gradlew
 
 ## OS Specific
 .DS_Store
@@ -128,6 +129,4 @@ Thumbs.db
 
 # Other
 *.bat
-*.png
 *.pro
-gradlew
