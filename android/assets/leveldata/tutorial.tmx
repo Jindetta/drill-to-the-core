@@ -10,10 +10,10 @@
  </layer>
  <layer name="ground" width="32" height="64">
   <data encoding="base64" compression="zlib">
-   eJztx7ENwCAQBMFvCQN2/535AkpAJMxKE2yVdG/tgCd6jJjxxrceAAAAAAAAYJcftop4yA==
+   eJzt0csJwCAQBUDbsIz035xXwRXXkAQJ82BO+0MsZUztRKmBVd+sfmcu6n3rfvaNp93f/Z+MJ3Zkdn6ZCwAAAAAAAOAnGtAwanE=
   </data>
  </layer>
- <layer name="shroud" width="32" height="64" visible="0">
+ <layer name="shroud" width="32" height="64">
   <data encoding="base64" compression="zlib">
    eJztwQENAAAAwqD3T20ON6AAAAAAAAAAgHcDIAAAAQ==
   </data>
