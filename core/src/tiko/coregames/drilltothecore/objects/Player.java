@@ -4,12 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import tiko.coregames.drilltothecore.managers.ControllerManager;
 import tiko.coregames.drilltothecore.managers.LevelManager;
 
 public class Player extends BaseObject {
+    private ControllerManager controller;
+
     public Player() {
         super("images/player.png");
         Rectangle playerSpawn = LevelManager.getSpawnPoint("player");
+        controller = new ControllerManager();
+        controller.setLimits(48, 48, 2, 2);
 
         if (playerSpawn != null) {
             setPosition(playerSpawn.x, playerSpawn.y);
@@ -32,6 +37,8 @@ public class Player extends BaseObject {
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             translateY(-DEBUG_SPEED * delta);
         }
+
+        controller.updateController(this, delta);
     }
 
     public void draw(SpriteBatch batch, float delta) {
