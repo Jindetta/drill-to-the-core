@@ -1,8 +1,11 @@
 package tiko.coregames.drilltothecore.managers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.math.MathUtils;
 import tiko.coregames.drilltothecore.objects.BaseObject;
+import tiko.coregames.drilltothecore.objects.Player;
 
 public class ControllerManager {
     private float valueX, valueY;
@@ -30,6 +33,13 @@ public class ControllerManager {
         this.deadzoneY = deadzoneY;
     }
 
+    private static boolean isAllowedToMoveUp(BaseObject object) {
+        TiledMapTile tile = LevelManager.getTileFromPosition(object.getX(), object.getY(), "background");
+        Boolean value = LevelManager.getBoolean(tile, "sky");
+
+        return value == null || !value;
+    }
+
     public void updateController(BaseObject object, float delta) {
         // TODO: Changes need to be made
         float x = Gdx.input.getAccelerometerY();
@@ -55,6 +65,23 @@ public class ControllerManager {
             valueY = 0;
         }
 
-        object.translate(valueX * delta, valueY * delta);
+        boolean canMoveUp = true;
+
+        if (object instanceof Player) {
+            canMoveUp = isAllowedToMoveUp(object);
+        }
+
+        if (valueX > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            object.translateX( clampX * delta);
+        }
+        if (valueX < 0 || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            object.translateX(-clampX * delta);
+        }
+        if (canMoveUp && (valueY > 0 || Gdx.input.isKeyPressed(Input.Keys.UP))) {
+            object.translateY(clampY * delta);
+        }
+        if (valueY < 0 || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            object.translateY(-clampY * delta);
+        }
     }
 }

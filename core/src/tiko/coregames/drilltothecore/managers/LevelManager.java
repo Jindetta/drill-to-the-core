@@ -4,12 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.*;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
+
+import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
 /**
  * Handles everything related to levels.
@@ -89,7 +88,25 @@ public abstract class LevelManager {
         return null;
     }
 
-    private <T> T getProperty(TiledMapTileLayer tile, String property, Class<T> type) {
+    public static TiledMapTile getTileFromPosition(float x, float y, String name) {
+        try {
+            TiledMapTileLayer layer = (TiledMapTileLayer) levelData.getLayers().get(name);
+
+            if (layer != null) {
+                int tileX = (int) (x / layer.getTileWidth());
+                int tileY = (int) (y / layer.getTileHeight());
+
+                return layer.getCell(tileX, tileY).getTile();
+            }
+        } catch (Exception e) {
+            Gdx.app.log(DEBUG_TAG, "Could not load specified spawn point.");
+        }
+
+        // Invalid value - return null
+        return null;
+    }
+
+    private static <T> T getProperty(TiledMapTile tile, String property, Class<T> type) {
         if (tile != null && property != null) {
             MapProperties properties = tile.getProperties();
 
@@ -101,19 +118,19 @@ public abstract class LevelManager {
         return null;
     }
 
-    public String getString(TiledMapTileLayer tile, String property) {
+    public static String getString(TiledMapTile tile, String property) {
         return getProperty(tile, property, String.class);
     }
 
-    public Boolean getBoolean(TiledMapTileLayer tile, String property) {
+    public static Boolean getBoolean(TiledMapTile tile, String property) {
         return getProperty(tile, property, Boolean.class);
     }
 
-    public Integer getInteger(TiledMapTileLayer tile, String property) {
+    public static Integer getInteger(TiledMapTile tile, String property) {
         return getProperty(tile, property, Integer.class);
     }
 
-    public Float getFloat(TiledMapTileLayer tile, String property) {
+    public static Float getFloat(TiledMapTile tile, String property) {
         return getProperty(tile, property, Float.class);
     }
 

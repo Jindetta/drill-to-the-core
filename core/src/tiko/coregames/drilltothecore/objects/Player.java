@@ -2,6 +2,7 @@ package tiko.coregames.drilltothecore.objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import tiko.coregames.drilltothecore.managers.ControllerManager;
@@ -24,19 +25,6 @@ public class Player extends BaseObject {
     // For debugging purposes
     private void updateMovement(float delta) {
         final float DEBUG_SPEED = 48;
-
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            translateX( DEBUG_SPEED * delta);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            translateX(-DEBUG_SPEED * delta);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            translateY(DEBUG_SPEED * delta);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            translateY(-DEBUG_SPEED * delta);
-        }
 
         controller.updateController(this, delta);
     }
