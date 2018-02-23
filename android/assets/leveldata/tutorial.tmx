@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" tiledversion="1.1.2" orientation="orthogonal" renderorder="right-down" width="32" height="64" tilewidth="32" tileheight="32" infinite="0" nextobjectid="36">
- <tileset firstgid="1" name="tiles" tilewidth="32" tileheight="32" tilecount="4" columns="4">
-  <image source="../images/tiles.png" width="128" height="32"/>
+ <tileset firstgid="1" name="Tiles" tilewidth="32" tileheight="32" tilecount="128" columns="8">
+  <image source="../images/tiles.png" width="256" height="512"/>
  </tileset>
  <layer name="background" width="32" height="64">
   <data encoding="base64" compression="zlib">
-   eJztw7EJAAAIA7AW///ZJwSXBNIk1aejqqqqqqqq6skF8bcWwQ==
+   eJzt0UkKwkAQRuEmDmnisHBaOC2c7qNGvf9N/IUEQqi2snIh74O3qqY6TYoQwkiN1URNVdZorTZqq3Zq35rXFc4ea56rmZqrhVqqlYqNDuqoTokd9TlvT2puvW+ghtX3xer7e84d1p7ozPPW+87qYtzd5V9YezJn/rmjb7w3lbXj2/kuXX/UTd1VqR7qqV4BAAAAAAAAAAAAAP7HGw6GFFg=
   </data>
  </layer>
  <layer name="ground" width="32" height="64">
   <data encoding="base64" compression="zlib">
-   eJztwzEJAAAMA7BS/6JrYrAngSTwp6qqqqqqqqqeHNo3DsE=
+   eJztx7ENwCAQBMFvCQN2/535AkpAJMxKE2yVdG/tgCd6jJjxxrceAAAAAAAAYJcftop4yA==
   </data>
  </layer>
- <layer name="shroud" width="32" height="64">
+ <layer name="shroud" width="32" height="64" visible="0">
   <data encoding="base64" compression="zlib">
-   eJztwzEJAAAMA7Ae9a+5JgZ7EkgCf6qqqqqqqqrqyQGUfR2B
+   eJztwQENAAAAwqD3T20ON6AAAAAAAAAAgHcDIAAAAQ==
   </data>
  </layer>
  <objectgroup name="spawns">
