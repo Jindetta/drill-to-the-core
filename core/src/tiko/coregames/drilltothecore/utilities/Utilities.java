@@ -11,6 +11,10 @@ public class Utilities {
     public static final float WORLD_HEIGHT = 512f;
     public static final float WORLD_SCALE = 1f;
 
+    public static final int TILE_WIDTH = 32;
+    public static final int TILE_HEIGHT = 32;
+
+
     public static final float SAFEZONE_SIZE = 5;
     public static final boolean DEBUG_MODE = true;
 
