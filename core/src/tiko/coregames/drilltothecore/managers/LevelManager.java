@@ -14,13 +14,23 @@ import static tiko.coregames.drilltothecore.utilities.Utilities.*;
  * Handles everything related to levels.
  */
 public abstract class LevelManager {
+    /**
+     * Stores level data.
+     */
     private static TiledMap levelData;
+
+    /**
+     * Renders level data.
+     */
     private static TiledMapRenderer levelRenderer;
 
+    /**
+     * Defines debug tag.
+     */
     private static final String DEBUG_TAG = "levelManager";
 
     /**
-     * Destroys level data if there is any
+     * Destroys level data.
      */
     private static void destroyLevel() {
         if (levelData != null) {
@@ -31,7 +41,7 @@ public abstract class LevelManager {
     /**
      * Loads specific level and sets it up
      *
-     * @param value of level to load
+     * @param value         Level identifier.
      */
     public static void setupLevel(int value) {
         TmxMapLoader loader = new TmxMapLoader();
@@ -65,8 +75,8 @@ public abstract class LevelManager {
     /**
      * Gets spawn point from "spawn" layer.
      *
-     * @param name of object
-     * @return object rectangle
+     * @param name          Layer name.
+     * @return              Return point as Rectangle.
      */
     public static Rectangle getSpawnPoint(String name) {
         try {
@@ -88,6 +98,14 @@ public abstract class LevelManager {
         return null;
     }
 
+    /**
+     * Gets "Tile" from given coordinates.
+     *
+     * @param x             X index.
+     * @param y             Y index.
+     * @param name          Layer name.
+     * @return              Returns Tile instance.
+     */
     public static TiledMapTile getTileFromPosition(float x, float y, String name) {
         try {
             TiledMapTileLayer layer = (TiledMapTileLayer) levelData.getLayers().get(name);
@@ -99,13 +117,22 @@ public abstract class LevelManager {
                 return layer.getCell(tileX, tileY).getTile();
             }
         } catch (Exception e) {
-            Gdx.app.log(DEBUG_TAG, "Could not load specified spawn point.");
+            Gdx.app.log(DEBUG_TAG, "Could not find tile.");
         }
 
         // Invalid value - return null
         return null;
     }
 
+    /**
+     * Gets property from given tile.
+     *
+     * @param tile          Tile to read the property from.
+     * @param property      Property name.
+     * @param type          Property type.
+     * @param <T>           Return type.
+     * @return              Return property value or null.
+     */
     private static <T> T getProperty(TiledMapTile tile, String property, Class<T> type) {
         if (tile != null && property != null) {
             MapProperties properties = tile.getProperties();
@@ -118,23 +145,54 @@ public abstract class LevelManager {
         return null;
     }
 
+    /**
+     * Gets "String" property.
+     *
+     * @param tile          Tile to read the property from.
+     * @param property      Property name.
+     * @return              Property as String.
+     */
     public static String getString(TiledMapTile tile, String property) {
         return getProperty(tile, property, String.class);
     }
 
+    /**
+     * Gets "Boolean" property.
+     *
+     * @param tile          Tile to read the property from.
+     * @param property      Property name.
+     * @return              Property as Boolean.
+     */
     public static Boolean getBoolean(TiledMapTile tile, String property) {
         return getProperty(tile, property, Boolean.class);
     }
 
+    /**
+     * Gets "Integer" property.
+     *
+     * @param tile          Tile to read the property from.
+     * @param property      Property name.
+     * @return              Property as Integer.
+     */
     public static Integer getInteger(TiledMapTile tile, String property) {
         return getProperty(tile, property, Integer.class);
     }
 
+    /**
+     * Gets "Float" property.
+     *
+     * @param tile          Tile to read the property from.
+     * @param property      Property name.
+     * @return              Property as Float.
+     */
     public static Float getFloat(TiledMapTile tile, String property) {
         return getProperty(tile, property, Float.class);
     }
 
+    /**
+     * Disposes all level data.
+     */
     public static void dispose() {
-        levelData.dispose();
+        destroyLevel();
     }
 }

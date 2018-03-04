@@ -1,7 +1,7 @@
 package tiko.coregames.drilltothecore;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import tiko.coregames.drilltothecore.managers.CameraManager;
@@ -15,6 +15,10 @@ public class CoreSetup extends Game {
 	// Debug
 	private CameraManager cameraManager;
 	private Player player;
+
+    /**
+     * Initializes game.
+     */
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -27,11 +31,20 @@ public class CoreSetup extends Game {
 		Gdx.graphics.setTitle("Drill to the Core");
 	}
 
+    /**
+     * Resizes game window.
+     *
+     * @param width     Screen width.
+     * @param height    Screen height.
+     */
     @Override
     public void resize(int width, int height) {
         cameraManager.resizeHud(width, height);
     }
 
+    /**
+     * Renders game.
+     */
     @Override
 	public void render () {
 	    //super.render();
@@ -48,6 +61,9 @@ public class CoreSetup extends Game {
 		batch.end();
 	}
 
+    /**
+     * Disposes all allocated resources.
+     */
 	@Override
 	public void dispose () {
 		batch.dispose();
