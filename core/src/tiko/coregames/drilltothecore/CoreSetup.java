@@ -1,20 +1,15 @@
 package tiko.coregames.drilltothecore;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.math.Rectangle;
 import tiko.coregames.drilltothecore.managers.CameraManager;
 import tiko.coregames.drilltothecore.managers.LevelManager;
 import tiko.coregames.drilltothecore.objects.Player;
 import tiko.coregames.drilltothecore.utilities.Utilities.*;
 
-import java.util.logging.Level;
-
-public class CoreSetup extends ApplicationAdapter {
+public class CoreSetup extends Game {
 	private SpriteBatch batch;
 
 	// Debug
@@ -39,6 +34,7 @@ public class CoreSetup extends ApplicationAdapter {
 
     @Override
 	public void render () {
+	    //super.render();
 	    float delta = Gdx.graphics.getDeltaTime();
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
