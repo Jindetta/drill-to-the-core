@@ -66,6 +66,8 @@ public class CoreSetup extends Game {
      */
 	@Override
 	public void dispose () {
+	    // Dispose last shown screen
+		setScreen(null);
 		batch.dispose();
 		player.dispose();
 

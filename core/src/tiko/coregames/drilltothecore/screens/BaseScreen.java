@@ -8,9 +8,14 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 public class BaseScreen implements Screen {
     private Stage stage;
 
+    public BaseScreen() {
+        // TODO: Make proper stage with viewport
+        stage = new Stage();
+    }
+
     @Override
     public void show() {
-
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -35,11 +40,12 @@ public class BaseScreen implements Screen {
 
     @Override
     public void hide() {
-
+        // Dispose this screen when it's hidden
+        dispose();
     }
 
     @Override
     public void dispose() {
-
+        stage.dispose();
     }
 }
