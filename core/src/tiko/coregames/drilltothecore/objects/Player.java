@@ -3,34 +3,105 @@ package tiko.coregames.drilltothecore.objects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import tiko.coregames.drilltothecore.managers.ControllerManager;
 import tiko.coregames.drilltothecore.managers.LevelManager;
 
+import java.util.logging.Level;
+
+import static tiko.coregames.drilltothecore.utilities.Utilities.*;
+
 public class Player extends BaseObject {
     private ControllerManager controller;
+    private float totalFuel, fuelConsumptionRate;
 
     public Player() {
         super("images/player.png");
         Rectangle playerSpawn = LevelManager.getSpawnPoint("player");
-        controller = new ControllerManager();
-        controller.setLimits(48, 48, 2, 2);
+        controller = new ControllerManager(this);
+
+        controller.setXThreshold(DEFAULT_MIN_THRESHOLD, DEFAULT_MIN_THRESHOLD);
+        controller.setYThreshold(DEFAULT_MIN_THRESHOLD, DEFAULT_MIN_THRESHOLD);
 
         if (playerSpawn != null) {
             setPosition(playerSpawn.x, playerSpawn.y);
         }
+
+        setMaxFuel();
     }
 
-    // For debugging purposes
-    private void updateMovement(float delta) {
-        final float DEBUG_SPEED = 48;
+    public void setMaxFuel() {
+        totalFuel = PLAYER_FUEL_TANK_SIZE;
+    }
 
-        controller.updateController(this, delta);
+    public boolean consumeFuel(float delta) {
+        totalFuel = Math.max(0, totalFuel - PLAYER_FUEL_MIN_CONSUMPTION * delta);
+
+        return totalFuel > 0;
     }
 
     public void draw(SpriteBatch batch, float delta) {
-        updateMovement(delta);
+        // Update movement based on controller input
+        controller.updateController(delta);
         super.draw(batch);
+    }
+
+    private boolean isAllowedToMoveUp() {
+        TiledMapTile tile = LevelManager.getTileFromPosition(getX(), getY(), "background");
+        Boolean value = LevelManager.getBoolean(tile, "sky");
+
+        return value == null || !value;
+    }
+
+    // DEBUG - Destroy tiles
+    private void updateTileStatus() {
+        TiledMapTileLayer.Cell[] cells = new TiledMapTileLayer.Cell[] {
+            LevelManager.getCellFromPosition(getX() + getWidth() / 2, getY(), "ground"),
+            LevelManager.getCellFromPosition(getX() + getWidth() / 2, getY() + getHeight(), "ground"),
+            LevelManager.getCellFromPosition(getX(), getY() + getHeight() / 2, "ground"),
+            LevelManager.getCellFromPosition(getX() + getWidth(), getY() + getHeight() / 2, "ground"),
+        };
+
+        for (TiledMapTileLayer.Cell cell : cells) {
+            if (cell != null) {
+                cell.setTile(null);
+            }
+        }
+    }
+
+    @Override
+    public void move(float valueX, float valueY, float delta) {
+        if (!consumeFuel(delta)) {
+            // Ran out of fuel
+            return;
+        }
+
+        if (valueX > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            translateX( PLAYER_MOVE_SPEED * delta);
+            valueX = PLAYER_MOVE_SPEED;
+        }
+        if (valueX < 0 || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            translateX(-PLAYER_MOVE_SPEED * delta);
+            valueX = -PLAYER_MOVE_SPEED;
+        }
+
+        // Allow only one axis movement
+        if (valueX != 0) {
+            return;
+        }
+
+        if (isAllowedToMoveUp() && (valueY > 0 || Gdx.input.isKeyPressed(Input.Keys.UP))) {
+            translateY(PLAYER_MOVE_SPEED * delta);
+            valueY = PLAYER_MOVE_SPEED;
+        }
+        if (valueY < 0 || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            translateY(-PLAYER_MOVE_SPEED * delta);
+            valueY = -PLAYER_MOVE_SPEED;
+        }
+
+        updateTileStatus();
     }
 }

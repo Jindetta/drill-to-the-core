@@ -8,8 +8,6 @@ import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
-import static tiko.coregames.drilltothecore.utilities.Utilities.*;
-
 /**
  * Handles everything related to levels.
  */
@@ -108,16 +106,27 @@ public abstract class LevelManager {
      */
     public static TiledMapTile getTileFromPosition(float x, float y, String name) {
         try {
+            return getCellFromPosition(x, y, name).getTile();
+        } catch (Exception e) {
+            Gdx.app.log(DEBUG_TAG, "Could not find tile.");
+        }
+
+        // Invalid value - return null
+        return null;
+    }
+
+    public static TiledMapTileLayer.Cell getCellFromPosition(float x, float y, String name) {
+        try {
             TiledMapTileLayer layer = (TiledMapTileLayer) levelData.getLayers().get(name);
 
             if (layer != null) {
                 int tileX = (int) (x / layer.getTileWidth());
                 int tileY = (int) (y / layer.getTileHeight());
 
-                return layer.getCell(tileX, tileY).getTile();
+                return layer.getCell(tileX, tileY);
             }
         } catch (Exception e) {
-            Gdx.app.log(DEBUG_TAG, "Could not find tile.");
+            Gdx.app.log(DEBUG_TAG, "Could not find cell.");
         }
 
         // Invalid value - return null

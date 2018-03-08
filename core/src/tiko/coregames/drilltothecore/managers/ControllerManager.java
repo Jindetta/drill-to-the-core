@@ -1,87 +1,98 @@
 package tiko.coregames.drilltothecore.managers;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import tiko.coregames.drilltothecore.objects.BaseObject;
-import tiko.coregames.drilltothecore.objects.Player;
 
 public class ControllerManager {
-    private float valueX, valueY;
-    private float adjustedX, adjustedY;
+    private BaseObject owner;
 
-    private float clampX, clampY;
-    private float deadzoneX, deadzoneY;
+    private Vector2 currentValue;
 
-    public ControllerManager() {
-        valueX = 0;
-        valueY = 0;
+    private Vector2 minPositiveThreshold;
+    private Vector2 minNegativeThreshold;
 
-        adjustedX = 0;
-        adjustedY = 0;
+    private Vector2 maxPositiveThreshold;
+    private Vector2 maxNegativeThreshold;
 
-        clampX = 0;
-        clampY = 0;
+    private boolean invertedY;
+
+    public ControllerManager(BaseObject owner) {
+        this.owner = owner;
+        invertedY = false;
+
+        reset();
     }
 
-    public void setLimits(float maxMovementX, float maxMovementY, float deadzoneX, float deadzoneY) {
-        clampX = maxMovementX;
-        clampY = maxMovementY;
+    public void reset() {
+        currentValue = new Vector2();
 
-        this.deadzoneX = deadzoneX;
-        this.deadzoneY = deadzoneY;
+        minPositiveThreshold = new Vector2();
+        minNegativeThreshold = new Vector2();
+
+        float maxValue = Math.abs(Gdx.input.getAccelerometerX());
+
+        maxPositiveThreshold = new Vector2(maxValue, maxValue);
+        maxNegativeThreshold = new Vector2(-maxValue, -maxValue);
     }
 
-    private static boolean isAllowedToMoveUp(BaseObject object) {
-        TiledMapTile tile = LevelManager.getTileFromPosition(object.getX(), object.getY(), "background");
-        Boolean value = LevelManager.getBoolean(tile, "sky");
+    public void setXThreshold(float positiveThreshold, float negativeThreshold) {
+        positiveThreshold = Math.abs(positiveThreshold);
+        negativeThreshold = -Math.abs(negativeThreshold);
 
-        return value == null || !value;
+        if (positiveThreshold < maxPositiveThreshold.x) {
+            minPositiveThreshold.x = positiveThreshold;
+        } else {
+            minPositiveThreshold.x = 0;
+        }
+
+        if (negativeThreshold > maxNegativeThreshold.x) {
+            minNegativeThreshold.x = negativeThreshold;
+        } else {
+            minNegativeThreshold.x = 0;
+        }
     }
 
-    public void updateController(BaseObject object, float delta) {
-        // TODO: Changes need to be made
+    public void setYThreshold(float positiveThreshold, float negativeThreshold) {
+        positiveThreshold = Math.abs(positiveThreshold);
+        negativeThreshold = -Math.abs(negativeThreshold);
+
+        if (positiveThreshold < maxPositiveThreshold.y) {
+            minPositiveThreshold.y = positiveThreshold;
+        } else {
+            minPositiveThreshold.y = 0;
+        }
+
+        if (negativeThreshold > maxNegativeThreshold.y) {
+            minNegativeThreshold.y = negativeThreshold;
+        } else {
+            minNegativeThreshold.y = 0;
+        }
+    }
+
+    // TODO: Make use of inverted value if necessary
+    public void setInvertedY(boolean inverted) {
+        invertedY = inverted;
+    }
+
+    public void updateController(float delta) {
+        // Get value from accelerometer (Y = X)
         float x = Gdx.input.getAccelerometerY();
+        // Get value from accelerometer (Z = Y)
         float y = Gdx.input.getAccelerometerZ();
 
-        if (!MathUtils.isZero(x, deadzoneX)) {
-            valueX += x;
-
-            if (!MathUtils.isZero(clampX)) {
-                valueX = MathUtils.clamp(valueX, -clampX, clampX);
-            }
+        if (x > minPositiveThreshold.x || x < minNegativeThreshold.x) {
+            currentValue.x += x;
         } else {
-            valueX = 0;
+            currentValue.x = 0;
         }
 
-        if (!MathUtils.isZero(y, deadzoneY)) {
-            valueY += y;
-
-            if (!MathUtils.isZero(clampY)) {
-                valueY = MathUtils.clamp(valueY, -clampY, clampY);
-            }
+        if (y > minPositiveThreshold.y || y < minNegativeThreshold.y) {
+            currentValue.y += y;
         } else {
-            valueY = 0;
+            currentValue.y = 0;
         }
 
-        boolean canMoveUp = true;
-
-        if (object instanceof Player) {
-            canMoveUp = isAllowedToMoveUp(object);
-        }
-
-        if (valueX > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            object.translateX( clampX * delta);
-        }
-        if (valueX < 0 || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            object.translateX(-clampX * delta);
-        }
-        if (canMoveUp && (valueY > 0 || Gdx.input.isKeyPressed(Input.Keys.UP))) {
-            object.translateY(clampY * delta);
-        }
-        if (valueY < 0 || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            object.translateY(-clampY * delta);
-        }
+        owner.move(currentValue.x, currentValue.y, delta);
     }
 }

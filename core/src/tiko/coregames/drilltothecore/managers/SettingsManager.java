@@ -6,8 +6,17 @@ import com.badlogic.gdx.Preferences;
 public class SettingsManager {
     private Preferences preferences;
 
-    public SettingsManager() {
-        preferences = Gdx.app.getPreferences("DrillToTheCore.prefs");
+    private SettingsManager(String fileName) {
+        // Private constructor
+        preferences = Gdx.app.getPreferences(fileName);
+    }
+
+    public static SettingsManager getSettings() {
+        return new SettingsManager("DrillToTheCore.settings");
+    }
+
+    public static SettingsManager getUserProfiles() {
+        return new SettingsManager("DrillToTheCore.profiles");
     }
 
     public void setValue(String key, String value) {
