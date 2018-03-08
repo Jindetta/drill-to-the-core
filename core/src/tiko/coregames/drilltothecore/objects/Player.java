@@ -4,13 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import tiko.coregames.drilltothecore.managers.ControllerManager;
 import tiko.coregames.drilltothecore.managers.LevelManager;
-
-import java.util.logging.Level;
 
 import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
@@ -18,9 +15,14 @@ public class Player extends BaseObject {
     private ControllerManager controller;
     private float totalFuel, fuelConsumptionRate;
 
+    /**
+     * Defines debug tag for this class.
+     */
+    private static final String DEBUG_TAG = Player.class.getName();
+
     public Player() {
         super("images/player.png");
-        Rectangle playerSpawn = LevelManager.getSpawnPoint("player");
+        Vector3 playerSpawn = LevelManager.getSpawnPoint("player");
         controller = new ControllerManager(this);
 
         controller.setXThreshold(DEFAULT_MIN_THRESHOLD, DEFAULT_MIN_THRESHOLD);

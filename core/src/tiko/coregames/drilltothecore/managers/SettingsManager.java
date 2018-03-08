@@ -6,6 +6,11 @@ import com.badlogic.gdx.Preferences;
 public class SettingsManager {
     private Preferences preferences;
 
+    /**
+     * Defines debug tag for this class.
+     */
+    private static final String DEBUG_TAG = SettingsManager.class.getName();
+
     private SettingsManager(String fileName) {
         // Private constructor
         preferences = Gdx.app.getPreferences(fileName);

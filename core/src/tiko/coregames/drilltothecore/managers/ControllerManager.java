@@ -17,6 +17,11 @@ public class ControllerManager {
 
     private boolean invertedY;
 
+    /**
+     * Defines debug tag for this class.
+     */
+    private static final String DEBUG_TAG = ControllerManager.class.getName();
+
     public ControllerManager(BaseObject owner) {
         this.owner = owner;
         invertedY = false;

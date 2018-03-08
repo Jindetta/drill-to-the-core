@@ -2,8 +2,6 @@ package tiko.coregames.drilltothecore.screens;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import tiko.coregames.drilltothecore.CoreSetup;
 import tiko.coregames.drilltothecore.managers.LevelManager;
@@ -15,16 +13,16 @@ import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 public class GameScreen extends BaseScreen {
     private Player player;
 
+    /**
+     * Defines debug tag for this class.
+     */
+    private static final String DEBUG_TAG = GameScreen.class.getName();
+
     public GameScreen(CoreSetup host) {
         super(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), host);
 
         LevelManager.setupLevel(0);
-        Rectangle playerSpawn = LevelManager.getSpawnPoint("player");
-
-        if (playerSpawn != null) {
-            player = new Player();
-            player.setPosition(playerSpawn.x, playerSpawn.y);
-        }
+        player = new Player();
     }
 
     private void followObject(BaseObject object) {
@@ -51,7 +49,7 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public void dispose() {
-        super.dispose();
         LevelManager.dispose();
+        super.dispose();
     }
 }

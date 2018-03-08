@@ -7,6 +7,7 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 
 /**
  * Handles everything related to levels.
@@ -23,9 +24,9 @@ public abstract class LevelManager {
     private static TiledMapRenderer levelRenderer;
 
     /**
-     * Defines debug tag.
+     * Defines debug tag for this class.
      */
-    private static final String DEBUG_TAG = "levelManager";
+    private static final String DEBUG_TAG = LevelManager.class.getName();
 
     /**
      * Destroys level data.
@@ -76,17 +77,16 @@ public abstract class LevelManager {
      * @param name          Layer name.
      * @return              Return point as Rectangle.
      */
-    public static Rectangle getSpawnPoint(String name) {
+    public static Vector3 getSpawnPoint(String name) {
         try {
             // Get "spawn" layer
             MapLayer layer = levelData.getLayers().get("spawns");
 
             if (layer != null) {
                 // Get object from layer and cast it as rectangle shaped object
-                RectangleMapObject object = (RectangleMapObject) layer.getObjects().get(name);
+                Rectangle point = ((RectangleMapObject) layer.getObjects().get(name)).getRectangle();
 
-                // Return point
-                return object.getRectangle();
+                return new Vector3(point.x, point.y, 0);
             }
         } catch (Exception e) {
             Gdx.app.log(DEBUG_TAG, "Could not load specified spawn point.");

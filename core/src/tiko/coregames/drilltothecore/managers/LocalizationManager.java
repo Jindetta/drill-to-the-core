@@ -8,6 +8,11 @@ import java.util.Locale;
 public class LocalizationManager {
     private I18NBundle bundle;
 
+    /**
+     * Defines debug tag for this class.
+     */
+    private static final String DEBUG_TAG = LocalizationManager.class.getName();
+
     public LocalizationManager(String bundleKey) {
         initializeBundle(bundleKey == null ? "" : bundleKey);
     }

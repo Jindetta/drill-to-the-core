@@ -13,6 +13,11 @@ public class BaseScreen implements Screen {
     protected SpriteBatch batch;
     protected Stage stage;
 
+    /**
+     * Defines debug tag for this class.
+     */
+    private static final String DEBUG_TAG = BaseScreen.class.getName();
+
     public BaseScreen(Viewport viewport, CoreSetup host) {
         batch = host.getBatch();
         this.host = host;

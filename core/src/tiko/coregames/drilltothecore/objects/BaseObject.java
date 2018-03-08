@@ -7,6 +7,11 @@ import com.badlogic.gdx.utils.Disposable;
 import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
 public abstract class BaseObject extends Sprite implements Disposable {
+    /**
+     * Defines debug tag for this class.
+     */
+    private static final String DEBUG_TAG = BaseObject.class.getName();
+
     public BaseObject(String texture) {
         super(new Texture(texture));
 

@@ -14,6 +14,11 @@ public class CoreSetup extends Game {
 	// Debug
 	private CameraManager cameraManager;
 
+	/**
+	 * Defines debug tag for this class.
+	 */
+	private static final String DEBUG_TAG = CoreSetup.class.getName();
+
 	public SpriteBatch getBatch() {
 	    return batch;
     }
