@@ -3,8 +3,9 @@ package tiko.coregames.drilltothecore.managers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import tiko.coregames.drilltothecore.objects.BaseObject;
+import tiko.coregames.drilltothecore.utilities.Debugger;
 
-public class ControllerManager {
+public class ControllerManager implements Debugger {
     private BaseObject owner;
 
     private Vector2 currentValue;
@@ -16,11 +17,6 @@ public class ControllerManager {
     private Vector2 maxNegativeThreshold;
 
     private boolean invertedY;
-
-    /**
-     * Defines debug tag for this class.
-     */
-    private static final String DEBUG_TAG = ControllerManager.class.getName();
 
     public ControllerManager(BaseObject owner) {
         this.owner = owner;
@@ -99,5 +95,9 @@ public class ControllerManager {
         }
 
         owner.move(currentValue.x, currentValue.y, delta);
+    }
+
+    public static String getDebugTag() {
+        return ControllerManager.class.getSimpleName();
     }
 }

@@ -5,18 +5,13 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import tiko.coregames.drilltothecore.CoreSetup;
 import tiko.coregames.drilltothecore.managers.LevelManager;
-import tiko.coregames.drilltothecore.objects.BaseObject;
 import tiko.coregames.drilltothecore.objects.Player;
+import tiko.coregames.drilltothecore.utilities.Debugger;
 
 import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
-public class GameScreen extends BaseScreen {
+public class GameScreen extends BaseScreen implements Debugger {
     private Player player;
-
-    /**
-     * Defines debug tag for this class.
-     */
-    private static final String DEBUG_TAG = GameScreen.class.getName();
 
     public GameScreen(CoreSetup host) {
         super(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), host);
@@ -25,12 +20,14 @@ public class GameScreen extends BaseScreen {
         player = new Player();
     }
 
-    private void followObject(BaseObject object) {
+    private void followObject() {
         Camera camera = stage.getCamera();
 
-        if (camera != null && object != null) {
-            camera.position.x = object.getX();
-            camera.position.y = object.getY();
+        if (camera != null) {
+            camera.position.x = player.getX();
+            camera.position.y = player.getY();
+
+            camera.update();
         }
     }
 
@@ -44,12 +41,17 @@ public class GameScreen extends BaseScreen {
         player.draw(batch, delta);
         batch.end();
 
-        followObject(player);
+        followObject();
     }
 
     @Override
     public void dispose() {
         LevelManager.dispose();
+        player.dispose();
         super.dispose();
+    }
+
+    public static String getDebugTag() {
+        return GameScreen.class.getSimpleName();
     }
 }

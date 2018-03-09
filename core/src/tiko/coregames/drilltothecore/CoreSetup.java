@@ -5,19 +5,12 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import tiko.coregames.drilltothecore.managers.CameraManager;
 import tiko.coregames.drilltothecore.screens.GameScreen;
+import tiko.coregames.drilltothecore.utilities.Debug;
 
 import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
 public class CoreSetup extends Game {
 	private SpriteBatch batch;
-
-	// Debug
-	private CameraManager cameraManager;
-
-	/**
-	 * Defines debug tag for this class.
-	 */
-	private static final String DEBUG_TAG = CoreSetup.class.getName();
 
 	public SpriteBatch getBatch() {
 	    return batch;
@@ -29,12 +22,9 @@ public class CoreSetup extends Game {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-
-		// TODO: Initialize managers properly
-		cameraManager = new CameraManager();
-
-		Gdx.graphics.setTitle("Drill to the Core");
 		setScreen(new GameScreen(this));
+
+        Gdx.graphics.setTitle("Drill to the Core");
 	}
 
     /**

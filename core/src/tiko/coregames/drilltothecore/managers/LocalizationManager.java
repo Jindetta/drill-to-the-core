@@ -2,16 +2,12 @@ package tiko.coregames.drilltothecore.managers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.I18NBundle;
+import tiko.coregames.drilltothecore.utilities.Debugger;
 
 import java.util.Locale;
 
-public class LocalizationManager {
+public class LocalizationManager implements Debugger {
     private I18NBundle bundle;
-
-    /**
-     * Defines debug tag for this class.
-     */
-    private static final String DEBUG_TAG = LocalizationManager.class.getName();
 
     public LocalizationManager(String bundleKey) {
         initializeBundle(bundleKey == null ? "" : bundleKey);
@@ -32,5 +28,9 @@ public class LocalizationManager {
 
     public String getValue(String key) {
         return bundle.get(key);
+    }
+
+    public static String getDebugTag() {
+        return LocalizationManager.class.getSimpleName();
     }
 }

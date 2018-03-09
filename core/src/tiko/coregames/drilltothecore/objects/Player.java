@@ -8,25 +8,22 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import tiko.coregames.drilltothecore.managers.ControllerManager;
 import tiko.coregames.drilltothecore.managers.LevelManager;
+import tiko.coregames.drilltothecore.utilities.Debugger;
 
 import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
-public class Player extends BaseObject {
+public class Player extends BaseObject implements Debugger {
     private ControllerManager controller;
     private float totalFuel, fuelConsumptionRate;
 
-    /**
-     * Defines debug tag for this class.
-     */
-    private static final String DEBUG_TAG = Player.class.getName();
-
     public Player() {
         super("images/player.png");
-        Vector3 playerSpawn = LevelManager.getSpawnPoint("player");
         controller = new ControllerManager(this);
 
         controller.setXThreshold(DEFAULT_MIN_THRESHOLD, DEFAULT_MIN_THRESHOLD);
         controller.setYThreshold(DEFAULT_MIN_THRESHOLD, DEFAULT_MIN_THRESHOLD);
+
+        Vector3 playerSpawn = LevelManager.getSpawnPoint("player");
 
         if (playerSpawn != null) {
             setPosition(playerSpawn.x, playerSpawn.y);
@@ -37,10 +34,11 @@ public class Player extends BaseObject {
 
     public void setMaxFuel() {
         totalFuel = PLAYER_FUEL_TANK_SIZE;
+        fuelConsumptionRate = PLAYER_FUEL_MIN_CONSUMPTION;
     }
 
     public boolean consumeFuel(float delta) {
-        totalFuel = Math.max(0, totalFuel - PLAYER_FUEL_MIN_CONSUMPTION * delta);
+        totalFuel = Math.max(0, totalFuel - fuelConsumptionRate * delta);
 
         return totalFuel > 0;
     }
@@ -77,7 +75,7 @@ public class Player extends BaseObject {
     @Override
     public void move(float valueX, float valueY, float delta) {
         if (!consumeFuel(delta)) {
-            // Ran out of fuel
+            // Ran out of fuel - deny movement
             return;
         }
 
@@ -105,5 +103,9 @@ public class Player extends BaseObject {
         }
 
         updateTileStatus();
+    }
+
+    public static String getDebugTag() {
+        return Player.class.getSimpleName();
     }
 }

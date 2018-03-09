@@ -2,14 +2,10 @@ package tiko.coregames.drilltothecore.managers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import tiko.coregames.drilltothecore.utilities.Debugger;
 
-public class SettingsManager {
+public class SettingsManager implements Debugger {
     private Preferences preferences;
-
-    /**
-     * Defines debug tag for this class.
-     */
-    private static final String DEBUG_TAG = SettingsManager.class.getName();
 
     private SettingsManager(String fileName) {
         // Private constructor
@@ -46,5 +42,9 @@ public class SettingsManager {
 
     public void saveSettings() {
         preferences.flush();
+    }
+
+    public static String getDebugTag() {
+        return SettingsManager.class.getSimpleName();
     }
 }

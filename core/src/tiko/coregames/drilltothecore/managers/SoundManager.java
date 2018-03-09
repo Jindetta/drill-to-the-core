@@ -1,12 +1,13 @@
 package tiko.coregames.drilltothecore.managers;
 
-public class SoundManager {
-    /**
-     * Defines debug tag for this class.
-     */
-    private static final String DEBUG_TAG = SoundManager.class.getName();
+import tiko.coregames.drilltothecore.utilities.Debugger;
 
+public class SoundManager implements Debugger {
     public SoundManager() {
         // Not implemented
+    }
+
+    public static String getDebugTag() {
+        return SoundManager.class.getSimpleName();
     }
 }

@@ -7,16 +7,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import tiko.coregames.drilltothecore.CoreSetup;
+import tiko.coregames.drilltothecore.utilities.Debugger;
 
-public class BaseScreen implements Screen {
+public class BaseScreen implements Screen, Debugger {
     protected CoreSetup host;
     protected SpriteBatch batch;
     protected Stage stage;
-
-    /**
-     * Defines debug tag for this class.
-     */
-    private static final String DEBUG_TAG = BaseScreen.class.getName();
 
     public BaseScreen(Viewport viewport, CoreSetup host) {
         batch = host.getBatch();
@@ -63,5 +59,9 @@ public class BaseScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
+    }
+
+    public static String getDebugTag() {
+        return BaseScreen.class.getSimpleName();
     }
 }
