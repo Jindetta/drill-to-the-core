@@ -243,14 +243,14 @@
    </properties>
   </tile>
  </tileset>
- <layer name="background" width="32" height="64">
+ <layer name="background" width="32" height="64" locked="1">
   <data encoding="base64" compression="zlib">
-   eJzt0UkKwkAQRuEmDmnisHBaOC2c7qNGvf9N/IUEQqi2snIh74O3qqY6TYoQwkiN1URNVdZorTZqq3Zq35rXFc4ea56rmZqrhVqqlYqNDuqoTokd9TlvT2puvW+ghtX3xer7e84d1p7ozPPW+87qYtzd5V9YezJn/rmjb7w3lbXj2/kuXX/UTd1VqR7qqV4BAAAAAAAAAAAAAP7HGw6GFFg=
+   eJzt0DkOwlAMRdHPHGYxi1lMYSHsf0/cgkg0cVJAd4tTPT3bciOl1EQLbXTQxRY77HHAESf0McAQI4wxwRQzzLHAEiusKzpl2QVX3HDHA3mwYxPcHHWirIfs6z9ZsONccnNVJ8qK3YUs+Mvzkxfymp268/7lJUmSJEmSJEmSJEn6iTfjVPqj
   </data>
  </layer>
  <layer name="ground" width="32" height="64">
   <data encoding="base64" compression="zlib">
-   eJzt0csJwCAQBUDbsIz035xXwRXXkAQJ82BO+0MsZUztRKmBVd+sfmcu6n3rfvaNp93f/Z+MJ3Zkdn6ZCwAAAAAAAOAnGtAwanE=
+   eJztwwEJAAAIA7BXMov9uxjjIBssgZ4tH1VVVVVVVdUnD9MObbA=
   </data>
  </layer>
  <layer name="shroud" width="32" height="64">

@@ -36,7 +36,7 @@ public class BaseScreen implements Screen, Debugger {
         Viewport viewport = stage.getViewport();
 
         if (viewport != null) {
-            viewport.setScreenSize(width, height);
+            viewport.update(width, height, true);
         }
     }
 
