@@ -13,7 +13,7 @@ import tiko.coregames.drilltothecore.utilities.Debugger;
 /**
  * Handles everything related to levels.
  */
-public abstract class LevelManager implements Debugger {
+public abstract class LevelManager {
     /**
      * Stores level data.
      */

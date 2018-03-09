@@ -105,7 +105,8 @@ public class Player extends BaseObject implements Debugger {
         updateTileStatus();
     }
 
-    public static String getDebugTag() {
+    @Override
+    public String getDebugTag() {
         return Player.class.getSimpleName();
     }
 }

@@ -4,20 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Disposable;
 
 import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
-import java.util.Locale;
-
 public class Debug {
+    private static BitmapFont font;
     private static Array<BaseDebug> debugData;
 
     static {
+        font = new BitmapFont(Gdx.files.internal("menu/debug.fnt"));
         addDebugger(new BaseDebug());
-        addDebugger(new ControllerDebug());
     }
 
     public static void addDebugger(BaseDebug debugObject) {
@@ -39,15 +36,10 @@ public class Debug {
     }
 
     public static void dispose() {
-        if (DEBUG_MODE && debugData != null) {
-            for (BaseDebug debugObject : debugData) {
-                debugObject.dispose();
-            }
-        }
+        font.dispose();
     }
 
-    public static class BaseDebug implements Disposable {
-        BitmapFont font;
+    public static class BaseDebug {
         String debugString;
         GlyphLayout layout;
 
@@ -55,12 +47,7 @@ public class Debug {
 
         BaseDebug() {
             timeElapsed = 0;
-            debugString = "Frames/second: %d, Current frame: %d%n%d:%02d:%02d -> %.3f (+%.3f)";
-            setup();
-        }
-
-        void setup() {
-            font = new BitmapFont();
+            debugString = "FPS: %d (%d)%n%d:%02d:%02d -> %.3f (+%.3f)%nAccelX: %.4f%nAccelY: %.4f%nAccelZ: %.4f";
             layout = new GlyphLayout(font, debugString);
         }
 
@@ -76,36 +63,15 @@ public class Debug {
                     (int) timeElapsed / (60 * 60),
                     (int) timeElapsed / 60 % 60,
                     (int) timeElapsed % 60,
-                    timeElapsed, delta
-                )
-            );
-
-            font.draw(batch, layout, SAFEZONE_SIZE, Gdx.graphics.getHeight() - SAFEZONE_SIZE);
-        }
-
-        @Override
-        public void dispose() {
-            font.dispose();
-        }
-    }
-
-    public static class ControllerDebug extends BaseDebug {
-        ControllerDebug() {
-            debugString = "Accelerometer values:%nX = %.4f, Y = %.4f, Z = %.4f";
-            setup();
-        }
-
-        public void render(SpriteBatch batch) {
-            layout.setText(font,
-                String.format(
-                    debugString,
+                    timeElapsed,
+                    delta,
                     Gdx.input.getAccelerometerX(),
                     Gdx.input.getAccelerometerY(),
                     Gdx.input.getAccelerometerZ()
                 )
             );
 
-            font.draw(batch, layout, SAFEZONE_SIZE, SAFEZONE_SIZE + layout.height);
+            font.draw(batch, layout, SAFEZONE_SIZE, Gdx.graphics.getHeight() - SAFEZONE_SIZE);
         }
     }
 }

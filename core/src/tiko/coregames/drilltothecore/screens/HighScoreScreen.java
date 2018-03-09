@@ -8,7 +8,8 @@ public class HighScoreScreen extends BaseScreen {
         super(new ScreenViewport(), host);
     }
 
-    public static String getDebugTag() {
+    @Override
+    public String getDebugTag() {
         return HighScoreScreen.class.getSimpleName();
     }
 }

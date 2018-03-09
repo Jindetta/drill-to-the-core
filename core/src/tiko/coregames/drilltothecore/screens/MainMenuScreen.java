@@ -8,7 +8,8 @@ public class MainMenuScreen extends BaseScreen {
         super(new ScreenViewport(), host);
     }
 
-    public static String getDebugTag() {
+    @Override
+    public String getDebugTag() {
         return MainMenuScreen.class.getSimpleName();
     }
 }

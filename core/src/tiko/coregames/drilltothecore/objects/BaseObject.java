@@ -26,7 +26,8 @@ public abstract class BaseObject extends Sprite implements Disposable, Debugger 
 
     abstract public void move(float valueX, float valueY, float delta);
 
-    public static String getDebugTag() {
+    @Override
+    public String getDebugTag() {
         return BaseObject.class.getSimpleName();
     }
 }

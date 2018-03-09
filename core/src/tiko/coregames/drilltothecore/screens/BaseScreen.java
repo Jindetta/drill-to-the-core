@@ -61,7 +61,8 @@ public class BaseScreen implements Screen, Debugger {
         stage.dispose();
     }
 
-    public static String getDebugTag() {
+    @Override
+    public String getDebugTag() {
         return BaseScreen.class.getSimpleName();
     }
 }

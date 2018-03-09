@@ -30,7 +30,8 @@ public class LocalizationManager implements Debugger {
         return bundle.get(key);
     }
 
-    public static String getDebugTag() {
+    @Override
+    public String getDebugTag() {
         return LocalizationManager.class.getSimpleName();
     }
 }

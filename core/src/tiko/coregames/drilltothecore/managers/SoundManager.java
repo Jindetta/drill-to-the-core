@@ -7,7 +7,8 @@ public class SoundManager implements Debugger {
         // Not implemented
     }
 
-    public static String getDebugTag() {
+    @Override
+    public  String getDebugTag() {
         return SoundManager.class.getSimpleName();
     }
 }

@@ -3,7 +3,6 @@ package tiko.coregames.drilltothecore.screens;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import tiko.coregames.drilltothecore.CoreSetup;
 import tiko.coregames.drilltothecore.managers.LevelManager;
 import tiko.coregames.drilltothecore.objects.Player;
@@ -72,7 +71,7 @@ public class GameScreen extends BaseScreen implements Debugger {
         batch.setProjectionMatrix(hudCamera.combined);
         batch.end();
 
-        worldCamera.zoom = 0.75f;
+        worldCamera.zoom = 0.7f;
         followPlayerObject();
     }
 
@@ -83,7 +82,8 @@ public class GameScreen extends BaseScreen implements Debugger {
         super.dispose();
     }
 
-    public static String getDebugTag() {
+    @Override
+    public String getDebugTag() {
         return GameScreen.class.getSimpleName();
     }
 }

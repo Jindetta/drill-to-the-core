@@ -5,6 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 import tiko.coregames.drilltothecore.objects.BaseObject;
 import tiko.coregames.drilltothecore.utilities.Debugger;
 
+import static tiko.coregames.drilltothecore.utilities.Utilities.*;
+
 public class ControllerManager implements Debugger {
     private BaseObject owner;
 
@@ -31,10 +33,8 @@ public class ControllerManager implements Debugger {
         minPositiveThreshold = new Vector2();
         minNegativeThreshold = new Vector2();
 
-        float maxValue = Math.abs(Gdx.input.getAccelerometerX());
-
-        maxPositiveThreshold = new Vector2(maxValue, maxValue);
-        maxNegativeThreshold = new Vector2(-maxValue, -maxValue);
+        maxPositiveThreshold = new Vector2(DEFAULT_MAX_THRESHOLD, DEFAULT_MAX_THRESHOLD);
+        maxNegativeThreshold = new Vector2(-DEFAULT_MAX_THRESHOLD, -DEFAULT_MAX_THRESHOLD);
     }
 
     public void setXThreshold(float positiveThreshold, float negativeThreshold) {
@@ -97,7 +97,8 @@ public class ControllerManager implements Debugger {
         owner.move(currentValue.x, currentValue.y, delta);
     }
 
-    public static String getDebugTag() {
+    @Override
+    public String getDebugTag() {
         return ControllerManager.class.getSimpleName();
     }
 }

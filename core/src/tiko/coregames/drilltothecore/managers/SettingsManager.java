@@ -44,7 +44,8 @@ public class SettingsManager implements Debugger {
         preferences.flush();
     }
 
-    public static String getDebugTag() {
+    @Override
+    public String getDebugTag() {
         return SettingsManager.class.getSimpleName();
     }
 }

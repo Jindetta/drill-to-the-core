@@ -18,6 +18,7 @@ public class Utilities {
     public static final boolean DEBUG_MODE = true;
 
     public static final float DEFAULT_MIN_THRESHOLD = 2;
+    public static final float DEFAULT_MAX_THRESHOLD = 7.5f;
 
     public static final float PLAYER_MOVE_SPEED = 120;
     public static final float PLAYER_FUEL_TANK_SIZE = 100;

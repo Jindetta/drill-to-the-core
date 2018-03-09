@@ -245,7 +245,7 @@
  </tileset>
  <layer name="background" width="32" height="64" locked="1">
   <data encoding="base64" compression="zlib">
-   eJzt0DkOwlAMRdHPHGYxi1lMYSHsf0/cgkg0cVJAd4tTPT3bciOl1EQLbXTQxRY77HHAESf0McAQI4wxwRQzzLHAEiusKzpl2QVX3HDHA3mwYxPcHHWirIfs6z9ZsONccnNVJ8qK3YUs+Mvzkxfymp268/7lJUmSJEmSJEmSJEn6iTfjVPqj
+   eJzt0EkOwjAQRFEzSmEUYRKzmMJBuP+d+Oso7bCA3V+8hdUuV8udlFIXPfQxwBA77HHAESecUWCEMSaYYoY5FiixxAprbFoy0eyKG+544Ikq07HN7JzL5GZFg6jjEuzclsnNmvqjf3nV7lW1c5T59r1/eUuSJEmSJEmSJEmSfuIDKNH62A==
   </data>
  </layer>
  <layer name="ground" width="32" height="64">
@@ -255,7 +255,7 @@
  </layer>
  <layer name="shroud" width="32" height="64">
   <data encoding="base64" compression="zlib">
-   eJztwQENAAAAwqD3T20ON6AAAAAAAAAAgHcDIAAAAQ==
+   eJztzTENAAAIA7Dh3zQWdpLQGmjCVfP8BwAAAAAAAKC3XEgAAw==
   </data>
  </layer>
  <objectgroup name="spawns">
