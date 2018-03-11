@@ -1,6 +1,7 @@
 package tiko.coregames.drilltothecore.managers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import tiko.coregames.drilltothecore.objects.BaseObject;
 
@@ -77,27 +78,30 @@ public class ControllerManager {
     }
 
     public void updateController(float delta) {
-        // Get value from accelerometer (Y = X)
-        float x = Gdx.input.getAccelerometerY();
-        // Get value from accelerometer (Z = Y)
-        float y = Gdx.input.getAccelerometerZ();
+        if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
+            // Get value from accelerometer (Y = X)
+            float x = Gdx.input.getAccelerometerY();
+            // Get value from accelerometer (Z = Y)
+            float y = Gdx.input.getAccelerometerZ();
 
-        if (invertedY) {
-            y = -y;
+            if (invertedY) {
+                y = -y;
+            }
+
+            if (x > minPositiveThreshold.x || x < minNegativeThreshold.x) {
+                currentValue.x += x;
+            } else {
+                currentValue.x = 0;
+            }
+
+            if (y > minPositiveThreshold.y || y < minNegativeThreshold.y) {
+                currentValue.y += y;
+            } else {
+                currentValue.y = 0;
+            }
         }
 
-        if (x > minPositiveThreshold.x || x < minNegativeThreshold.x) {
-            currentValue.x += x;
-        } else {
-            currentValue.x = 0;
-        }
-
-        if (y > minPositiveThreshold.y || y < minNegativeThreshold.y) {
-            currentValue.y += y;
-        } else {
-            currentValue.y = 0;
-        }
-
+        // Call move method anyway - even if no peripheral was attached
         owner.move(currentValue.x, currentValue.y, delta);
     }
 }

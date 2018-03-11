@@ -3,6 +3,7 @@ package tiko.coregames.drilltothecore.screens;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import tiko.coregames.drilltothecore.managers.LevelManager;
 import tiko.coregames.drilltothecore.objects.Player;
@@ -26,24 +27,8 @@ public class GameScreen extends BaseScreen {
         Camera camera = stage.getCamera();
 
         if (camera != null) {
-            camera.position.x = player.getX();
-            camera.position.y = player.getY();
-
-            if(camera.position.x < TOTAL_TILES_WIDTH / 2){
-                camera.position.x = TOTAL_TILES_WIDTH / 2;
-            }
-
-            if(camera.position.x > TOTAL_TILES_WIDTH - TILE_WIDTH) {
-                camera.position.x = TOTAL_TILES_WIDTH - TILE_WIDTH;
-            }
-
-            if(camera.position.y > TOTAL_TILES_HEIGHT - TILE_HEIGHT) {
-                camera.position.y = TOTAL_TILES_HEIGHT - TILE_HEIGHT;
-            }
-
-            if(camera.position.y < TOTAL_TILES_HEIGHT / 2) {
-                camera.position.y = TOTAL_TILES_HEIGHT / 2;
-            }
+            camera.position.x = MathUtils.clamp(player.getX(), TOTAL_TILES_WIDTH / 2, TOTAL_TILES_WIDTH - TILE_WIDTH);
+            camera.position.y = MathUtils.clamp(player.getY(), TOTAL_TILES_HEIGHT / 2, TOTAL_TILES_HEIGHT - TILE_HEIGHT);
 
             camera.update();
         }
@@ -59,10 +44,9 @@ public class GameScreen extends BaseScreen {
     public void render(float delta) {
         super.render(delta);
 
+        SpriteBatch batch = Setup.getBatch();
         OrthographicCamera worldCamera = (OrthographicCamera) stage.getCamera();
         LevelManager.applyCameraAndRender(worldCamera);
-
-        SpriteBatch batch = Setup.getBatch();
 
         batch.begin();
         // Apply world camera

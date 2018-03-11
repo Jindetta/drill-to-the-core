@@ -72,33 +72,33 @@ public class Player extends BaseObject {
     }
 
     @Override
-    public void move(float valueX, float valueY, float delta) {
+    public void move(float accelerometerX, float accelerometerY, float delta) {
         if (!consumeFuel(delta)) {
-            // Ran out of fuel - deny movement
+            Gdx.app.log(getClass().getSimpleName(), "Sorry, but you ran out of fuel");
             return;
         }
 
-        if (valueX > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        if (accelerometerX > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             translateX( PLAYER_MOVE_SPEED * delta);
-            valueX = PLAYER_MOVE_SPEED;
+            accelerometerX = PLAYER_MOVE_SPEED;
         }
-        if (valueX < 0 || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        if (accelerometerX < 0 || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             translateX(-PLAYER_MOVE_SPEED * delta);
-            valueX = -PLAYER_MOVE_SPEED;
+            accelerometerX = -PLAYER_MOVE_SPEED;
         }
 
         // Allow only one axis movement
-        if (valueX != 0) {
+        if (accelerometerX != 0) {
             return;
         }
 
-        if (isAllowedToMoveUp() && (valueY > 0 || Gdx.input.isKeyPressed(Input.Keys.UP))) {
+        if (isAllowedToMoveUp() && (accelerometerY > 0 || Gdx.input.isKeyPressed(Input.Keys.UP))) {
             translateY(PLAYER_MOVE_SPEED * delta);
-            valueY = PLAYER_MOVE_SPEED;
+            accelerometerY = PLAYER_MOVE_SPEED;
         }
-        if (valueY < 0 || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+        if (accelerometerY < 0 || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             translateY(-PLAYER_MOVE_SPEED * delta);
-            valueY = -PLAYER_MOVE_SPEED;
+            accelerometerY = -PLAYER_MOVE_SPEED;
         }
 
         updateTileStatus();
