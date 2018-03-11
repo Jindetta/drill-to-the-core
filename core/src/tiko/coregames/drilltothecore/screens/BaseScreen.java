@@ -5,13 +5,13 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import tiko.coregames.drilltothecore.utilities.Setup;
+import tiko.coregames.drilltothecore.CoreSetup;
 
 public class BaseScreen implements Screen {
     protected Stage stage;
 
     public BaseScreen(Viewport viewport) {
-        stage = new Stage(viewport, Setup.getBatch());
+        stage = new Stage(viewport, CoreSetup.getBatch());
     }
 
     @Override

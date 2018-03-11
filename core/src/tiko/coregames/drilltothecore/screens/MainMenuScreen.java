@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import tiko.coregames.drilltothecore.utilities.Setup;
+import tiko.coregames.drilltothecore.CoreSetup;
 
 public class MainMenuScreen extends BaseScreen {
     private BitmapFont font;
@@ -23,14 +23,14 @@ public class MainMenuScreen extends BaseScreen {
     public void render(float delta) {
         super.render(delta);
 
-        SpriteBatch batch = Setup.getBatch();
+        SpriteBatch batch = CoreSetup.getBatch();
 
         batch.begin();
         font.draw(batch, layout, (Gdx.graphics.getWidth() - layout.width) / 2, (Gdx.graphics.getHeight() - layout.height) / 2);
         batch.end();
 
         if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
-            Setup.setScreen(new GameScreen());
+            CoreSetup.nextScreen(new GameScreen());
         }
     }
 

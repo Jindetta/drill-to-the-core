@@ -5,9 +5,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import tiko.coregames.drilltothecore.CoreSetup;
 import tiko.coregames.drilltothecore.managers.LevelManager;
 import tiko.coregames.drilltothecore.objects.Player;
-import tiko.coregames.drilltothecore.utilities.Setup;
 
 import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
@@ -23,15 +23,16 @@ public class GameScreen extends BaseScreen {
         player = new Player();
     }
 
+    /**
+     * Moves camera with player.
+     */
     private void followPlayerObject() {
         Camera camera = stage.getCamera();
 
-        if (camera != null) {
-            camera.position.x = MathUtils.clamp(player.getX(), TOTAL_TILES_WIDTH / 2, TOTAL_TILES_WIDTH - TILE_WIDTH);
-            camera.position.y = MathUtils.clamp(player.getY(), TOTAL_TILES_HEIGHT / 2, TOTAL_TILES_HEIGHT - TILE_HEIGHT);
+        camera.position.x = MathUtils.clamp(player.getX(), TOTAL_TILES_WIDTH / 2, TOTAL_TILES_WIDTH - TILE_WIDTH);
+        camera.position.y = MathUtils.clamp(player.getY(), TOTAL_TILES_HEIGHT / 2, TOTAL_TILES_HEIGHT - TILE_HEIGHT);
 
-            camera.update();
-        }
+        camera.update();
     }
 
     @Override
@@ -44,7 +45,7 @@ public class GameScreen extends BaseScreen {
     public void render(float delta) {
         super.render(delta);
 
-        SpriteBatch batch = Setup.getBatch();
+        SpriteBatch batch = CoreSetup.getBatch();
         OrthographicCamera worldCamera = (OrthographicCamera) stage.getCamera();
         LevelManager.applyCameraAndRender(worldCamera);
 
@@ -57,6 +58,7 @@ public class GameScreen extends BaseScreen {
         batch.setProjectionMatrix(hudCamera.combined);
         batch.end();
 
+        // Temporary zoom
         worldCamera.zoom = 0.7f;
         followPlayerObject();
     }

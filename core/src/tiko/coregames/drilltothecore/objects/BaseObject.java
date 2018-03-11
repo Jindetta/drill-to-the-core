@@ -17,6 +17,22 @@ public abstract class BaseObject extends Sprite implements Disposable {
         setOriginCenter();
     }
 
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
     @Override
     public void dispose() {
         getTexture().dispose();
