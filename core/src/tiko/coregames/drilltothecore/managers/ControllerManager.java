@@ -3,11 +3,10 @@ package tiko.coregames.drilltothecore.managers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import tiko.coregames.drilltothecore.objects.BaseObject;
-import tiko.coregames.drilltothecore.utilities.Debugger;
 
 import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
-public class ControllerManager implements Debugger {
+public class ControllerManager {
     private BaseObject owner;
 
     private Vector2 currentValue;
@@ -73,6 +72,7 @@ public class ControllerManager implements Debugger {
 
     // TODO: Make use of inverted value if necessary
     public void setInvertedY(boolean inverted) {
+        setYThreshold(minNegativeThreshold.y, minPositiveThreshold.y);
         invertedY = inverted;
     }
 
@@ -81,6 +81,10 @@ public class ControllerManager implements Debugger {
         float x = Gdx.input.getAccelerometerY();
         // Get value from accelerometer (Z = Y)
         float y = Gdx.input.getAccelerometerZ();
+
+        if (invertedY) {
+            y = -y;
+        }
 
         if (x > minPositiveThreshold.x || x < minNegativeThreshold.x) {
             currentValue.x += x;
@@ -95,10 +99,5 @@ public class ControllerManager implements Debugger {
         }
 
         owner.move(currentValue.x, currentValue.y, delta);
-    }
-
-    @Override
-    public String getDebugTag() {
-        return ControllerManager.class.getSimpleName();
     }
 }

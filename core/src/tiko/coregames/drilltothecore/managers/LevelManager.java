@@ -8,7 +8,6 @@ import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import tiko.coregames.drilltothecore.utilities.Debugger;
 
 /**
  * Handles everything related to levels.
@@ -85,7 +84,7 @@ public abstract class LevelManager {
                 return new Vector3(point.x, point.y, 0);
             }
         } catch (Exception e) {
-            Gdx.app.log(getDebugTag(), "Could not load specified spawn point.");
+            Gdx.app.log(LevelManager.class.getSimpleName(), "Could not load specified spawn point.");
         }
 
         // Invalid value - return null
@@ -104,7 +103,7 @@ public abstract class LevelManager {
         try {
             return getCellFromPosition(x, y, name).getTile();
         } catch (Exception e) {
-            Gdx.app.log(getDebugTag(), "Could not find tile.");
+            Gdx.app.log(LevelManager.class.getSimpleName(), "Could not find tile.");
         }
 
         // Invalid value - return null
@@ -122,7 +121,7 @@ public abstract class LevelManager {
                 return layer.getCell(tileX, tileY);
             }
         } catch (Exception e) {
-            Gdx.app.log(getDebugTag(), "Could not find cell.");
+            Gdx.app.log(LevelManager.class.getSimpleName(), "Could not find cell.");
         }
 
         // Invalid value - return null
@@ -199,9 +198,5 @@ public abstract class LevelManager {
      */
     public static void dispose() {
         destroyLevel();
-    }
-
-    public static String getDebugTag() {
-        return LevelManager.class.getSimpleName();
     }
 }

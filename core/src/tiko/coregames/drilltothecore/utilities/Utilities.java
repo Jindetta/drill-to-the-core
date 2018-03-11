@@ -1,5 +1,9 @@
 package tiko.coregames.drilltothecore.utilities;
 
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import tiko.coregames.drilltothecore.CoreSetup;
+
 public class Utilities {
     public static final float WORLD_WIDTH = 768f;
     public static final float WORLD_HEIGHT = 512f;

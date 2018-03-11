@@ -3,22 +3,15 @@ package tiko.coregames.drilltothecore.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import tiko.coregames.drilltothecore.CoreSetup;
-import tiko.coregames.drilltothecore.utilities.Debugger;
+import tiko.coregames.drilltothecore.utilities.Setup;
 
-public class BaseScreen implements Screen, Debugger {
-    protected CoreSetup host;
-    protected SpriteBatch batch;
+public class BaseScreen implements Screen {
     protected Stage stage;
 
-    public BaseScreen(Viewport viewport, CoreSetup host) {
-        batch = host.getBatch();
-        this.host = host;
-
-        stage = new Stage(viewport, batch);
+    public BaseScreen(Viewport viewport) {
+        stage = new Stage(viewport, Setup.getBatch());
     }
 
     @Override
@@ -52,17 +45,11 @@ public class BaseScreen implements Screen, Debugger {
 
     @Override
     public void hide() {
-        // Dispose this screen when it's hidden
         dispose();
     }
 
     @Override
     public void dispose() {
         stage.dispose();
-    }
-
-    @Override
-    public String getDebugTag() {
-        return BaseScreen.class.getSimpleName();
     }
 }

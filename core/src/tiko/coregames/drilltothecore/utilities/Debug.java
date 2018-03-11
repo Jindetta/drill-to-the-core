@@ -13,7 +13,7 @@ public class Debug {
     private static Array<BaseDebug> debugData;
 
     static {
-        font = new BitmapFont(Gdx.files.internal("menu/debug.fnt"));
+        font = new BitmapFont();
         addDebugger(new BaseDebug());
     }
 
@@ -47,11 +47,11 @@ public class Debug {
 
         BaseDebug() {
             timeElapsed = 0;
-            debugString = "FPS: %d (%d)%n%d:%02d:%02d -> %.3f (+%.3f)%nAccelX: %.4f%nAccelY: %.4f%nAccelZ: %.4f";
+            debugString = "FPS: %d (%d)%n%d:%02d:%02d -> %.2f (+%.3f)%nAccelX: %.4f%nAccelY: %.4f%nAccelZ: %.4f";
             layout = new GlyphLayout(font, debugString);
         }
 
-        public void render(SpriteBatch batch) {
+        void render(SpriteBatch batch) {
             float delta = Gdx.graphics.getDeltaTime();
             timeElapsed += delta;
 

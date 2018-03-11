@@ -2,20 +2,20 @@ package tiko.coregames.drilltothecore.screens;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import tiko.coregames.drilltothecore.CoreSetup;
 import tiko.coregames.drilltothecore.managers.LevelManager;
 import tiko.coregames.drilltothecore.objects.Player;
-import tiko.coregames.drilltothecore.utilities.Debugger;
+import tiko.coregames.drilltothecore.utilities.Setup;
 
 import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
-public class GameScreen extends BaseScreen implements Debugger {
+public class GameScreen extends BaseScreen {
     private OrthographicCamera hudCamera;
     private Player player;
 
-    public GameScreen(CoreSetup host) {
-        super(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), host);
+    public GameScreen() {
+        super(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT));
         hudCamera = new OrthographicCamera();
 
         LevelManager.setupLevel(0);
@@ -62,6 +62,8 @@ public class GameScreen extends BaseScreen implements Debugger {
         OrthographicCamera worldCamera = (OrthographicCamera) stage.getCamera();
         LevelManager.applyCameraAndRender(worldCamera);
 
+        SpriteBatch batch = Setup.getBatch();
+
         batch.begin();
         // Apply world camera
         batch.setProjectionMatrix(worldCamera.combined);
@@ -80,10 +82,5 @@ public class GameScreen extends BaseScreen implements Debugger {
         LevelManager.dispose();
         player.dispose();
         super.dispose();
-    }
-
-    @Override
-    public String getDebugTag() {
-        return GameScreen.class.getSimpleName();
     }
 }

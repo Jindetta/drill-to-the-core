@@ -3,18 +3,12 @@ package tiko.coregames.drilltothecore;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Matrix4;
-import tiko.coregames.drilltothecore.screens.GameScreen;
+import tiko.coregames.drilltothecore.screens.MainMenuScreen;
 import tiko.coregames.drilltothecore.utilities.Debug;
-
-import static tiko.coregames.drilltothecore.utilities.Utilities.*;
+import tiko.coregames.drilltothecore.utilities.Setup;
 
 public class CoreSetup extends Game {
 	private SpriteBatch batch;
-
-	public SpriteBatch getBatch() {
-	    return batch;
-    }
 
     /**
      * Initializes game.
@@ -22,8 +16,9 @@ public class CoreSetup extends Game {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		setScreen(new GameScreen(this));
+		Setup.initialize(this, batch);
 
+		setScreen(new MainMenuScreen());
         Gdx.graphics.setTitle("Drill to the Core");
 	}
 
@@ -47,7 +42,6 @@ public class CoreSetup extends Game {
 	    // Dispose last shown screen
 		setScreen(null);
 		batch.dispose();
-
 		Debug.dispose();
     }
 }

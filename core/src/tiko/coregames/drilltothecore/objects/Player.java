@@ -8,11 +8,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import tiko.coregames.drilltothecore.managers.ControllerManager;
 import tiko.coregames.drilltothecore.managers.LevelManager;
-import tiko.coregames.drilltothecore.utilities.Debugger;
 
 import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
-public class Player extends BaseObject implements Debugger {
+public class Player extends BaseObject {
     private ControllerManager controller;
     private float totalFuel, fuelConsumptionRate;
 
@@ -103,10 +102,5 @@ public class Player extends BaseObject implements Debugger {
         }
 
         updateTileStatus();
-    }
-
-    @Override
-    public String getDebugTag() {
-        return Player.class.getSimpleName();
     }
 }

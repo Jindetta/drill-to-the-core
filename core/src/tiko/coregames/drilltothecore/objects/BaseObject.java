@@ -2,14 +2,12 @@ package tiko.coregames.drilltothecore.objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.Disposable;
-import tiko.coregames.drilltothecore.utilities.Debugger;
 
 import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
-public abstract class BaseObject extends Sprite implements Disposable, Debugger {
+public abstract class BaseObject extends Sprite implements Disposable {
     private boolean alive, visible;
 
     public BaseObject(String texture) {
@@ -25,9 +23,4 @@ public abstract class BaseObject extends Sprite implements Disposable, Debugger 
     }
 
     abstract public void move(float valueX, float valueY, float delta);
-
-    @Override
-    public String getDebugTag() {
-        return BaseObject.class.getSimpleName();
-    }
 }
