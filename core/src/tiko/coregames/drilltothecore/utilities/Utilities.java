@@ -21,7 +21,7 @@ public class Utilities {
     public static final float DEFAULT_MAX_THRESHOLD = 7.5f;
 
     public static final float PLAYER_MOVE_SPEED = 120;
-    public static final float PLAYER_FUEL_TANK_SIZE = 60;
+    public static final float PLAYER_FUEL_TANK_SIZE = 300;
     public static final float PLAYER_FUEL_MIN_CONSUMPTION = 1f;
 
     public static float toWorldUnits(float value) {
