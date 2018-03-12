@@ -27,10 +27,13 @@ public class GameScreen extends BaseScreen {
      * Moves camera with player.
      */
     private void followPlayerObject() {
-        Camera camera = stage.getCamera();
+        OrthographicCamera camera = (OrthographicCamera) stage.getCamera();
 
-        camera.position.x = MathUtils.clamp(player.getX(), TOTAL_TILES_WIDTH / 2, TOTAL_TILES_WIDTH - TILE_WIDTH);
-        camera.position.y = MathUtils.clamp(player.getY(), TOTAL_TILES_HEIGHT / 2, TOTAL_TILES_HEIGHT - TILE_HEIGHT);
+        float viewportWidth = camera.viewportWidth * camera.zoom / 2;
+        float viewportHeight = camera.viewportHeight * camera.zoom / 2;
+
+        camera.position.x = MathUtils.clamp(player.getX(), TOTAL_TILES_WIDTH / 2, TOTAL_TILES_WIDTH - viewportWidth);
+        camera.position.y = MathUtils.clamp(player.getY(), TOTAL_TILES_HEIGHT / 2, TOTAL_TILES_HEIGHT - viewportHeight);
 
         camera.update();
     }
