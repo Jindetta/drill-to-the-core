@@ -8,8 +8,8 @@ public class Utilities {
     public static final int TILE_WIDTH = 32;
     public static final int TILE_HEIGHT = 32;
 
-    public static final int HORIZONTAL_TILES = 24;
-    public static final int VERTICAL_TILES = 58;
+    public static final int HORIZONTAL_TILES = 32;
+    public static final int VERTICAL_TILES = 64;
 
     public static final int TOTAL_TILES_WIDTH = TILE_WIDTH * HORIZONTAL_TILES;
     public static final int TOTAL_TILES_HEIGHT = TILE_HEIGHT * VERTICAL_TILES;
@@ -21,7 +21,7 @@ public class Utilities {
     public static final float DEFAULT_MAX_THRESHOLD = 7.5f;
 
     public static final float PLAYER_MOVE_SPEED = 120;
-    public static final float PLAYER_FUEL_TANK_SIZE = 60;
+    public static final float PLAYER_FUEL_TANK_SIZE = 300;
     public static final float PLAYER_FUEL_MIN_CONSUMPTION = 1f;
 
     public static float toWorldUnits(float value) {
