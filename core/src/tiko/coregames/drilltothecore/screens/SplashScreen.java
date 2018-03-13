@@ -5,6 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import tiko.coregames.drilltothecore.CoreSetup;
 
+import static tiko.coregames.drilltothecore.utilities.Utilities.*;
+
 public class SplashScreen extends BaseScreen {
     private Image splash;
     private float timeLeft;
@@ -12,10 +14,9 @@ public class SplashScreen extends BaseScreen {
     public SplashScreen() {
         super(new ScreenViewport());
 
+        timeLeft = INTRO_DURATION;
         splash = new Image(new Texture("images/splash.jpg"));
         stage.addActor(splash);
-
-        timeLeft = 2f;
     }
 
     @Override
@@ -34,7 +35,7 @@ public class SplashScreen extends BaseScreen {
             timeLeft -= delta;
 
             if (timeLeft <= 0) {
-                alpha = Math.max(alpha - delta, 0);
+                alpha = Math.max(alpha - delta / INTRO_FADE_DURATION, 0);
                 splash.setColor(1, 1, 1, alpha);
             }
 
