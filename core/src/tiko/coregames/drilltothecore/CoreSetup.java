@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import tiko.coregames.drilltothecore.screens.MainMenuScreen;
+import tiko.coregames.drilltothecore.screens.SplashScreen;
 import tiko.coregames.drilltothecore.utilities.Debug;
 
 public class CoreSetup extends Game {
@@ -27,7 +27,7 @@ public class CoreSetup extends Game {
 		batch = new SpriteBatch();
 		self = this;
 
-		setScreen(new MainMenuScreen());
+		setScreen(new SplashScreen());
         Gdx.graphics.setTitle("Drill to the Core");
 	}
 
