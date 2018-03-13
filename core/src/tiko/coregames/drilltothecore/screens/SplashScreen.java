@@ -2,23 +2,26 @@ package tiko.coregames.drilltothecore.screens;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import tiko.coregames.drilltothecore.CoreSetup;
-
-import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
 public class SplashScreen extends BaseScreen {
     private Image splash;
     private float timeLeft;
 
     public SplashScreen() {
-        super(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT));
+        super(new ScreenViewport());
 
         splash = new Image(new Texture("images/splash.jpg"));
-        splash.setPosition((WORLD_WIDTH - splash.getPrefWidth()) / 2, (WORLD_HEIGHT - splash.getPrefHeight()) / 2);
         stage.addActor(splash);
 
-        timeLeft = 3;
+        timeLeft = 2f;
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        splash.setPosition((width - splash.getPrefWidth()) / 2, (height - splash.getPrefHeight()) / 2);
+        super.resize(width, height);
     }
 
     @Override
