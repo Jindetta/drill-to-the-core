@@ -29,7 +29,7 @@ public class MainMenuScreen extends BaseScreen {
         font.draw(batch, layout, (Gdx.graphics.getWidth() - layout.width) / 2, (Gdx.graphics.getHeight() - layout.height) / 2);
         batch.end();
 
-        if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
+        if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
             CoreSetup.nextScreen(new GameScreen());
         }
     }

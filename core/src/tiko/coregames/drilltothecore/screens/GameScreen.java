@@ -1,5 +1,7 @@
 package tiko.coregames.drilltothecore.screens;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -63,6 +65,10 @@ public class GameScreen extends BaseScreen {
         // Temporary zoom
         worldCamera.zoom = 0.7f;
         followPlayerObject();
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            CoreSetup.nextScreen(new MainMenuScreen());
+        }
     }
 
     @Override

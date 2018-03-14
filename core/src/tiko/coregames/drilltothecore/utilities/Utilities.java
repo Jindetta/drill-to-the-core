@@ -14,8 +14,7 @@ public class Utilities {
     public static final int TOTAL_TILES_WIDTH = TILE_WIDTH * HORIZONTAL_TILES;
     public static final int TOTAL_TILES_HEIGHT = TILE_HEIGHT * VERTICAL_TILES;
 
-    public static final float INTRO_DURATION = 2;
-    public static final float INTRO_FADE_DURATION = 1.5f;
+    public static final float INTRO_DURATION = 2.5f;
 
     public static final float SAFEZONE_SIZE = 5;
     public static final boolean DEBUG_MODE = true;
