@@ -5,7 +5,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import tiko.coregames.drilltothecore.managers.ControllerManager;
 import tiko.coregames.drilltothecore.managers.LevelManager;
 
@@ -13,7 +16,9 @@ import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
 public class Player extends BaseObject {
     private ControllerManager controller;
+
     private float totalFuel, fuelConsumptionRate;
+    private Circle vision;
 
     public Player() {
         super("images/player.png");
@@ -21,11 +26,11 @@ public class Player extends BaseObject {
 
         controller.setXThreshold(DEFAULT_MIN_THRESHOLD, DEFAULT_MIN_THRESHOLD);
         controller.setYThreshold(DEFAULT_MIN_THRESHOLD, DEFAULT_MIN_THRESHOLD);
-
         Vector3 playerSpawn = LevelManager.getSpawnPoint("player");
 
         if (playerSpawn != null) {
             setPosition(playerSpawn.x, playerSpawn.y);
+            vision = new Circle(playerSpawn.x, playerSpawn.y, getWidth() * 2);
         }
 
         setMaxFuel();
@@ -55,8 +60,32 @@ public class Player extends BaseObject {
         return value == null || !value;
     }
 
+    private Array<Vector2> getPointsFromVision() {
+        Array<Vector2> points = new Array<>();
+
+        for (float i = vision.y - vision.radius; i < vision.y + vision.radius; i++) {
+            for (float j = vision.x; Math.pow(j - vision.x, 2) + Math.pow(i - vision.y, 2) <= Math.pow(vision.radius, 2); j--) {
+                points.add(new Vector2(j, i));
+            }
+            for (float j = vision.x + 1; (j - vision.x) * (j - vision.x) + (i - vision.y) * (i - vision.y) <= Math.pow(vision.radius, 2); j++) {
+                points.add(new Vector2(j, i));
+            }
+        }
+
+        return points;
+    }
+
     // DEBUG - Destroy tiles
     private void updateTileStatus() {
+        vision.setPosition(getX(), getY());
+        for (Vector2 vector : getPointsFromVision()) {
+            TiledMapTileLayer.Cell cell = LevelManager.getCellFromPosition(vector.x, vector.y, "shroud");
+
+            if (cell != null) {
+                cell.setTile(null);
+            }
+        }
+
         TiledMapTileLayer.Cell[] cells = new TiledMapTileLayer.Cell[] {
             LevelManager.getCellFromPosition(getX() + getWidth() / 2, getY(), "ground"),
             LevelManager.getCellFromPosition(getX() + getWidth() / 2, getY() + getHeight(), "ground"),

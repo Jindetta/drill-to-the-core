@@ -253,9 +253,9 @@
    eJztwwEJAAAIA7BXMov9uxjjIBssgZ4tH1VVVVVVVdUnD9MObbA=
   </data>
  </layer>
- <layer name="shroud" width="32" height="64">
+ <layer name="shroud" width="32" height="64" locked="1">
   <data encoding="base64" compression="zlib">
-   eJztzTENAAAIA7Dh3zQWdpLQGmjCVfP8BwAAAAAAAKC3XEgAAw==
+   eJztzUEJAAAIADFNZ/9GthDRHex9EdpaPv9PVAAAAAAAAABHNPdrAuE=
   </data>
  </layer>
  <objectgroup name="spawns">

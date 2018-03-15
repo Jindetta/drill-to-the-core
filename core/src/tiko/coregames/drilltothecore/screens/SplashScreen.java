@@ -40,7 +40,6 @@ public class SplashScreen extends BaseScreen {
         timeLeft -= delta;
 
         if (timeLeft <= 0) {
-            timeLeft = INTRO_DURATION;
             splash.removeIndex(0);
             stage.clear();
 
@@ -48,6 +47,8 @@ public class SplashScreen extends BaseScreen {
                 CoreSetup.nextScreen(new MainMenuScreen());
                 return;
             }
+
+            timeLeft = INTRO_DURATION;
         }
 
         stage.addActor(splash.first());
