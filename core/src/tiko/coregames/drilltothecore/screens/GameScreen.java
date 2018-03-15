@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import tiko.coregames.drilltothecore.CoreSetup;
 import tiko.coregames.drilltothecore.managers.LevelManager;
@@ -14,6 +15,7 @@ import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
 public class GameScreen extends BaseScreen {
     private OrthographicCamera hudCamera;
+    private ProgressBar playerFuel;
     private Player player;
 
     public GameScreen() {
@@ -22,6 +24,11 @@ public class GameScreen extends BaseScreen {
 
         LevelManager.setupLevel(0);
         player = new Player();
+
+        playerFuel = new ProgressBar(0, PLAYER_FUEL_TANK_SIZE, 0.1f, false, skin);
+        playerFuel.setPosition(Gdx.graphics.getWidth() - playerFuel.getPrefWidth() - SAFEZONE_SIZE, Gdx.graphics.getHeight() - playerFuel.getPrefHeight() - SAFEZONE_SIZE);
+        playerFuel.setValue(player.getFuel());
+        playerFuel.setDisabled(true);
     }
 
     /**
@@ -37,6 +44,10 @@ public class GameScreen extends BaseScreen {
         camera.position.y = MathUtils.clamp(player.getY(), viewportHeight, TOTAL_TILES_HEIGHT - viewportHeight);
 
         camera.update();
+    }
+
+    private void updateFuelMeter() {
+        playerFuel.setValue(player.getFuel());
     }
 
     @Override
@@ -60,12 +71,15 @@ public class GameScreen extends BaseScreen {
 
         // Apply HUD camera
         batch.setProjectionMatrix(hudCamera.combined);
+        playerFuel.draw(batch, 1);
         batch.end();
 
         // Temporary zoom
         worldCamera.zoom = 0.7f;
         followPlayerObject();
+        updateFuelMeter();
 
+        // DEBUG - Go back to menu
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             CoreSetup.nextScreen(new MainMenuScreen());
         }

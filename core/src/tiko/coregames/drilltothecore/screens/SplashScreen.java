@@ -1,6 +1,6 @@
 package tiko.coregames.drilltothecore.screens;
 
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -9,56 +9,60 @@ import tiko.coregames.drilltothecore.CoreSetup;
 import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
 public class SplashScreen extends BaseScreen {
-    private Texture splash1, splash2;
-    private Array<Image> splash;
+    private Texture currentTexture;
+    private Image currentSplash;
+    private int currentIndex;
     private float timeLeft;
 
     public SplashScreen() {
         super(new ScreenViewport());
 
-        timeLeft = INTRO_DURATION;
-        splash = new Array<>();
+        currentIndex = 0;
+        setNextSplashScreen();
+    }
 
-        splash1 = new Texture("images/splash.jpg");
-        splash.add(new Image(splash1));
+    private boolean setNextSplashScreen() {
+        if (currentTexture != null) {
+            currentTexture.dispose();
+            stage.clear();
+        }
 
-        splash2 = new Texture("images/player.png");
-        splash.add(new Image(splash2));
+        if (currentIndex < SPLASH_SCREENS.length) {
+            currentTexture = new Texture(SPLASH_SCREENS[currentIndex++]);
+            currentSplash = new Image(currentTexture);
+            timeLeft = SINGLE_SPLASH_DURATION;
+
+            centerSplashImage();
+            stage.addActor(currentSplash);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private void centerSplashImage() {
+        float centerX = (Gdx.graphics.getWidth() - currentSplash.getPrefWidth()) / 2;
+        float centerY = (Gdx.graphics.getHeight() - currentSplash.getPrefHeight()) / 2;
+
+        currentSplash.setPosition(centerX, centerY);
     }
 
     @Override
     public void resize(int width, int height) {
-        for (Image image : splash) {
-            image.setPosition((width - image.getPrefWidth()) / 2, (height - image.getPrefHeight()) / 2);
-        }
-
         super.resize(width, height);
+        centerSplashImage();
     }
 
     @Override
     public void render(float delta) {
         timeLeft -= delta;
 
-        if (timeLeft <= 0) {
-            splash.removeIndex(0);
-            stage.clear();
-
-            if (splash.size <= 0) {
-                CoreSetup.nextScreen(new MainMenuScreen());
-                return;
-            }
-
-            timeLeft = INTRO_DURATION;
+        if (timeLeft <= 0 && !setNextSplashScreen()) {
+            CoreSetup.nextScreen(new MainMenuScreen());
+            return;
         }
 
-        stage.addActor(splash.first());
         super.render(delta);
-    }
-
-    @Override
-    public void dispose() {
-        splash1.dispose();
-        splash2.dispose();
-        super.dispose();
     }
 }

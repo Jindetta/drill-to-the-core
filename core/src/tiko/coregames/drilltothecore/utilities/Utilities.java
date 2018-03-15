@@ -14,8 +14,6 @@ public class Utilities {
     public static final int TOTAL_TILES_WIDTH = TILE_WIDTH * HORIZONTAL_TILES;
     public static final int TOTAL_TILES_HEIGHT = TILE_HEIGHT * VERTICAL_TILES;
 
-    public static final float INTRO_DURATION = 2.5f;
-
     public static final float SAFEZONE_SIZE = 5;
     public static final boolean DEBUG_MODE = true;
 
@@ -26,11 +24,13 @@ public class Utilities {
     public static final float PLAYER_FUEL_TANK_SIZE = 300;
     public static final float PLAYER_FUEL_MIN_CONSUMPTION = 1f;
 
+    public static final float SINGLE_SPLASH_DURATION = 2.5f;
+
+    public static final String[] SPLASH_SCREENS = new String[] {
+        "images/splash/tietojenkasittely.png", "images/splash/exerium.png"
+    };
+
     public static float toWorldUnits(float value) {
         return value / WORLD_SCALE;
-    }
-
-    public static int toPixelUnits(float value) {
-        return Math.round(value * WORLD_SCALE);
     }
 }

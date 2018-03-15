@@ -4,14 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import tiko.coregames.drilltothecore.CoreSetup;
 
 public class BaseScreen implements Screen {
     protected Stage stage;
+    protected Skin skin;
 
     public BaseScreen(Viewport viewport) {
         stage = new Stage(viewport, CoreSetup.getBatch());
+        skin = new Skin(Gdx.files.internal("menu/uiskin.json"));
     }
 
     @Override
@@ -54,5 +57,6 @@ public class BaseScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
+        skin.dispose();
     }
 }

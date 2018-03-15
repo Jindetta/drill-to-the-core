@@ -6,9 +6,8 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import tiko.coregames.drilltothecore.managers.ControllerManager;
 import tiko.coregames.drilltothecore.managers.LevelManager;
 
@@ -18,7 +17,7 @@ public class Player extends BaseObject {
     private ControllerManager controller;
 
     private float totalFuel, fuelConsumptionRate;
-    private Circle vision;
+    private Circle playerView;
 
     public Player() {
         super("images/player.png");
@@ -30,7 +29,7 @@ public class Player extends BaseObject {
 
         if (playerSpawn != null) {
             setPosition(playerSpawn.x, playerSpawn.y);
-            vision = new Circle(playerSpawn.x, playerSpawn.y, getWidth() * 2);
+            playerView = new Circle(playerSpawn.x, playerSpawn.y, getWidth() * 2);
         }
 
         setMaxFuel();
@@ -47,6 +46,10 @@ public class Player extends BaseObject {
         return totalFuel > 0;
     }
 
+    public float getFuel() {
+        return totalFuel;
+    }
+
     public void draw(SpriteBatch batch, float delta) {
         // Update movement based on controller input
         controller.updateController(delta);
@@ -60,32 +63,29 @@ public class Player extends BaseObject {
         return value == null || !value;
     }
 
-    private Array<Vector2> getPointsFromVision() {
-        Array<Vector2> points = new Array<>();
+    private void clearShroudTile(float x, float y) {
+        TiledMapTileLayer.Cell cell = LevelManager.getCellFromPosition(x, y, "shroud");
 
-        for (float i = vision.y - vision.radius; i < vision.y + vision.radius; i++) {
-            for (float j = vision.x; Math.pow(j - vision.x, 2) + Math.pow(i - vision.y, 2) <= Math.pow(vision.radius, 2); j--) {
-                points.add(new Vector2(j, i));
+        if (cell != null) {
+            cell.setTile(null);
+        }
+    }
+
+    private void updatePlayerView() {
+        playerView.setPosition(getX(), getY());
+
+        for (float y = playerView.y - playerView.radius; y < playerView.y + playerView.radius; y++) {
+            for (float x = playerView.x; Math.pow(x - playerView.x, 2) + Math.pow(y - playerView.y, 2) <= Math.pow(playerView.radius, 2); x--) {
+                clearShroudTile(x, y);
             }
-            for (float j = vision.x + 1; (j - vision.x) * (j - vision.x) + (i - vision.y) * (i - vision.y) <= Math.pow(vision.radius, 2); j++) {
-                points.add(new Vector2(j, i));
+            for (float x = playerView.x + 1; (x - playerView.x) * (x - playerView.x) + (y - playerView.y) * (y - playerView.y) <= Math.pow(playerView.radius, 2); x++) {
+                clearShroudTile(x, y);
             }
         }
-
-        return points;
     }
 
     // DEBUG - Destroy tiles
     private void updateTileStatus() {
-        vision.setPosition(getX(), getY());
-        for (Vector2 vector : getPointsFromVision()) {
-            TiledMapTileLayer.Cell cell = LevelManager.getCellFromPosition(vector.x, vector.y, "shroud");
-
-            if (cell != null) {
-                cell.setTile(null);
-            }
-        }
-
         TiledMapTileLayer.Cell[] cells = new TiledMapTileLayer.Cell[] {
             LevelManager.getCellFromPosition(getX() + getWidth() / 2, getY(), "ground"),
             LevelManager.getCellFromPosition(getX() + getWidth() / 2, getY() + getHeight(), "ground"),
@@ -93,11 +93,24 @@ public class Player extends BaseObject {
             LevelManager.getCellFromPosition(getX() + getWidth(), getY() + getHeight() / 2, "ground"),
         };
 
+        updatePlayerView();
+
         for (TiledMapTileLayer.Cell cell : cells) {
             if (cell != null) {
                 cell.setTile(null);
             }
         }
+    }
+
+    private boolean isDirectionAllowed(char direction) {
+        switch (direction) {
+            case 'L': return getX() > 0;
+            case 'R': return getX() + getWidth() < TOTAL_TILES_WIDTH;
+            case 'U': return getY() + getHeight() < TOTAL_TILES_HEIGHT;
+            case 'D': return getY() > 0;
+        }
+
+        return false;
     }
 
     @Override
@@ -107,27 +120,25 @@ public class Player extends BaseObject {
             return;
         }
 
-        if (accelerometerX > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        if (isDirectionAllowed('R') && (accelerometerX > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
             translateX( PLAYER_MOVE_SPEED * delta);
             accelerometerX = PLAYER_MOVE_SPEED;
         }
-        if (accelerometerX < 0 || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        if (isDirectionAllowed('L') && (accelerometerX < 0 || Gdx.input.isKeyPressed(Input.Keys.LEFT))) {
             translateX(-PLAYER_MOVE_SPEED * delta);
             accelerometerX = -PLAYER_MOVE_SPEED;
         }
 
         // Allow only one axis movement
-        if (accelerometerX != 0) {
-            return;
-        }
-
-        if (isAllowedToMoveUp() && (accelerometerY > 0 || Gdx.input.isKeyPressed(Input.Keys.UP))) {
-            translateY(PLAYER_MOVE_SPEED * delta);
-            accelerometerY = PLAYER_MOVE_SPEED;
-        }
-        if (accelerometerY < 0 || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            translateY(-PLAYER_MOVE_SPEED * delta);
-            accelerometerY = -PLAYER_MOVE_SPEED;
+        if (accelerometerX == 0) {
+            if (isDirectionAllowed('U') && (isAllowedToMoveUp() && (accelerometerY > 0 || Gdx.input.isKeyPressed(Input.Keys.UP)))) {
+                translateY(PLAYER_MOVE_SPEED * delta);
+                accelerometerY = PLAYER_MOVE_SPEED;
+            }
+            if (isDirectionAllowed('D') && (accelerometerY < 0 || Gdx.input.isKeyPressed(Input.Keys.DOWN))) {
+                translateY(-PLAYER_MOVE_SPEED * delta);
+                accelerometerY = -PLAYER_MOVE_SPEED;
+            }
         }
 
         updateTileStatus();
