@@ -123,77 +123,77 @@ public class Player extends BaseObject {
          */
         if (direction.equals("L")) {
             if (DrillPointsTO.equals("R")) {
-                Player.super.flip(true, false);
+                flip(true, false);
             }
             if (DrillPointsTO.equals("DL")) {
-                Player.super.rotate90(true);
+                rotate90(true);
             }
             if (DrillPointsTO.equals("DR")) {
-                Player.super.rotate90(false);
-                Player.super.flip(true, false);
+                rotate90(false);
+                flip(true, false);
             }
             if (DrillPointsTO.equals("UL")) {
-                Player.super.rotate90(false);
+                rotate90(false);
             }
             if (DrillPointsTO.equals("UR")) {
-                Player.super.rotate90(true);
-                Player.super.flip(true, false);
+                rotate90(true);
+                flip(true, false);
             }
             DrillPointsTO = "L";
         }
         if (direction.equals("R")) {
             if (DrillPointsTO.equals("L")) {
-                Player.super.flip(true, false);
+                flip(true, false);
             }
             if (DrillPointsTO.equals("DR")) {
-                Player.super.rotate90(false);
+                rotate90(false);
             }
             if (DrillPointsTO.equals("DL")) {
-                Player.super.rotate90(true);
-                Player.super.flip(true, false);
+                rotate90(true);
+                flip(true, false);
             }
             if (DrillPointsTO.equals("UR")) {
-                Player.super.rotate90(true);
+                rotate90(true);
             }
             if (DrillPointsTO.equals("UL")) {
-                Player.super.rotate90(false);
-                Player.super.flip(true, false);
+                rotate90(false);
+                flip(true, false);
             }
             DrillPointsTO ="R";
         }
         if (direction.equals("D")) {
             if (DrillPointsTO.equals("L")) {
-                Player.super.rotate90(false);
+                rotate90(false);
                 DrillPointsTO = "DL";
             }
             if (DrillPointsTO.equals("R")) {
-                Player.super.rotate90(true);
+                rotate90(true);
                 DrillPointsTO = "DR";
             }
             if (DrillPointsTO.equals("UL")) {
-                Player.super.flip(false, true);
+                rotate(180);
                 DrillPointsTO = "DL";
             }
             if (DrillPointsTO.equals("UR")) {
-                Player.super.flip(false, true);
+                rotate(180);
                 DrillPointsTO = "DR";
             }
         }
         if (direction.equals("U")) {
             if (DrillPointsTO.equals("L")) {
-                Player.super.rotate90(true);
+                rotate90(true);
                 DrillPointsTO = "UL";
             }
             if (DrillPointsTO.equals("R")) {
-                Player.super.rotate90(false);
+                rotate90(false);
                 DrillPointsTO = "UR";
             }
             if (DrillPointsTO.equals("DL")) {
-                Player.super.flip(false, true);
+                rotate(180);
                 DrillPointsTO = "UL";
             }
             if (DrillPointsTO.equals("DR")) {
-                Player.super.flip(false, true);
+                rotate(180);
                 DrillPointsTO = "UR";
             }
 
