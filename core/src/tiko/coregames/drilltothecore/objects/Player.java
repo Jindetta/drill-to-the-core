@@ -18,6 +18,7 @@ public class Player extends BaseObject {
 
     private float totalFuel, fuelConsumptionRate;
     private Circle playerView;
+    private String DrillPointsTO ="L";
 
     public Player() {
         super("images/player.png");
@@ -112,6 +113,93 @@ public class Player extends BaseObject {
 
         return false;
     }
+    public void rotateSprite(String direction, float delta) {
+
+        /**
+         * Rotates the sprite to the direction it moves to.
+         *
+         * String Direction is sent from the move method and this method records the direction
+         * currently moving to on string called DrillPointsTo.
+         */
+        if (direction.equals("L")) {
+            if (DrillPointsTO.equals("R")) {
+                Player.super.flip(true, false);
+            }
+            if (DrillPointsTO.equals("DL")) {
+                Player.super.rotate90(true);
+            }
+            if (DrillPointsTO.equals("DR")) {
+                Player.super.rotate90(false);
+                Player.super.flip(true, false);
+            }
+            if (DrillPointsTO.equals("UL")) {
+                Player.super.rotate90(false);
+            }
+            if (DrillPointsTO.equals("UR")) {
+                Player.super.rotate90(true);
+                Player.super.flip(true, false);
+            }
+            DrillPointsTO = "L";
+        }
+        if (direction.equals("R")) {
+            if (DrillPointsTO.equals("L")) {
+                Player.super.flip(true, false);
+            }
+            if (DrillPointsTO.equals("DR")) {
+                Player.super.rotate90(false);
+            }
+            if (DrillPointsTO.equals("DL")) {
+                Player.super.rotate90(true);
+                Player.super.flip(true, false);
+            }
+            if (DrillPointsTO.equals("UR")) {
+                Player.super.rotate90(true);
+            }
+            if (DrillPointsTO.equals("UL")) {
+                Player.super.rotate90(false);
+                Player.super.flip(true, false);
+            }
+            DrillPointsTO ="R";
+        }
+        if (direction.equals("D")) {
+            if (DrillPointsTO.equals("L")) {
+                Player.super.rotate90(false);
+                DrillPointsTO = "DL";
+            }
+            if (DrillPointsTO.equals("R")) {
+                Player.super.rotate90(true);
+                DrillPointsTO = "DR";
+            }
+            if (DrillPointsTO.equals("UL")) {
+                Player.super.flip(false, true);
+                DrillPointsTO = "DL";
+            }
+            if (DrillPointsTO.equals("UR")) {
+                Player.super.flip(false, true);
+                DrillPointsTO = "DR";
+            }
+        }
+        if (direction.equals("U")) {
+            if (DrillPointsTO.equals("L")) {
+                Player.super.rotate90(true);
+                DrillPointsTO = "UL";
+            }
+            if (DrillPointsTO.equals("R")) {
+                Player.super.rotate90(false);
+                DrillPointsTO = "UR";
+            }
+            if (DrillPointsTO.equals("DL")) {
+                Player.super.flip(false, true);
+                DrillPointsTO = "UL";
+            }
+            if (DrillPointsTO.equals("DR")) {
+                Player.super.flip(false, true);
+                DrillPointsTO = "UR";
+            }
+
+        }
+
+    }
 
     @Override
     public void move(float accelerometerX, float accelerometerY, float delta) {
@@ -123,10 +211,12 @@ public class Player extends BaseObject {
         if (isDirectionAllowed('R') && (accelerometerX > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
             translateX( PLAYER_MOVE_SPEED * delta);
             accelerometerX = PLAYER_MOVE_SPEED;
+            rotateSprite("R", delta);
         }
         if (isDirectionAllowed('L') && (accelerometerX < 0 || Gdx.input.isKeyPressed(Input.Keys.LEFT))) {
             translateX(-PLAYER_MOVE_SPEED * delta);
             accelerometerX = -PLAYER_MOVE_SPEED;
+            rotateSprite("L", delta);
         }
 
         // Allow only one axis movement
@@ -134,10 +224,12 @@ public class Player extends BaseObject {
             if (isDirectionAllowed('U') && (isAllowedToMoveUp() && (accelerometerY > 0 || Gdx.input.isKeyPressed(Input.Keys.UP)))) {
                 translateY(PLAYER_MOVE_SPEED * delta);
                 accelerometerY = PLAYER_MOVE_SPEED;
+                rotateSprite("U", delta);
             }
             if (isDirectionAllowed('D') && (accelerometerY < 0 || Gdx.input.isKeyPressed(Input.Keys.DOWN))) {
                 translateY(-PLAYER_MOVE_SPEED * delta);
                 accelerometerY = -PLAYER_MOVE_SPEED;
+                rotateSprite("D", delta);
             }
         }
 
