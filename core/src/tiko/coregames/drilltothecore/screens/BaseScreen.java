@@ -56,7 +56,7 @@ public class BaseScreen extends Stage implements Screen {
 
     @Override
     public void dispose() {
-        super.dispose();
         skin.dispose();
+        clear();
     }
 }
