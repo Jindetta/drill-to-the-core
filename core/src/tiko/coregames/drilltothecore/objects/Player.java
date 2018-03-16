@@ -120,6 +120,7 @@ public class Player extends BaseObject {
     }
 
     public void rotateSprite(String direction, float delta) {
+
         /**
          * Rotates the sprite to the direction it moves to.
          *
@@ -176,11 +177,11 @@ public class Player extends BaseObject {
                 DrillPointsTO = "DR";
             }
             if (DrillPointsTO.equals("UL")) {
-                flip(false, true);
+                rotate(180);
                 DrillPointsTO = "DL";
             }
             if (DrillPointsTO.equals("UR")) {
-                flip(false, true);
+                rotate(180);
                 DrillPointsTO = "DR";
             }
         }
@@ -194,17 +195,18 @@ public class Player extends BaseObject {
                 DrillPointsTO = "UR";
             }
             if (DrillPointsTO.equals("DL")) {
-                flip(false, true);
+                rotate(180);
                 DrillPointsTO = "UL";
             }
             if (DrillPointsTO.equals("DR")) {
-                flip(false, true);
+                rotate (180);
                 DrillPointsTO = "UR";
             }
 
         }
 
     }
+
 
     @Override
     public void move(float accelerometerX, float accelerometerY, float delta) {
