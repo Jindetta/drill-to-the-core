@@ -1,7 +1,6 @@
 package tiko.coregames.drilltothecore.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -21,6 +20,6 @@ public class MainMenuScreen extends BaseScreen {
             }
         });
 
-        stage.addActor(play);
+        addActor(play);
     }
 }

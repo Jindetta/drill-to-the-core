@@ -38,15 +38,13 @@ public class GameScreen extends BaseScreen {
         playerFuel.setPosition(Gdx.graphics.getWidth() - playerFuel.getPrefWidth() - SAFEZONE_SIZE, Gdx.graphics.getHeight() - playerFuel.getPrefHeight() - SAFEZONE_SIZE);
         playerFuel.setValue(player.getFuel());
         playerFuel.setDisabled(true);
-
-        Gdx.input.setCatchBackKey(true);
     }
 
     /**
      * Moves camera with player.
      */
     private void followPlayerObject() {
-        OrthographicCamera camera = (OrthographicCamera) stage.getCamera();
+        OrthographicCamera camera = (OrthographicCamera) getCamera();
 
         float viewportWidth = camera.viewportWidth * camera.zoom / 2;
         float viewportHeight = camera.viewportHeight * camera.zoom / 2;
@@ -73,7 +71,7 @@ public class GameScreen extends BaseScreen {
         super.render(delta);
 
         SpriteBatch batch = CoreSetup.getBatch();
-        OrthographicCamera worldCamera = (OrthographicCamera) stage.getCamera();
+        OrthographicCamera worldCamera = (OrthographicCamera) getCamera();
         map.applyCameraAndRender(worldCamera);
 
         batch.begin();
@@ -90,11 +88,15 @@ public class GameScreen extends BaseScreen {
         worldCamera.zoom = 0.7f;
         followPlayerObject();
         updateFuelMeter();
+    }
 
-        // DEBUG - Go back to menu
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || Gdx.input.isCatchBackKey()) {
+    @Override
+    public boolean keyDown(int keyCode) {
+        if (keyCode == Input.Keys.ESCAPE || keyCode == Input.Keys.BACK) {
             CoreSetup.nextScreen(new MainMenuScreen());
         }
+
+        return super.keyDown(keyCode);
     }
 
     @Override

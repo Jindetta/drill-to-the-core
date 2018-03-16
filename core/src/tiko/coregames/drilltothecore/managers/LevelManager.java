@@ -24,29 +24,11 @@ public class LevelManager {
     private TiledMapRenderer levelRenderer;
 
     public LevelManager(int levelValue) {
-
-    }
-
-    /**
-     * Destroys level data.
-     */
-    private void destroyLevel() {
-        if (levelData != null) {
-            levelData.dispose();
-        }
-    }
-
-    /**
-     * Loads specific level and sets it up
-     *
-     * @param value         Level identifier.
-     */
-    public void setupLevel(int value) {
         TmxMapLoader loader = new TmxMapLoader();
         StringBuilder path = new StringBuilder("leveldata/");
 
         // Choose level or tutorial if invalid value is given
-        switch (value) {
+        switch (levelValue) {
             default:
                 path.append("tutorial.tmx");
                 break;
@@ -58,6 +40,15 @@ public class LevelManager {
         levelData = loader.load(path.toString());
         // Setup level renderer
         levelRenderer = new OrthogonalTiledMapRenderer(levelData);
+    }
+
+    /**
+     * Destroys level data.
+     */
+    private void destroyLevel() {
+        if (levelData != null) {
+            levelData.dispose();
+        }
     }
 
     public void applyCameraAndRender(OrthographicCamera camera) {
