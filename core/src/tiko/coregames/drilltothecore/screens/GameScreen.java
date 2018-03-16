@@ -85,8 +85,8 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public void hide() {
-        super.hide();
         Gdx.input.setCatchBackKey(false);
+        super.hide();
     }
 
     @Override
