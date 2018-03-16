@@ -12,21 +12,25 @@ import com.badlogic.gdx.math.Vector3;
 /**
  * Handles everything related to levels.
  */
-public abstract class LevelManager {
+public class LevelManager {
     /**
      * Stores level data.
      */
-    private static TiledMap levelData;
+    private TiledMap levelData;
 
     /**
      * Renders level data.
      */
-    private static TiledMapRenderer levelRenderer;
+    private TiledMapRenderer levelRenderer;
+
+    public LevelManager(int levelValue) {
+
+    }
 
     /**
      * Destroys level data.
      */
-    private static void destroyLevel() {
+    private void destroyLevel() {
         if (levelData != null) {
             levelData.dispose();
         }
@@ -37,7 +41,7 @@ public abstract class LevelManager {
      *
      * @param value         Level identifier.
      */
-    public static void setupLevel(int value) {
+    public void setupLevel(int value) {
         TmxMapLoader loader = new TmxMapLoader();
         StringBuilder path = new StringBuilder("leveldata/");
 
@@ -56,7 +60,7 @@ public abstract class LevelManager {
         levelRenderer = new OrthogonalTiledMapRenderer(levelData);
     }
 
-    public static void applyCameraAndRender(OrthographicCamera camera) {
+    public void applyCameraAndRender(OrthographicCamera camera) {
         if (camera != null) {
             levelRenderer.setView(camera);
         }
@@ -72,7 +76,7 @@ public abstract class LevelManager {
      * @param name          Layer name.
      * @return              Return point as Rectangle.
      */
-    public static Vector3 getSpawnPoint(String name) {
+    public Vector3 getSpawnPoint(String name) {
         try {
             // Get "spawn" layer
             MapLayer layer = levelData.getLayers().get("spawns");
@@ -99,7 +103,7 @@ public abstract class LevelManager {
      * @param name          Layer name.
      * @return              Returns Tile instance.
      */
-    public static TiledMapTile getTileFromPosition(float x, float y, String name) {
+    public TiledMapTile getTileFromPosition(float x, float y, String name) {
         try {
             return getCellFromPosition(x, y, name).getTile();
         } catch (Exception e) {
@@ -110,7 +114,7 @@ public abstract class LevelManager {
         return null;
     }
 
-    public static TiledMapTileLayer.Cell getCellFromPosition(float x, float y, String name) {
+    public TiledMapTileLayer.Cell getCellFromPosition(float x, float y, String name) {
         try {
             TiledMapTileLayer layer = (TiledMapTileLayer) levelData.getLayers().get(name);
 
@@ -137,7 +141,7 @@ public abstract class LevelManager {
      * @param <T>           Return type.
      * @return              Return property value or null.
      */
-    private static <T> T getProperty(TiledMapTile tile, String property, Class<T> type) {
+    private <T> T getProperty(TiledMapTile tile, String property, Class<T> type) {
         if (tile != null && property != null) {
             MapProperties properties = tile.getProperties();
 
@@ -156,7 +160,7 @@ public abstract class LevelManager {
      * @param property      Property name.
      * @return              Property as String.
      */
-    public static String getString(TiledMapTile tile, String property) {
+    public String getString(TiledMapTile tile, String property) {
         return getProperty(tile, property, String.class);
     }
 
@@ -167,7 +171,7 @@ public abstract class LevelManager {
      * @param property      Property name.
      * @return              Property as Boolean.
      */
-    public static Boolean getBoolean(TiledMapTile tile, String property) {
+    public Boolean getBoolean(TiledMapTile tile, String property) {
         return getProperty(tile, property, Boolean.class);
     }
 
@@ -178,7 +182,7 @@ public abstract class LevelManager {
      * @param property      Property name.
      * @return              Property as Integer.
      */
-    public static Integer getInteger(TiledMapTile tile, String property) {
+    public Integer getInteger(TiledMapTile tile, String property) {
         return getProperty(tile, property, Integer.class);
     }
 
@@ -189,14 +193,14 @@ public abstract class LevelManager {
      * @param property      Property name.
      * @return              Property as Float.
      */
-    public static Float getFloat(TiledMapTile tile, String property) {
+    public Float getFloat(TiledMapTile tile, String property) {
         return getProperty(tile, property, Float.class);
     }
 
     /**
      * Disposes all level data.
      */
-    public static void dispose() {
+    public void dispose() {
         destroyLevel();
     }
 }
