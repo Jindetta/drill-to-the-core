@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import tiko.coregames.drilltothecore.CoreSetup;
@@ -15,6 +16,9 @@ import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
 public class GameScreen extends BaseScreen {
     private OrthographicCamera hudCamera;
+
+    private LevelManager map;
+
     private ProgressBar playerFuel;
     private Player player;
 
@@ -22,8 +26,13 @@ public class GameScreen extends BaseScreen {
         super(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT));
         hudCamera = new OrthographicCamera();
 
-        LevelManager.setupLevel(0);
-        player = new Player();
+        map = new LevelManager(0);
+        Vector3 playerSpawn = map.getSpawnPoint("player");
+
+        if (playerSpawn != null) {
+            player = new Player(map);
+            player.setPosition(playerSpawn.x, playerSpawn.y);
+        }
 
         playerFuel = new ProgressBar(0, PLAYER_FUEL_TANK_SIZE, 0.1f, false, skin);
         playerFuel.setPosition(Gdx.graphics.getWidth() - playerFuel.getPrefWidth() - SAFEZONE_SIZE, Gdx.graphics.getHeight() - playerFuel.getPrefHeight() - SAFEZONE_SIZE);
@@ -35,7 +44,7 @@ public class GameScreen extends BaseScreen {
      * Moves camera with player.
      */
     private void followPlayerObject() {
-        OrthographicCamera camera = (OrthographicCamera) stage.getCamera();
+        OrthographicCamera camera = (OrthographicCamera) getCamera();
 
         float viewportWidth = camera.viewportWidth * camera.zoom / 2;
         float viewportHeight = camera.viewportHeight * camera.zoom / 2;
@@ -52,6 +61,7 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public void resize(int width, int height) {
+        playerFuel.setPosition(width - playerFuel.getPrefWidth() - SAFEZONE_SIZE, height - playerFuel.getPrefHeight() - SAFEZONE_SIZE);
         hudCamera.setToOrtho(false, width, height);
         super.resize(width, height);
     }
@@ -61,8 +71,8 @@ public class GameScreen extends BaseScreen {
         super.render(delta);
 
         SpriteBatch batch = CoreSetup.getBatch();
-        OrthographicCamera worldCamera = (OrthographicCamera) stage.getCamera();
-        LevelManager.applyCameraAndRender(worldCamera);
+        OrthographicCamera worldCamera = (OrthographicCamera) getCamera();
+        map.applyCameraAndRender(worldCamera);
 
         batch.begin();
         // Apply world camera
@@ -78,16 +88,20 @@ public class GameScreen extends BaseScreen {
         worldCamera.zoom = 0.7f;
         followPlayerObject();
         updateFuelMeter();
+    }
 
-        // DEBUG - Go back to menu
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+    @Override
+    public boolean keyDown(int keyCode) {
+        if (keyCode == Input.Keys.ESCAPE || keyCode == Input.Keys.BACK) {
             CoreSetup.nextScreen(new MainMenuScreen());
         }
+
+        return super.keyDown(keyCode);
     }
 
     @Override
     public void dispose() {
-        LevelManager.dispose();
+        map.dispose();
         player.dispose();
         super.dispose();
     }

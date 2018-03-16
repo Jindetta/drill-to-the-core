@@ -8,31 +8,31 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import tiko.coregames.drilltothecore.CoreSetup;
 
-public class BaseScreen implements Screen {
-    protected Stage stage;
+public class BaseScreen extends Stage implements Screen {
     protected Skin skin;
 
     public BaseScreen(Viewport viewport) {
-        stage = new Stage(viewport, CoreSetup.getBatch());
+        super(viewport, CoreSetup.getBatch());
         skin = new Skin(Gdx.files.internal("menu/uiskin.json"));
     }
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(this);
+        Gdx.graphics.setTitle("Drill to the Core - " + getClass().getSimpleName());
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        stage.act();
-        stage.draw();
+        act();
+        draw();
     }
 
     @Override
     public void resize(int width, int height) {
-        Viewport viewport = stage.getViewport();
+        Viewport viewport = getViewport();
 
         if (viewport != null) {
             viewport.update(width, height, true);
@@ -56,7 +56,7 @@ public class BaseScreen implements Screen {
 
     @Override
     public void dispose() {
-        stage.dispose();
+        super.dispose();
         skin.dispose();
     }
 }

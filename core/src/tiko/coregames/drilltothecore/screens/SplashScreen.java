@@ -24,7 +24,7 @@ public class SplashScreen extends BaseScreen {
     private boolean setNextSplashScreen() {
         if (currentTexture != null) {
             currentTexture.dispose();
-            stage.clear();
+            clear();
         }
 
         if (currentIndex < SPLASH_SCREENS.length) {
@@ -33,7 +33,7 @@ public class SplashScreen extends BaseScreen {
             timeLeft = SINGLE_SPLASH_DURATION;
 
             centerSplashImage();
-            stage.addActor(currentSplash);
+            addActor(currentSplash);
 
             return true;
         }

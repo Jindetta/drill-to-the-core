@@ -28,7 +28,9 @@ public class CoreSetup extends Game {
 		self = this;
 
 		setScreen(new SplashScreen());
+
         Gdx.graphics.setTitle("Drill to the Core");
+        Gdx.input.setCatchBackKey(true);
 	}
 
     /**

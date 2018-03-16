@@ -6,8 +6,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import tiko.coregames.drilltothecore.managers.ControllerManager;
 import tiko.coregames.drilltothecore.managers.LevelManager;
 
@@ -15,25 +13,33 @@ import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
 public class Player extends BaseObject {
     private ControllerManager controller;
+    private LevelManager map;
 
     private float totalFuel, fuelConsumptionRate;
     private Circle playerView;
-    private String DrillPointsTO ="L";
 
-    public Player() {
+    private String DrillPointsTO = "L";
+
+    public Player(LevelManager map) {
         super("images/player.png");
         controller = new ControllerManager(this);
+        playerView = new Circle(getX(), getY(), getWidth() * 2);
 
         controller.setXThreshold(DEFAULT_MIN_THRESHOLD, DEFAULT_MIN_THRESHOLD);
         controller.setYThreshold(DEFAULT_MIN_THRESHOLD, DEFAULT_MIN_THRESHOLD);
-        Vector3 playerSpawn = LevelManager.getSpawnPoint("player");
 
-        if (playerSpawn != null) {
-            setPosition(playerSpawn.x, playerSpawn.y);
-            playerView = new Circle(playerSpawn.x, playerSpawn.y, getWidth() * 2);
+        this.map = map;
+        setMaxFuel();
+    }
+
+    @Override
+    public void setPosition(float x, float y) {
+        if (playerView != null) {
+            playerView.setPosition(x, y);
         }
 
-        setMaxFuel();
+        super.setPosition(x, y);
+        updateTileStatus();
     }
 
     public void setMaxFuel() {
@@ -58,14 +64,14 @@ public class Player extends BaseObject {
     }
 
     private boolean isAllowedToMoveUp() {
-        TiledMapTile tile = LevelManager.getTileFromPosition(getX(), getY(), "background");
-        Boolean value = LevelManager.getBoolean(tile, "sky");
+        TiledMapTile tile = map.getTileFromPosition(getX(), getY(), "background");
+        Boolean value = map.getBoolean(tile, "sky");
 
         return value == null || !value;
     }
 
     private void clearShroudTile(float x, float y) {
-        TiledMapTileLayer.Cell cell = LevelManager.getCellFromPosition(x, y, "shroud");
+        TiledMapTileLayer.Cell cell = map.getCellFromPosition(x, y, "shroud");
 
         if (cell != null) {
             cell.setTile(null);
@@ -88,10 +94,10 @@ public class Player extends BaseObject {
     // DEBUG - Destroy tiles
     private void updateTileStatus() {
         TiledMapTileLayer.Cell[] cells = new TiledMapTileLayer.Cell[] {
-            LevelManager.getCellFromPosition(getX() + getWidth() / 2, getY(), "ground"),
-            LevelManager.getCellFromPosition(getX() + getWidth() / 2, getY() + getHeight(), "ground"),
-            LevelManager.getCellFromPosition(getX(), getY() + getHeight() / 2, "ground"),
-            LevelManager.getCellFromPosition(getX() + getWidth(), getY() + getHeight() / 2, "ground"),
+            map.getCellFromPosition(getX() + getWidth() / 2, getY(), "ground"),
+            map.getCellFromPosition(getX() + getWidth() / 2, getY() + getHeight(), "ground"),
+            map.getCellFromPosition(getX(), getY() + getHeight() / 2, "ground"),
+            map.getCellFromPosition(getX() + getWidth(), getY() + getHeight() / 2, "ground"),
         };
 
         updatePlayerView();
@@ -113,8 +119,8 @@ public class Player extends BaseObject {
 
         return false;
     }
-    public void rotateSprite(String direction, float delta) {
 
+    public void rotateSprite(String direction, float delta) {
         /**
          * Rotates the sprite to the direction it moves to.
          *
@@ -171,11 +177,11 @@ public class Player extends BaseObject {
                 DrillPointsTO = "DR";
             }
             if (DrillPointsTO.equals("UL")) {
-                rotate(180);
+                flip(false, true);
                 DrillPointsTO = "DL";
             }
             if (DrillPointsTO.equals("UR")) {
-                rotate(180);
+                flip(false, true);
                 DrillPointsTO = "DR";
             }
         }
@@ -189,11 +195,11 @@ public class Player extends BaseObject {
                 DrillPointsTO = "UR";
             }
             if (DrillPointsTO.equals("DL")) {
-                rotate(180);
+                flip(false, true);
                 DrillPointsTO = "UL";
             }
             if (DrillPointsTO.equals("DR")) {
-                rotate(180);
+                flip(false, true);
                 DrillPointsTO = "UR";
             }
 
