@@ -23,6 +23,10 @@ public class SettingsManager {
         preferences.putString(key, value);
     }
 
+    public void setBooleanValue(String key, boolean value) {
+        preferences.putBoolean(key, value);
+    }
+
     public void setFloatValue(String key, float value) {
         preferences.putFloat(key, value);
     }

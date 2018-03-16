@@ -78,6 +78,18 @@ public class GameScreen extends BaseScreen {
     }
 
     @Override
+    public void show() {
+        super.show();
+        Gdx.input.setCatchBackKey(true);
+    }
+
+    @Override
+    public void hide() {
+        super.hide();
+        Gdx.input.setCatchBackKey(false);
+    }
+
+    @Override
     public void resize(int width, int height) {
         playerFuel.setPosition(width - playerFuel.getPrefWidth() - SAFEZONE_SIZE, height - playerFuel.getPrefHeight() - SAFEZONE_SIZE);
         hudCamera.setToOrtho(false, width, height);

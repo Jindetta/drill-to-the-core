@@ -3,10 +3,7 @@ package tiko.coregames.drilltothecore.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -15,6 +12,8 @@ import tiko.coregames.drilltothecore.managers.LocalizationManager;
 import tiko.coregames.drilltothecore.managers.SettingsManager;
 
 public class MainMenuScreen extends BaseScreen {
+    private Table gameMenu;
+
     public MainMenuScreen() {
         super(new ScreenViewport());
 
@@ -64,7 +63,17 @@ public class MainMenuScreen extends BaseScreen {
         });
         sensitivityY.fire(new ChangeListener.ChangeEvent());
 
-        Table gameMenu = new Table();
+        final CheckBox inverted = new CheckBox(" Invert Y-axis", skin);
+        inverted.setChecked(settings.getBoolean("invertedY"));
+        inverted.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                settings.setBooleanValue("invertedY", inverted.isChecked());
+                settings.saveSettings();
+            }
+        });
+
+        gameMenu = new Table();
         gameMenu.setPosition((Gdx.graphics.getWidth() - gameMenu.getPrefWidth()) / 2, (Gdx.graphics.getHeight() - gameMenu.getPrefHeight()) / 2);
         gameMenu.add(play).row();
         gameMenu.add(exit).padTop(15).row();
@@ -72,7 +81,8 @@ public class MainMenuScreen extends BaseScreen {
         gameMenu.add(sensitivityLabelX).padTop(50).row();
         gameMenu.add(sensitivityX).padTop(15).row();
         gameMenu.add(sensitivityLabelY).padTop(20).row();
-        gameMenu.add(sensitivityY).padTop(15);
+        gameMenu.add(sensitivityY).padTop(15).row();
+        gameMenu.add(inverted).padTop(20);
 
         addActor(gameMenu);
     }

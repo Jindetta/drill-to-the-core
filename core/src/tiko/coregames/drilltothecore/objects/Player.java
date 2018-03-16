@@ -30,9 +30,11 @@ public class Player extends BaseObject {
 
         float sensitivityX = settings.getFloat("sensitivityX");
         float sensitivityY = settings.getFloat("sensitivityY");
+        boolean invertedY = settings.getBoolean("invertedY");
 
         controller.setXThreshold(sensitivityX, sensitivityX);
         controller.setYThreshold(sensitivityY, sensitivityY);
+        controller.setInvertedY(invertedY);
 
         this.map = map;
         setMaxFuel();
