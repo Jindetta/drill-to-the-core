@@ -22,7 +22,7 @@ public class Player extends BaseObject {
 
     public Player(LevelManager map) {
         super("images/player.png");
-        controller = new ControllerManager(this);
+        controller = new ControllerManager();
         playerView = new Circle(getX(), getY(), getWidth() * 2);
 
         controller.setXThreshold(DEFAULT_MIN_THRESHOLD, DEFAULT_MIN_THRESHOLD);
@@ -56,7 +56,37 @@ public class Player extends BaseObject {
     public void draw(SpriteBatch batch, float delta) {
         if (consumeFuel(delta)) {
             // Update movement based on controller input
-            controller.updateController(delta);
+            controller.updateController();
+
+            float accelerometerX = controller.getCurrentX();
+            float accelerometerY = controller.getCurrentY();
+
+            if (isDirectionAllowed('R') && (accelerometerX > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
+                translateX( PLAYER_MOVE_SPEED * delta);
+                accelerometerX = PLAYER_MOVE_SPEED;
+                rotateSprite("R", delta);
+            }
+            if (isDirectionAllowed('L') && (accelerometerX < 0 || Gdx.input.isKeyPressed(Input.Keys.LEFT))) {
+                translateX(-PLAYER_MOVE_SPEED * delta);
+                accelerometerX = -PLAYER_MOVE_SPEED;
+                rotateSprite("L", delta);
+            }
+
+            // Allow only one axis movement
+            if (accelerometerX == 0) {
+                if (isDirectionAllowed('U') && (isAllowedToMoveUp() && (accelerometerY > 0 || Gdx.input.isKeyPressed(Input.Keys.UP)))) {
+                    translateY(PLAYER_MOVE_SPEED * delta);
+                    accelerometerY = PLAYER_MOVE_SPEED;
+                    rotateSprite("U", delta);
+                }
+                if (isDirectionAllowed('D') && (accelerometerY < 0 || Gdx.input.isKeyPressed(Input.Keys.DOWN))) {
+                    translateY(-PLAYER_MOVE_SPEED * delta);
+                    accelerometerY = -PLAYER_MOVE_SPEED;
+                    rotateSprite("D", delta);
+                }
+            }
+
+            updateTileStatus();
         }
 
         super.draw(batch);
@@ -92,19 +122,12 @@ public class Player extends BaseObject {
 
     // DEBUG - Destroy tiles
     private void updateTileStatus() {
-        TiledMapTileLayer.Cell[] cells = new TiledMapTileLayer.Cell[] {
-            map.getCellFromPosition(getX() + getWidth() / 2, getY(), "ground"),
-            map.getCellFromPosition(getX() + getWidth() / 2, getY() + getHeight(), "ground"),
-            map.getCellFromPosition(getX(), getY() + getHeight() / 2, "ground"),
-            map.getCellFromPosition(getX() + getWidth(), getY() + getHeight() / 2, "ground"),
-        };
-
         updatePlayerView();
 
-        for (TiledMapTileLayer.Cell cell : cells) {
-            if (cell != null) {
-                cell.setTile(null);
-            }
+        TiledMapTileLayer.Cell cell = map.getCellFromPosition(getX() + getWidth() / 2, getY() + getHeight() / 2, "ground");
+
+        if (cell != null) {
+            cell.setTile(null);
         }
     }
 
@@ -205,36 +228,5 @@ public class Player extends BaseObject {
 
         }
 
-    }
-
-
-    @Override
-    public void move(float accelerometerX, float accelerometerY, float delta) {
-        if (isDirectionAllowed('R') && (accelerometerX > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
-            translateX( PLAYER_MOVE_SPEED * delta);
-            accelerometerX = PLAYER_MOVE_SPEED;
-            rotateSprite("R", delta);
-        }
-        if (isDirectionAllowed('L') && (accelerometerX < 0 || Gdx.input.isKeyPressed(Input.Keys.LEFT))) {
-            translateX(-PLAYER_MOVE_SPEED * delta);
-            accelerometerX = -PLAYER_MOVE_SPEED;
-            rotateSprite("L", delta);
-        }
-
-        // Allow only one axis movement
-        if (accelerometerX == 0) {
-            if (isDirectionAllowed('U') && (isAllowedToMoveUp() && (accelerometerY > 0 || Gdx.input.isKeyPressed(Input.Keys.UP)))) {
-                translateY(PLAYER_MOVE_SPEED * delta);
-                accelerometerY = PLAYER_MOVE_SPEED;
-                rotateSprite("U", delta);
-            }
-            if (isDirectionAllowed('D') && (accelerometerY < 0 || Gdx.input.isKeyPressed(Input.Keys.DOWN))) {
-                translateY(-PLAYER_MOVE_SPEED * delta);
-                accelerometerY = -PLAYER_MOVE_SPEED;
-                rotateSprite("D", delta);
-            }
-        }
-
-        updateTileStatus();
     }
 }

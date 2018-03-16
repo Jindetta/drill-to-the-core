@@ -3,13 +3,10 @@ package tiko.coregames.drilltothecore.managers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
-import tiko.coregames.drilltothecore.objects.BaseObject;
 
 import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
 public class ControllerManager {
-    private BaseObject owner;
-
     private Vector2 currentValue;
 
     private Vector2 minPositiveThreshold;
@@ -20,10 +17,8 @@ public class ControllerManager {
 
     private boolean invertedY;
 
-    public ControllerManager(BaseObject owner) {
-        this.owner = owner;
+    public ControllerManager() {
         invertedY = false;
-
         reset();
     }
 
@@ -77,7 +72,7 @@ public class ControllerManager {
         invertedY = inverted;
     }
 
-    public void updateController(float delta) {
+    public void updateController() {
         if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
             // Get value from accelerometer (Y = X)
             float x = Gdx.input.getAccelerometerY();
@@ -100,8 +95,13 @@ public class ControllerManager {
                 currentValue.y = 0;
             }
         }
+    }
 
-        // Call move method anyway - even if no peripheral was attached
-        owner.move(currentValue.x, currentValue.y, delta);
+    public float getCurrentX() {
+        return currentValue.x;
+    }
+
+    public float getCurrentY() {
+        return currentValue.y;
     }
 }

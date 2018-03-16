@@ -36,6 +36,4 @@ public abstract class BaseObject extends Sprite implements Disposable {
     public void dispose() {
         getTexture().dispose();
     }
-
-    abstract public void move(float valueX, float valueY, float delta);
 }
