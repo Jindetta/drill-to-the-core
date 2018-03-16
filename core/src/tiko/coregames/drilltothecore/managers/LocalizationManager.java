@@ -16,7 +16,9 @@ public class LocalizationManager {
         StringBuilder path = new StringBuilder("localization/");
 
         switch (bundleKey) {
-            // TODO: Add more bundles
+            case "menu":
+                path.append(bundleKey);
+                break;
             default:
                 path.append("core");
                 break;

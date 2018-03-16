@@ -32,25 +32,21 @@ public class Player extends BaseObject {
         setMaxFuel();
     }
 
-    @Override
-    public void setPosition(float x, float y) {
-        if (playerView != null) {
-            playerView.setPosition(x, y);
-        }
-
-        super.setPosition(x, y);
-        updateTileStatus();
-    }
-
-    public void setMaxFuel() {
+    private void setMaxFuel() {
         totalFuel = PLAYER_FUEL_TANK_SIZE;
         fuelConsumptionRate = PLAYER_FUEL_MIN_CONSUMPTION;
     }
 
-    public boolean consumeFuel(float delta) {
+    private boolean consumeFuel(float delta) {
         totalFuel = Math.max(0, totalFuel - fuelConsumptionRate * delta);
 
         return totalFuel > 0;
+    }
+
+    @Override
+    public void setPosition(float x, float y) {
+        super.setPosition(x, y);
+        updateTileStatus();
     }
 
     public float getFuel() {
@@ -58,8 +54,11 @@ public class Player extends BaseObject {
     }
 
     public void draw(SpriteBatch batch, float delta) {
-        // Update movement based on controller input
-        controller.updateController(delta);
+        if (consumeFuel(delta)) {
+            // Update movement based on controller input
+            controller.updateController(delta);
+        }
+
         super.draw(batch);
     }
 
@@ -79,7 +78,7 @@ public class Player extends BaseObject {
     }
 
     private void updatePlayerView() {
-        playerView.setPosition(getX(), getY());
+        playerView.setPosition(getX() + getWidth() / 2, getY() + getHeight() / 2);
 
         for (float y = playerView.y - playerView.radius; y < playerView.y + playerView.radius; y++) {
             for (float x = playerView.x; Math.pow(x - playerView.x, 2) + Math.pow(y - playerView.y, 2) <= Math.pow(playerView.radius, 2); x--) {
@@ -209,11 +208,6 @@ public class Player extends BaseObject {
 
     @Override
     public void move(float accelerometerX, float accelerometerY, float delta) {
-        if (!consumeFuel(delta)) {
-            Gdx.app.log(getClass().getSimpleName(), "Sorry, but you ran out of fuel");
-            return;
-        }
-
         if (isDirectionAllowed('R') && (accelerometerX > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
             translateX( PLAYER_MOVE_SPEED * delta);
             accelerometerX = PLAYER_MOVE_SPEED;

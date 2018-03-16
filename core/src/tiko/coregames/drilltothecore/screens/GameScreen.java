@@ -2,11 +2,16 @@ package tiko.coregames.drilltothecore.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import tiko.coregames.drilltothecore.CoreSetup;
 import tiko.coregames.drilltothecore.managers.LevelManager;
@@ -19,6 +24,7 @@ public class GameScreen extends BaseScreen {
 
     private LevelManager map;
 
+    private Window pauseWindow;
     private ProgressBar playerFuel;
     private Player player;
 
@@ -32,12 +38,27 @@ public class GameScreen extends BaseScreen {
         if (playerSpawn != null) {
             player = new Player(map);
             player.setPosition(playerSpawn.x, playerSpawn.y);
+
+            createFuelMeter();
         }
 
+        createPauseWindow();
+    }
+
+    private void createPauseWindow() {
+        pauseWindow = new Window("Paused", skin);
+        pauseWindow.setVisible(false);
+
+        addActor(pauseWindow);
+    }
+
+    private void createFuelMeter() {
         playerFuel = new ProgressBar(0, PLAYER_FUEL_TANK_SIZE, 0.1f, false, skin);
         playerFuel.setPosition(Gdx.graphics.getWidth() - playerFuel.getPrefWidth() - SAFEZONE_SIZE, Gdx.graphics.getHeight() - playerFuel.getPrefHeight() - SAFEZONE_SIZE);
         playerFuel.setValue(player.getFuel());
         playerFuel.setDisabled(true);
+
+        addActor(playerFuel);
     }
 
     /**
@@ -68,7 +89,7 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public void render(float delta) {
-        super.render(delta);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         SpriteBatch batch = CoreSetup.getBatch();
         OrthographicCamera worldCamera = (OrthographicCamera) getCamera();
@@ -81,6 +102,7 @@ public class GameScreen extends BaseScreen {
 
         // Apply HUD camera
         batch.setProjectionMatrix(hudCamera.combined);
+        // TODO: Change fuel to render with stage (not working atm)
         playerFuel.draw(batch, 1);
         batch.end();
 
@@ -91,12 +113,17 @@ public class GameScreen extends BaseScreen {
     }
 
     @Override
-    public boolean keyDown(int keyCode) {
-        if (keyCode == Input.Keys.ESCAPE || keyCode == Input.Keys.BACK) {
+    public boolean keyDown(int key) {
+        if (key == Input.Keys.ESCAPE || key == Input.Keys.BACK) {
             CoreSetup.nextScreen(new MainMenuScreen());
         }
 
-        return super.keyDown(keyCode);
+        return super.keyDown(key);
+    }
+
+    @Override
+    public void pause() {
+        //pauseWindow.setVisible(true);
     }
 
     @Override
