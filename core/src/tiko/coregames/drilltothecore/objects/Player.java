@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
 import tiko.coregames.drilltothecore.managers.ControllerManager;
 import tiko.coregames.drilltothecore.managers.LevelManager;
+import tiko.coregames.drilltothecore.managers.SettingsManager;
 
 import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
@@ -25,8 +26,13 @@ public class Player extends BaseObject {
         controller = new ControllerManager();
         playerView = new Circle(getX(), getY(), getWidth() * 2);
 
-        controller.setXThreshold(DEFAULT_MIN_THRESHOLD, DEFAULT_MIN_THRESHOLD);
-        controller.setYThreshold(DEFAULT_MIN_THRESHOLD, DEFAULT_MIN_THRESHOLD);
+        SettingsManager settings = SettingsManager.getUserProfiles();
+
+        float sensitivityX = settings.getFloat("sensitivityX");
+        float sensitivityY = settings.getFloat("sensitivityY");
+
+        controller.setXThreshold(sensitivityX, sensitivityX);
+        controller.setYThreshold(sensitivityY, sensitivityY);
 
         this.map = map;
         setMaxFuel();

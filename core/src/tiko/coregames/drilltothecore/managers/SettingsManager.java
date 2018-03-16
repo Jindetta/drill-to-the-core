@@ -19,8 +19,12 @@ public class SettingsManager {
         return new SettingsManager("DrillToTheCore.profiles");
     }
 
-    public void setValue(String key, String value) {
+    public void setStringValue(String key, String value) {
         preferences.putString(key, value);
+    }
+
+    public void setFloatValue(String key, float value) {
+        preferences.putFloat(key, value);
     }
 
     public int getInteger(String key) {
