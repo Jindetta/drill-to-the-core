@@ -19,12 +19,12 @@ public class Player extends BaseObject {
     private float totalFuel, fuelConsumptionRate;
     private Circle playerView;
 
-    private String DrillPointsTO = "L";
+    private String playerOrientation = "L";
 
     public Player(LevelManager map) {
         super("images/player.png");
         controller = new ControllerManager();
-        playerView = new Circle(getX(), getY(), getWidth() * 2);
+        playerView = new Circle(getX(), getY(), getWidth() * PLAYER_VIEW_MULTIPLIER);
 
         SettingsManager settings = SettingsManager.getUserProfiles();
 
@@ -82,7 +82,7 @@ public class Player extends BaseObject {
 
             // Allow only one axis movement
             if (accelerometerX == 0) {
-                if (isDirectionAllowed('U') && (isAllowedToMoveUp() && (accelerometerY > 0 || Gdx.input.isKeyPressed(Input.Keys.UP)))) {
+                if (isDirectionAllowed('U') && (accelerometerY > 0 || Gdx.input.isKeyPressed(Input.Keys.UP))) {
                     translateY(PLAYER_MOVE_SPEED * delta);
                     accelerometerY = PLAYER_MOVE_SPEED;
                     rotateSprite("U", delta);
@@ -100,13 +100,6 @@ public class Player extends BaseObject {
         super.draw(batch);
     }
 
-    private boolean isAllowedToMoveUp() {
-        TiledMapTile tile = map.getTileFromPosition(getX(), getY(), "background");
-        Boolean value = map.getBoolean(tile, "sky");
-
-        return value == null || !value;
-    }
-
     private void clearShroudTile(float x, float y) {
         TiledMapTileLayer.Cell cell = map.getCellFromPosition(x, y, "shroud");
 
@@ -119,11 +112,10 @@ public class Player extends BaseObject {
         playerView.setPosition(getX() + getWidth() / 2, getY() + getHeight() / 2);
 
         for (float y = playerView.y - playerView.radius; y < playerView.y + playerView.radius; y++) {
-            for (float x = playerView.x; Math.pow(x - playerView.x, 2) + Math.pow(y - playerView.y, 2) <= Math.pow(playerView.radius, 2); x--) {
-                clearShroudTile(x, y);
-            }
-            for (float x = playerView.x + 1; (x - playerView.x) * (x - playerView.x) + (y - playerView.y) * (y - playerView.y) <= Math.pow(playerView.radius, 2); x++) {
-                clearShroudTile(x, y);
+            for (float x = playerView.x - playerView.radius; x < playerView.x + playerView.radius; x++) {
+                if (playerView.contains(x, y)) {
+                    clearShroudTile(x, y);
+                }
             }
         }
     }
@@ -141,97 +133,108 @@ public class Player extends BaseObject {
 
     private boolean isDirectionAllowed(char direction) {
         switch (direction) {
-            case 'L': return getX() > 0;
-            case 'R': return getX() + getWidth() < TOTAL_TILES_WIDTH;
-            case 'U': return getY() + getHeight() < TOTAL_TILES_HEIGHT;
-            case 'D': return getY() > 0;
+            case 'L':
+                return getX() > 0;
+            case 'R':
+                return getX() + getWidth() < TOTAL_TILES_WIDTH;
+            case 'U':
+                if (getY() + getHeight() < TOTAL_TILES_HEIGHT) {
+                    TiledMapTile tile = map.getTileFromPosition(getX(), getY(), "background");
+                    Boolean value = map.getBoolean(tile, "sky");
+
+                    return value == null || !value;
+                }
+
+                break;
+            case 'D':
+                return getY() > 0;
         }
 
         return false;
     }
 
-    public void rotateSprite(String direction, float delta) {
+    private void rotateSprite(String direction, float delta) {
 
-        /**
+        /*
          * Rotates the sprite to the direction it moves to.
          *
          * String Direction is sent from the move method and this method records the direction
          * currently moving to on string called DrillPointsTo.
          */
         if (direction.equals("L")) {
-            if (DrillPointsTO.equals("R")) {
+            if (playerOrientation.equals("R")) {
                 flip(true, false);
             }
-            if (DrillPointsTO.equals("DL")) {
+            if (playerOrientation.equals("DL")) {
                 rotate90(true);
             }
-            if (DrillPointsTO.equals("DR")) {
+            if (playerOrientation.equals("DR")) {
                 rotate90(false);
                 flip(true, false);
             }
-            if (DrillPointsTO.equals("UL")) {
+            if (playerOrientation.equals("UL")) {
                 rotate90(false);
             }
-            if (DrillPointsTO.equals("UR")) {
+            if (playerOrientation.equals("UR")) {
                 rotate90(true);
                 flip(true, false);
             }
-            DrillPointsTO = "L";
+            playerOrientation = "L";
         }
         if (direction.equals("R")) {
-            if (DrillPointsTO.equals("L")) {
+            if (playerOrientation.equals("L")) {
                 flip(true, false);
             }
-            if (DrillPointsTO.equals("DR")) {
+            if (playerOrientation.equals("DR")) {
                 rotate90(false);
             }
-            if (DrillPointsTO.equals("DL")) {
+            if (playerOrientation.equals("DL")) {
                 rotate90(true);
                 flip(true, false);
             }
-            if (DrillPointsTO.equals("UR")) {
+            if (playerOrientation.equals("UR")) {
                 rotate90(true);
             }
-            if (DrillPointsTO.equals("UL")) {
+            if (playerOrientation.equals("UL")) {
                 rotate90(false);
                 flip(true, false);
             }
-            DrillPointsTO ="R";
+            playerOrientation ="R";
         }
         if (direction.equals("D")) {
-            if (DrillPointsTO.equals("L")) {
+            if (playerOrientation.equals("L")) {
                 rotate90(false);
-                DrillPointsTO = "DL";
+                playerOrientation = "DL";
             }
-            if (DrillPointsTO.equals("R")) {
+            if (playerOrientation.equals("R")) {
                 rotate90(true);
-                DrillPointsTO = "DR";
+                playerOrientation = "DR";
             }
-            if (DrillPointsTO.equals("UL")) {
+            if (playerOrientation.equals("UL")) {
                 rotate(180);
-                DrillPointsTO = "DL";
+                playerOrientation = "DL";
             }
-            if (DrillPointsTO.equals("UR")) {
+            if (playerOrientation.equals("UR")) {
                 rotate(180);
-                DrillPointsTO = "DR";
+                playerOrientation = "DR";
             }
         }
         if (direction.equals("U")) {
-            if (DrillPointsTO.equals("L")) {
+            if (playerOrientation.equals("L")) {
                 rotate90(true);
-                DrillPointsTO = "UL";
+                playerOrientation = "UL";
             }
-            if (DrillPointsTO.equals("R")) {
+            if (playerOrientation.equals("R")) {
                 rotate90(false);
-                DrillPointsTO = "UR";
+                playerOrientation = "UR";
             }
-            if (DrillPointsTO.equals("DL")) {
+            if (playerOrientation.equals("DL")) {
                 rotate(180);
-                DrillPointsTO = "UL";
+                playerOrientation = "UL";
             }
-            if (DrillPointsTO.equals("DR")) {
+            if (playerOrientation.equals("DR")) {
                 rotate (180);
-                DrillPointsTO = "UR";
+                playerOrientation = "UR";
             }
 
         }
