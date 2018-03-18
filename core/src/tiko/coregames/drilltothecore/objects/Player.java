@@ -64,7 +64,7 @@ public class Player extends BaseObject {
     public void draw(SpriteBatch batch, float delta) {
         if (consumeFuel(delta)) {
             // Update movement based on controller input
-            controller.updateController();
+            controller.updateController(delta);
 
             float accelerometerX = controller.getCurrentX();
             float accelerometerY = controller.getCurrentY();
