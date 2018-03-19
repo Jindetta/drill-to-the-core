@@ -35,6 +35,20 @@ public class ControllerManager {
         calibrations = 0;
     }
 
+    public void applySettings() {
+        SettingsManager settings = SettingsManager.getUserProfiles();
+
+        float sensitivityLeft = settings.getFloat("sensitivityLeft");
+        float sensitivityRight = settings.getFloat("sensitivityRight");
+        float sensitivityDown = settings.getFloat("sensitivityDown");
+        float sensitivityUp = settings.getFloat("sensitivityUp");
+        boolean isInverted = settings.getBoolean("invertedY");
+
+        setYThreshold(sensitivityDown, sensitivityUp);
+        setXThreshold(sensitivityLeft, sensitivityRight);
+        setInvertedY(isInverted);
+    }
+
     private boolean calibrationMode(float x, float y, float delta) {
         if (calibrationTime > 0) {
             calibrationTime -= delta;

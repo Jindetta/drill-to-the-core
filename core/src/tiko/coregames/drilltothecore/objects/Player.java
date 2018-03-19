@@ -26,15 +26,7 @@ public class Player extends BaseObject {
         controller = new ControllerManager();
         playerView = new Circle(getX(), getY(), getWidth() * PLAYER_VIEW_MULTIPLIER);
 
-        SettingsManager settings = SettingsManager.getUserProfiles();
-
-        float sensitivityX = settings.getFloat("sensitivityX");
-        float sensitivityY = settings.getFloat("sensitivityY");
-        boolean invertedY = settings.getBoolean("invertedY");
-
-        controller.setXThreshold(sensitivityX, sensitivityX);
-        controller.setYThreshold(sensitivityY, sensitivityY);
-        controller.setInvertedY(invertedY);
+        controller.applySettings();
 
         this.map = map;
         setMaxFuel();

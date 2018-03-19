@@ -22,31 +22,57 @@ public class ConfigScreen extends BaseScreen {
 
         final SettingsManager settings = SettingsManager.getUserProfiles();
 
-        final Label sensitivityLabelX = new Label("", skin);
-        final Slider sensitivityX = new Slider(0, 10, 0.05f, false, skin);
-        sensitivityX.setValue(settings.getFloat("sensitivityX"));
-        sensitivityX.addListener(new ChangeListener() {
+        final Label sensitivityLabelLeft = new Label("", skin);
+        final Slider sensitivityLeft = new Slider(0, 10, 0.05f, false, skin);
+        sensitivityLeft.setValue(settings.getFloat("sensitivityLeft"));
+        sensitivityLeft.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                sensitivityLabelX.setText(String.format("Sensitivity X: %.2f", sensitivityX.getValue()));
-                settings.setFloatValue("sensitivityX", sensitivityX.getValue());
+                sensitivityLabelLeft.setText(String.format("Sensitivity (Left): %.2f", sensitivityLeft.getValue()));
+                settings.setFloatValue("sensitivityLeft", sensitivityLeft.getValue());
                 settings.saveSettings();
             }
         });
-        sensitivityX.fire(new ChangeListener.ChangeEvent());
+        sensitivityLeft.fire(new ChangeListener.ChangeEvent());
 
-        final Label sensitivityLabelY = new Label("", skin);
-        final Slider sensitivityY = new Slider(0, 10, 0.05f, false, skin);
-        sensitivityY.setValue(settings.getFloat("sensitivityY"));
-        sensitivityY.addListener(new ChangeListener() {
+        final Label sensitivityLabelRight = new Label("", skin);
+        final Slider sensitivityRight = new Slider(0, 10, 0.05f, false, skin);
+        sensitivityRight.setValue(settings.getFloat("sensitivityRight"));
+        sensitivityRight.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                sensitivityLabelY.setText(String.format("Sensitivity Y: %.2f", sensitivityY.getValue()));
-                settings.setFloatValue("sensitivityY", sensitivityY.getValue());
+                sensitivityLabelRight.setText(String.format("Sensitivity (Right): %.2f", sensitivityRight.getValue()));
+                settings.setFloatValue("sensitivityRight", sensitivityRight.getValue());
                 settings.saveSettings();
             }
         });
-        sensitivityY.fire(new ChangeListener.ChangeEvent());
+        sensitivityRight.fire(new ChangeListener.ChangeEvent());
+
+        final Label sensitivityLabelUp = new Label("", skin);
+        final Slider sensitivityUp = new Slider(0, 10, 0.05f, false, skin);
+        sensitivityUp.setValue(settings.getFloat("sensitivityUp"));
+        sensitivityUp.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                sensitivityLabelUp.setText(String.format("Sensitivity (Up): %.2f", sensitivityUp.getValue()));
+                settings.setFloatValue("sensitivityUp", sensitivityUp.getValue());
+                settings.saveSettings();
+            }
+        });
+        sensitivityUp.fire(new ChangeListener.ChangeEvent());
+
+        final Label sensitivityLabelDown = new Label("", skin);
+        final Slider sensitivityDown = new Slider(0, 10, 0.05f, false, skin);
+        sensitivityDown.setValue(settings.getFloat("sensitivityDown"));
+        sensitivityDown.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                sensitivityLabelDown.setText(String.format("Sensitivity (Down): %.2f", sensitivityDown.getValue()));
+                settings.setFloatValue("sensitivityDown", sensitivityDown.getValue());
+                settings.saveSettings();
+            }
+        });
+        sensitivityDown.fire(new ChangeListener.ChangeEvent());
 
         final CheckBox inverted = new CheckBox(" Invert Y-axis", skin);
         inverted.setChecked(settings.getBoolean("invertedY"));
@@ -59,11 +85,17 @@ public class ConfigScreen extends BaseScreen {
         });
 
         settingsTable = new Table();
-        settingsTable.add(sensitivityLabelX).padTop(50).row();
-        settingsTable.add(sensitivityX).padTop(15).row();
-        settingsTable.add(sensitivityLabelY).padTop(20).row();
-        settingsTable.add(sensitivityY).padTop(15).row();
-        settingsTable.add(inverted).padTop(20);
+        settingsTable.add(sensitivityLabelLeft).row();
+        settingsTable.add(sensitivityLeft).padTop(15).row();
+        settingsTable.add(sensitivityLabelRight).padTop(20).row();
+        settingsTable.add(sensitivityRight).padTop(15).row();
+
+        settingsTable.add(sensitivityLabelUp).padTop(40).row();
+        settingsTable.add(sensitivityUp).padTop(15).row();
+        settingsTable.add(sensitivityLabelDown).padTop(20).row();
+        settingsTable.add(sensitivityDown).padTop(15).row();
+
+        settingsTable.add(inverted).padTop(40);
 
         addActor(settingsTable);
     }
