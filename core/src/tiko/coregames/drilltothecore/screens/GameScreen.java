@@ -7,8 +7,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import tiko.coregames.drilltothecore.CoreSetup;
 import tiko.coregames.drilltothecore.managers.LevelManager;
@@ -29,7 +32,7 @@ public class GameScreen extends BaseScreen {
         super(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT));
         hudCamera = new OrthographicCamera();
 
-        map = new LevelManager(0);
+        map = new LevelManager(-1);
         Vector3 playerSpawn = map.getSpawnPoint("player");
 
         if (playerSpawn != null) {
@@ -44,14 +47,25 @@ public class GameScreen extends BaseScreen {
 
     private void createPauseWindow() {
         pauseWindow = new Window("Paused", skin);
+        pauseWindow.setResizable(false);
+        pauseWindow.setMovable(false);
         pauseWindow.setVisible(false);
+
+        TextButton continueButton = new TextButton("Continue", skin);
+        continueButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                pauseWindow.setVisible(false);
+            }
+        });
+        pauseWindow.add(continueButton);
 
         addActor(pauseWindow);
     }
 
     private void createFuelMeter() {
         playerFuel = new ProgressBar(0, PLAYER_FUEL_TANK_SIZE, 0.1f, false, skin);
-        playerFuel.setPosition(Gdx.graphics.getWidth() - playerFuel.getPrefWidth() - SAFEZONE_SIZE, Gdx.graphics.getHeight() - playerFuel.getPrefHeight() - SAFEZONE_SIZE);
+        playerFuel.setPosition(getWidth() - playerFuel.getWidth() - SAFEZONE_SIZE, getHeight() - playerFuel.getHeight() - SAFEZONE_SIZE);
         playerFuel.setValue(player.getFuel());
         playerFuel.setDisabled(true);
 
@@ -100,15 +114,21 @@ public class GameScreen extends BaseScreen {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        if (pauseWindow.isVisible()) {
+            delta = 0;
+        }
+
         SpriteBatch batch = CoreSetup.getBatch();
         OrthographicCamera worldCamera = (OrthographicCamera) getCamera();
-        map.applyCameraAndRender(worldCamera);
+        map.renderView(worldCamera);
 
         batch.begin();
         // Apply world camera
         batch.setProjectionMatrix(worldCamera.combined);
         player.draw(batch, delta);
+        batch.end();
 
+        batch.begin();
         // Apply HUD camera
         batch.setProjectionMatrix(hudCamera.combined);
         // TODO: Change fuel to render with stage (not working atm)
@@ -116,7 +136,8 @@ public class GameScreen extends BaseScreen {
         batch.end();
 
         // Temporary zoom
-        worldCamera.zoom = 0.7f;
+        //worldCamera.zoom = 0.7f;
+
         followPlayerObject();
         updateFuelMeter();
     }
@@ -132,13 +153,13 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public void pause() {
-        //pauseWindow.setVisible(true);
+        pauseWindow.setVisible(true);
     }
 
     @Override
     public void dispose() {
-        map.dispose();
-        player.dispose();
         super.dispose();
+        player.dispose();
+        map.dispose();
     }
 }

@@ -42,8 +42,8 @@ public class SplashScreen extends BaseScreen {
     }
 
     private void centerSplashImage() {
-        float centerX = (Gdx.graphics.getWidth() - currentSplash.getPrefWidth()) / 2;
-        float centerY = (Gdx.graphics.getHeight() - currentSplash.getPrefHeight()) / 2;
+        float centerX = (getWidth() - currentSplash.getWidth()) / 2;
+        float centerY = (getHeight() - currentSplash.getHeight()) / 2;
 
         currentSplash.setPosition(centerX, centerY);
     }
@@ -60,9 +60,19 @@ public class SplashScreen extends BaseScreen {
 
         if (timeLeft <= 0 && !setNextSplashScreen()) {
             CoreSetup.nextScreen(new MainMenuScreen());
-            return;
         }
 
         super.render(delta);
+    }
+
+    @Override
+    public boolean keyDown(int keyCode) {
+        timeLeft = 0;
+        return true;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return keyDown(0);
     }
 }

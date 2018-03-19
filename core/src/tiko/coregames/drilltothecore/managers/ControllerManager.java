@@ -12,11 +12,8 @@ public class ControllerManager {
 
     private Vector2 minPositiveThreshold;
     private Vector2 minNegativeThreshold;
-
-    private Vector2 maxPositiveThreshold;
-    private Vector2 maxNegativeThreshold;
-
     private Vector2 baseline;
+
     private int calibrations;
     private float calibrationTime;
 
@@ -35,13 +32,10 @@ public class ControllerManager {
 
         baseline = new Vector2();
         calibrationTime = 1.5f;
-        calibrations = 1;
-
-        maxPositiveThreshold = new Vector2(DEFAULT_MAX_THRESHOLD, DEFAULT_MAX_THRESHOLD);
-        maxNegativeThreshold = new Vector2(-DEFAULT_MAX_THRESHOLD, -DEFAULT_MAX_THRESHOLD);
+        calibrations = 0;
     }
 
-    private void calibrate(float x, float y, float delta) {
+    private boolean calibrationMode(float x, float y, float delta) {
         if (calibrationTime > 0) {
             calibrationTime -= delta;
 
@@ -50,51 +44,21 @@ public class ControllerManager {
                 calibrations++;
             } else {
                 baseline.set(baseline.x / calibrations, baseline.y / calibrations);
-                calibrations = 1;
+                calibrations = 0;
             }
         }
-    }
 
-    private float getCalibratedX(float x) {
-        return x < 0 ? x + baseline.x : x > 0 ? x - baseline.x : 0;
-    }
-
-    private float getCalibratedY(float y) {
-        return y < 0 ? y + baseline.y : y > 0 ? y - baseline.y : 0;
+        return calibrations > 0;
     }
 
     public void setXThreshold(float positiveThreshold, float negativeThreshold) {
-        positiveThreshold = Math.abs(positiveThreshold);
-        negativeThreshold = -Math.abs(negativeThreshold);
-
-        if (positiveThreshold < maxPositiveThreshold.x) {
-            minPositiveThreshold.x = positiveThreshold;
-        } else {
-            minPositiveThreshold.x = 0;
-        }
-
-        if (negativeThreshold > maxNegativeThreshold.x) {
-            minNegativeThreshold.x = negativeThreshold;
-        } else {
-            minNegativeThreshold.x = 0;
-        }
+        minPositiveThreshold.x = Math.abs(positiveThreshold);
+        minNegativeThreshold.x = -Math.abs(negativeThreshold);
     }
 
     public void setYThreshold(float positiveThreshold, float negativeThreshold) {
-        positiveThreshold = Math.abs(positiveThreshold);
-        negativeThreshold = -Math.abs(negativeThreshold);
-
-        if (positiveThreshold < maxPositiveThreshold.y) {
-            minPositiveThreshold.y = positiveThreshold;
-        } else {
-            minPositiveThreshold.y = 0;
-        }
-
-        if (negativeThreshold > maxNegativeThreshold.y) {
-            minNegativeThreshold.y = negativeThreshold;
-        } else {
-            minNegativeThreshold.y = 0;
-        }
+        minPositiveThreshold.y = Math.abs(positiveThreshold);
+        minNegativeThreshold.y = -Math.abs(negativeThreshold);
     }
 
     public void setInvertedY(boolean inverted) {
@@ -110,28 +74,25 @@ public class ControllerManager {
             float y = Gdx.input.getAccelerometerZ();
 
             // TODO: Calibration needs testing
-            calibrate(x, y, delta);
-            x = getCalibratedX(x);
-            y = getCalibratedY(y);
+            if (calibrationMode(x, y, delta)) {
+                return;
+            }
 
             if (invertedY) {
                 y = -y;
             }
 
-            if (x > minPositiveThreshold.x || x < minNegativeThreshold.x) {
-                currentValue.x += x;
+            if (x > baseline.x + minPositiveThreshold.x || x < baseline.x + minNegativeThreshold.x) {
+                currentValue.x = MathUtils.clamp(currentValue.x + x, -MAX_MOVEMENT_VALUE, MAX_MOVEMENT_VALUE);
             } else {
                 currentValue.x = 0;
             }
 
-            if (y > minPositiveThreshold.y || y < minNegativeThreshold.y) {
-                currentValue.y += y;
+            if (y > baseline.y + minPositiveThreshold.y || y < baseline.y + minNegativeThreshold.y) {
+                currentValue.y = MathUtils.clamp(currentValue.y + y, -MAX_MOVEMENT_VALUE, MAX_MOVEMENT_VALUE);
             } else {
                 currentValue.y = 0;
             }
-
-            currentValue.x = MathUtils.clamp(currentValue.x, maxNegativeThreshold.x, maxPositiveThreshold.x);
-            currentValue.y = MathUtils.clamp(currentValue.y, maxNegativeThreshold.y, maxPositiveThreshold.y);
         }
     }
 

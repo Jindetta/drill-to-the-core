@@ -29,6 +29,9 @@ public class LevelManager {
 
         // Choose level or tutorial if invalid value is given
         switch (levelValue) {
+            case -1:
+                path.append("untitled.tmx");
+                break;
             default:
                 path.append("tutorial.tmx");
                 break;
@@ -51,7 +54,7 @@ public class LevelManager {
         }
     }
 
-    public void applyCameraAndRender(OrthographicCamera camera) {
+    public void renderView(OrthographicCamera camera) {
         if (camera != null) {
             levelRenderer.setView(camera);
         }

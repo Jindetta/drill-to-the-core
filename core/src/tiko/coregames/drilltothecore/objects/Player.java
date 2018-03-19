@@ -61,6 +61,7 @@ public class Player extends BaseObject {
         return totalFuel;
     }
 
+    @Override
     public void draw(SpriteBatch batch, float delta) {
         if (consumeFuel(delta)) {
             // Update movement based on controller input
@@ -133,21 +134,10 @@ public class Player extends BaseObject {
 
     private boolean isDirectionAllowed(char direction) {
         switch (direction) {
-            case 'L':
-                return getX() > 0;
-            case 'R':
-                return getX() + getWidth() < TOTAL_TILES_WIDTH;
-            case 'U':
-                if (getY() + getHeight() < TOTAL_TILES_HEIGHT) {
-                    TiledMapTile tile = map.getTileFromPosition(getX(), getY(), "background");
-                    Boolean value = map.getBoolean(tile, "sky");
-
-                    return value == null || !value;
-                }
-
-                break;
-            case 'D':
-                return getY() > 0;
+            case 'L': return getX() > 0;
+            case 'R': return getX() + getWidth() < TOTAL_TILES_WIDTH;
+            case 'U': return getY() + getHeight() < TOTAL_TILES_HEIGHT - TILE_HEIGHT * 3;
+            case 'D': return getY() > 0;
         }
 
         return false;

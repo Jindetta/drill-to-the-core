@@ -1,9 +1,8 @@
 package tiko.coregames.drilltothecore.utilities;
 
 public class Utilities {
-    public static final float WORLD_WIDTH = 768f;
-    public static final float WORLD_HEIGHT = 512f;
-    public static final float WORLD_SCALE = 1f;
+    public static final float WORLD_WIDTH = 576;
+    public static final float WORLD_HEIGHT = 360;
 
     public static final int TILE_WIDTH = 32;
     public static final int TILE_HEIGHT = 32;
@@ -14,11 +13,10 @@ public class Utilities {
     public static final int TOTAL_TILES_WIDTH = TILE_WIDTH * HORIZONTAL_TILES;
     public static final int TOTAL_TILES_HEIGHT = TILE_HEIGHT * VERTICAL_TILES;
 
+    public static final float MAX_MOVEMENT_VALUE = 10;
+
     public static final float SAFEZONE_SIZE = 5;
     public static final boolean DEBUG_MODE = true;
-
-    public static final float DEFAULT_MIN_THRESHOLD = 2;
-    public static final float DEFAULT_MAX_THRESHOLD = 7.5f;
 
     public static final float PLAYER_MOVE_SPEED = 120;
     public static final float PLAYER_FUEL_TANK_SIZE = 300;
@@ -39,8 +37,4 @@ public class Utilities {
     public static final String[] SPLASH_SCREENS = new String[] {
         "images/splash/tietojenkasittely.png", "images/splash/exerium.png"
     };
-
-    public static float toWorldUnits(float value) {
-        return value / WORLD_SCALE;
-    }
 }
