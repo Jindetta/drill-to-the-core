@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import tiko.coregames.drilltothecore.CoreSetup;
 import tiko.coregames.drilltothecore.managers.LevelManager;
 import tiko.coregames.drilltothecore.objects.Player;
@@ -20,8 +20,6 @@ import tiko.coregames.drilltothecore.objects.Player;
 import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
 public class GameScreen extends BaseScreen {
-    private OrthographicCamera hudCamera;
-
     private LevelManager map;
 
     private Window pauseWindow;
@@ -29,9 +27,6 @@ public class GameScreen extends BaseScreen {
     private Player player;
 
     public GameScreen() {
-        super(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT));
-        hudCamera = new OrthographicCamera();
-
         map = new LevelManager(-1);
         Vector3 playerSpawn = map.getSpawnPoint("player");
 
@@ -105,9 +100,13 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public void resize(int width, int height) {
-        playerFuel.setPosition(width - playerFuel.getPrefWidth() - SAFEZONE_SIZE, height - playerFuel.getPrefHeight() - SAFEZONE_SIZE);
-        hudCamera.setToOrtho(false, width, height);
-        super.resize(width, height);
+        Viewport viewport = getViewport();
+        viewport.update(width, height, true);
+
+        float fuelX = viewport.getWorldWidth() - playerFuel.getWidth() - SAFEZONE_SIZE;
+        float fuelY = viewport.getWorldHeight() - playerFuel.getHeight() - SAFEZONE_SIZE;
+
+        playerFuel.setPosition(fuelX, fuelY);
     }
 
     @Override
@@ -123,23 +122,15 @@ public class GameScreen extends BaseScreen {
         map.renderView(worldCamera);
 
         batch.begin();
-        // Apply world camera
         batch.setProjectionMatrix(worldCamera.combined);
         player.draw(batch, delta);
         batch.end();
 
-        batch.begin();
-        // Apply HUD camera
-        batch.setProjectionMatrix(hudCamera.combined);
-        // TODO: Change fuel to render with stage (not working atm)
-        playerFuel.draw(batch, 1);
-        batch.end();
-
-        // Temporary zoom
-        //worldCamera.zoom = 0.7f;
-
         followPlayerObject();
         updateFuelMeter();
+
+        act(delta);
+        draw();
     }
 
     @Override

@@ -2,13 +2,11 @@ package tiko.coregames.drilltothecore.objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
 import tiko.coregames.drilltothecore.managers.ControllerManager;
 import tiko.coregames.drilltothecore.managers.LevelManager;
-import tiko.coregames.drilltothecore.managers.SettingsManager;
 
 import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
@@ -17,6 +15,8 @@ public class Player extends BaseObject {
     private LevelManager map;
 
     private float totalFuel, fuelConsumptionRate;
+    private int baseScore, bonusScore;
+    private float scoreMultiplier;
     private Circle playerView;
 
     private String playerOrientation = "L";
@@ -26,10 +26,10 @@ public class Player extends BaseObject {
         controller = new ControllerManager();
         playerView = new Circle(getX(), getY(), getWidth() * PLAYER_VIEW_MULTIPLIER);
 
-        controller.applySettings();
-
         this.map = map;
+
         setMaxFuel();
+        setInitialScoreValues();
     }
 
     private void setMaxFuel() {
@@ -41,6 +41,16 @@ public class Player extends BaseObject {
         totalFuel = Math.max(0, totalFuel - fuelConsumptionRate * delta);
 
         return totalFuel > 0;
+    }
+
+    private void setInitialScoreValues() {
+        scoreMultiplier = 1;
+        bonusScore = 0;
+        baseScore = 0;
+    }
+
+    public int getTotalScore() {
+        return Math.round(baseScore * scoreMultiplier + bonusScore);
     }
 
     @Override
@@ -117,10 +127,12 @@ public class Player extends BaseObject {
     private void updateTileStatus() {
         updatePlayerView();
 
-        TiledMapTileLayer.Cell cell = map.getCellFromPosition(getX() + getWidth() / 2, getY() + getHeight() / 2, "ground");
+        for (float x = getX(); x < getX() + getWidth(); x++) {
+            TiledMapTileLayer.Cell cell = map.getCellFromPosition(x, getY() + getHeight() / 2, "ground");
 
-        if (cell != null) {
-            cell.setTile(null);
+            if (cell != null) {
+                cell.setTile(null);
+            }
         }
     }
 

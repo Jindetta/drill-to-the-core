@@ -1,6 +1,7 @@
 package tiko.coregames.drilltothecore.utilities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -11,9 +12,11 @@ import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 public class Debug {
     private static BitmapFont font;
     private static Array<BaseDebug> debugData;
+    private static OrthographicCamera debugCamera;
 
     static {
         font = new BitmapFont();
+        debugCamera = new OrthographicCamera();
         addDebugger(new BaseDebug());
     }
 
@@ -29,10 +32,15 @@ public class Debug {
 
     public static void render(SpriteBatch batch) {
         if (DEBUG_MODE && debugData != null) {
+            batch.setProjectionMatrix(debugCamera.combined);
             for (BaseDebug debugObject : debugData) {
                 debugObject.render(batch);
             }
         }
+    }
+
+    public static void resize(int width, int height) {
+        debugCamera.setToOrtho(false, width, height);
     }
 
     public static void dispose() {

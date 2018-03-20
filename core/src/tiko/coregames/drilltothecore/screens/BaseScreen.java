@@ -6,21 +6,15 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
-import tiko.coregames.drilltothecore.CoreSetup;
 
 import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
 public abstract class BaseScreen extends Stage implements Screen {
     Skin skin;
 
-    BaseScreen(Viewport viewport) {
-        super(viewport, CoreSetup.getBatch());
-        skin = new Skin(Gdx.files.internal("menu/uiskin.json"));
-    }
-
     BaseScreen() {
-        this(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT));
+        super(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT));
+        skin = new Skin(Gdx.files.internal("menu/uiskin.json"));
     }
 
     @Override
@@ -39,11 +33,7 @@ public abstract class BaseScreen extends Stage implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        Viewport viewport = getViewport();
-
-        if (viewport != null) {
-            viewport.update(width, height, true);
-        }
+        getViewport().update(width, height, true);
     }
 
     @Override

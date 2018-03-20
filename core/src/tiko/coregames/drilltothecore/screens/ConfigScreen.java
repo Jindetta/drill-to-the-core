@@ -11,15 +11,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import tiko.coregames.drilltothecore.CoreSetup;
 import tiko.coregames.drilltothecore.managers.SettingsManager;
+
+import static tiko.coregames.drilltothecore.utilities.Utilities.SAFEZONE_SIZE;
 
 public class ConfigScreen extends BaseScreen {
     private Table settingsTable;
 
     public ConfigScreen() {
-        super(new ScreenViewport());
-
         final SettingsManager settings = SettingsManager.getUserProfiles();
 
         final Label sensitivityLabelLeft = new Label("", skin);
@@ -111,8 +112,13 @@ public class ConfigScreen extends BaseScreen {
 
     @Override
     public void resize(int width, int height) {
-        super.resize(width, height);
-        settingsTable.setPosition((width - settingsTable.getWidth()) / 2, (height - settingsTable.getHeight()) / 2);
+        Viewport viewport = getViewport();
+        viewport.update(width, height, true);
+
+        float centerX = (viewport.getWorldWidth() - settingsTable.getWidth()) / 2;
+        float centerY = (viewport.getWorldHeight() - settingsTable.getHeight()) / 2;
+
+        settingsTable.setPosition(centerX, centerY);
     }
 
     @Override

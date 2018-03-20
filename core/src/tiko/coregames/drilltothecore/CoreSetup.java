@@ -32,6 +32,12 @@ public class CoreSetup extends Game {
         Gdx.graphics.setTitle("Drill to the Core");
 	}
 
+    @Override
+    public void resize(int width, int height) {
+        super.resize(width, height);
+        Debug.resize(width, height);
+    }
+
     /**
      * Renders game.
      */

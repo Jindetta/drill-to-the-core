@@ -8,6 +8,9 @@ import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import tiko.coregames.drilltothecore.objects.BaseObject;
+
+import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
 /**
  * Handles everything related to levels.

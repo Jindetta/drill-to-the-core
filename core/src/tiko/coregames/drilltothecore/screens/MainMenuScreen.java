@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import tiko.coregames.drilltothecore.CoreSetup;
 import tiko.coregames.drilltothecore.managers.LocalizationManager;
 
@@ -12,8 +13,6 @@ public class MainMenuScreen extends BaseScreen {
     private Table gameMenu;
 
     public MainMenuScreen() {
-        super(new ScreenViewport());
-
         LocalizationManager menu = new LocalizationManager("menu");
 
         TextButton play = new TextButton(menu.getValue("play"), skin);
@@ -50,7 +49,12 @@ public class MainMenuScreen extends BaseScreen {
 
     @Override
     public void resize(int width, int height) {
-        super.resize(width, height);
-        gameMenu.setPosition((width - gameMenu.getWidth()) / 2, (height - gameMenu.getHeight()) / 2);
+        Viewport viewport = getViewport();
+        viewport.update(width, height, true);
+
+        float centerX = (viewport.getWorldWidth() - gameMenu.getWidth()) / 2;
+        float centerY = (viewport.getWorldHeight() - gameMenu.getHeight()) / 2;
+
+        gameMenu.setPosition(centerX, centerY);
     }
 }

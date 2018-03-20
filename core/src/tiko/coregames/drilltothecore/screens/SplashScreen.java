@@ -1,68 +1,51 @@
 package tiko.coregames.drilltothecore.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import tiko.coregames.drilltothecore.CoreSetup;
 
 import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
 public class SplashScreen extends BaseScreen {
-    private Texture currentTexture;
-    private Image currentSplash;
-    private int currentIndex;
+    private Texture texture;
+    private Image splash;
     private float timeLeft;
 
     public SplashScreen() {
-        super(new ScreenViewport());
+        timeLeft = SINGLE_SPLASH_DURATION;
+        texture = new Texture(SPLASH_SCREENS[0]);
+        splash = new Image(texture);
 
-        currentIndex = 0;
-        setNextSplashScreen();
-    }
-
-    private boolean setNextSplashScreen() {
-        if (currentTexture != null) {
-            currentTexture.dispose();
-            clear();
-        }
-
-        if (currentIndex < SPLASH_SCREENS.length) {
-            currentTexture = new Texture(SPLASH_SCREENS[currentIndex++]);
-            currentSplash = new Image(currentTexture);
-            timeLeft = SINGLE_SPLASH_DURATION;
-
-            centerSplashImage();
-            addActor(currentSplash);
-
-            return true;
-        }
-
-        return false;
-    }
-
-    private void centerSplashImage() {
-        float centerX = (getWidth() - currentSplash.getWidth()) / 2;
-        float centerY = (getHeight() - currentSplash.getHeight()) / 2;
-
-        currentSplash.setPosition(centerX, centerY);
+        addActor(splash);
     }
 
     @Override
     public void resize(int width, int height) {
-        super.resize(width, height);
-        centerSplashImage();
+        Viewport viewport = getViewport();
+        viewport.update(width, height, true);
+
+        float centerX = (viewport.getWorldWidth() - splash.getWidth()) / 2;
+        float centerY = (viewport.getWorldHeight() - splash.getHeight()) / 2;
+
+        splash.setPosition(centerX, centerY);
     }
 
     @Override
     public void render(float delta) {
         timeLeft -= delta;
 
-        if (timeLeft <= 0 && !setNextSplashScreen()) {
+        if (timeLeft <= 0) {
             CoreSetup.nextScreen(new MainMenuScreen());
         }
 
         super.render(delta);
+    }
+
+    @Override
+    public void dispose() {
+        texture.dispose();
+        super.dispose();
     }
 
     @Override

@@ -20,8 +20,8 @@ public class ControllerManager {
     private boolean invertedY;
 
     public ControllerManager() {
-        invertedY = false;
         reset();
+        applySettings();
     }
 
     public void reset() {
