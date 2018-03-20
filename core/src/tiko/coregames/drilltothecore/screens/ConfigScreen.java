@@ -10,12 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import tiko.coregames.drilltothecore.CoreSetup;
 import tiko.coregames.drilltothecore.managers.SettingsManager;
-
-import static tiko.coregames.drilltothecore.utilities.Utilities.SAFEZONE_SIZE;
 
 public class ConfigScreen extends BaseScreen {
     private Table settingsTable;
@@ -87,16 +84,16 @@ public class ConfigScreen extends BaseScreen {
 
         settingsTable = new Table();
         settingsTable.add(sensitivityLabelLeft).row();
-        settingsTable.add(sensitivityLeft).padTop(15).row();
-        settingsTable.add(sensitivityLabelRight).padTop(20).row();
-        settingsTable.add(sensitivityRight).padTop(15).row();
+        settingsTable.add(sensitivityLeft).padTop(10).row();
+        settingsTable.add(sensitivityLabelRight).padTop(15).row();
+        settingsTable.add(sensitivityRight).padTop(10).row();
 
-        settingsTable.add(sensitivityLabelUp).padTop(40).row();
-        settingsTable.add(sensitivityUp).padTop(15).row();
-        settingsTable.add(sensitivityLabelDown).padTop(20).row();
-        settingsTable.add(sensitivityDown).padTop(15).row();
+        settingsTable.add(sensitivityLabelUp).padTop(30).row();
+        settingsTable.add(sensitivityUp).padTop(10).row();
+        settingsTable.add(sensitivityLabelDown).padTop(15).row();
+        settingsTable.add(sensitivityDown).padTop(10).row();
 
-        settingsTable.add(inverted).padTop(40);
+        settingsTable.add(inverted).padTop(30);
 
         addActor(settingsTable);
     }

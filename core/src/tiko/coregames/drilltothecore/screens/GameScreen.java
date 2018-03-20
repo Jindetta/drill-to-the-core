@@ -105,8 +105,11 @@ public class GameScreen extends BaseScreen {
 
         float fuelX = viewport.getWorldWidth() - playerFuel.getWidth() - SAFEZONE_SIZE;
         float fuelY = viewport.getWorldHeight() - playerFuel.getHeight() - SAFEZONE_SIZE;
+        float centerX = (viewport.getWorldWidth() - pauseWindow.getWidth()) / 2;
+        float centerY = (viewport.getWorldHeight() - pauseWindow.getHeight()) / 2;
 
         playerFuel.setPosition(fuelX, fuelY);
+        pauseWindow.setPosition(centerX, centerY);
     }
 
     @Override
