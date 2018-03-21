@@ -18,7 +18,7 @@ public class ConfigScreen extends BaseScreen {
     private Table settingsTable;
 
     public ConfigScreen() {
-        final SettingsManager settings = SettingsManager.getUserProfiles();
+        final SettingsManager settings = SettingsManager.getDefaultProfile();
 
         final Label sensitivityLabelLeft = new Label("", skin);
         final Slider sensitivityLeft = new Slider(0, 10, 0.05f, false, skin);

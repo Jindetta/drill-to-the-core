@@ -15,6 +15,8 @@ public abstract class BaseScreen extends Stage implements Screen {
     BaseScreen() {
         super(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT));
         skin = new Skin(Gdx.files.internal("menu/uiskin.json"));
+
+        Gdx.app.log(getClass().getSimpleName(), "Creating...");
     }
 
     @Override
@@ -27,7 +29,7 @@ public abstract class BaseScreen extends Stage implements Screen {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        act();
+        act(delta);
         draw();
     }
 
@@ -53,6 +55,8 @@ public abstract class BaseScreen extends Stage implements Screen {
 
     @Override
     public void dispose() {
+        Gdx.app.log(getClass().getSimpleName(), "Disposing...");
+
         super.dispose();
         skin.dispose();
     }

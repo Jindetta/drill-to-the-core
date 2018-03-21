@@ -9,12 +9,12 @@ import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
 public class SplashScreen extends BaseScreen {
     private Texture texture;
-    private Image splash;
     private float timeLeft;
+    private Image splash;
 
     public SplashScreen() {
         timeLeft = SINGLE_SPLASH_DURATION;
-        texture = new Texture(SPLASH_SCREENS[0]);
+        texture = new Texture("images/splash.png");
         splash = new Image(texture);
 
         addActor(splash);

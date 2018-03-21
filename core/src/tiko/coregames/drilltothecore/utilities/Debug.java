@@ -26,7 +26,9 @@ public class Debug {
                 debugData = new Array<>();
             }
 
-            debugData.add(debugObject);
+            if (!debugData.contains(debugObject, true)) {
+                debugData.add(debugObject);
+            }
         }
     }
 
@@ -80,6 +82,22 @@ public class Debug {
             );
 
             font.draw(batch, layout, SAFEZONE_SIZE, Gdx.graphics.getHeight() - SAFEZONE_SIZE);
+        }
+    }
+
+    public static class CustomDebug extends BaseDebug {
+        public CustomDebug() {
+            debugString = "";
+            layout = new GlyphLayout(font, debugString);
+        }
+
+        public void setDebugString(String value) {
+            debugString = value;
+        }
+
+        void render(SpriteBatch batch) {
+            layout.setText(font, debugString);
+            font.draw(batch, layout, Gdx.graphics.getWidth() - layout.width - SAFEZONE_SIZE, Gdx.graphics.getHeight() - SAFEZONE_SIZE);
         }
     }
 }

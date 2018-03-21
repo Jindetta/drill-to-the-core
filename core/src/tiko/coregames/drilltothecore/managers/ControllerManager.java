@@ -36,7 +36,7 @@ public class ControllerManager {
     }
 
     public void applySettings() {
-        SettingsManager settings = SettingsManager.getUserProfiles();
+        SettingsManager settings = SettingsManager.getDefaultProfile();
 
         float sensitivityLeft = settings.getFloat("sensitivityLeft");
         float sensitivityRight = settings.getFloat("sensitivityRight");

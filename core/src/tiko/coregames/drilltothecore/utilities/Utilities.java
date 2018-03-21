@@ -14,6 +14,9 @@ public class Utilities {
     public static final int TOTAL_TILES_HEIGHT = TILE_HEIGHT * VERTICAL_TILES;
 
     public static final float MAX_MOVEMENT_VALUE = 10;
+    public static final int MAX_SAVED_PROFILES = 25;
+
+    public static final float MENU_PADDING_TOP = 15;
 
     public static final float SAFEZONE_SIZE = 5;
     public static final boolean DEBUG_MODE = true;
@@ -32,9 +35,5 @@ public class Utilities {
     public static final int PLAYER_ORIENTATION_LEFT = 270;
     public static final int PLAYER_ORIENTATION_UP_LEFT = 315;
 
-    public static final float SINGLE_SPLASH_DURATION = 2.5f;
-
-    public static final String[] SPLASH_SCREENS = new String[] {
-        "images/splash/tietojenkasittely.png", "images/splash/exerium.png"
-    };
+    public static final float SINGLE_SPLASH_DURATION = 4;
 }

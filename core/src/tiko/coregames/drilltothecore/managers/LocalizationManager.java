@@ -17,6 +17,7 @@ public class LocalizationManager {
 
         switch (bundleKey) {
             case "menu":
+            case "game":
                 path.append(bundleKey);
                 break;
             default:
@@ -24,7 +25,17 @@ public class LocalizationManager {
                 break;
         }
 
-        bundle = I18NBundle.createBundle(Gdx.files.internal(path.toString()), Locale.getDefault());
+        bundle = I18NBundle.createBundle(Gdx.files.internal(path.toString()), getProfileLocale());
+    }
+
+    private Locale getProfileLocale() {
+        SettingsManager profile = SettingsManager.getActiveProfile();
+
+        if (profile != null && profile.hasValue("locale")) {
+            return new Locale(profile.getString("locale"));
+        }
+
+        return Locale.getDefault();
     }
 
     public String getValue(String key) {

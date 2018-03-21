@@ -15,11 +15,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import tiko.coregames.drilltothecore.CoreSetup;
 import tiko.coregames.drilltothecore.managers.LevelManager;
+import tiko.coregames.drilltothecore.managers.LocalizationManager;
 import tiko.coregames.drilltothecore.objects.Player;
 
 import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
 public class GameScreen extends BaseScreen {
+    private LocalizationManager localizer;
     private LevelManager map;
 
     private Window pauseWindow;
@@ -29,11 +31,10 @@ public class GameScreen extends BaseScreen {
     public GameScreen() {
         map = new LevelManager(-1);
         Vector3 playerSpawn = map.getSpawnPoint("player");
+        localizer = new LocalizationManager("game");
 
         if (playerSpawn != null) {
-            player = new Player(map);
-            player.setPosition(playerSpawn.x, playerSpawn.y);
-
+            player = new Player(map, playerSpawn.x, playerSpawn.y);
             createFuelMeter();
         }
 
@@ -41,19 +42,35 @@ public class GameScreen extends BaseScreen {
     }
 
     private void createPauseWindow() {
-        pauseWindow = new Window("Paused", skin);
-        pauseWindow.setResizable(false);
-        pauseWindow.setMovable(false);
+        pauseWindow = new Window(localizer.getValue("pause"), skin);
+        //pauseWindow.setResizable(false);
+        //pauseWindow.setMovable(false);
         pauseWindow.setVisible(false);
 
-        TextButton continueButton = new TextButton("Continue", skin);
-        continueButton.addListener(new ClickListener() {
+        ClickListener clickListener = new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                String name = event.getListenerActor().getName();
+
+                switch (name == null ? "" : name) {
+                    case "menu":
+                        CoreSetup.nextScreen(new MainMenuScreen());
+                        break;
+                }
+
                 pauseWindow.setVisible(false);
             }
-        });
-        pauseWindow.add(continueButton);
+        };
+
+        TextButton continueButton = new TextButton(localizer.getValue("continue"), skin);
+        continueButton.addListener(clickListener);
+
+        TextButton menuButton = new TextButton(localizer.getValue("exit"), skin);
+        menuButton.addListener(clickListener);
+        menuButton.setName("menu");
+
+        pauseWindow.add(continueButton).row();
+        pauseWindow.add(menuButton).padTop(MENU_PADDING_TOP);
 
         addActor(pauseWindow);
     }
@@ -139,7 +156,7 @@ public class GameScreen extends BaseScreen {
     @Override
     public boolean keyDown(int key) {
         if (key == Input.Keys.ESCAPE || key == Input.Keys.BACK) {
-            CoreSetup.nextScreen(new MainMenuScreen());
+            pauseWindow.setVisible(true);
         }
 
         return super.keyDown(key);

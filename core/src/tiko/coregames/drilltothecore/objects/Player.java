@@ -5,31 +5,47 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import tiko.coregames.drilltothecore.managers.ControllerManager;
 import tiko.coregames.drilltothecore.managers.LevelManager;
+import tiko.coregames.drilltothecore.utilities.Debug;
 
 import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
 public class Player extends BaseObject {
     private ControllerManager controller;
+    private Debug.CustomDebug customDebug;
     private LevelManager map;
 
+    private float maximumDrillDepth;
     private float totalFuel, fuelConsumptionRate;
-    private int baseScore, bonusScore;
+    private float baseScore, bonusScore;
     private float scoreMultiplier;
     private Circle playerView;
 
+    private int nextOrientation;
+    private int defaultOrientation;
     private String playerOrientation = "L";
 
-    public Player(LevelManager map) {
+    public Player(LevelManager map, float x, float y) {
         super("images/player.png");
         controller = new ControllerManager();
-        playerView = new Circle(getX(), getY(), getWidth() * PLAYER_VIEW_MULTIPLIER);
+        playerView = new Circle(0, 0, getWidth() * PLAYER_VIEW_MULTIPLIER);
+        setPosition(x, y);
 
         this.map = map;
 
         setMaxFuel();
         setInitialScoreValues();
+
+        customDebug = new Debug.CustomDebug();
+        Debug.addDebugger(customDebug);
+    }
+
+    private void setDefaultOrientation() {
+        defaultOrientation = 270;
+        nextOrientation = 0;
     }
 
     private void setMaxFuel() {
@@ -49,14 +65,50 @@ public class Player extends BaseObject {
         baseScore = 0;
     }
 
+    private void addBaseScore(float value) {
+        baseScore += value;
+    }
+
+    private void addBonusScore(float value) {
+        bonusScore += value;
+    }
+
+    private void increaseScoreMultiplier() {
+        maximumDrillDepth = Math.max(maximumDrillDepth, TOTAL_TILES_HEIGHT - getY());
+        scoreMultiplier = maximumDrillDepth / 100f;
+    }
+
     public int getTotalScore() {
         return Math.round(baseScore * scoreMultiplier + bonusScore);
     }
 
-    @Override
-    public void setPosition(float x, float y) {
-        super.setPosition(x, y);
-        updateTileStatus();
+    public int getPlayerOrientation() {
+        int rotation = defaultOrientation + Math.round(Math.abs(getRotation()) % 360);
+        boolean isStraightAngle = rotation % 90 == 0;
+
+        if (rotation >= 0 && rotation < 90) {
+            return isStraightAngle ? PLAYER_ORIENTATION_UP : PLAYER_ORIENTATION_UP_RIGHT;
+        } else if (rotation >= 90 && rotation < 180) {
+            return isStraightAngle ? PLAYER_ORIENTATION_RIGHT : PLAYER_ORIENTATION_DOWN_RIGHT;
+        } else if (rotation >= 180 && rotation < 270) {
+            return isStraightAngle ? PLAYER_ORIENTATION_DOWN : PLAYER_ORIENTATION_DOWN_LEFT;
+        } else {
+            return isStraightAngle ? PLAYER_ORIENTATION_LEFT : PLAYER_ORIENTATION_UP_LEFT;
+        }
+    }
+
+    public void setNewOrientation(int orientation) {
+        nextOrientation = orientation;
+    }
+
+    public boolean isRotatingToAxis(float delta) {
+        if (nextOrientation != 0 || getPlayerOrientation() % 90 != 0) {
+            rotate(45 * delta);
+
+            return true;
+        }
+
+        return false;
     }
 
     public float getFuel() {
@@ -97,16 +149,21 @@ public class Player extends BaseObject {
                 }
             }
 
+            increaseScoreMultiplier();
             updateTileStatus();
         }
 
         super.draw(batch);
+        customDebug.setDebugString(
+            String.format("Current points: %d%nMaximum depth reached: %.2f%nTotal fuel: %.2f", getTotalScore(), maximumDrillDepth, getFuel())
+        );
     }
 
     private void clearShroudTile(float x, float y) {
         TiledMapTileLayer.Cell cell = map.getCellFromPosition(x, y, "shroud");
 
-        if (cell != null) {
+        if (cell != null && cell.getTile() != null) {
+            addBonusScore(0.01f);
             cell.setTile(null);
         }
     }
@@ -130,7 +187,9 @@ public class Player extends BaseObject {
         for (float x = getX(); x < getX() + getWidth(); x++) {
             TiledMapTileLayer.Cell cell = map.getCellFromPosition(x, getY() + getHeight() / 2, "ground");
 
-            if (cell != null) {
+            if (cell != null && cell.getTile() != null) {
+                // 1 point per 8 tiles
+                addBaseScore(0.125f);
                 cell.setTile(null);
             }
         }

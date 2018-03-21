@@ -1,7 +1,10 @@
 package tiko.coregames.drilltothecore.screens;
 
-public class HighScoreScreen extends BaseScreen {
-    public HighScoreScreen() {
+import tiko.coregames.drilltothecore.CoreSetup;
 
+public class HighScoreScreen extends BaseScreen {
+    @Override
+    public void show() {
+        CoreSetup.nextScreen(new MainMenuScreen());
     }
 }
