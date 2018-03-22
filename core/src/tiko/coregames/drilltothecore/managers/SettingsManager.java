@@ -1,8 +1,8 @@
 package tiko.coregames.drilltothecore.managers;
 
+import java.util.Locale;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import java.util.Locale;
 
 import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
@@ -10,8 +10,20 @@ public class SettingsManager {
     private boolean defaultProfile;
     private Preferences preferences;
 
+    private static String getSaveName(String value) {
+        return String.format(Locale.ENGLISH, "DrillToTheCore.%s", value);
+    }
+
+    private static String getProfileKey(int index) {
+        return String.format(Locale.ENGLISH, "profile_%d", index);
+    }
+
+    private static String getProfilePath(int index) {
+        return getSaveName(getProfileKey(index));
+    }
+
     private SettingsManager() {
-        this("DrillToTheCore.profiles", false);
+        this(getSaveName("profiles"), false);
     }
 
     private SettingsManager(String fileName, boolean defaultProfile) {
@@ -26,12 +38,10 @@ public class SettingsManager {
     }
 
     public static SettingsManager getDefaultProfile() {
-        return new SettingsManager("DrillToTheCore.defaultProfile", true);
+        return new SettingsManager(getSaveName("defaultProfile"), true);
     }
 
     public static SettingsManager getUserProfile(int index) {
-        SettingsManager profiles = new SettingsManager();
-
         if (hasProfile(index)) {
             return new SettingsManager(getProfilePath(index), false);
         }
@@ -59,32 +69,24 @@ public class SettingsManager {
     }
 
     public static int createUserProfile(String name, boolean setActive) {
-        for (int i = 0; i < MAX_SAVED_PROFILES; i++) {
-            if (hasProfile(i)) {
-                SettingsManager profile = new SettingsManager(getProfilePath(i), false);
+        if (name != null) {
+            SettingsManager profiles = new SettingsManager();
 
-                if (name != null) {
-                    profile.setStringValue("playerName", name);
-                    profile.saveSettings();
+            for (int i = 0; i < MAX_SAVED_PROFILES; i++) {
+                if (!hasProfile(i)) {
+                    if (setActive) {
+                        setActiveProfile(i);
+                    }
+
+                    profiles.setStringValue(getProfileKey(i), name);
+                    profiles.saveSettings();
+
+                    return i;
                 }
-
-                if (setActive) {
-                    setActiveProfile(i);
-                }
-
-                return i;
             }
         }
 
         return -1;
-    }
-
-    private static String getProfilePath(int index) {
-        return String.format(Locale.ENGLISH, "DrillToTheCore.profile_%d", index);
-    }
-
-    private static String getProfileKey(int index) {
-        return String.format(Locale.ENGLISH, "profile_%d", index);
     }
 
     public boolean hasValue(String key) {

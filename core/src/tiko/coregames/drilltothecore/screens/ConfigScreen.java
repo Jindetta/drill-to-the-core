@@ -72,12 +72,22 @@ public class ConfigScreen extends BaseScreen {
         });
         sensitivityDown.fire(new ChangeListener.ChangeEvent());
 
-        final CheckBox inverted = new CheckBox(" Invert Y-axis", skin);
-        inverted.setChecked(settings.getBoolean("invertedY"));
-        inverted.addListener(new ClickListener() {
+        final CheckBox invertedX = new CheckBox(" Invert X-axis", skin);
+        invertedX.setChecked(settings.getBoolean("invertedX"));
+        invertedX.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                settings.setBooleanValue("invertedY", inverted.isChecked());
+                settings.setBooleanValue("invertedX", invertedX.isChecked());
+                settings.saveSettings();
+            }
+        });
+
+        final CheckBox invertedY = new CheckBox(" Invert Y-axis", skin);
+        invertedY.setChecked(settings.getBoolean("invertedY"));
+        invertedY.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                settings.setBooleanValue("invertedY", invertedY.isChecked());
                 settings.saveSettings();
             }
         });
@@ -93,7 +103,8 @@ public class ConfigScreen extends BaseScreen {
         settingsTable.add(sensitivityLabelDown).padTop(15).row();
         settingsTable.add(sensitivityDown).padTop(10).row();
 
-        settingsTable.add(inverted).padTop(30);
+        settingsTable.add(invertedX).padTop(30).row();
+        settingsTable.add(invertedY).padTop(10);
 
         addActor(settingsTable);
     }

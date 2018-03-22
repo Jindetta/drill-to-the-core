@@ -24,7 +24,7 @@ public class Utilities {
     public static final float PLAYER_MOVE_SPEED = 120;
     public static final float PLAYER_FUEL_TANK_SIZE = 300;
     public static final float PLAYER_FUEL_MIN_CONSUMPTION = 1f;
-    public static final float PLAYER_VIEW_MULTIPLIER = 2;
+    public static final float PLAYER_VIEW_RADIUS = 100;
 
     public static final int PLAYER_ORIENTATION_UP = 0;
     public static final int PLAYER_ORIENTATION_UP_RIGHT = 45;

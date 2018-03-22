@@ -81,7 +81,7 @@ public class GameScreen extends BaseScreen {
         playerFuel.setValue(player.getFuel());
         playerFuel.setDisabled(true);
 
-        addActor(playerFuel);
+        //addActor(playerFuel);
     }
 
     /**

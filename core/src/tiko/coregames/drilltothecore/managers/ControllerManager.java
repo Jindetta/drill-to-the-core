@@ -14,14 +14,13 @@ public class ControllerManager {
     private Vector2 minNegativeThreshold;
     private Vector2 baseline;
 
-    private int calibrations;
+    private int calibrationIterations;
     private float calibrationTime;
 
-    private boolean invertedY;
+    private boolean invertedX, invertedY;
 
     public ControllerManager() {
         reset();
-        applySettings();
     }
 
     public void reset() {
@@ -32,21 +31,19 @@ public class ControllerManager {
 
         baseline = new Vector2();
         calibrationTime = 1.5f;
-        calibrations = 0;
+        calibrationIterations = 0;
+
+        applySettings();
     }
 
     public void applySettings() {
         SettingsManager settings = SettingsManager.getDefaultProfile();
 
-        float sensitivityLeft = settings.getFloat("sensitivityLeft");
-        float sensitivityRight = settings.getFloat("sensitivityRight");
-        float sensitivityDown = settings.getFloat("sensitivityDown");
-        float sensitivityUp = settings.getFloat("sensitivityUp");
-        boolean isInverted = settings.getBoolean("invertedY");
+        setYThreshold(settings.getFloat("sensitivityDown"), settings.getFloat("sensitivityUp"));
+        setXThreshold(settings.getFloat("sensitivityLeft"), settings.getFloat("sensitivityRight"));
 
-        setYThreshold(sensitivityDown, sensitivityUp);
-        setXThreshold(sensitivityLeft, sensitivityRight);
-        setInvertedY(isInverted);
+        setInvertedX(settings.getBoolean("invertedX"));
+        setInvertedY(settings.getBoolean("invertedY"));
     }
 
     private boolean calibrationMode(float x, float y, float delta) {
@@ -54,15 +51,15 @@ public class ControllerManager {
             calibrationTime -= delta;
 
             if (calibrationTime > 0) {
+                calibrationIterations++;
                 baseline.add(x, y);
-                calibrations++;
             } else {
-                baseline.set(baseline.x / calibrations, baseline.y / calibrations);
-                calibrations = 0;
+                baseline.set(baseline.x / calibrationIterations, baseline.y / calibrationIterations);
+                calibrationIterations = 0;
             }
         }
 
-        return calibrations > 0;
+        return calibrationIterations > 0;
     }
 
     public void setXThreshold(float positiveThreshold, float negativeThreshold) {
@@ -73,6 +70,11 @@ public class ControllerManager {
     public void setYThreshold(float positiveThreshold, float negativeThreshold) {
         minPositiveThreshold.y = Math.abs(positiveThreshold);
         minNegativeThreshold.y = -Math.abs(negativeThreshold);
+    }
+
+    public void setInvertedX(boolean inverted) {
+        setXThreshold(minNegativeThreshold.x, minPositiveThreshold.x);
+        invertedX = inverted;
     }
 
     public void setInvertedY(boolean inverted) {
@@ -92,8 +94,9 @@ public class ControllerManager {
                 return;
             }
 
-            if (invertedY) {
-                y = -y;
+            if (invertedX || invertedY) {
+                x = invertedX ? -x : x;
+                y = invertedY ? -y : y;
             }
 
             if (x > baseline.x + minPositiveThreshold.x || x < baseline.x + minNegativeThreshold.x) {

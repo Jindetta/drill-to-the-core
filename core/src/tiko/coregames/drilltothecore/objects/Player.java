@@ -5,8 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 import tiko.coregames.drilltothecore.managers.ControllerManager;
 import tiko.coregames.drilltothecore.managers.LevelManager;
 import tiko.coregames.drilltothecore.utilities.Debug;
@@ -31,7 +29,7 @@ public class Player extends BaseObject {
     public Player(LevelManager map, float x, float y) {
         super("images/player.png");
         controller = new ControllerManager();
-        playerView = new Circle(0, 0, getWidth() * PLAYER_VIEW_MULTIPLIER);
+        playerView = new Circle(x + getWidth() / 2, y + getHeight() / 2, PLAYER_VIEW_RADIUS);
         setPosition(x, y);
 
         this.map = map;
