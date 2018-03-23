@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import tiko.coregames.drilltothecore.CoreSetup;
 import tiko.coregames.drilltothecore.managers.LocalizationManager;
 
-import static tiko.coregames.drilltothecore.utilities.Utilities.*;
+import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
 public class MainMenuScreen extends BaseScreen {
     private Table gameMenu;

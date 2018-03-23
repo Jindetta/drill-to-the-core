@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
-import static tiko.coregames.drilltothecore.utilities.Utilities.*;
+import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
 public abstract class BaseScreen extends Stage implements Screen {
     Skin skin;

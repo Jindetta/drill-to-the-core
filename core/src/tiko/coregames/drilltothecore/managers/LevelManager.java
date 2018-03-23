@@ -8,9 +8,6 @@ import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import tiko.coregames.drilltothecore.objects.BaseObject;
-
-import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
 /**
  * Handles everything related to levels.
@@ -33,7 +30,10 @@ public class LevelManager {
         // Choose level or tutorial if invalid value is given
         switch (levelValue) {
             case -1:
-                path.append("untitled.tmx");
+                path.append("4x4.tmx");
+                break;
+            case -2:
+                path.append("8x8.tmx");
                 break;
             default:
                 path.append("tutorial.tmx");

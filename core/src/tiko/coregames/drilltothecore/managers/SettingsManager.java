@@ -4,7 +4,7 @@ import java.util.Locale;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
-import static tiko.coregames.drilltothecore.utilities.Utilities.*;
+import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
 public class SettingsManager {
     private boolean defaultProfile;

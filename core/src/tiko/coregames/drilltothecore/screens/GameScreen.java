@@ -19,7 +19,7 @@ import tiko.coregames.drilltothecore.managers.LocalizationManager;
 import tiko.coregames.drilltothecore.objects.Player;
 import tiko.coregames.drilltothecore.utilities.Debug;
 
-import static tiko.coregames.drilltothecore.utilities.Utilities.*;
+import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
 public class GameScreen extends BaseScreen {
     private LocalizationManager localizer;
@@ -31,7 +31,7 @@ public class GameScreen extends BaseScreen {
     private Player player;
 
     public GameScreen() {
-        map = new LevelManager(-1);
+        map = new LevelManager(-2);
         Vector3 playerSpawn = map.getSpawnPoint("player");
         localizer = new LocalizationManager("game");
 
@@ -159,7 +159,7 @@ public class GameScreen extends BaseScreen {
         draw();
 
         customDebug.setDebugString(
-                String.format("Current points: %d%nDepth reached: %.2f%nTotal fuel: %.2f", player.getTotalScore(), player.getDrillDepth(), player.getFuel())
+            String.format("Current points: %d\nDepth reached: %.2f\nTotal fuel: %.2f\n%s", player.getTotalScore(), player.getDrillDepth(), player.getFuel(), player.getControllerBaseline())
         );
     }
 

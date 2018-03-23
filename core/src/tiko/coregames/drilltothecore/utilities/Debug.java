@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
-import static tiko.coregames.drilltothecore.utilities.Utilities.*;
+import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
 public class Debug {
     private static BitmapFont font;
@@ -15,7 +15,7 @@ public class Debug {
     private static OrthographicCamera debugCamera;
 
     static {
-        font = new BitmapFont();
+        font = new BitmapFont(Gdx.files.internal("menu/debug.fnt"));
         debugCamera = new OrthographicCamera();
         addDebugger(new BaseDebug());
     }
@@ -57,7 +57,7 @@ public class Debug {
 
         BaseDebug() {
             timeElapsed = 0;
-            debugString = "FPS: %d (%d)%n%d:%02d:%02d -> %.2f (+%.3f)%nAccelX: %.4f%nAccelY: %.4f%nAccelZ: %.4f";
+            debugString = "FPS: %d (%d)\n%d:%02d:%02d -> %.2f (+%.3f)\nAccelX: %.4f\nAccelY: %.4f";
             layout = new GlyphLayout(font, debugString);
         }
 
@@ -75,7 +75,6 @@ public class Debug {
                     (int) timeElapsed % 60,
                     timeElapsed,
                     delta,
-                    Gdx.input.getAccelerometerX(),
                     Gdx.input.getAccelerometerY(),
                     Gdx.input.getAccelerometerZ()
                 )

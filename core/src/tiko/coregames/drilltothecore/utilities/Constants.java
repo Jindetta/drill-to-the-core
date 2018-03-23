@@ -1,6 +1,6 @@
 package tiko.coregames.drilltothecore.utilities;
 
-public class Utilities {
+public class Constants {
     public static final float WORLD_WIDTH = 576;
     public static final float WORLD_HEIGHT = 360;
 

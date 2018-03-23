@@ -8,9 +8,8 @@ import com.badlogic.gdx.math.Circle;
 import tiko.coregames.drilltothecore.managers.ControllerManager;
 import tiko.coregames.drilltothecore.managers.LevelManager;
 import tiko.coregames.drilltothecore.managers.LocalizationManager;
-import tiko.coregames.drilltothecore.utilities.Debug;
 
-import static tiko.coregames.drilltothecore.utilities.Utilities.*;
+import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
 public class Player extends BaseObject {
     private ControllerManager controller;
@@ -93,6 +92,10 @@ public class Player extends BaseObject {
         } else {
             return isStraightAngle ? PLAYER_ORIENTATION_LEFT : PLAYER_ORIENTATION_UP_LEFT;
         }
+    }
+
+    public String getControllerBaseline() {
+        return controller.getBaselineValues();
     }
 
     public float getDrillDepth() {

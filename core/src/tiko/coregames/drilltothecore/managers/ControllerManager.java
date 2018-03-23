@@ -5,7 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
-import static tiko.coregames.drilltothecore.utilities.Utilities.*;
+import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
 public class ControllerManager {
     private Vector2 currentValue;
@@ -13,6 +13,9 @@ public class ControllerManager {
     private Vector2 minPositiveThreshold;
     private Vector2 minNegativeThreshold;
     private Vector2 baseline;
+
+    private Vector2 calibrationX;
+    private Vector2 calibrationY;
 
     private int calibrationIterations;
     private float calibrationTime;
@@ -28,6 +31,10 @@ public class ControllerManager {
 
         minPositiveThreshold = new Vector2();
         minNegativeThreshold = new Vector2();
+
+        // DEBUG
+        calibrationX = new Vector2();
+        calibrationY = new Vector2();
 
         baseline = new Vector2();
         calibrationTime = CONTROLLER_CALIBRATION_TIME;
@@ -60,6 +67,13 @@ public class ControllerManager {
         }
 
         return calibrationIterations > 0;
+    }
+
+    public String getBaselineValues() {
+        calibrationX.set(baseline.x + minNegativeThreshold.x, baseline.x + minPositiveThreshold.x);
+        calibrationY.set(baseline.y + minNegativeThreshold.y, baseline.y + minPositiveThreshold.y);
+
+        return "BASELINE\nX: " + calibrationX.toString() + "\nY: " + calibrationY.toString();
     }
 
     public void setXThreshold(float positiveThreshold, float negativeThreshold) {
