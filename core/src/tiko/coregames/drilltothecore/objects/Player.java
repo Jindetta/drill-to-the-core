@@ -15,7 +15,6 @@ import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 public class Player extends BaseObject {
     private ControllerManager controller;
     private LocalizationManager localizer;
-    private Debug.CustomDebug customDebug;
     private LevelManager map;
 
     private float maximumDrillDepth;
@@ -40,9 +39,6 @@ public class Player extends BaseObject {
 
         setMaxFuel();
         setInitialScoreValues();
-
-        customDebug = new Debug.CustomDebug();
-        Debug.addDebugger(customDebug);
     }
 
     private void setDefaultOrientation() {
@@ -97,6 +93,10 @@ public class Player extends BaseObject {
         } else {
             return isStraightAngle ? PLAYER_ORIENTATION_LEFT : PLAYER_ORIENTATION_UP_LEFT;
         }
+    }
+
+    public float getDrillDepth() {
+        return maximumDrillDepth;
     }
 
     public void setNewOrientation(int orientation) {
@@ -156,9 +156,6 @@ public class Player extends BaseObject {
         }
 
         super.draw(batch);
-        customDebug.setDebugString(
-            String.format("Current points: %d%nDepth reached: %.2f%nTotal fuel: %.2f", getTotalScore(), maximumDrillDepth, getFuel())
-        );
     }
 
     private void clearShroudTile(float x, float y) {

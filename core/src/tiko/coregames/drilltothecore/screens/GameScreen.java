@@ -17,11 +17,13 @@ import tiko.coregames.drilltothecore.CoreSetup;
 import tiko.coregames.drilltothecore.managers.LevelManager;
 import tiko.coregames.drilltothecore.managers.LocalizationManager;
 import tiko.coregames.drilltothecore.objects.Player;
+import tiko.coregames.drilltothecore.utilities.Debug;
 
 import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
 public class GameScreen extends BaseScreen {
     private LocalizationManager localizer;
+    private Debug.CustomDebug customDebug;
     private LevelManager map;
 
     private Window pauseWindow;
@@ -39,6 +41,9 @@ public class GameScreen extends BaseScreen {
         }
 
         createPauseWindow();
+
+        customDebug = new Debug.CustomDebug();
+        Debug.addDebugger(customDebug);
     }
 
     private void createPauseWindow() {
@@ -111,6 +116,7 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public void hide() {
+        customDebug.setDebugString("");
         Gdx.input.setCatchBackKey(false);
         super.hide();
     }
@@ -151,6 +157,10 @@ public class GameScreen extends BaseScreen {
 
         act(delta);
         draw();
+
+        customDebug.setDebugString(
+                String.format("Current points: %d%nDepth reached: %.2f%nTotal fuel: %.2f", player.getTotalScore(), player.getDrillDepth(), player.getFuel())
+        );
     }
 
     @Override
