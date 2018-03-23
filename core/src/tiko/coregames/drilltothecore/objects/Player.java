@@ -7,12 +7,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
 import tiko.coregames.drilltothecore.managers.ControllerManager;
 import tiko.coregames.drilltothecore.managers.LevelManager;
+import tiko.coregames.drilltothecore.managers.LocalizationManager;
 import tiko.coregames.drilltothecore.utilities.Debug;
 
 import static tiko.coregames.drilltothecore.utilities.Utilities.*;
 
 public class Player extends BaseObject {
     private ControllerManager controller;
+    private LocalizationManager localizer;
     private Debug.CustomDebug customDebug;
     private LevelManager map;
 
@@ -24,15 +26,17 @@ public class Player extends BaseObject {
 
     private int nextOrientation;
     private int defaultOrientation;
-    private String playerOrientation = "L";
+    private String playerOrientation;
 
-    public Player(LevelManager map, float x, float y) {
+    public Player(LevelManager map, LocalizationManager localizer, float x, float y) {
         super("images/player.png");
         controller = new ControllerManager();
         playerView = new Circle(x + getWidth() / 2, y + getHeight() / 2, PLAYER_VIEW_RADIUS);
         setPosition(x, y);
 
         this.map = map;
+        this.localizer = localizer;
+        playerOrientation = "L";
 
         setMaxFuel();
         setInitialScoreValues();
@@ -153,7 +157,7 @@ public class Player extends BaseObject {
 
         super.draw(batch);
         customDebug.setDebugString(
-            String.format("Current points: %d%nMaximum depth reached: %.2f%nTotal fuel: %.2f", getTotalScore(), maximumDrillDepth, getFuel())
+            String.format("Current points: %d%nDepth reached: %.2f%nTotal fuel: %.2f", getTotalScore(), maximumDrillDepth, getFuel())
         );
     }
 
@@ -169,6 +173,7 @@ public class Player extends BaseObject {
     private void updatePlayerView() {
         playerView.setPosition(getX() + getWidth() / 2, getY() + getHeight() / 2);
 
+        // TODO: Change to half circle view based on current heading
         for (float y = playerView.y - playerView.radius; y < playerView.y + playerView.radius; y++) {
             for (float x = playerView.x - playerView.radius; x < playerView.x + playerView.radius; x++) {
                 if (playerView.contains(x, y)) {
@@ -178,17 +183,46 @@ public class Player extends BaseObject {
         }
     }
 
+    private String getCollectibleName(String key) {
+        try {
+            return localizer.getValue(key);
+        } catch (Exception e) {
+            return localizer.getValue("collectible");
+        }
+    }
+
+    private void updateCollectibleStatus(float x, float y) {
+        TiledMapTileLayer.Cell cell = map.getCellFromPosition(x, y, "collectibles");
+
+        if (cell != null && cell.getTile() != null) {
+            String key = map.getString(cell.getTile(), "id");
+            Integer value = map.getInteger(cell.getTile(), "value");
+
+            if (value != null) {
+                addBaseScore(value);
+                Gdx.app.log(getClass().getSimpleName(), "Collected: " + getCollectibleName(key));
+            }
+
+            cell.setTile(null);
+        }
+    }
+
     // DEBUG - Destroy tiles
     private void updateTileStatus() {
         updatePlayerView();
 
-        for (float x = getX(); x < getX() + getWidth(); x++) {
-            TiledMapTileLayer.Cell cell = map.getCellFromPosition(x, getY() + getHeight() / 2, "ground");
+        // TODO: Change "ground" destruction based on current heading
+        for (float y = getY(); y < getY() + getHeight(); y++) {
+            for (float x = getX(); x < getX() + getWidth(); x++) {
+                TiledMapTileLayer.Cell cell = map.getCellFromPosition(x, y, "ground");
 
-            if (cell != null && cell.getTile() != null) {
-                // 1 point per 8 tiles
-                addBaseScore(0.125f);
-                cell.setTile(null);
+                if (cell != null && cell.getTile() != null) {
+                    // 1 point per 8 tiles
+                    addBaseScore(0.125f);
+                    cell.setTile(null);
+                }
+
+                updateCollectibleStatus(x - getWidth() / 2, y);
             }
         }
     }
@@ -204,6 +238,7 @@ public class Player extends BaseObject {
         return false;
     }
 
+    // TODO: Simplify
     private void rotateSprite(String direction, float delta) {
 
         /*
@@ -287,7 +322,6 @@ public class Player extends BaseObject {
                 rotate (180);
                 playerOrientation = "UR";
             }
-
         }
 
     }

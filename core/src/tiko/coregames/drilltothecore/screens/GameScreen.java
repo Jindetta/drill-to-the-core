@@ -34,7 +34,7 @@ public class GameScreen extends BaseScreen {
         localizer = new LocalizationManager("game");
 
         if (playerSpawn != null) {
-            player = new Player(map, playerSpawn.x, playerSpawn.y);
+            player = new Player(map, localizer, playerSpawn.x, playerSpawn.y);
             createFuelMeter();
         }
 

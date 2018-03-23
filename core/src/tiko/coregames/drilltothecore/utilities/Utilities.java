@@ -14,6 +14,7 @@ public class Utilities {
     public static final int TOTAL_TILES_HEIGHT = TILE_HEIGHT * VERTICAL_TILES;
 
     public static final float MAX_MOVEMENT_VALUE = 10;
+    public static final float CONTROLLER_CALIBRATION_TIME = 1.5f;
     public static final int MAX_SAVED_PROFILES = 25;
 
     public static final float MENU_PADDING_TOP = 15;
@@ -24,7 +25,7 @@ public class Utilities {
     public static final float PLAYER_MOVE_SPEED = 120;
     public static final float PLAYER_FUEL_TANK_SIZE = 300;
     public static final float PLAYER_FUEL_MIN_CONSUMPTION = 1f;
-    public static final float PLAYER_VIEW_RADIUS = 100;
+    public static final float PLAYER_VIEW_RADIUS = 75;
 
     public static final int PLAYER_ORIENTATION_UP = 0;
     public static final int PLAYER_ORIENTATION_UP_RIGHT = 45;

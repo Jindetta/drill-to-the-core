@@ -30,7 +30,7 @@ public class ControllerManager {
         minNegativeThreshold = new Vector2();
 
         baseline = new Vector2();
-        calibrationTime = 1.5f;
+        calibrationTime = CONTROLLER_CALIBRATION_TIME;
         calibrationIterations = 0;
 
         applySettings();
