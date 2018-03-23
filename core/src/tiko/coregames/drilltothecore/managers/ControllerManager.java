@@ -87,12 +87,10 @@ public class ControllerManager {
     }
 
     public void setInvertedX(boolean inverted) {
-        setXThreshold(minNegativeThreshold.x, minPositiveThreshold.x);
         invertedX = inverted;
     }
 
     public void setInvertedY(boolean inverted) {
-        setYThreshold(minNegativeThreshold.y, minPositiveThreshold.y);
         invertedY = inverted;
     }
 
