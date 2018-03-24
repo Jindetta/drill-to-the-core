@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.MathUtils;
 import tiko.coregames.drilltothecore.managers.ControllerManager;
 import tiko.coregames.drilltothecore.managers.LevelManager;
 import tiko.coregames.drilltothecore.managers.LocalizationManager;
@@ -20,6 +21,10 @@ public class Player extends BaseObject {
     private float totalFuel, fuelConsumptionRate;
     private float baseScore, bonusScore;
     private float scoreMultiplier;
+
+    private float collectibleMultiplier, speedMultiplier;
+    private float collectibleTimer, speedTimer, viewTimer, idleTimer;
+
     private Circle playerView;
 
     private int nextOrientation;
@@ -36,8 +41,14 @@ public class Player extends BaseObject {
         this.localizer = localizer;
         playerOrientation = "L";
 
-        setMaxFuel();
+        fuelConsumptionRate = PLAYER_FUEL_MIN_CONSUMPTION * PLAYER_FUEL_IDLE_MULTIPLIER;
+        speedMultiplier = 1;
+        speedTimer = 0;
+        viewTimer = 0;
+        idleTimer = 5;
+
         setInitialScoreValues();
+        setMaxFuel();
     }
 
     private void setDefaultOrientation() {
@@ -47,7 +58,6 @@ public class Player extends BaseObject {
 
     private void setMaxFuel() {
         totalFuel = PLAYER_FUEL_TANK_SIZE;
-        fuelConsumptionRate = PLAYER_FUEL_MIN_CONSUMPTION;
     }
 
     private boolean consumeFuel(float delta) {
@@ -57,6 +67,8 @@ public class Player extends BaseObject {
     }
 
     private void setInitialScoreValues() {
+        collectibleTimer = 0;
+        collectibleMultiplier = 1;
         scoreMultiplier = 1;
         bonusScore = 0;
         baseScore = 0;
@@ -122,6 +134,8 @@ public class Player extends BaseObject {
 
     @Override
     public void draw(SpriteBatch batch, float delta) {
+        boolean playerIsMoving = false;
+
         if (consumeFuel(delta)) {
             // Update movement based on controller input
             controller.updateController(delta);
@@ -130,12 +144,12 @@ public class Player extends BaseObject {
             float accelerometerY = controller.getCurrentY();
 
             if (isDirectionAllowed('R') && (accelerometerX > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
-                translateX( PLAYER_MOVE_SPEED * delta);
+                translateX( PLAYER_MOVE_SPEED * speedMultiplier * delta);
                 accelerometerX = PLAYER_MOVE_SPEED;
                 rotateSprite("R", delta);
             }
             if (isDirectionAllowed('L') && (accelerometerX < 0 || Gdx.input.isKeyPressed(Input.Keys.LEFT))) {
-                translateX(-PLAYER_MOVE_SPEED * delta);
+                translateX(-PLAYER_MOVE_SPEED * speedMultiplier * delta);
                 accelerometerX = -PLAYER_MOVE_SPEED;
                 rotateSprite("L", delta);
             }
@@ -143,21 +157,23 @@ public class Player extends BaseObject {
             // Allow only one axis movement
             if (accelerometerX == 0) {
                 if (isDirectionAllowed('U') && (accelerometerY > 0 || Gdx.input.isKeyPressed(Input.Keys.UP))) {
-                    translateY(PLAYER_MOVE_SPEED * delta);
+                    translateY(PLAYER_MOVE_SPEED * speedMultiplier * delta);
                     accelerometerY = PLAYER_MOVE_SPEED;
                     rotateSprite("U", delta);
                 }
                 if (isDirectionAllowed('D') && (accelerometerY < 0 || Gdx.input.isKeyPressed(Input.Keys.DOWN))) {
-                    translateY(-PLAYER_MOVE_SPEED * delta);
+                    translateY(-PLAYER_MOVE_SPEED * speedMultiplier * delta);
                     accelerometerY = -PLAYER_MOVE_SPEED;
                     rotateSprite("D", delta);
                 }
             }
 
+            playerIsMoving = accelerometerX != 0 || accelerometerY != 0;
             increaseScoreMultiplier();
             updateTileStatus();
         }
 
+        updateTimerStatus(!playerIsMoving, delta);
         super.draw(batch);
     }
 
@@ -196,11 +212,47 @@ public class Player extends BaseObject {
 
         if (cell != null && cell.getTile() != null) {
             String key = map.getString(cell.getTile(), "id");
-            Integer value = map.getInteger(cell.getTile(), "value");
 
-            if (value != null) {
-                addBaseScore(value);
-                Gdx.app.log(getClass().getSimpleName(), "Collected: " + getCollectibleName(key));
+            if (key != null) {
+                switch (key) {
+                    case "bigFuel":
+                    case "mediumFuel":
+                    case "smallFuel":
+                        Boolean isCompleteRefill = map.getBoolean(cell.getTile(), "completeRefill");
+
+                        if (isCompleteRefill != null && isCompleteRefill) {
+                            setMaxFuel();
+                        } else {
+                            Float amount = map.getFloat(cell.getTile(), "amount");
+
+                            float multiplier = PLAYER_FUEL_TANK_SIZE * (amount / 100);
+                            totalFuel = MathUtils.clamp(totalFuel + multiplier, totalFuel, PLAYER_FUEL_TANK_SIZE);
+                        }
+
+                        break;
+                    case "radarPowerUp":
+                        playerView.radius *= 2;
+                        viewTimer = 5;
+                        break;
+                    case "pointMultiplier":
+                        collectibleMultiplier = 1.5f;
+                        collectibleTimer = 30;
+                        break;
+                    case "speedMultiplier":
+                        speedMultiplier = 1.33f;
+                        speedTimer = 10;
+                        break;
+                    default:
+                        Integer value = map.getInteger(cell.getTile(), "value");
+
+                        if (value != null) {
+                            addBaseScore(value * collectibleMultiplier);
+                        }
+
+                        break;
+                }
+
+                Gdx.app.log(getClass().getSimpleName(), getCollectibleName(key));
             }
 
             cell.setTile(null);
@@ -224,6 +276,47 @@ public class Player extends BaseObject {
 
                 updateCollectibleStatus(x - getWidth() / 2, y);
             }
+        }
+    }
+
+    private void updateTimerStatus(boolean isPlayerIdle, float delta) {
+        if (viewTimer > 0) {
+            viewTimer -= delta;
+
+            if (viewTimer <= 0) {
+                playerView.radius = PLAYER_VIEW_RADIUS;
+                viewTimer = 0;
+            }
+        }
+
+        if (collectibleTimer > 0) {
+            collectibleTimer -= delta;
+
+            if (collectibleTimer <= 0) {
+                collectibleMultiplier = 1;
+                collectibleTimer = 0;
+            }
+        }
+
+        if (speedTimer > 0) {
+            speedTimer -= delta;
+
+            if (speedTimer <= 0) {
+                speedMultiplier = 1;
+                speedTimer = 0;
+            }
+        }
+
+        if (isPlayerIdle) {
+            idleTimer -= delta;
+
+            if (idleTimer <= 0) {
+                fuelConsumptionRate = PLAYER_FUEL_MIN_CONSUMPTION * PLAYER_FUEL_IDLE_MULTIPLIER;
+                idleTimer = 0;
+            }
+        } else {
+            fuelConsumptionRate = PLAYER_FUEL_MIN_CONSUMPTION;
+            idleTimer = 5;
         }
     }
 

@@ -2,8 +2,7 @@ package tiko.coregames.drilltothecore.managers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.*;
 
 import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
@@ -16,6 +15,9 @@ public class ControllerManager {
 
     private Vector2 calibrationX;
     private Vector2 calibrationY;
+
+    private Matrix4 rotationMatrix;
+    private Vector3 rotationVector;
 
     private int calibrationIterations;
     private float calibrationTime;
@@ -32,7 +34,7 @@ public class ControllerManager {
         minPositiveThreshold = new Vector2();
         minNegativeThreshold = new Vector2();
 
-        // DEBUG
+        // FOR DEBUGGING PURPOSES ONLY
         calibrationX = new Vector2();
         calibrationY = new Vector2();
 
@@ -53,16 +55,53 @@ public class ControllerManager {
         setInvertedY(settings.getBoolean("invertedY"));
     }
 
+    // Additional calibration method - Needs more testing
+    private void createRotationMatrix() {
+        Vector3 values = new Vector3(
+            Gdx.input.getAccelerometerX(),
+            Gdx.input.getAccelerometerY(),
+            Gdx.input.getAccelerometerZ()
+        );
+
+        Quaternion quaternion = new Quaternion();
+        quaternion.setFromCross(new Vector3(0, 0, 1), values.nor());
+
+        rotationMatrix = new Matrix4(Vector3.Zero, quaternion, new Vector3(1, 1, 1)).inv();
+    }
+
+    // Additional calibration method - Needs more testing
+    private void setInputCalibration() {
+        float x = Gdx.input.getAccelerometerX();
+        float y = Gdx.input.getAccelerometerY();
+        float z = Gdx.input.getAccelerometerZ();
+
+        if (rotationVector == null) {
+            rotationVector = new Vector3(x, y, z);
+        } else {
+            rotationVector.set(x, y, z);
+        }
+
+        rotationVector.mul(rotationMatrix);
+    }
+
     private boolean calibrationMode(float x, float y, float delta) {
         if (calibrationTime > 0) {
             calibrationTime -= delta;
 
             if (calibrationTime > 0) {
+                // Threshold integration - test with chair
+                x += (minPositiveThreshold.x + minNegativeThreshold.x) / 2;
+                y += (minPositiveThreshold.y + minNegativeThreshold.y) / 2;
                 calibrationIterations++;
+
                 baseline.add(x, y);
             } else {
-                baseline.set(baseline.x / calibrationIterations, baseline.y / calibrationIterations);
+                // Calibration rounding - test with chair
+                x = Math.round(baseline.x / calibrationIterations * 100) / 100;
+                y = Math.round(baseline.y / calibrationIterations * 100) / 100;
                 calibrationIterations = 0;
+
+                baseline.set(x, y);
             }
         }
 

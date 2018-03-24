@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.2" orientation="orthogonal" renderorder="right-down" width="128" height="256" tilewidth="8" tileheight="8" infinite="0" nextobjectid="2">
- <tileset firstgid="1" name="background-tiles" tilewidth="32" tileheight="32" tilecount="18" columns="6">
-  <image source="../images/background-tiles.png" width="192" height="96"/>
+<map version="1.0" tiledversion="1.1.3" orientation="orthogonal" renderorder="right-down" width="128" height="256" tilewidth="8" tileheight="8" infinite="0" nextobjectid="2">
+ <tileset firstgid="1" name="background-tiles" tilewidth="32" tileheight="32" tilecount="24" columns="6">
+  <image source="../images/background-tiles.png" width="192" height="128"/>
   <tile id="7">
    <properties>
     <property name="id" value="pinkGem"/>
@@ -32,8 +32,51 @@
     <property name="value" type="int" value="2500"/>
    </properties>
   </tile>
+  <tile id="12">
+   <properties>
+    <property name="completeRefill" type="bool" value="true"/>
+    <property name="id" value="bigFuel"/>
+   </properties>
+  </tile>
+  <tile id="13">
+   <properties>
+    <property name="amount" type="float" value="50"/>
+    <property name="id" value="mediumFuel"/>
+   </properties>
+  </tile>
+  <tile id="14">
+   <properties>
+    <property name="amount" type="float" value="20"/>
+    <property name="id" value="smallFuel"/>
+   </properties>
+  </tile>
+  <tile id="18">
+   <properties>
+    <property name="id" value="radarPowerUp"/>
+   </properties>
+  </tile>
+  <tile id="19">
+   <properties>
+    <property name="id" value="speedMultiplier"/>
+   </properties>
+  </tile>
+  <tile id="20">
+   <properties>
+    <property name="id" value="drillSpeedMultiplier"/>
+   </properties>
+  </tile>
+  <tile id="22">
+   <properties>
+    <property name="id" value="pointMultiplier"/>
+   </properties>
+  </tile>
+  <tile id="23">
+   <properties>
+    <property name="id" value="randomPowerUp"/>
+   </properties>
+  </tile>
  </tileset>
- <tileset firstgid="19" name="foreground-tiles" tilewidth="8" tileheight="8" tilecount="112" columns="28">
+ <tileset firstgid="25" name="foreground-tiles" tilewidth="8" tileheight="8" tilecount="112" columns="28">
   <image source="../images/foreground-tiles.png" width="224" height="32"/>
  </tileset>
  <layer name="background" width="128" height="256">
@@ -43,17 +86,17 @@
  </layer>
  <layer name="ground" width="128" height="256">
   <data encoding="base64" compression="zlib">
-   eJzt00eqVFEYRtGag1nMuWcWnzn1zGLOPbOY8+DdMyi5UHAs1g9f7y64jbNnM+ecc84555xzzjnnnHPOOeecc87977eqrW5r2tq2qW1uW9rWtq1tbzvazrar7W572t62b4KZ9/2Uf1jEfy6jWdfWtw1tY9vfDrSD7VA73lbaiXaynWqn25l2tp1r59uFdrFdmmDmfT/lHxbxn8toDrcj7Wg71i63K+1qu9ZutzvtbrvX7rcH7WF71B63J+1pe9aeTzDzvp/yD4v4z2U019uNdrPdai/ay/aqvW4f2sf2qX1uX9rX9q19bz/az/ar/W5/Jph530/5h0X85zKaN+1te9fez8Z+q8zizchvlVm8GfFNMvpn9M/on9E/o39G/4z+Gf0z+mf0z+if0T+jf0b/jP4Z/TP6Z/TP6J/RP6N/Rv+M/hn9M/pn9M+M+SYZ/TP6Z/TP6J/RP6N/Rv+M/hn9M/pn9M/on9E/o39G/4z+Gf0z+mf0z+if0T+jf0b/jP4Z/TP6Z8Z8k4z+Gf0z+mf0z+if0T+jf0b/jP4Z/TP6Z/TP6J/RP6N/Rv+M/hn9M/pn9M/on9E/o39G/4z+Gf0zY75JRv+M/hn9M/pn9M/on9E/o39G/4z+Gf0z+mf0z+if0T+jf0b/jP4Z/TP6Z/TP6J/RP6N/Rv+M/pkx3ySjf0b/jP4Z/TP6Z/TP6J/RP6N/Rv+M/hn9M/pn9M/on9E/o39G/4z+Gf0z+mf0z+if0T+jf0b/zJhvktE/o39G/4z+Gf0z+mf0z+if0T+jf0b/jP4Z/TP6Z/TP6J/RP6N/Rv+M/hn9M/pn9M/on9E/o39mzDfJ6J/RP6N/Rv+M/hn9M/pn9M/on9E/o39G/4z+Gf0z+mf0z+if0T+jf0b/jP4Z/TP6Z/TP6J/RPzPmm2T0z+if0T+jf0b/jP4Z/TP6Z/TP6J/RP6N/Rv+M/hn9M/pn9M/on9E/o39G/4z+Gf0z+mf0z+ifGfNNMvpn9M/on9E/o39G/4z+Gf0z+mf0z+if0T+jf0b/jP4Z/TP6Z/7N/AXUmX8d
+   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
   </data>
  </layer>
  <layer name="collectibles" width="128" height="256">
   <data encoding="base64" compression="zlib">
-   eJzt3U0OgkAMBlCWKtz/vC7YGRINztAf3jtBNQah/cosCwAAAAAAAAAAAAAAAAAw2yO6gEG6fA4AINYzugAAKMgzOQDQkXscAAAAIBuZBqhJrxEAAIAK9J7IbosuAGjpFV0AABRnFgoAAADHPDMDAAAAV5GDAwCgCjM0AAAAAOCbNboAAAAACCRfc47vDcZxVgEAAAAAAABwJe/RA6gnS15LzgUA6CrL/RYAAAAAdGbeCAAA/zPfBqAzO08A57mGjmOeAXBMXwoAAAAAmGWNLmACPVUAAIB6ZDEB6E7fksr8fgGASrboAgAAAAA+yMUAd2G2DAAAAMBszrIAAO7MPA6owvUKAAD4lX0LRup47goA88igAAAAAOxmvM9bz34MPSwAAKAj50oBQC52ggG4C3tsAAD56EsAUJn/Ma6WOVueuTagB3tKMI8ZGnDkDcj6AfA=
+   eJzt3U1uwkAMBlCWbaGwoFLvf9Mu2hVKVARjPPa8d4F8oCg/tidzOAAAAAAAAAAAAAAAAMzhKzsAAAR6yw4wSJffAQDkes8OAAAFeScHADryjAMAAADsuSQdt8NMwzk7ACRQawQAAKCCDrUnejtlByDUd3YAlvWRHQAAitMLBQAAgG3emQEAAIBXMQcHAEAVemgAAAAAwH+O2QEAAABYStY+dHvM1zzG/wbj2KsAAAAAAAAA9p2zAzTkO3oA9cwyr2XOBQDoapbnLQCACNfsAAAA8Ee/EQAAnqe/DUBn1jwBPM41dBz9DIBt6lIAAAAAQJRjdoAAaqoAAAD1mMUEoDt1Sypz/gIAlZyyAwAAAADcMBcDrEJvGQAAAIBo9rIAAFamH1fXZ3YAeDHXKwAA4F7WWzBSx31XAIhjBgUAAADgV8T3vNXsx1DDAgAAOrKvFADMxZpgAFZhHRsAwHzUJQCorOJ97JIdgKfMPFs+czagB+uUII4eGrDlBwV6AoQ=
   </data>
  </layer>
  <layer name="shroud" width="128" height="256">
   <data encoding="base64" compression="zlib">
-   eJzt1dENggAQREH6AW0DpA2FNhQrZ5sgF3KzyX5MBW8YzMzMzMzMzMzMzMzMzMzMzMzsrhvzKX/kT27nOV/yV75yO7/zT77lO7fzN//lR/7ndq7uD+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/1/eH9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/r+8P6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/X9Yf1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/3n+v6w/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/nN9f1j/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/ub4/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP9c3x/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n++zifXXxvZ
+   eJzt1dENggAQREFaAm0DpA2FNhTLZpsgF3KzyX5MBW8YzMzMzMzMzMzMzMzMzMzMzMzsrhvzKX/kT27nOV/yV75yO7/zT77lO7fzN//lR/7ndq7uD+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/1/eH9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/r+8P6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/X9Yf1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/3n+v6w/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/nN9f1j/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n/ub4/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP+s/6z/rP9c3x/Wf9Z/1n/Wf9Z/1n/Wf9Z/1n++zidS9uX3
   </data>
  </layer>
  <objectgroup name="spawns">
