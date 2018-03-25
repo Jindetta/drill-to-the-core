@@ -26,7 +26,7 @@ public class Player extends BaseObject {
     private float startingDepth;
 
     private float collectibleMultiplier, speedMultiplier;
-    private float collectibleTimer, speedTimer, viewTimer, idleTimer;
+    private float collectibleTimer, speedTimer, viewTimer, currentIdleTime;
 
     private Circle playerView;
 
@@ -46,11 +46,12 @@ public class Player extends BaseObject {
         this.localizer = localizer;
         playerOrientation = "L";
 
-        fuelConsumptionRate = PLAYER_FUEL_MIN_CONSUMPTION * PLAYER_FUEL_IDLE_MULTIPLIER;
         speedMultiplier = 1;
         speedTimer = 0;
         viewTimer = 0;
-        idleTimer = 5;
+
+        fuelConsumptionRate = PLAYER_FUEL_IDLE_MULTIPLIER;
+        currentIdleTime = PLAYER_IDLE_STATE_DELAY;
 
         setInitialScoreValues();
         setMaxFuel();
@@ -66,7 +67,7 @@ public class Player extends BaseObject {
     }
 
     private boolean consumeFuel(float delta) {
-        totalFuel = Math.max(0, totalFuel - fuelConsumptionRate * delta);
+        totalFuel = Math.max(0, totalFuel - PLAYER_FUEL_MIN_CONSUMPTION * (fuelConsumptionRate * delta));
 
         return totalFuel > 0;
     }
@@ -233,7 +234,7 @@ public class Player extends BaseObject {
 
                 break;
             case "radarPowerUp":
-                playerView.radius *= 1.5f;
+                playerView.radius = PLAYER_VIEW_RADIUS * 1.5f;
                 viewTimer = 5;
                 break;
             case "pointMultiplier":
@@ -285,7 +286,7 @@ public class Player extends BaseObject {
                     cell.setTile(null);
                 }
 
-                updateCollectibleStatus(x - getWidth() / 2, y);
+                updateCollectibleStatus(x - getWidth() / 2, y - getHeight() / 2);
             }
         }
     }
@@ -315,16 +316,10 @@ public class Player extends BaseObject {
             }
         }
 
-        if (playerIdling) {
-            idleTimer = Math.max(idleTimer - delta, 0);
+        currentIdleTime = playerIdling ? Math.min(currentIdleTime + delta, PLAYER_IDLE_STATE_DELAY) : 0;
 
-            if (MathUtils.isZero(idleTimer)) {
-                fuelConsumptionRate = PLAYER_FUEL_MIN_CONSUMPTION * PLAYER_FUEL_IDLE_MULTIPLIER;
-            }
-        } else {
-            fuelConsumptionRate = PLAYER_FUEL_MIN_CONSUMPTION;
-            idleTimer = 5;
-        }
+        float baseMultiplier = (1 + PLAYER_FUEL_IDLE_MULTIPLIER) - currentIdleTime / PLAYER_IDLE_STATE_DELAY;
+        fuelConsumptionRate = Math.max(PLAYER_FUEL_IDLE_MULTIPLIER, Math.min(baseMultiplier, 1));
     }
 
     private boolean isDirectionAllowed(char direction) {

@@ -5,37 +5,36 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Array;
+
+import java.util.HashMap;
 
 import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
 public class Debug {
     private static BitmapFont font;
-    private static Array<BaseDebug> debugData;
+    private static HashMap<String, BaseDebug> debugData;
     private static OrthographicCamera debugCamera;
 
     static {
         font = new BitmapFont(Gdx.files.internal("menu/debug.fnt"));
         debugCamera = new OrthographicCamera();
-        addDebugger(new BaseDebug());
+        addDebugger(new BaseDebug(), "");
     }
 
-    public static void addDebugger(BaseDebug debugObject) {
+    public static void addDebugger(BaseDebug debugObject, String key) {
         if (debugObject != null) {
             if (debugData == null) {
-                debugData = new Array<>();
+                debugData = new HashMap<>();
             }
 
-            if (!debugData.contains(debugObject, true)) {
-                debugData.add(debugObject);
-            }
+            debugData.put(key, debugObject);
         }
     }
 
     public static void render(SpriteBatch batch) {
         if (DEBUG_MODE && debugData != null) {
             batch.setProjectionMatrix(debugCamera.combined);
-            for (BaseDebug debugObject : debugData) {
+            for (BaseDebug debugObject : debugData.values()) {
                 debugObject.render(batch);
             }
         }
@@ -49,7 +48,7 @@ public class Debug {
         font.dispose();
     }
 
-    public static class BaseDebug {
+    private static class BaseDebug {
         String debugString;
         GlyphLayout layout;
 
@@ -57,7 +56,7 @@ public class Debug {
 
         BaseDebug() {
             timeElapsed = 0;
-            debugString = "FPS: %d (%d)\n%d:%02d:%02d -> %.2f (+%.3f)\nAccelX: %.4f\nAccelY: %.4f";
+            debugString = "FPS: %d (%d)\n%d:%02d:%02d -> %.1f +%.3f\nAccelX: %.4f\nAccelY: %.4f";
             layout = new GlyphLayout(font, debugString);
         }
 
@@ -95,6 +94,10 @@ public class Debug {
         }
 
         void render(SpriteBatch batch) {
+            if (debugString == null) {
+                return;
+            }
+
             layout.setText(font, debugString);
             font.draw(batch, layout, Gdx.graphics.getWidth() - layout.width - SAFEZONE_SIZE, Gdx.graphics.getHeight() - SAFEZONE_SIZE);
         }

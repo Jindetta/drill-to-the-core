@@ -26,6 +26,7 @@ public class Constants {
     public static final float PLAYER_FUEL_TANK_SIZE = 90;
     public static final float PLAYER_FUEL_MIN_CONSUMPTION = 1f;
     public static final float PLAYER_FUEL_IDLE_MULTIPLIER = .25f;
+    public static final float PLAYER_IDLE_STATE_DELAY = 5;
     public static final float PLAYER_VIEW_RADIUS = 75;
 
     public static final int PLAYER_ORIENTATION_UP = 0;

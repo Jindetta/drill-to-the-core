@@ -43,7 +43,7 @@ public class GameScreen extends BaseScreen {
         createPauseWindow();
 
         customDebug = new Debug.CustomDebug();
-        Debug.addDebugger(customDebug);
+        Debug.addDebugger(customDebug, "player");
     }
 
     private void createPauseWindow() {
@@ -116,7 +116,7 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public void hide() {
-        customDebug.setDebugString("");
+        customDebug.setDebugString(null);
         Gdx.input.setCatchBackKey(false);
         super.hide();
     }

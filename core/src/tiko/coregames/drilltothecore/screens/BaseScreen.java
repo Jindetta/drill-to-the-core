@@ -14,7 +14,7 @@ public abstract class BaseScreen extends Stage implements Screen {
 
     BaseScreen() {
         super(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT));
-        skin = new Skin(Gdx.files.internal("menu/uiskin.json"));
+        skin = new Skin(Gdx.files.internal("menu/skin.json"));
     }
 
     @Override
