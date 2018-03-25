@@ -157,8 +157,9 @@ public class LevelManager {
      * @param property      Property name.
      * @return              Property as String.
      */
-    public String getString(TiledMapTile tile, String property) {
-        return getProperty(tile, property, String.class);
+    public String getString(TiledMapTile tile, String property, String defaultValue) {
+        String value = getProperty(tile, property, String.class);
+        return value != null ? value : defaultValue;
     }
 
     /**
@@ -168,8 +169,9 @@ public class LevelManager {
      * @param property      Property name.
      * @return              Property as Boolean.
      */
-    public Boolean getBoolean(TiledMapTile tile, String property) {
-        return getProperty(tile, property, Boolean.class);
+    public Boolean getBoolean(TiledMapTile tile, String property, Boolean defaultValue) {
+        Boolean value = getProperty(tile, property, Boolean.class);
+        return value != null ? value : defaultValue;
     }
 
     /**
@@ -179,8 +181,9 @@ public class LevelManager {
      * @param property      Property name.
      * @return              Property as Integer.
      */
-    public Integer getInteger(TiledMapTile tile, String property) {
-        return getProperty(tile, property, Integer.class);
+    public Integer getInteger(TiledMapTile tile, String property, Integer defaultValue) {
+        Integer value = getProperty(tile, property, Integer.class);
+        return value != null ? value : defaultValue;
     }
 
     /**
@@ -190,8 +193,9 @@ public class LevelManager {
      * @param property      Property name.
      * @return              Property as Float.
      */
-    public Float getFloat(TiledMapTile tile, String property) {
-        return getProperty(tile, property, Float.class);
+    public Float getFloat(TiledMapTile tile, String property, Float defaultValue) {
+        Float value = getProperty(tile, property, Float.class);
+        return value != null ? value : defaultValue;
     }
 
     /**

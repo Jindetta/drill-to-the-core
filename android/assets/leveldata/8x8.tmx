@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.3" orientation="orthogonal" renderorder="right-down" width="128" height="256" tilewidth="8" tileheight="8" infinite="0" nextobjectid="2">
+<map version="1.0" tiledversion="1.1.3" orientation="orthogonal" renderorder="right-down" width="128" height="256" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#80c0ee" nextobjectid="2">
  <tileset firstgid="1" name="background-tiles" tilewidth="32" tileheight="32" tilecount="24" columns="6">
   <image source="../images/background-tiles.png" width="192" height="128"/>
   <tile id="7">
@@ -91,7 +91,7 @@
  </layer>
  <layer name="collectibles" width="128" height="256">
   <data encoding="base64" compression="zlib">
-   eJzt3U1uwkAMBlCWbaGwoFLvf9Mu2hVKVARjPPa8d4F8oCg/tidzOAAAAAAAAAAAAAAAAMzhKzsAAAR6yw4wSJffAQDkes8OAAAFeScHADryjAMAAADsuSQdt8NMwzk7ACRQawQAAKCCDrUnejtlByDUd3YAlvWRHQAAitMLBQAAgG3emQEAAIBXMQcHAEAVemgAAAAAwH+O2QEAAABYStY+dHvM1zzG/wbj2KsAAAAAAAAA9p2zAzTkO3oA9cwyr2XOBQDoapbnLQCACNfsAAAA8Ee/EQAAnqe/DUBn1jwBPM41dBz9DIBt6lIAAAAAQJRjdoAAaqoAAAD1mMUEoDt1Sypz/gIAlZyyAwAAAADcMBcDrEJvGQAAAIBo9rIAAFamH1fXZ3YAeDHXKwAA4F7WWzBSx31XAIhjBgUAAADgV8T3vNXsx1DDAgAAOrKvFADMxZpgAFZhHRsAwHzUJQCorOJ97JIdgKfMPFs+czagB+uUII4eGrDlBwV6AoQ=
+   eJzt3UFywjAMBVCWLVBYpDP0/iftomxa6NASO7Lk9y7Ah4GQSLK92wEAAAAAAAAAAAAAAFl9RAdo7D06APxQ7TcGxHqJDtBIlfcBAMR6jQ4AAAl5JgcAKnKPAwAAwAyW6ABJnYNet8JMwyk6AARQawQAACCDCrUnajtGB6CrS3SAwenn9LOPDgAAyemFAgAAwH2emQEAAOI404vZmIMDACALPTQAAAD4zl4bALcO0QEAAACYStQ5dL8xX/Mcnxu046wCAAAAAAAqM8MPrHWKDlCQffQA8hllXsucCwBQ1Sj3W/yfMzIA4LElOgAAAFzpNwIAwHr62wBUZs0TwPNcQ9vRzwC4T10KAAAAAOjlEB2gAzVVYC37KgEAbM8sJgDVqVuSme8vAJDJMToAAABAJ2YbIS9zMcAs9JYBAAAA6M1ZFgDAzPTj8nqLDgAbc70CAAD+ynoLWqp47goA/ZhBAQAAAPjSYz9vNfs21LAAYCz2BQZow7lSADAWa4IBmIV1bAAA41GXACCzjP9j5+gArDLybPnI2YAarFOCfh710JZNUkANl+gADX0CcCoDqg==
   </data>
  </layer>
  <layer name="shroud" width="128" height="256">

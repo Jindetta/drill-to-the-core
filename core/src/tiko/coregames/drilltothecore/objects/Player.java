@@ -2,6 +2,7 @@ package tiko.coregames.drilltothecore.objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
@@ -22,6 +23,8 @@ public class Player extends BaseObject {
     private float baseScore, bonusScore;
     private float scoreMultiplier;
 
+    private float startingDepth;
+
     private float collectibleMultiplier, speedMultiplier;
     private float collectibleTimer, speedTimer, viewTimer, idleTimer;
 
@@ -36,6 +39,8 @@ public class Player extends BaseObject {
         controller = new ControllerManager();
         playerView = new Circle(x + getWidth() / 2, y + getHeight() / 2, PLAYER_VIEW_RADIUS);
         setPosition(x, y);
+
+        startingDepth = y;
 
         this.map = map;
         this.localizer = localizer;
@@ -82,9 +87,11 @@ public class Player extends BaseObject {
         bonusScore += value;
     }
 
-    private void increaseScoreMultiplier() {
-        maximumDrillDepth = Math.max(maximumDrillDepth, TOTAL_TILES_HEIGHT - getY());
-        scoreMultiplier = maximumDrillDepth / 100f;
+    private void increaseMaximumDepth() {
+        maximumDrillDepth = Math.max(maximumDrillDepth, Math.round(startingDepth - getY()));
+
+        //DEBUG
+        scoreMultiplier = maximumDrillDepth / 150f;
     }
 
     public int getTotalScore() {
@@ -104,10 +111,6 @@ public class Player extends BaseObject {
         } else {
             return isStraightAngle ? PLAYER_ORIENTATION_LEFT : PLAYER_ORIENTATION_UP_LEFT;
         }
-    }
-
-    public String getControllerBaseline() {
-        return controller.getBaselineValues();
     }
 
     public float getDrillDepth() {
@@ -168,9 +171,11 @@ public class Player extends BaseObject {
                 }
             }
 
-            playerIsMoving = accelerometerX != 0 || accelerometerY != 0;
-            increaseScoreMultiplier();
-            updateTileStatus();
+            if (accelerometerX != 0 || accelerometerY != 0) {
+                playerIsMoving = true;
+                increaseMaximumDepth();
+                updateTileStatus();
+            }
         }
 
         updateTimerStatus(!playerIsMoving, delta);
@@ -207,54 +212,61 @@ public class Player extends BaseObject {
         }
     }
 
+    private void collectItemByName(TiledMapTile tile, String key) {
+        if (key == null) {
+            key = map.getString(tile, "id", "");
+        }
+
+        switch (key) {
+            case "bigFuel":
+            case "mediumFuel":
+            case "smallFuel":
+                Boolean isCompleteRefill = map.getBoolean(tile, "completeRefill", false);
+
+                if (isCompleteRefill) {
+                    setMaxFuel();
+                } else {
+                    Float amount = map.getFloat(tile, "amount", 0f);
+
+                    float multiplier = PLAYER_FUEL_TANK_SIZE * (amount / 100);
+                    totalFuel = MathUtils.clamp(totalFuel + multiplier, totalFuel, PLAYER_FUEL_TANK_SIZE);
+                }
+
+                break;
+            case "radarPowerUp":
+                playerView.radius *= 1.5f;
+                viewTimer = 5;
+                break;
+            case "pointMultiplier":
+                collectibleMultiplier = 1.5f;
+                collectibleTimer = 30;
+                break;
+            case "speedMultiplier":
+                speedMultiplier = 1.33f;
+                speedTimer = 10;
+                break;
+            case "randomPowerUp":
+                final String[] POWER_UPS = new String[] {
+                    "pointMultiplier", "speedMultiplier", "radarPowerUp", ""
+                };
+
+                collectItemByName(tile, POWER_UPS[MathUtils.random(0, POWER_UPS.length - 1)]);
+                return;
+            default:
+                Integer value = map.getInteger(tile, "value", 0);
+
+                addBaseScore(value * collectibleMultiplier);
+                break;
+        }
+
+        Gdx.app.log(getClass().getSimpleName(), getCollectibleName(key));
+    }
+
     private void updateCollectibleStatus(float x, float y) {
         TiledMapTileLayer.Cell cell = map.getCellFromPosition(x, y, "collectibles");
 
         if (cell != null && cell.getTile() != null) {
-            String key = map.getString(cell.getTile(), "id");
-
-            if (key != null) {
-                switch (key) {
-                    case "bigFuel":
-                    case "mediumFuel":
-                    case "smallFuel":
-                        Boolean isCompleteRefill = map.getBoolean(cell.getTile(), "completeRefill");
-
-                        if (isCompleteRefill != null && isCompleteRefill) {
-                            setMaxFuel();
-                        } else {
-                            Float amount = map.getFloat(cell.getTile(), "amount");
-
-                            float multiplier = PLAYER_FUEL_TANK_SIZE * (amount / 100);
-                            totalFuel = MathUtils.clamp(totalFuel + multiplier, totalFuel, PLAYER_FUEL_TANK_SIZE);
-                        }
-
-                        break;
-                    case "radarPowerUp":
-                        playerView.radius *= 2;
-                        viewTimer = 5;
-                        break;
-                    case "pointMultiplier":
-                        collectibleMultiplier = 1.5f;
-                        collectibleTimer = 30;
-                        break;
-                    case "speedMultiplier":
-                        speedMultiplier = 1.33f;
-                        speedTimer = 10;
-                        break;
-                    default:
-                        Integer value = map.getInteger(cell.getTile(), "value");
-
-                        if (value != null) {
-                            addBaseScore(value * collectibleMultiplier);
-                        }
-
-                        break;
-                }
-
-                Gdx.app.log(getClass().getSimpleName(), getCollectibleName(key));
-            }
-
+            collectItemByName(cell.getTile(), null);
             cell.setTile(null);
         }
     }
@@ -416,6 +428,10 @@ public class Player extends BaseObject {
                 playerOrientation = "UR";
             }
         }
+    }
 
+    @Override
+    public String toString() {
+        return String.format("Current points: %d\nDepth reached: %.0f\nTotal fuel: %.2f\n\n%s", getTotalScore(), getDrillDepth(), getFuel(), controller.toString());
     }
 }

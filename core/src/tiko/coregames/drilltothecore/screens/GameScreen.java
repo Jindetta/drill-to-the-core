@@ -158,9 +158,7 @@ public class GameScreen extends BaseScreen {
         act(delta);
         draw();
 
-        customDebug.setDebugString(
-            String.format("Current points: %d\nDepth reached: %.2f\nTotal fuel: %.2f\n%s", player.getTotalScore(), player.getDrillDepth(), player.getFuel(), player.getControllerBaseline())
-        );
+        customDebug.setDebugString(player.toString());
     }
 
     @Override

@@ -108,13 +108,6 @@ public class ControllerManager {
         return calibrationIterations > 0;
     }
 
-    public String getBaselineValues() {
-        calibrationX.set(baseline.x + minNegativeThreshold.x, baseline.x + minPositiveThreshold.x);
-        calibrationY.set(baseline.y + minNegativeThreshold.y, baseline.y + minPositiveThreshold.y);
-
-        return "BASELINE\nX: " + calibrationX.toString() + "\nY: " + calibrationY.toString();
-    }
-
     public void setXThreshold(float positiveThreshold, float negativeThreshold) {
         minPositiveThreshold.x = Math.abs(positiveThreshold);
         minNegativeThreshold.x = -Math.abs(negativeThreshold);
@@ -170,5 +163,13 @@ public class ControllerManager {
 
     public float getCurrentY() {
         return currentValue.y;
+    }
+
+    @Override
+    public String toString() {
+        calibrationX.set(baseline.x + minNegativeThreshold.x, baseline.x + minPositiveThreshold.x);
+        calibrationY.set(baseline.y + minNegativeThreshold.y, baseline.y + minPositiveThreshold.y);
+
+        return "BASELINE\nX: " + calibrationX.toString() + "\nY: " + calibrationY.toString();
     }
 }
