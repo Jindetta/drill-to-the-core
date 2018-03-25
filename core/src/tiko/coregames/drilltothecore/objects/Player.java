@@ -218,40 +218,29 @@ public class Player extends BaseObject {
         }
 
         switch (key) {
-            case "bigFuel":
-            case "mediumFuel":
-            case "smallFuel":
-                Boolean isCompleteRefill = map.getBoolean(tile, "completeRefill", false);
-
-                if (isCompleteRefill) {
-                    setMaxFuel();
-                } else {
-                    Float amount = map.getFloat(tile, "amount", 0f);
-
-                    float multiplier = PLAYER_FUEL_TANK_SIZE * (amount / 100);
-                    totalFuel = MathUtils.clamp(totalFuel + multiplier, totalFuel, PLAYER_FUEL_TANK_SIZE);
-                }
-
-                break;
-            case "radarPowerUp":
+            case POWER_UP_RANDOMIZED:
+                collectItemByName(tile, RANDOM_POWER_UPS[MathUtils.random(0, RANDOM_POWER_UPS.length - 1)]);
+                return;
+            case POWER_UP_RADAR_EXTENDER:
                 playerView.radius = PLAYER_VIEW_RADIUS * 1.5f;
                 viewTimer = 5;
                 break;
-            case "pointMultiplier":
+            case POWER_UP_POINT_MULTIPLIER:
                 collectibleMultiplier = 1.5f;
                 collectibleTimer = 30;
                 break;
-            case "speedMultiplier":
+            case POWER_UP_SPEED_MULTIPLIER:
                 speedMultiplier = 1.33f;
                 speedTimer = 10;
                 break;
-            case "randomPowerUp":
-                final String[] POWER_UPS = new String[] {
-                    "pointMultiplier", "speedMultiplier", "radarPowerUp", ""
-                };
+            case FUEL_CANISTER_REFILL_20:
+            case FUEL_CANISTER_REFILL_50:
+            case FUEL_CANISTER_REFILL_100:
+                Float amount = map.getFloat(tile, "amount", 0f);
 
-                collectItemByName(tile, POWER_UPS[MathUtils.random(0, POWER_UPS.length - 1)]);
-                return;
+                float multiplier = PLAYER_FUEL_TANK_SIZE * (amount / 100);
+                totalFuel = MathUtils.clamp(totalFuel + multiplier, totalFuel, PLAYER_FUEL_TANK_SIZE);
+                break;
             default:
                 Integer value = map.getInteger(tile, "value", 0);
 
