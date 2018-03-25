@@ -2,6 +2,9 @@ package tiko.coregames.drilltothecore.objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -222,7 +225,7 @@ public class Player extends BaseObject {
                 collectItemByName(tile, RANDOM_POWER_UPS[MathUtils.random(0, RANDOM_POWER_UPS.length - 1)]);
                 return;
             case POWER_UP_RADAR_EXTENDER:
-                playerView.radius = PLAYER_VIEW_RADIUS * 1.5f;
+                playerView.setRadius(PLAYER_VIEW_RADIUS * 1.5f);
                 viewTimer = 5;
                 break;
             case POWER_UP_POINT_MULTIPLIER:
@@ -314,8 +317,8 @@ public class Player extends BaseObject {
     private boolean isDirectionAllowed(char direction) {
         switch (direction) {
             case 'L': return getX() > 0;
-            case 'R': return getX() + getWidth() < TOTAL_TILES_WIDTH;
-            case 'U': return getY() + getHeight() < TOTAL_TILES_HEIGHT - TILE_HEIGHT * 3;
+            case 'R': return getX() + getWidth() < map.getMapWidth();
+            case 'U': return getY() + getHeight() < map.getMapHeight() - TILE_HEIGHT * 3;
             case 'D': return getY() > 0;
         }
 

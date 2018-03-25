@@ -1,27 +1,39 @@
 package tiko.coregames.drilltothecore.managers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.maps.*;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Disposable;
 
 /**
  * Handles everything related to levels.
  */
-public class LevelManager {
+public class LevelManager implements Disposable {
     /**
      * Stores level data.
      */
     private TiledMap levelData;
 
     /**
+     * Stores map size
+     */
+    private int mapWidth, mapHeight;
+
+    /**
+     * Stores background color
+     */
+    private Color backgroundColor;
+
+    /**
      * Renders level data.
      */
-    private TiledMapRenderer levelRenderer;
+    private OrthogonalTiledMapRenderer levelRenderer;
 
     public LevelManager(int levelValue) {
         TmxMapLoader loader = new TmxMapLoader();
@@ -30,10 +42,10 @@ public class LevelManager {
         // Choose level or tutorial if invalid value is given
         switch (levelValue) {
             case -1:
-                path.append("4x4.tmx");
+                path.append("tutorial_4x4.tmx");
                 break;
             case -2:
-                path.append("8x8.tmx");
+                path.append("tutorial_8x8.tmx");
                 break;
             default:
                 path.append("tutorial.tmx");
@@ -44,8 +56,28 @@ public class LevelManager {
         destroyLevel();
         // Load new level
         levelData = loader.load(path.toString());
-        // Setup level renderer
-        levelRenderer = new OrthogonalTiledMapRenderer(levelData);
+
+        if (levelRenderer == null) {
+            levelRenderer = new OrthogonalTiledMapRenderer(levelData);
+        } else {
+            levelRenderer.setMap(levelData);
+        }
+
+        MapProperties properties = levelData.getProperties();
+
+        int width = properties.get("width", Integer.class);
+        int height = properties.get("height", Integer.class);
+        int tileWidth = properties.get("tilewidth", Integer.class);
+        int tileHeight = properties.get("tileheight", Integer.class);
+
+        mapHeight = height * tileHeight;
+        mapWidth = width * tileWidth;
+
+        try {
+            backgroundColor = Color.valueOf(properties.get("backgroundcolor", String.class));
+        } catch (Exception e) {
+            backgroundColor = null;
+        }
     }
 
     /**
@@ -57,11 +89,12 @@ public class LevelManager {
         }
     }
 
-    public void renderView(OrthographicCamera camera) {
-        if (camera != null) {
-            levelRenderer.setView(camera);
+    public void renderView(Matrix4 cameraMatrix, float x, float y, float width, float height) {
+        if (backgroundColor != null) {
+            Gdx.gl.glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
         }
 
+        levelRenderer.setView(cameraMatrix, x, y, width, height);
         levelRenderer.render();
     }
 
@@ -90,6 +123,14 @@ public class LevelManager {
 
         // Invalid value - return null
         return null;
+    }
+
+    public int getMapWidth() {
+         return mapWidth;
+    }
+
+    public int getMapHeight() {
+        return mapHeight;
     }
 
     /**
@@ -201,7 +242,9 @@ public class LevelManager {
     /**
      * Disposes all level data.
      */
+    @Override
     public void dispose() {
+        levelRenderer.dispose();
         destroyLevel();
     }
 }

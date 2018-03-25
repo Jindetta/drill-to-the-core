@@ -7,12 +7,6 @@ public class Constants {
     public static final int TILE_WIDTH = 32;
     public static final int TILE_HEIGHT = 32;
 
-    public static final int HORIZONTAL_TILES = 32;
-    public static final int VERTICAL_TILES = 64;
-
-    public static final int TOTAL_TILES_WIDTH = TILE_WIDTH * HORIZONTAL_TILES;
-    public static final int TOTAL_TILES_HEIGHT = TILE_HEIGHT * VERTICAL_TILES;
-
     public static final float MAX_MOVEMENT_VALUE = 10;
     public static final float CONTROLLER_CALIBRATION_TIME = 1.5f;
     public static final int MAX_SAVED_PROFILES = 25;

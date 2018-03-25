@@ -2,16 +2,20 @@ package tiko.coregames.drilltothecore.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import tiko.coregames.drilltothecore.CoreSetup;
 import tiko.coregames.drilltothecore.managers.LevelManager;
@@ -98,14 +102,23 @@ public class GameScreen extends BaseScreen {
         float viewportWidth = camera.viewportWidth * camera.zoom / 2;
         float viewportHeight = camera.viewportHeight * camera.zoom / 2;
 
-        camera.position.x = MathUtils.clamp(player.getX(), viewportWidth, TOTAL_TILES_WIDTH - viewportWidth);
-        camera.position.y = MathUtils.clamp(player.getY(), viewportHeight, TOTAL_TILES_HEIGHT - viewportHeight);
+        camera.position.x = MathUtils.clamp(player.getX(), viewportWidth, map.getMapWidth() - viewportWidth);
+        camera.position.y = MathUtils.clamp(player.getY(), viewportHeight, map.getMapHeight() - viewportHeight);
 
         camera.update();
     }
 
     private void updateFuelMeter() {
         playerFuel.setValue(player.getFuel());
+    }
+
+    private void renderLevelData(Camera camera) {
+        float x = camera.position.x - camera.viewportWidth / 2 - TILE_WIDTH;
+        float y = camera.position.y - camera.viewportHeight / 2 - TILE_HEIGHT;
+        float height = camera.viewportHeight + TILE_HEIGHT;
+        float width = camera.viewportWidth + TILE_WIDTH;
+
+        map.renderView(camera.combined, x, y, width, height);
     }
 
     @Override
@@ -118,6 +131,8 @@ public class GameScreen extends BaseScreen {
     public void hide() {
         customDebug.setDebugString(null);
         Gdx.input.setCatchBackKey(false);
+
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         super.hide();
     }
 
@@ -128,8 +143,8 @@ public class GameScreen extends BaseScreen {
 
         float fuelX = viewport.getWorldWidth() - playerFuel.getWidth() - SAFEZONE_SIZE;
         float fuelY = viewport.getWorldHeight() - playerFuel.getHeight() - SAFEZONE_SIZE;
-        float centerX = (viewport.getWorldWidth() - pauseWindow.getWidth()) / 2;
-        float centerY = (viewport.getWorldHeight() - pauseWindow.getHeight()) / 2;
+        float centerX = (viewport.getWorldWidth() - pauseWindow.getPrefWidth()) / 2;
+        float centerY = (viewport.getWorldHeight() - pauseWindow.getPrefHeight()) / 2;
 
         playerFuel.setPosition(fuelX, fuelY);
         pauseWindow.setPosition(centerX, centerY);
@@ -143,9 +158,10 @@ public class GameScreen extends BaseScreen {
             delta = 0;
         }
 
+        Camera worldCamera = getCamera();
         SpriteBatch batch = CoreSetup.getBatch();
-        OrthographicCamera worldCamera = (OrthographicCamera) getCamera();
-        map.renderView(worldCamera);
+
+        renderLevelData(worldCamera);
 
         batch.begin();
         batch.setProjectionMatrix(worldCamera.combined);

@@ -41,4 +41,9 @@ public abstract class BaseObject extends Sprite implements Disposable {
     public void dispose() {
         getTexture().dispose();
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
+    }
 }
