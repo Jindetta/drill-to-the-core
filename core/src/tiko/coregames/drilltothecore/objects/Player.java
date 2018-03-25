@@ -194,7 +194,6 @@ public class Player extends BaseObject {
     private void updatePlayerView() {
         playerView.setPosition(getX() + getWidth() / 2, getY() + getHeight() / 2);
 
-        // TODO: Change to half circle view based on current heading
         for (float y = playerView.y - playerView.radius; y < playerView.y + playerView.radius; y++) {
             for (float x = playerView.x - playerView.radius; x < playerView.x + playerView.radius; x++) {
                 if (playerView.contains(x, y)) {
@@ -291,40 +290,36 @@ public class Player extends BaseObject {
         }
     }
 
-    private void updateTimerStatus(boolean isPlayerIdle, float delta) {
+    private void updateTimerStatus(boolean playerIdling, float delta) {
         if (viewTimer > 0) {
-            viewTimer -= delta;
+            viewTimer = Math.max(viewTimer - delta, 0);
 
-            if (viewTimer <= 0) {
+            if (MathUtils.isZero(viewTimer)) {
                 playerView.radius = PLAYER_VIEW_RADIUS;
-                viewTimer = 0;
             }
         }
 
         if (collectibleTimer > 0) {
-            collectibleTimer -= delta;
+            collectibleTimer = Math.max(collectibleTimer - delta, 0);
 
-            if (collectibleTimer <= 0) {
+            if (MathUtils.isZero(collectibleTimer)) {
                 collectibleMultiplier = 1;
-                collectibleTimer = 0;
             }
         }
 
         if (speedTimer > 0) {
-            speedTimer -= delta;
+            speedTimer = Math.max(speedTimer - delta, 0);
 
-            if (speedTimer <= 0) {
+            if (MathUtils.isZero(speedTimer)) {
                 speedMultiplier = 1;
-                speedTimer = 0;
             }
         }
 
-        if (isPlayerIdle) {
-            idleTimer -= delta;
+        if (playerIdling) {
+            idleTimer = Math.max(idleTimer - delta, 0);
 
-            if (idleTimer <= 0) {
+            if (MathUtils.isZero(idleTimer)) {
                 fuelConsumptionRate = PLAYER_FUEL_MIN_CONSUMPTION * PLAYER_FUEL_IDLE_MULTIPLIER;
-                idleTimer = 0;
             }
         } else {
             fuelConsumptionRate = PLAYER_FUEL_MIN_CONSUMPTION;
