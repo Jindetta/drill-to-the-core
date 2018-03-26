@@ -16,15 +16,17 @@ public class Debug {
     private static OrthographicCamera screen;
 
     static {
-        addDebugger(new BaseDebug(), "");
+        if (DEBUG_MODE) {
+            screen = new OrthographicCamera();
+            font = new BitmapFont(Gdx.files.internal("menu/debug.fnt"));
+            addDebugger(new BaseDebug(), "");
+        }
     }
 
     public static void addDebugger(BaseDebug debugObject, String key) {
         if (DEBUG_MODE && debugObject != null) {
             if (debugData == null) {
                 debugData = new HashMap<>();
-                screen = new OrthographicCamera();
-                font = new BitmapFont(Gdx.files.internal("menu/debug.fnt"));
             }
 
             debugData.put(key, debugObject);
