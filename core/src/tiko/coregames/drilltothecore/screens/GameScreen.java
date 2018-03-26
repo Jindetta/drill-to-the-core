@@ -33,7 +33,7 @@ public class GameScreen extends BaseScreen {
     private Player player;
 
     public GameScreen() {
-        map = new LevelManager(-2);
+        map = new LevelManager(-1);
         Vector3 playerSpawn = map.getSpawnPoint("player");
         localizer = new LocalizationManager("game");
 
@@ -137,8 +137,6 @@ public class GameScreen extends BaseScreen {
     public void hide() {
         customDebug.setDebugString(null);
         Gdx.input.setCatchBackKey(false);
-
-        Gdx.gl.glClearColor(0, 0, 0, 1);
         super.hide();
     }
 

@@ -1,15 +1,15 @@
 package tiko.coregames.drilltothecore.managers;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.maps.*;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
+import tiko.coregames.drilltothecore.Setup;
+
+import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
 /**
  * Handles everything related to levels.
@@ -26,23 +26,18 @@ public class LevelManager implements Disposable {
     private int mapWidth, mapHeight;
 
     /**
-     * Stores background color
-     */
-    private Color backgroundColor;
-
-    /**
      * Renders level data.
      */
     private OrthogonalTiledMapRenderer levelRenderer;
 
     public LevelManager(int levelValue) {
-        TmxMapLoader loader = new TmxMapLoader();
+        TideMapLoader loader = new TideMapLoader();
         StringBuilder path = new StringBuilder("leveldata/");
 
         // Choose level or tutorial if invalid value is given
         switch (levelValue) {
             case -1:
-                path.append("tutorial_4x4.tmx");
+                path.append("tidemap.tide");
                 break;
             case -2:
                 path.append("tutorial_8x8.tmx");
@@ -58,7 +53,7 @@ public class LevelManager implements Disposable {
         levelData = loader.load(path.toString());
 
         if (levelRenderer == null) {
-            levelRenderer = new OrthogonalTiledMapRenderer(levelData);
+            levelRenderer = new OrthogonalTiledMapRenderer(levelData, Setup.getBatch());
         } else {
             levelRenderer.setMap(levelData);
         }
@@ -67,17 +62,9 @@ public class LevelManager implements Disposable {
 
         int width = properties.get("width", Integer.class);
         int height = properties.get("height", Integer.class);
-        int tileWidth = properties.get("tilewidth", Integer.class);
-        int tileHeight = properties.get("tileheight", Integer.class);
 
-        mapHeight = height * tileHeight;
-        mapWidth = width * tileWidth;
-
-        try {
-            backgroundColor = Color.valueOf(properties.get("backgroundcolor", String.class));
-        } catch (Exception e) {
-            backgroundColor = null;
-        }
+        mapHeight = height * TILE_WIDTH;
+        mapWidth = width * TILE_HEIGHT;
     }
 
     /**
@@ -90,11 +77,8 @@ public class LevelManager implements Disposable {
     }
 
     public void renderView(Matrix4 cameraMatrix, float x, float y, float width, float height) {
-        if (backgroundColor != null) {
-            Gdx.gl.glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
-        }
-
         levelRenderer.setView(cameraMatrix, x, y, width, height);
+
         levelRenderer.render();
     }
 
@@ -108,14 +92,14 @@ public class LevelManager implements Disposable {
      */
     public Vector3 getSpawnPoint(String name) {
         try {
-            // Get "spawn" layer
-            MapLayer layer = levelData.getLayers().get("spawns");
+            MapProperties properties = levelData.getProperties();
 
-            if (layer != null) {
+            if (properties != null) {
                 // Get object from layer and cast it as rectangle shaped object
-                Rectangle point = ((RectangleMapObject) layer.getObjects().get(name)).getRectangle();
+                int spawnX = properties.get("playerX", Integer.class);
+                int spawnY = properties.get("playerY", Integer.class);
 
-                return new Vector3(point.x, point.y, 0);
+                return new Vector3(spawnX * TILE_WIDTH, mapHeight - spawnY * TILE_HEIGHT, 0);
             }
         } catch (Exception e) {
             Gdx.app.log(LevelManager.class.getSimpleName(), "Could not load specified spawn point.");

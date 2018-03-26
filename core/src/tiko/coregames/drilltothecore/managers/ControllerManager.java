@@ -59,7 +59,7 @@ public class ControllerManager {
         applySettings();
     }
 
-    public void applySettings() {
+    private void applySettings() {
         SettingsManager settings = SettingsManager.getDefaultProfile();
 
         setYThreshold(settings.getFloat("sensitivityDown"), settings.getFloat("sensitivityUp"));
@@ -111,8 +111,8 @@ public class ControllerManager {
                 baseline.add(x, y);
             } else {
                 // Calibration rounding - test with chair
-                x = Math.round(baseline.x / calibrationIterations * 100) / 100;
-                y = Math.round(baseline.y / calibrationIterations * 100) / 100;
+                x = Math.round(baseline.x / calibrationIterations * 1000) / 1000;
+                y = Math.round(baseline.y / calibrationIterations * 1000) / 1000;
                 calibrationIterations = 0;
 
                 baseline.set(x, y);
@@ -122,21 +122,21 @@ public class ControllerManager {
         return calibrationIterations > 0;
     }
 
-    public void setXThreshold(float positiveThreshold, float negativeThreshold) {
+    private void setXThreshold(float positiveThreshold, float negativeThreshold) {
         minPositiveThreshold.x = Math.abs(positiveThreshold);
         minNegativeThreshold.x = -Math.abs(negativeThreshold);
     }
 
-    public void setYThreshold(float positiveThreshold, float negativeThreshold) {
+    private void setYThreshold(float positiveThreshold, float negativeThreshold) {
         minPositiveThreshold.y = Math.abs(positiveThreshold);
         minNegativeThreshold.y = -Math.abs(negativeThreshold);
     }
 
-    public void setInvertedX(boolean inverted) {
+    private void setInvertedX(boolean inverted) {
         invertedX = inverted;
     }
 
-    public void setInvertedY(boolean inverted) {
+    private void setInvertedY(boolean inverted) {
         invertedY = inverted;
     }
 
