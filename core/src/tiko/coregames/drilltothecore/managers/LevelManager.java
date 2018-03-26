@@ -1,13 +1,16 @@
 package tiko.coregames.drilltothecore.managers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.maps.*;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
+
 import tiko.coregames.drilltothecore.Setup;
+import tiko.coregames.drilltothecore.utilities.CustomTileRenderer;
 
 import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
@@ -28,7 +31,7 @@ public class LevelManager implements Disposable {
     /**
      * Renders level data.
      */
-    private OrthogonalTiledMapRenderer levelRenderer;
+    private CustomTileRenderer levelRenderer;
 
     public LevelManager(int levelValue) {
         TideMapLoader loader = new TideMapLoader();
@@ -53,7 +56,7 @@ public class LevelManager implements Disposable {
         levelData = loader.load(path.toString());
 
         if (levelRenderer == null) {
-            levelRenderer = new OrthogonalTiledMapRenderer(levelData, Setup.getBatch());
+            levelRenderer = new CustomTileRenderer(levelData, Setup.getBatch());
         } else {
             levelRenderer.setMap(levelData);
         }
@@ -63,8 +66,8 @@ public class LevelManager implements Disposable {
         int width = properties.get("width", Integer.class);
         int height = properties.get("height", Integer.class);
 
-        mapHeight = height * TILE_WIDTH;
-        mapWidth = width * TILE_HEIGHT;
+        mapWidth = width * TILE_WIDTH;
+        mapHeight = height * TILE_HEIGHT;
     }
 
     /**
@@ -77,9 +80,18 @@ public class LevelManager implements Disposable {
     }
 
     public void renderView(Matrix4 cameraMatrix, float x, float y, float width, float height) {
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+
         levelRenderer.setView(cameraMatrix, x, y, width, height);
 
-        levelRenderer.render();
+        levelRenderer.renderTileLayer(getLayer("background"), 32);
+        levelRenderer.renderTileLayer(getLayer("ground"), 8);
+        levelRenderer.renderTileLayer(getLayer("collectibles"), 32);
+        levelRenderer.renderTileLayer(getLayer("shroud"), 8);
+    }
+
+    private TiledMapTileLayer getLayer(String name) {
+        return (TiledMapTileLayer) levelData.getLayers().get(name);
     }
 
     // TILE HANDLING /////////////////////////
