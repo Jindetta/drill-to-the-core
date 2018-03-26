@@ -13,18 +13,18 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
 public class Debug {
     private static BitmapFont font;
     private static HashMap<String, BaseDebug> debugData;
-    private static OrthographicCamera debugCamera;
+    private static OrthographicCamera screen;
 
     static {
-        font = new BitmapFont(Gdx.files.internal("menu/debug.fnt"));
-        debugCamera = new OrthographicCamera();
         addDebugger(new BaseDebug(), "");
     }
 
     public static void addDebugger(BaseDebug debugObject, String key) {
-        if (debugObject != null) {
+        if (DEBUG_MODE && debugObject != null) {
             if (debugData == null) {
                 debugData = new HashMap<>();
+                screen = new OrthographicCamera();
+                font = new BitmapFont(Gdx.files.internal("menu/debug.fnt"));
             }
 
             debugData.put(key, debugObject);
@@ -33,7 +33,7 @@ public class Debug {
 
     public static void render(SpriteBatch batch) {
         if (DEBUG_MODE && debugData != null) {
-            batch.setProjectionMatrix(debugCamera.combined);
+            batch.setProjectionMatrix(screen.combined);
             for (BaseDebug debugObject : debugData.values()) {
                 debugObject.render(batch);
             }
@@ -41,11 +41,15 @@ public class Debug {
     }
 
     public static void resize(int width, int height) {
-        debugCamera.setToOrtho(false, width, height);
+        if (screen != null) {
+            screen.setToOrtho(false, width, height);
+        }
     }
 
     public static void dispose() {
-        font.dispose();
+        if (font != null) {
+            font.dispose();
+        }
     }
 
     private static class BaseDebug {
@@ -79,7 +83,7 @@ public class Debug {
                 )
             );
 
-            font.draw(batch, layout, SAFEZONE_SIZE, Gdx.graphics.getHeight() - SAFEZONE_SIZE);
+            font.draw(batch, layout, SAFEZONE_SIZE, screen.viewportHeight - SAFEZONE_SIZE);
         }
     }
 
@@ -99,7 +103,7 @@ public class Debug {
             }
 
             layout.setText(font, debugString);
-            font.draw(batch, layout, Gdx.graphics.getWidth() - layout.width - SAFEZONE_SIZE, Gdx.graphics.getHeight() - SAFEZONE_SIZE);
+            font.draw(batch, layout, screen.viewportWidth - layout.width - SAFEZONE_SIZE, screen.viewportHeight - SAFEZONE_SIZE);
         }
     }
 }
