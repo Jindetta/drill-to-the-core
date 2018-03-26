@@ -137,14 +137,19 @@ public class Player extends BaseObject {
         return totalFuel;
     }
 
+    public void resetCalibration() {
+        controller.reset();
+        Gdx.app.log(getClass().getSimpleName(), "Calibration is reset");
+    }
+
     @Override
     public void draw(SpriteBatch batch, float delta) {
         boolean playerIsMoving = false;
 
-        if (consumeFuel(delta)) {
-            // Update movement based on controller input
-            controller.updateController(delta);
+        // Update movement based on controller input
+        controller.updateController();
 
+        if (consumeFuel(delta)) {
             float accelerometerX = controller.getCurrentX();
             float accelerometerY = controller.getCurrentY();
 

@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import tiko.coregames.drilltothecore.screens.SplashScreen;
 import tiko.coregames.drilltothecore.utilities.Debug;
 
-public class CoreSetup extends Game {
-	private static CoreSetup instance;
+public class Setup extends Game {
+	private static Setup instance;
     private SpriteBatch batch;
 
 	public static SpriteBatch getBatch() {
@@ -25,6 +25,7 @@ public class CoreSetup extends Game {
      */
 	@Override
 	public void create () {
+        Debug.initialize();
 		batch = new SpriteBatch();
 		instance = this;
 

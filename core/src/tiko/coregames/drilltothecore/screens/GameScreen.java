@@ -15,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import tiko.coregames.drilltothecore.CoreSetup;
+import tiko.coregames.drilltothecore.Setup;
 import tiko.coregames.drilltothecore.managers.LevelManager;
 import tiko.coregames.drilltothecore.managers.LocalizationManager;
 import tiko.coregames.drilltothecore.objects.Player;
@@ -60,8 +60,11 @@ public class GameScreen extends BaseScreen {
                 String name = event.getListenerActor().getName();
 
                 switch (name == null ? "" : name) {
+                    case "recalibrate":
+                        player.resetCalibration();
+                        return;
                     case "menu":
-                        CoreSetup.nextScreen(new MainMenuScreen());
+                        Setup.nextScreen(new MainMenuScreen());
                         break;
                 }
 
@@ -72,11 +75,16 @@ public class GameScreen extends BaseScreen {
         TextButton continueButton = new TextButton(localizer.getValue("continue"), skin);
         continueButton.addListener(clickListener);
 
+        TextButton calibrateButton = new TextButton(localizer.getValue("recalibrate"), skin);
+        calibrateButton.addListener(clickListener);
+        calibrateButton.setName("recalibrate");
+
         TextButton menuButton = new TextButton(localizer.getValue("exit"), skin);
         menuButton.addListener(clickListener);
         menuButton.setName("menu");
 
         pauseWindow.add(continueButton).row();
+        pauseWindow.add(calibrateButton).padTop(MENU_PADDING_TOP).row();
         pauseWindow.add(menuButton).padTop(MENU_PADDING_TOP);
 
         addActor(pauseWindow);
@@ -157,7 +165,7 @@ public class GameScreen extends BaseScreen {
         }
 
         Camera worldCamera = getCamera();
-        SpriteBatch batch = CoreSetup.getBatch();
+        SpriteBatch batch = Setup.getBatch();
 
         renderLevelData(worldCamera);
 

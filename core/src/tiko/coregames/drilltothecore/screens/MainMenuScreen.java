@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import tiko.coregames.drilltothecore.CoreSetup;
+import tiko.coregames.drilltothecore.Setup;
 import tiko.coregames.drilltothecore.managers.LocalizationManager;
 
 import static tiko.coregames.drilltothecore.utilities.Constants.*;
@@ -24,13 +24,13 @@ public class MainMenuScreen extends BaseScreen {
 
                 switch (name == null ? "" : name) {
                     case "play":
-                        CoreSetup.nextScreen(new GameScreen());
+                        Setup.nextScreen(new GameScreen());
                         break;
                     case "settings":
-                        CoreSetup.nextScreen(new ConfigScreen());
+                        Setup.nextScreen(new ConfigScreen());
                         break;
                     case "highScore":
-                        CoreSetup.nextScreen(new HighScoreScreen());
+                        Setup.nextScreen(new HighScoreScreen());
                         break;
                     default:
                         Gdx.app.exit();

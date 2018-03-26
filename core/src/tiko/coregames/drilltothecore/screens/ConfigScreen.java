@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import tiko.coregames.drilltothecore.CoreSetup;
+import tiko.coregames.drilltothecore.Setup;
 import tiko.coregames.drilltothecore.managers.SettingsManager;
 
 public class ConfigScreen extends BaseScreen {
@@ -113,7 +113,7 @@ public class ConfigScreen extends BaseScreen {
     @Override
     public boolean keyDown(int key) {
         if (key == Input.Keys.ESCAPE || key == Input.Keys.BACK) {
-            CoreSetup.nextScreen(new MainMenuScreen());
+            Setup.nextScreen(new MainMenuScreen());
         }
 
         return super.keyDown(key);

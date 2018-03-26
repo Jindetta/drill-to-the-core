@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import tiko.coregames.drilltothecore.CoreSetup;
+import tiko.coregames.drilltothecore.Setup;
 
 import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
@@ -37,7 +37,7 @@ public class SplashScreen extends BaseScreen {
         timeLeft -= delta;
 
         if (timeLeft <= 0) {
-            CoreSetup.nextScreen(new MainMenuScreen());
+            Setup.nextScreen(new MainMenuScreen());
         }
 
         super.render(delta);

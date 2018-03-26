@@ -31,14 +31,28 @@ public class ControllerManager {
     public void reset() {
         currentValue = new Vector2();
 
-        minPositiveThreshold = new Vector2();
-        minNegativeThreshold = new Vector2();
+        if (minPositiveThreshold == null) {
+            minPositiveThreshold = new Vector2();
+        } else {
+            minPositiveThreshold.set(0, 0);
+        }
+
+        if (minNegativeThreshold == null) {
+            minNegativeThreshold = new Vector2();
+        } else {
+            minNegativeThreshold.set(0, 0);
+        }
 
         // FOR DEBUGGING PURPOSES ONLY
         calibrationX = new Vector2();
         calibrationY = new Vector2();
 
-        baseline = new Vector2();
+        if (baseline == null) {
+            baseline = new Vector2();
+        } else {
+            baseline.set(0, 0);
+        }
+
         calibrationTime = CONTROLLER_CALIBRATION_TIME;
         calibrationIterations = 0;
 
@@ -84,14 +98,14 @@ public class ControllerManager {
         rotationVector.mul(rotationMatrix);
     }
 
-    private boolean calibrationMode(float x, float y, float delta) {
+    private boolean calibrationMode(float x, float y) {
         if (calibrationTime > 0) {
-            calibrationTime -= delta;
+            calibrationTime -= Gdx.graphics.getDeltaTime();
 
             if (calibrationTime > 0) {
                 // Threshold integration - test with chair
-                x += (minPositiveThreshold.x + minNegativeThreshold.x) / 2;
-                y += (minPositiveThreshold.y + minNegativeThreshold.y) / 2;
+                //x += (minPositiveThreshold.x + minNegativeThreshold.x) / 2;
+                //y += (minPositiveThreshold.y + minNegativeThreshold.y) / 2;
                 calibrationIterations++;
 
                 baseline.add(x, y);
@@ -126,7 +140,7 @@ public class ControllerManager {
         invertedY = inverted;
     }
 
-    public void updateController(float delta) {
+    public void updateController() {
         if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
             // Get value from accelerometer (Y = X)
             float x = Gdx.input.getAccelerometerY();
@@ -134,7 +148,7 @@ public class ControllerManager {
             float y = Gdx.input.getAccelerometerZ();
 
             // TODO: Calibration needs testing
-            if (calibrationMode(x, y, delta)) {
+            if (calibrationMode(x, y)) {
                 return;
             }
 

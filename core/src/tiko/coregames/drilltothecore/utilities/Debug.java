@@ -15,7 +15,7 @@ public class Debug {
     private static HashMap<String, BaseDebug> debugData;
     private static OrthographicCamera screen;
 
-    static {
+    public static void initialize() {
         if (DEBUG_MODE) {
             screen = new OrthographicCamera();
             font = new BitmapFont(Gdx.files.internal("menu/debug.fnt"));
@@ -91,8 +91,10 @@ public class Debug {
 
     public static class CustomDebug extends BaseDebug {
         public CustomDebug() {
-            debugString = "";
-            layout = new GlyphLayout(font, debugString);
+            if (DEBUG_MODE) {
+                debugString = "";
+                layout = new GlyphLayout(font, debugString);
+            }
         }
 
         public void setDebugString(String value) {
