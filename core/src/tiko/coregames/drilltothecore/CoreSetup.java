@@ -4,19 +4,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import tiko.coregames.drilltothecore.screens.SplashScreen;
 import tiko.coregames.drilltothecore.utilities.Debug;
 
 public class CoreSetup extends Game {
-	private static SpriteBatch batch;
-	private static CoreSetup self;
+	private static CoreSetup instance;
+    private SpriteBatch batch;
 
 	public static SpriteBatch getBatch() {
-		return batch;
+		return instance.batch;
 	}
 
 	public static void nextScreen(Screen screen) {
-		self.setScreen(screen);
+		instance.setScreen(screen);
 	}
 
     /**
@@ -25,7 +26,7 @@ public class CoreSetup extends Game {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		self = this;
+		instance = this;
 
 		setScreen(new SplashScreen());
 
@@ -55,7 +56,6 @@ public class CoreSetup extends Game {
      */
 	@Override
 	public void dispose () {
-	    // Dispose last shown screen
 		setScreen(null);
 		batch.dispose();
 		Debug.dispose();
