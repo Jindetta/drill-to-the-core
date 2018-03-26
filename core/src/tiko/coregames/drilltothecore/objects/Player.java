@@ -410,8 +410,27 @@ public class Player extends BaseObject {
         }
     }
 
+    // DEBUG METHOD
+    private String formatPowerUp(float timer) {
+        if (timer > 0) {
+            return String.format("%.2f", timer);
+        }
+
+        return "N/A";
+    }
+
     @Override
     public String toString() {
-        return String.format("Current points: %d\nDepth reached: %.0f\nTotal fuel: %.2f\n\n%s", getTotalScore(), getDrillDepth(), getFuel(), controller.toString());
+        return String.format(
+            "Current points: %d\nDepth reached: %.0f\nTotal fuel: %.2f\n" +
+            "Radar power-up: %s\nSpeed power-up: %s\nPoint power-up: %s\n\n%s",
+            getTotalScore(),
+            getDrillDepth(),
+            getFuel(),
+            formatPowerUp(viewTimer),
+            formatPowerUp(speedTimer),
+            formatPowerUp(collectibleTimer),
+            controller.toString()
+        );
     }
 }
