@@ -33,7 +33,8 @@ public class Player extends BaseObject {
 
     private int nextOrientation;
     private int defaultOrientation;
-    private String playerOrientation;
+    private int playerOrientation;
+
 
     public Player(LevelManager map, LocalizationManager localizer, float x, float y) {
         super("images/player.png");
@@ -45,7 +46,7 @@ public class Player extends BaseObject {
 
         this.map = map;
         this.localizer = localizer;
-        playerOrientation = "L";
+        playerOrientation = 270;
 
         speedMultiplier = 1;
         speedTimer = 0;
@@ -124,12 +125,25 @@ public class Player extends BaseObject {
     }
 
     public boolean isRotatingToAxis(float delta) {
-        if (nextOrientation != 0 || getPlayerOrientation() % 90 != 0) {
-            rotate(45 * delta);
+        int rotateTo;
+        if (getPlayerOrientation() < nextOrientation) {
+            rotateTo = 45;
+        } else  {
+            rotateTo = -45;
+        }
+        while (playerOrientation != getPlayerOrientation() &&  nextOrientation != 0) {
+            if (getPlayerOrientation() % 90 != 0) {
+               rotate(rotateTo * (5* delta));
 
-            return true;
+                Gdx.app.log("realorientation", "getplayerorientation" + getPlayerOrientation());
+                Gdx.app.log("Norienttation", "Nextorientation: " + nextOrientation);
+
+                return true;
+            }
         }
 
+        Gdx.app.log("realorientation", "getplayerorientation" + getPlayerOrientation());
+        Gdx.app.log("Norienttation", "Nextorientation: " + nextOrientation);
         return false;
     }
 
@@ -337,83 +351,23 @@ public class Player extends BaseObject {
          * String Direction is sent from the move method and this method records the direction
          * currently moving to on string called DrillPointsTo.
          */
+
         if (direction.equals("L")) {
-            if (playerOrientation.equals("R")) {
-                flip(true, false);
-            }
-            if (playerOrientation.equals("DL")) {
-                rotate90(true);
-            }
-            if (playerOrientation.equals("DR")) {
-                rotate90(false);
-                flip(true, false);
-            }
-            if (playerOrientation.equals("UL")) {
-                rotate90(false);
-            }
-            if (playerOrientation.equals("UR")) {
-                rotate90(true);
-                flip(true, false);
-            }
-            playerOrientation = "L";
+            setNewOrientation(PLAYER_ORIENTATION_UP);
         }
         if (direction.equals("R")) {
-            if (playerOrientation.equals("L")) {
-                flip(true, false);
-            }
-            if (playerOrientation.equals("DR")) {
-                rotate90(false);
-            }
-            if (playerOrientation.equals("DL")) {
-                rotate90(true);
-                flip(true, false);
-            }
-            if (playerOrientation.equals("UR")) {
-                rotate90(true);
-            }
-            if (playerOrientation.equals("UL")) {
-                rotate90(false);
-                flip(true, false);
-            }
-            playerOrientation ="R";
+            setNewOrientation(PLAYER_ORIENTATION_DOWN);
         }
         if (direction.equals("D")) {
-            if (playerOrientation.equals("L")) {
-                rotate90(false);
-                playerOrientation = "DL";
-            }
-            if (playerOrientation.equals("R")) {
-                rotate90(true);
-                playerOrientation = "DR";
-            }
-            if (playerOrientation.equals("UL")) {
-                rotate(180);
-                playerOrientation = "DL";
-            }
-            if (playerOrientation.equals("UR")) {
-                rotate(180);
-                playerOrientation = "DR";
-            }
+            setNewOrientation(PLAYER_ORIENTATION_RIGHT);
         }
         if (direction.equals("U")) {
-            if (playerOrientation.equals("L")) {
-                rotate90(true);
-                playerOrientation = "UL";
-            }
-            if (playerOrientation.equals("R")) {
-                rotate90(false);
-                playerOrientation = "UR";
-            }
-            if (playerOrientation.equals("DL")) {
-                rotate(180);
-                playerOrientation = "UL";
-            }
-            if (playerOrientation.equals("DR")) {
-                rotate (180);
-                playerOrientation = "UR";
-            }
+            setNewOrientation(PLAYER_ORIENTATION_LEFT);
         }
+        isRotatingToAxis(delta);
+
     }
+
 
     // DEBUG METHOD
     private String formatPowerUp(float timer) {
