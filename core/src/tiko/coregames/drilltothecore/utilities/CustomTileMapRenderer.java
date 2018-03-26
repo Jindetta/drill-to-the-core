@@ -1,6 +1,5 @@
 package tiko.coregames.drilltothecore.utilities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -13,12 +12,12 @@ import static com.badlogic.gdx.graphics.g2d.Batch.*;
 import static com.badlogic.gdx.graphics.g2d.Batch.U2;
 import static com.badlogic.gdx.graphics.g2d.Batch.U3;
 
-public class CustomTileRenderer extends OrthogonalTiledMapRenderer {
-    public CustomTileRenderer(TiledMap map, Batch batch) {
+public class CustomTileMapRenderer extends OrthogonalTiledMapRenderer {
+    public CustomTileMapRenderer(TiledMap map, Batch batch) {
         super(map, batch);
     }
 
-    public void renderTileLayer(TiledMapTileLayer layer, int size) {
+    public void renderTileLayer(TiledMapTileLayer layer) {
         beginRender();
         final Color batchColor = batch.getColor();
         final float color = Color.toFloatBits(batchColor.r, batchColor.g, batchColor.b, batchColor.a * layer.getOpacity());
@@ -26,8 +25,8 @@ public class CustomTileRenderer extends OrthogonalTiledMapRenderer {
         final int layerWidth = layer.getWidth();
         final int layerHeight = layer.getHeight();
 
-        final float layerTileWidth = size * unitScale;
-        final float layerTileHeight = size * unitScale;
+        final float layerTileWidth = layer.getTileWidth() * unitScale;
+        final float layerTileHeight = layer.getTileHeight() * unitScale;
 
         final float layerOffsetX = layer.getRenderOffsetX() * unitScale;
         // offset in tiled is y down, so we flip it
@@ -48,19 +47,12 @@ public class CustomTileRenderer extends OrthogonalTiledMapRenderer {
         for (int row = row2; row >= row1; row--) {
             float x = xStart;
             for (int col = col1; col < col2; col++) {
-
-                if (size == 8 && col == 10 && row == 20)
-                    Gdx.app.log("iterator", "row = " + row + " - col = " + col);
-
                 final TiledMapTileLayer.Cell cell = layer.getCell(col, row);
                 if (cell == null) {
                     x += layerTileWidth;
                     continue;
                 }
                 final TiledMapTile tile = cell.getTile();
-
-                if (size == 8)
-                    Gdx.app.log("tile", "Found");
 
                 if (tile != null) {
                     final boolean flipX = cell.getFlipHorizontally();

@@ -4,13 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.maps.*;
 import com.badlogic.gdx.maps.tiled.*;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 
 import tiko.coregames.drilltothecore.Setup;
-import tiko.coregames.drilltothecore.utilities.CustomTileRenderer;
+import tiko.coregames.drilltothecore.utilities.CustomTileMapRenderer;
 
 import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
@@ -31,7 +30,7 @@ public class LevelManager implements Disposable {
     /**
      * Renders level data.
      */
-    private CustomTileRenderer levelRenderer;
+    private CustomTileMapRenderer levelRenderer;
 
     public LevelManager(int levelValue) {
         TideMapLoader loader = new TideMapLoader();
@@ -56,7 +55,7 @@ public class LevelManager implements Disposable {
         levelData = loader.load(path.toString());
 
         if (levelRenderer == null) {
-            levelRenderer = new CustomTileRenderer(levelData, Setup.getBatch());
+            levelRenderer = new CustomTileMapRenderer(levelData, Setup.getBatch());
         } else {
             levelRenderer.setMap(levelData);
         }
@@ -84,10 +83,10 @@ public class LevelManager implements Disposable {
 
         levelRenderer.setView(cameraMatrix, x, y, width, height);
 
-        levelRenderer.renderTileLayer(getLayer("background"), 32);
-        levelRenderer.renderTileLayer(getLayer("ground"), 8);
-        levelRenderer.renderTileLayer(getLayer("collectibles"), 32);
-        levelRenderer.renderTileLayer(getLayer("shroud"), 8);
+        levelRenderer.renderTileLayer(getLayer("background"));
+        levelRenderer.renderTileLayer(getLayer("ground"));
+        levelRenderer.renderTileLayer(getLayer("collectibles"));
+        levelRenderer.renderTileLayer(getLayer("shroud"));
     }
 
     private TiledMapTileLayer getLayer(String name) {
