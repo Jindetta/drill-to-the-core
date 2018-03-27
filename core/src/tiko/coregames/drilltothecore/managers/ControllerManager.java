@@ -144,16 +144,13 @@ public class ControllerManager {
                 y = invertedY ? -y : y;
             }
 
-            float positiveDelta = (minPositiveThreshold.x + minPositiveThreshold.y) / 2;
-            float negativeDelta = (minNegativeThreshold.x + minNegativeThreshold.y) / 2;
-
-            if (calibratedValue(z, baseline.z, positiveDelta, negativeDelta) == 0) {
-                currentValue.setZero();
-                return;
+            if (calibratedValue(z, baseline.z, minPositiveThreshold.y, minNegativeThreshold.y) != 0) {
+                currentValue.y = calibratedValue(y, baseline.y, minPositiveThreshold.y, minNegativeThreshold.y);
+            } else {
+                currentValue.y = 0;
             }
 
             currentValue.x = calibratedValue(x, baseline.x, minPositiveThreshold.x, minNegativeThreshold.x);
-            currentValue.y = calibratedValue(y, baseline.y, minPositiveThreshold.y, minNegativeThreshold.y);
         }
     }
 
