@@ -2,6 +2,7 @@ package tiko.coregames.drilltothecore.managers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.maps.*;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.*;
@@ -10,6 +11,8 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
+
+import tiko.coregames.drilltothecore.Setup;
 
 /**
  * Handles everything related to levels.
@@ -58,7 +61,7 @@ public class LevelManager implements Disposable {
         levelData = loader.load(path.toString());
 
         if (levelRenderer == null) {
-            levelRenderer = new OrthogonalTiledMapRenderer(levelData);
+            levelRenderer = new OrthogonalTiledMapRenderer(levelData, Setup.getBatch());
         } else {
             levelRenderer.setMap(levelData);
         }
@@ -90,6 +93,8 @@ public class LevelManager implements Disposable {
     }
 
     public void renderView(Matrix4 cameraMatrix, float x, float y, float width, float height) {
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+
         if (backgroundColor != null) {
             Gdx.gl.glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
         }

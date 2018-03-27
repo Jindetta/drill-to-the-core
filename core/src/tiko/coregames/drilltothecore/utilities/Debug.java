@@ -62,7 +62,7 @@ public class Debug {
 
         BaseDebug() {
             timeElapsed = 0;
-            debugString = "FPS: %d (%d)\n%d:%02d:%02d -> %.1f +%.3f\nAccelX: %.4f\nAccelY: %.4f";
+            debugString = "FPS: %d (%d)\n%d:%02d:%02d -> %.1f +%.3f\nX: %.04f\nY: %.04f\nZ: %.04f";
             layout = new GlyphLayout(font, debugString);
         }
 
@@ -80,6 +80,7 @@ public class Debug {
                     (int) timeElapsed % 60,
                     timeElapsed,
                     delta,
+                    Gdx.input.getAccelerometerX(),
                     Gdx.input.getAccelerometerY(),
                     Gdx.input.getAccelerometerZ()
                 )

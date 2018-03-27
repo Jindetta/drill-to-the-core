@@ -32,7 +32,7 @@ public class Constants {
     public static final int PLAYER_ORIENTATION_LEFT = 270;
     public static final int PLAYER_ORIENTATION_UP_LEFT = 315;
 
-    public static final float SINGLE_SPLASH_DURATION = 4;
+    public static final float SINGLE_SPLASH_DURATION = 3;
 
     public static final String POWER_UP_POINT_MULTIPLIER = "pointMultiplier";
     public static final String POWER_UP_SPEED_MULTIPLIER = "speedMultiplier";
