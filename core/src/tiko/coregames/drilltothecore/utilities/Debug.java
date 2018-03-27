@@ -8,7 +8,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.HashMap;
 
-import static tiko.coregames.drilltothecore.utilities.Constants.*;
+import static tiko.coregames.drilltothecore.utilities.Constants.DEBUG_MODE;
+import static tiko.coregames.drilltothecore.utilities.Constants.SAFE_ZONE_SIZE;
 
 public class Debug {
     private static BitmapFont font;

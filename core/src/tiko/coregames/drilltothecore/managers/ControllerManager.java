@@ -16,9 +16,6 @@ public class ControllerManager {
     private Vector2 calibrationX;
     private Vector2 calibrationY;
 
-    private Matrix4 rotationMatrix;
-    private Vector3 rotationVector;
-
     private int calibrationIterations;
     private float calibrationTime;
 
@@ -29,7 +26,11 @@ public class ControllerManager {
     }
 
     public void reset() {
-        currentValue = new Vector2();
+        if (currentValue == null) {
+            currentValue = new Vector2();
+        } else {
+            currentValue.setZero();
+        }
 
         if (minPositiveThreshold == null) {
             minPositiveThreshold = new Vector2();
@@ -78,9 +79,9 @@ public class ControllerManager {
                 baseline.add(x, y, z);
             } else {
                 // Calibration rounding - test with chair
-                x = Math.round(baseline.x / calibrationIterations * 1000) / 1000;
-                y = Math.round(baseline.y / calibrationIterations * 1000) / 1000;
-                z = Math.round(baseline.z / calibrationIterations * 1000) / 1000;
+                x = baseline.x / calibrationIterations;
+                y = baseline.y / calibrationIterations;
+                z = baseline.z / calibrationIterations;
                 calibrationIterations = 0;
 
                 baseline.set(x, y, z);
@@ -112,13 +113,12 @@ public class ControllerManager {
     private int calibratedValue(float value, float baseline, float positiveThreshold, float negativeThreshold) {
         positiveThreshold += baseline;
         negativeThreshold += baseline;
-        final float multiplier = 1;
 
-        if ((positiveThreshold + value) / 2 * multiplier > positiveThreshold) {
+        if ((positiveThreshold + value) / 2 > positiveThreshold) {
             return 1;
         }
 
-        if ((negativeThreshold + value) / 2 * multiplier < negativeThreshold) {
+        if ((negativeThreshold + value) / 2 < negativeThreshold) {
             return -1;
         }
 
