@@ -131,19 +131,19 @@ public class Player extends BaseObject {
         } else  {
             rotateTo = -45;
         }
-        while (playerOrientation != getPlayerOrientation() &&  nextOrientation != 0) {
-            if (getPlayerOrientation() % 90 != 0) {
+
+        if (nextOrientation != getPlayerOrientation()) {
+
                rotate(rotateTo * (5* delta));
 
                 Gdx.app.log("realorientation", "getplayerorientation" + getPlayerOrientation());
                 Gdx.app.log("Norienttation", "Nextorientation: " + nextOrientation);
-
-                return true;
-            }
+        }
+        if (getPlayerOrientation() == 359) {
+            rotate(-359);
         }
 
-        Gdx.app.log("realorientation", "getplayerorientation" + getPlayerOrientation());
-        Gdx.app.log("Norienttation", "Nextorientation: " + nextOrientation);
+
         return false;
     }
 
@@ -353,7 +353,11 @@ public class Player extends BaseObject {
          */
 
         if (direction.equals("L")) {
-            setNewOrientation(PLAYER_ORIENTATION_UP);
+            if (getPlayerOrientation() <= 180) {
+                setNewOrientation(PLAYER_ORIENTATION_UP);
+            } else {
+                setNewOrientation(359);
+            }
         }
         if (direction.equals("R")) {
             setNewOrientation(PLAYER_ORIENTATION_DOWN);
@@ -362,6 +366,9 @@ public class Player extends BaseObject {
             setNewOrientation(PLAYER_ORIENTATION_RIGHT);
         }
         if (direction.equals("U")) {
+            if (getPlayerOrientation() == 0) {
+                rotate(350);
+            }
             setNewOrientation(PLAYER_ORIENTATION_LEFT);
         }
         isRotatingToAxis(delta);
