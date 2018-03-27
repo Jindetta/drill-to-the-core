@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
+import tiko.coregames.drilltothecore.Setup;
 
 /**
  * Handles everything related to levels.
@@ -59,7 +60,7 @@ public class LevelManager implements Disposable {
         levelData = loader.load(path.toString());
 
         if (levelRenderer == null) {
-            levelRenderer = new OrthogonalTiledMapRenderer(levelData);
+            levelRenderer = new OrthogonalTiledMapRenderer(levelData, Setup.getBatch());
         } else {
             levelRenderer.setMap(levelData);
         }
