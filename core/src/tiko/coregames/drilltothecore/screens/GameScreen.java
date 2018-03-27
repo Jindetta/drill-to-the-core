@@ -92,7 +92,7 @@ public class GameScreen extends BaseScreen {
 
     private void createFuelMeter() {
         playerFuel = new ProgressBar(0, PLAYER_FUEL_TANK_SIZE, 0.1f, false, skin);
-        playerFuel.setPosition(getWidth() - playerFuel.getWidth() - SAFEZONE_SIZE, getHeight() - playerFuel.getHeight() - SAFEZONE_SIZE);
+        playerFuel.setPosition(getWidth() - playerFuel.getWidth() - SAFE_ZONE_SIZE, getHeight() - playerFuel.getHeight() - SAFE_ZONE_SIZE);
         playerFuel.setValue(player.getFuel());
         playerFuel.setDisabled(true);
 
@@ -147,8 +147,8 @@ public class GameScreen extends BaseScreen {
         Viewport viewport = getViewport();
         viewport.update(width, height, true);
 
-        float fuelX = viewport.getWorldWidth() - playerFuel.getWidth() - SAFEZONE_SIZE;
-        float fuelY = viewport.getWorldHeight() - playerFuel.getHeight() - SAFEZONE_SIZE;
+        float fuelX = viewport.getWorldWidth() - playerFuel.getWidth() - SAFE_ZONE_SIZE;
+        float fuelY = viewport.getWorldHeight() - playerFuel.getHeight() - SAFE_ZONE_SIZE;
         float centerX = (viewport.getWorldWidth() - pauseWindow.getPrefWidth()) / 2;
         float centerY = (viewport.getWorldHeight() - pauseWindow.getPrefHeight()) / 2;
 

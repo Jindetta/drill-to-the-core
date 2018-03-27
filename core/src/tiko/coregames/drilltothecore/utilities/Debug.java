@@ -61,9 +61,11 @@ public class Debug {
         private float timeElapsed;
 
         BaseDebug() {
-            timeElapsed = 0;
-            debugString = "FPS: %d (%d)\n%d:%02d:%02d -> %.1f +%.3f\nX: %.04f\nY: %.04f\nZ: %.04f";
-            layout = new GlyphLayout(font, debugString);
+            if (DEBUG_MODE) {
+                timeElapsed = 0;
+                debugString = "FPS: %d (%d)\n%d:%02d:%02d -> %.1f +%.3f\nX: %.04f\nY: %.04f\nZ: %.04f";
+                layout = new GlyphLayout(font, debugString);
+            }
         }
 
         void render(SpriteBatch batch) {
@@ -86,7 +88,7 @@ public class Debug {
                 )
             );
 
-            font.draw(batch, layout, SAFEZONE_SIZE, screen.viewportHeight - SAFEZONE_SIZE);
+            font.draw(batch, layout, SAFE_ZONE_SIZE, screen.viewportHeight - SAFE_ZONE_SIZE);
         }
     }
 
@@ -108,7 +110,7 @@ public class Debug {
             }
 
             layout.setText(font, debugString);
-            font.draw(batch, layout, screen.viewportWidth - layout.width - SAFEZONE_SIZE, screen.viewportHeight - SAFEZONE_SIZE);
+            font.draw(batch, layout, screen.viewportWidth - layout.width - SAFE_ZONE_SIZE, screen.viewportHeight - SAFE_ZONE_SIZE);
         }
     }
 }

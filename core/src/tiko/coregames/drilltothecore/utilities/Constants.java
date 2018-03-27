@@ -7,13 +7,12 @@ public class Constants {
     public static final int TILE_WIDTH = 32;
     public static final int TILE_HEIGHT = 32;
 
-    public static final float MAX_MOVEMENT_VALUE = 10;
     public static final float CONTROLLER_CALIBRATION_TIME = 1.5f;
     public static final int MAX_SAVED_PROFILES = 25;
 
     public static final float MENU_PADDING_TOP = 15;
 
-    public static final float SAFEZONE_SIZE = 5;
+    public static final float SAFE_ZONE_SIZE = 5;
     public static final boolean DEBUG_MODE = true;
 
     public static final float PLAYER_MOVE_SPEED = 85;
