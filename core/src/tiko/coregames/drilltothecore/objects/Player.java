@@ -57,7 +57,7 @@ public class Player extends BaseObject {
         fuelConsumptionRate = PLAYER_FUEL_IDLE_MULTIPLIER;
         currentIdleTime = PLAYER_IDLE_STATE_DELAY;
 
-        currentState = PLAYER_STATES.IDLE;
+        setDefaultOrientation();
         setInitialScoreValues();
         setMaxFuel();
     }
@@ -67,7 +67,7 @@ public class Player extends BaseObject {
         nextOrientation = 0;
     }
 
-    private void setMaxFuel() {
+    public void setMaxFuel() {
         totalFuel = PLAYER_FUEL_TANK_SIZE;
     }
 
@@ -159,46 +159,60 @@ public class Player extends BaseObject {
         return PLAYER_MOVE_SPEED * (speedMultiplier - drillSpeedReduction);
     }
 
+    private void setCurrentState(PLAYER_STATES state, PLAYER_STATES... ignoreStates) {
+        if (ignoreStates != null && ignoreStates.length > 0) {
+            for (PLAYER_STATES ignoreState : ignoreStates) {
+                if (ignoreState != null && currentState == ignoreState) {
+                    return;
+                }
+            }
+        }
+
+        currentState = state;
+    }
+
+
     @Override
     public void draw(SpriteBatch batch, float delta) {
         // Update movement based on controller input
         controller.update();
+        // Set state to idle by default
+        setCurrentState(PLAYER_STATES.IDLE);
 
         if (consumeFuel(delta)) {
             float valueX = controller.getCurrentX();
             float valueY = controller.getCurrentY();
 
-            if (isDirectionAllowed('R') && (valueX > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
-                translateX(getMovementSpeed() * delta);
-                rotateSprite("R", delta);
-                valueX = 1;
+            if (isDirectionAllowed('U') && (valueY > 0 || Gdx.input.isKeyPressed(Input.Keys.UP))) {
+                translateY(getMovementSpeed() * delta);
+                rotateSprite("U", delta);
+                valueY = 1;
             }
-            if (isDirectionAllowed('L') && (valueX < 0 || Gdx.input.isKeyPressed(Input.Keys.LEFT))) {
-                translateX(-getMovementSpeed() * delta);
-                rotateSprite("L", delta);
-                valueX = -1;
+            if (isDirectionAllowed('D') && (valueY < 0 || Gdx.input.isKeyPressed(Input.Keys.DOWN))) {
+                translateY(-getMovementSpeed() * delta);
+                rotateSprite("D", delta);
+                valueY = -1;
             }
 
             // Allow only one axis movement
-            if (valueX == 0) {
-                if (isDirectionAllowed('U') && (valueY > 0 || Gdx.input.isKeyPressed(Input.Keys.UP))) {
-                    translateY(getMovementSpeed() * delta);
-                    rotateSprite("U", delta);
-                    valueY = 1;
+            if (valueY == 0) {
+                if (isDirectionAllowed('R') && (valueX > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
+                    translateX(getMovementSpeed() * delta);
+                    rotateSprite("R", delta);
+                    valueX = 1;
                 }
-                if (isDirectionAllowed('D') && (valueY < 0 || Gdx.input.isKeyPressed(Input.Keys.DOWN))) {
-                    translateY(-getMovementSpeed() * delta);
-                    rotateSprite("D", delta);
-                    valueY = -1;
+                if (isDirectionAllowed('L') && (valueX < 0 || Gdx.input.isKeyPressed(Input.Keys.LEFT))) {
+                    translateX(-getMovementSpeed() * delta);
+                    rotateSprite("L", delta);
+                    valueX = -1;
                 }
             }
 
             if (valueX != 0 || valueY != 0) {
-                currentState = PLAYER_STATES.ACTIVE;
+                setCurrentState(PLAYER_STATES.ACTIVE, PLAYER_STATES.TURNING);
+
                 increaseMaximumDepth();
                 updateTileStatus();
-            } else {
-                currentState = PLAYER_STATES.IDLE;
             }
         }
 
@@ -410,7 +424,7 @@ public class Player extends BaseObject {
     public String toString() {
         return String.format(
             "Current points: %d\nDepth reached: %.0f\nTotal fuel: %.2f\n" +
-            "Radar power-up: %s\nSpeed power-up: %s\nDrill speed power-up: %s\nPoint power-up: %s\n\n%s",
+            "Radar power-up: %s\nSpeed power-up: %s\nDrill speed power-up: %s\nPoint power-up: %s\n\nRotation: %d (%d)\n%s",
             getTotalScore(),
             getDrillDepth(),
             getFuel(),
@@ -418,6 +432,8 @@ public class Player extends BaseObject {
             formatPowerUp(speedTimer),
             formatPowerUp(drillTimer),
             formatPowerUp(collectibleTimer),
+            getPlayerOrientation(),
+            nextOrientation,
             controller.toString()
         );
     }

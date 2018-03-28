@@ -60,31 +60,27 @@ public class GameScreen extends BaseScreen {
                 String name = event.getListenerActor().getName();
 
                 switch (name == null ? "" : name) {
-                    case "recalibrate":
-                        player.resetCalibration();
-                        return;
                     case "menu":
                         Setup.nextScreen(new MainMenuScreen());
+                        break;
+                    default:
+                        player.setMaxFuel();
                         break;
                 }
 
                 pauseWindow.setVisible(false);
+                player.resetCalibration();
             }
         };
 
         TextButton continueButton = new TextButton(localizer.getValue("continue"), skin);
         continueButton.addListener(clickListener);
 
-        TextButton calibrateButton = new TextButton(localizer.getValue("recalibrate"), skin);
-        calibrateButton.addListener(clickListener);
-        calibrateButton.setName("recalibrate");
-
         TextButton menuButton = new TextButton(localizer.getValue("exit"), skin);
         menuButton.addListener(clickListener);
         menuButton.setName("menu");
 
         pauseWindow.add(continueButton).row();
-        pauseWindow.add(calibrateButton).padTop(MENU_PADDING_TOP).row();
         pauseWindow.add(menuButton).padTop(MENU_PADDING_TOP);
 
         addActor(pauseWindow);
