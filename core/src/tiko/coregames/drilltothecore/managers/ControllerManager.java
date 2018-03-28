@@ -125,7 +125,7 @@ public class ControllerManager {
         return 0;
     }
 
-    public void updateController() {
+    public void update() {
         if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
             // Get value from accelerometer (Y = X)
             float x = Gdx.input.getAccelerometerY();

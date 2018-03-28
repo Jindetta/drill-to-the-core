@@ -19,6 +19,8 @@ public class Player extends BaseObject {
     private LocalizationManager localizer;
     private LevelManager map;
 
+    private PLAYER_STATES currentState;
+
     private float maximumDrillDepth;
     private float totalFuel, fuelConsumptionRate;
     private float baseScore, bonusScore;
@@ -26,15 +28,13 @@ public class Player extends BaseObject {
 
     private float startingDepth;
 
-    private float collectibleMultiplier, speedMultiplier;
-    private float collectibleTimer, speedTimer, viewTimer, currentIdleTime;
+    private float collectibleMultiplier, speedMultiplier, drillSpeedReduction;
+    private float collectibleTimer, speedTimer, viewTimer, currentIdleTime, drillTimer, collisionInterval;
 
     private Circle playerView;
 
     private int nextOrientation;
     private int defaultOrientation;
-    private int playerOrientation;
-
 
     public Player(LevelManager map, LocalizationManager localizer, float x, float y) {
         super("images/player.png");
@@ -46,15 +46,18 @@ public class Player extends BaseObject {
 
         this.map = map;
         this.localizer = localizer;
-        playerOrientation = 270;
 
+        drillSpeedReduction = 0;
         speedMultiplier = 1;
+        collisionInterval = 0;
+        drillTimer = 0;
         speedTimer = 0;
         viewTimer = 0;
 
         fuelConsumptionRate = PLAYER_FUEL_IDLE_MULTIPLIER;
         currentIdleTime = PLAYER_IDLE_STATE_DELAY;
 
+        currentState = PLAYER_STATES.IDLE;
         setInitialScoreValues();
         setMaxFuel();
     }
@@ -133,11 +136,7 @@ public class Player extends BaseObject {
         }
 
         if (nextOrientation != getPlayerOrientation()) {
-
-               rotate(rotateTo * (5* delta));
-
-                Gdx.app.log("realorientation", "getplayerorientation" + getPlayerOrientation());
-                Gdx.app.log("Norienttation", "Nextorientation: " + nextOrientation);
+            rotate(rotateTo * (5* delta));
         }
         if (getPlayerOrientation() == 359) {
             rotate(-359);
@@ -156,50 +155,54 @@ public class Player extends BaseObject {
         Gdx.app.log(getClass().getSimpleName(), "Calibration is reset");
     }
 
+    private float getMovementSpeed() {
+        return PLAYER_MOVE_SPEED * (speedMultiplier - drillSpeedReduction);
+    }
+
     @Override
     public void draw(SpriteBatch batch, float delta) {
-        boolean playerIsMoving = false;
-
         // Update movement based on controller input
-        controller.updateController();
+        controller.update();
 
         if (consumeFuel(delta)) {
-            float accelerometerX = controller.getCurrentX();
-            float accelerometerY = controller.getCurrentY();
+            float valueX = controller.getCurrentX();
+            float valueY = controller.getCurrentY();
 
-            if (isDirectionAllowed('R') && (accelerometerX > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
-                translateX( PLAYER_MOVE_SPEED * speedMultiplier * delta);
-                accelerometerX = PLAYER_MOVE_SPEED;
+            if (isDirectionAllowed('R') && (valueX > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
+                translateX(getMovementSpeed() * delta);
                 rotateSprite("R", delta);
+                valueX = 1;
             }
-            if (isDirectionAllowed('L') && (accelerometerX < 0 || Gdx.input.isKeyPressed(Input.Keys.LEFT))) {
-                translateX(-PLAYER_MOVE_SPEED * speedMultiplier * delta);
-                accelerometerX = -PLAYER_MOVE_SPEED;
+            if (isDirectionAllowed('L') && (valueX < 0 || Gdx.input.isKeyPressed(Input.Keys.LEFT))) {
+                translateX(-getMovementSpeed() * delta);
                 rotateSprite("L", delta);
+                valueX = -1;
             }
 
             // Allow only one axis movement
-            if (accelerometerX == 0) {
-                if (isDirectionAllowed('U') && (accelerometerY > 0 || Gdx.input.isKeyPressed(Input.Keys.UP))) {
-                    translateY(PLAYER_MOVE_SPEED * speedMultiplier * delta);
-                    accelerometerY = PLAYER_MOVE_SPEED;
+            if (valueX == 0) {
+                if (isDirectionAllowed('U') && (valueY > 0 || Gdx.input.isKeyPressed(Input.Keys.UP))) {
+                    translateY(getMovementSpeed() * delta);
                     rotateSprite("U", delta);
+                    valueY = 1;
                 }
-                if (isDirectionAllowed('D') && (accelerometerY < 0 || Gdx.input.isKeyPressed(Input.Keys.DOWN))) {
-                    translateY(-PLAYER_MOVE_SPEED * speedMultiplier * delta);
-                    accelerometerY = -PLAYER_MOVE_SPEED;
+                if (isDirectionAllowed('D') && (valueY < 0 || Gdx.input.isKeyPressed(Input.Keys.DOWN))) {
+                    translateY(-getMovementSpeed() * delta);
                     rotateSprite("D", delta);
+                    valueY = -1;
                 }
             }
 
-            if (accelerometerX != 0 || accelerometerY != 0) {
-                playerIsMoving = true;
+            if (valueX != 0 || valueY != 0) {
+                currentState = PLAYER_STATES.ACTIVE;
                 increaseMaximumDepth();
                 updateTileStatus();
+            } else {
+                currentState = PLAYER_STATES.IDLE;
             }
         }
 
-        updateTimerStatus(!playerIsMoving, delta);
+        updateTimerStatus(delta);
         super.draw(batch);
     }
 
@@ -249,8 +252,12 @@ public class Player extends BaseObject {
                 collectibleMultiplier = 1.5f;
                 collectibleTimer = 30;
                 break;
+            case POWER_UP_DRILL_MULTIPLIER:
+                drillTimer = 15;
+                drillSpeedReduction = 0;
+                break;
             case POWER_UP_SPEED_MULTIPLIER:
-                speedMultiplier = 1.33f;
+                speedMultiplier = PLAYER_MOVEMENT_SPEED_MULTIPLIER;
                 speedTimer = 10;
                 break;
             case FUEL_CANISTER_REFILL_20:
@@ -293,14 +300,18 @@ public class Player extends BaseObject {
                     // 1 point per 8 tiles
                     addBaseScore(0.125f);
                     cell.setTile(null);
+
+                    collisionInterval = .15f;
                 }
 
                 updateCollectibleStatus(x - getWidth() / 2, y - getHeight() / 2);
             }
         }
+
+        drillSpeedReduction = collisionInterval > 0 && drillTimer <= 0 ? PLAYER_DRILL_SPEED_REDUCTION : 0;
     }
 
-    private void updateTimerStatus(boolean playerIdling, float delta) {
+    private void updateTimerStatus(float delta) {
         if (viewTimer > 0) {
             viewTimer = Math.max(viewTimer - delta, 0);
 
@@ -325,10 +336,20 @@ public class Player extends BaseObject {
             }
         }
 
-        currentIdleTime = playerIdling ? Math.min(currentIdleTime + delta, PLAYER_IDLE_STATE_DELAY) : 0;
+        if (drillTimer > 0) {
+            drillTimer = Math.max(drillTimer - delta, 0);
+        }
+
+        if (currentState == PLAYER_STATES.IDLE) {
+            currentIdleTime = Math.min(currentIdleTime + delta, PLAYER_IDLE_STATE_DELAY);
+        } else {
+            currentIdleTime = 0;
+        }
 
         float baseMultiplier = (1 + PLAYER_FUEL_IDLE_MULTIPLIER) - currentIdleTime / PLAYER_IDLE_STATE_DELAY;
         fuelConsumptionRate = Math.max(PLAYER_FUEL_IDLE_MULTIPLIER, Math.min(baseMultiplier, 1));
+
+        collisionInterval = Math.max(collisionInterval - delta, 0);
     }
 
     private boolean isDirectionAllowed(char direction) {
@@ -389,12 +410,13 @@ public class Player extends BaseObject {
     public String toString() {
         return String.format(
             "Current points: %d\nDepth reached: %.0f\nTotal fuel: %.2f\n" +
-            "Radar power-up: %s\nSpeed power-up: %s\nPoint power-up: %s\n\n%s",
+            "Radar power-up: %s\nSpeed power-up: %s\nDrill speed power-up: %s\nPoint power-up: %s\n\n%s",
             getTotalScore(),
             getDrillDepth(),
             getFuel(),
             formatPowerUp(viewTimer),
             formatPowerUp(speedTimer),
+            formatPowerUp(drillTimer),
             formatPowerUp(collectibleTimer),
             controller.toString()
         );

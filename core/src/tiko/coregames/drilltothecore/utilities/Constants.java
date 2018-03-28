@@ -20,6 +20,8 @@ public class Constants {
     public static final float PLAYER_FUEL_MIN_CONSUMPTION = 1f;
     public static final float PLAYER_FUEL_IDLE_MULTIPLIER = .25f;
     public static final float PLAYER_IDLE_STATE_DELAY = 5;
+    public static final float PLAYER_MOVEMENT_SPEED_MULTIPLIER = 1.33f;
+    public static final float PLAYER_DRILL_SPEED_REDUCTION = .2f;
     public static final float PLAYER_VIEW_RADIUS = 75;
 
     public static final int PLAYER_ORIENTATION_UP = 0;
@@ -35,6 +37,7 @@ public class Constants {
 
     public static final String POWER_UP_POINT_MULTIPLIER = "pointMultiplier";
     public static final String POWER_UP_SPEED_MULTIPLIER = "speedMultiplier";
+    public static final String POWER_UP_DRILL_MULTIPLIER = "drillMultiplier";
     public static final String POWER_UP_RADAR_EXTENDER = "radarPowerUp";
     public static final String POWER_UP_RANDOMIZED = "randomPowerUp";
     public static final String POWER_UP_NOTHING = "";
@@ -44,6 +47,11 @@ public class Constants {
     public static final String FUEL_CANISTER_REFILL_20 = "smallFuel";
 
     public static final String[] RANDOM_POWER_UPS = {
-        POWER_UP_NOTHING, POWER_UP_POINT_MULTIPLIER, POWER_UP_RADAR_EXTENDER, POWER_UP_SPEED_MULTIPLIER
+        POWER_UP_NOTHING, POWER_UP_POINT_MULTIPLIER, POWER_UP_RADAR_EXTENDER,
+        POWER_UP_DRILL_MULTIPLIER, POWER_UP_SPEED_MULTIPLIER
     };
+
+    public enum PLAYER_STATES {
+        IDLE, ACTIVE, TURNING, JAMMED, DESTROYED
+    }
 }
