@@ -64,7 +64,7 @@ public class Player extends BaseObject {
 
     private void setDefaultOrientation() {
         defaultOrientation = 270;
-        nextOrientation = 0;
+        nextOrientation = 270;
     }
 
     public void setMaxFuel() {
@@ -105,7 +105,7 @@ public class Player extends BaseObject {
     }
 
     public int getPlayerOrientation() {
-        int rotation = defaultOrientation + Math.round(Math.abs(getRotation()) % 360);
+        int rotation = Math.round(Math.abs(defaultOrientation + getRotation()) % 360);
         boolean isStraightAngle = rotation % 90 == 0;
 
         if (rotation >= 0 && rotation < 90) {
@@ -123,25 +123,35 @@ public class Player extends BaseObject {
         return maximumDrillDepth;
     }
 
-    public void setNewOrientation(int orientation) {
-        nextOrientation = orientation;
+    private void setNewOrientation(int orientation) {
+        if (currentState != PLAYER_STATES.TURNING) {
+            nextOrientation = orientation;
+        }
     }
 
-    public boolean isRotatingToAxis(float delta) {
-        int rotateTo;
-        if (getPlayerOrientation() < nextOrientation) {
-            rotateTo = 45;
-        } else  {
-            rotateTo = -45;
-        }
+    private boolean startRotation(float delta) {
+        int orientation = getPlayerOrientation();
 
-        if (nextOrientation != getPlayerOrientation()) {
-            rotate(rotateTo * (5* delta));
-        }
-        if (getPlayerOrientation() == 359) {
-            rotate(-359);
-        }
+        if (nextOrientation != orientation) {
+            int difference = nextOrientation - orientation;
 
+            if (Math.abs(difference) == 180) {
+                //setRotation(difference);
+            } else {
+                float speed = 0;
+
+                if (nextOrientation > orientation) {
+                    speed = PLAYER_ROTATION_SPEED;
+                } else if (nextOrientation < orientation) {
+                    speed = -PLAYER_ROTATION_SPEED;
+                }
+
+                rotate(speed * delta);
+                setCurrentState(PLAYER_STATES.TURNING);
+
+                return true;
+            }
+        }
 
         return false;
     }
@@ -159,16 +169,16 @@ public class Player extends BaseObject {
         return PLAYER_MOVE_SPEED * (speedMultiplier - drillSpeedReduction);
     }
 
-    private void setCurrentState(PLAYER_STATES state, PLAYER_STATES... ignoreStates) {
+    private void setCurrentState(PLAYER_STATES newState, PLAYER_STATES... ignoreStates) {
         if (ignoreStates != null && ignoreStates.length > 0) {
-            for (PLAYER_STATES ignoreState : ignoreStates) {
-                if (ignoreState != null && currentState == ignoreState) {
+            for (PLAYER_STATES state : ignoreStates) {
+                if (currentState == state) {
                     return;
                 }
             }
         }
 
-        currentState = state;
+        currentState = newState;
     }
 
 
@@ -185,12 +195,12 @@ public class Player extends BaseObject {
 
             if (isDirectionAllowed('U') && (valueY > 0 || Gdx.input.isKeyPressed(Input.Keys.UP))) {
                 translateY(getMovementSpeed() * delta);
-                rotateSprite("U", delta);
+                setNewOrientation(PLAYER_ORIENTATION_UP);
                 valueY = 1;
             }
             if (isDirectionAllowed('D') && (valueY < 0 || Gdx.input.isKeyPressed(Input.Keys.DOWN))) {
                 translateY(-getMovementSpeed() * delta);
-                rotateSprite("D", delta);
+                setNewOrientation(PLAYER_ORIENTATION_DOWN);
                 valueY = -1;
             }
 
@@ -198,15 +208,17 @@ public class Player extends BaseObject {
             if (valueY == 0) {
                 if (isDirectionAllowed('R') && (valueX > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
                     translateX(getMovementSpeed() * delta);
-                    rotateSprite("R", delta);
+                    setNewOrientation(PLAYER_ORIENTATION_RIGHT);
                     valueX = 1;
                 }
                 if (isDirectionAllowed('L') && (valueX < 0 || Gdx.input.isKeyPressed(Input.Keys.LEFT))) {
                     translateX(-getMovementSpeed() * delta);
-                    rotateSprite("L", delta);
+                    setNewOrientation(PLAYER_ORIENTATION_LEFT);
                     valueX = -1;
                 }
             }
+
+            startRotation(delta);
 
             if (valueX != 0 || valueY != 0) {
                 setCurrentState(PLAYER_STATES.ACTIVE, PLAYER_STATES.TURNING);
@@ -377,40 +389,6 @@ public class Player extends BaseObject {
         return false;
     }
 
-    // TODO: Simplify
-    private void rotateSprite(String direction, float delta) {
-
-        /*
-         * Rotates the sprite to the direction it moves to.
-         *
-         * String Direction is sent from the move method and this method records the direction
-         * currently moving to on string called DrillPointsTo.
-         */
-
-        if (direction.equals("L")) {
-            if (getPlayerOrientation() <= 180) {
-                setNewOrientation(PLAYER_ORIENTATION_UP);
-            } else {
-                setNewOrientation(359);
-            }
-        }
-        if (direction.equals("R")) {
-            setNewOrientation(PLAYER_ORIENTATION_DOWN);
-        }
-        if (direction.equals("D")) {
-            setNewOrientation(PLAYER_ORIENTATION_RIGHT);
-        }
-        if (direction.equals("U")) {
-            if (getPlayerOrientation() == 0) {
-                rotate(350);
-            }
-            setNewOrientation(PLAYER_ORIENTATION_LEFT);
-        }
-        isRotatingToAxis(delta);
-
-    }
-
-
     // DEBUG METHOD
     private String formatPowerUp(float timer) {
         if (timer > 0) {
@@ -424,7 +402,8 @@ public class Player extends BaseObject {
     public String toString() {
         return String.format(
             "Current points: %d\nDepth reached: %.0f\nTotal fuel: %.2f\n" +
-            "Radar power-up: %s\nSpeed power-up: %s\nDrill speed power-up: %s\nPoint power-up: %s\n\nRotation: %d (%d)\n%s",
+            "Radar power-up: %s\nSpeed power-up: %s\nDrill speed power-up: %s\n" +
+            "Point power-up: %s\n\nRotation: %d (%d)\nPosition (center): %.2f, %.2f\n%s",
             getTotalScore(),
             getDrillDepth(),
             getFuel(),
@@ -434,6 +413,7 @@ public class Player extends BaseObject {
             formatPowerUp(collectibleTimer),
             getPlayerOrientation(),
             nextOrientation,
+            getX() + getWidth() / 2, getY() + getHeight() / 2,
             controller.toString()
         );
     }

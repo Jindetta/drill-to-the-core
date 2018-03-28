@@ -41,19 +41,19 @@ public class SettingsManager {
         return new SettingsManager(getSaveName("defaultProfile"), true);
     }
 
-    public static SettingsManager getUserProfile(int index) {
+    public static SettingsManager getUserProfile(int index, boolean defaultProfile) {
         if (hasProfile(index)) {
             return new SettingsManager(getProfilePath(index), false);
         }
 
-        return getDefaultProfile();
+        return defaultProfile ? getDefaultProfile() : null;
     }
 
     public static SettingsManager getActiveProfile() {
         SettingsManager profile = getDefaultProfile();
 
         if (profile.defaultProfile && profile.hasValue("activeProfile")) {
-            return getUserProfile(profile.getInteger("activeProfile"));
+            return getUserProfile(profile.getInteger("activeProfile"), false);
         }
 
         return null;

@@ -16,6 +16,7 @@ public class Constants {
     public static final boolean DEBUG_MODE = true;
 
     public static final float PLAYER_MOVE_SPEED = 85;
+    public static final float PLAYER_ROTATION_SPEED = 130;
     public static final float PLAYER_FUEL_TANK_SIZE = 90;
     public static final float PLAYER_FUEL_MIN_CONSUMPTION = 1f;
     public static final float PLAYER_FUEL_IDLE_MULTIPLIER = .25f;

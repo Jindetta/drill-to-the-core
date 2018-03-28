@@ -26,38 +26,40 @@ public class ControllerManager {
     }
 
     public void reset() {
+        if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
+            if (minPositiveThreshold == null) {
+                minPositiveThreshold = new Vector2();
+            } else {
+                minPositiveThreshold.setZero();
+            }
+
+            if (minNegativeThreshold == null) {
+                minNegativeThreshold = new Vector2();
+            } else {
+                minNegativeThreshold.setZero();
+            }
+
+            // FOR DEBUGGING PURPOSES ONLY
+            calibrationX = new Vector2();
+            calibrationY = new Vector2();
+
+            if (baseline == null) {
+                baseline = new Vector3();
+            } else {
+                baseline.setZero();
+            }
+
+            calibrationTime = CONTROLLER_CALIBRATION_TIME;
+            calibrationIterations = 0;
+
+            applySettings();
+        }
+
         if (currentValue == null) {
             currentValue = new Vector2();
         } else {
             currentValue.setZero();
         }
-
-        if (minPositiveThreshold == null) {
-            minPositiveThreshold = new Vector2();
-        } else {
-            minPositiveThreshold.setZero();
-        }
-
-        if (minNegativeThreshold == null) {
-            minNegativeThreshold = new Vector2();
-        } else {
-            minNegativeThreshold.setZero();
-        }
-
-        // FOR DEBUGGING PURPOSES ONLY
-        calibrationX = new Vector2();
-        calibrationY = new Vector2();
-
-        if (baseline == null) {
-            baseline = new Vector3();
-        } else {
-            baseline.setZero();
-        }
-
-        calibrationTime = CONTROLLER_CALIBRATION_TIME;
-        calibrationIterations = 0;
-
-        applySettings();
     }
 
     private void applySettings() {
@@ -102,10 +104,12 @@ public class ControllerManager {
     }
 
     private void setInvertedX(boolean inverted) {
+        setXThreshold(minNegativeThreshold.x, minPositiveThreshold.x);
         invertedX = inverted;
     }
 
     private void setInvertedY(boolean inverted) {
+        setYThreshold(minNegativeThreshold.y, minPositiveThreshold.y);
         invertedY = inverted;
     }
 
@@ -126,7 +130,7 @@ public class ControllerManager {
     }
 
     public void update() {
-        if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
+        if (baseline != null) {
             // Get value from accelerometer (Y = X)
             float x = Gdx.input.getAccelerometerY();
             // Get value from accelerometer (Z = Y)
@@ -164,9 +168,13 @@ public class ControllerManager {
 
     @Override
     public String toString() {
-        calibrationX.set(baseline.x + minNegativeThreshold.x, baseline.x + minPositiveThreshold.x);
-        calibrationY.set(baseline.y + minNegativeThreshold.y, baseline.y + minPositiveThreshold.y);
+        if (baseline != null) {
+            calibrationX.set(baseline.x + minNegativeThreshold.x, baseline.x + minPositiveThreshold.x);
+            calibrationY.set(baseline.y + minNegativeThreshold.y, baseline.y + minPositiveThreshold.y);
 
-        return "BASELINE\nX: " + calibrationX.toString() + "\nY: " + calibrationY.toString();
+            return "\nBASELINE\nX: " + calibrationX.toString() + "\nY: " + calibrationY.toString();
+        }
+
+        return "";
     }
 }

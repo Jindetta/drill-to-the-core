@@ -95,17 +95,17 @@ public class ConfigScreen extends BaseScreen {
 
         settingsTable = new Table();
         settingsTable.add(sensitivityLabelLeft).row();
-        settingsTable.add(sensitivityLeft).padTop(10).row();
-        settingsTable.add(sensitivityLabelRight).padTop(15).row();
-        settingsTable.add(sensitivityRight).padTop(10).row();
+        settingsTable.add(sensitivityLeft).padTop(5).row();
+        settingsTable.add(sensitivityLabelRight).padTop(10).row();
+        settingsTable.add(sensitivityRight).padTop(5).row();
 
-        settingsTable.add(sensitivityLabelUp).padTop(30).row();
-        settingsTable.add(sensitivityUp).padTop(10).row();
-        settingsTable.add(sensitivityLabelDown).padTop(15).row();
-        settingsTable.add(sensitivityDown).padTop(10).row();
+        settingsTable.add(sensitivityLabelUp).padTop(15).row();
+        settingsTable.add(sensitivityUp).padTop(5).row();
+        settingsTable.add(sensitivityLabelDown).padTop(10).row();
+        settingsTable.add(sensitivityDown).padTop(5).row();
 
-        settingsTable.add(invertedX).padTop(30).row();
-        settingsTable.add(invertedY).padTop(10);
+        settingsTable.add(invertedX).padTop(15).row();
+        settingsTable.add(invertedY).padTop(5);
 
         addActor(settingsTable);
     }

@@ -13,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 import tiko.coregames.drilltothecore.Setup;
 import tiko.coregames.drilltothecore.managers.LevelManager;
@@ -50,8 +49,8 @@ public class GameScreen extends BaseScreen {
 
     private void createPauseWindow() {
         pauseWindow = new Window(localizer.getValue("pause"), skin);
-        //pauseWindow.setResizable(false);
-        //pauseWindow.setMovable(false);
+        pauseWindow.setResizable(false);
+        pauseWindow.setMovable(false);
         pauseWindow.setVisible(false);
 
         ClickListener clickListener = new ClickListener() {
@@ -88,8 +87,6 @@ public class GameScreen extends BaseScreen {
 
     private void createFuelMeter() {
         playerFuel = new ProgressBar(0, PLAYER_FUEL_TANK_SIZE, 0.1f, false, skin);
-        playerFuel.setPosition(getWidth() - playerFuel.getWidth() - SAFE_ZONE_SIZE, getHeight() - playerFuel.getHeight() - SAFE_ZONE_SIZE);
-        playerFuel.setValue(player.getFuel());
         playerFuel.setDisabled(true);
 
         //addActor(playerFuel);
@@ -110,8 +107,23 @@ public class GameScreen extends BaseScreen {
         camera.update();
     }
 
-    private void updateFuelMeter() {
+    private void updateDisplayInfo() {
+        Camera camera = getCamera();
+
+        float viewportX = camera.position.x + camera.viewportWidth / 2;
+        float viewportY = camera.position.y + camera.viewportHeight / 2;
+
+        playerFuel.setPosition(
+            viewportX - playerFuel.getWidth() - SAFE_ZONE_SIZE,
+            viewportY - playerFuel.getHeight() - SAFE_ZONE_SIZE
+        );
+
         playerFuel.setValue(player.getFuel());
+
+        pauseWindow.setPosition(
+            camera.position.x - pauseWindow.getWidth() / 2,
+            camera.position.y - pauseWindow.getHeight() / 2
+        );
     }
 
     private void renderLevelData(Camera camera) {
@@ -139,20 +151,6 @@ public class GameScreen extends BaseScreen {
     }
 
     @Override
-    public void resize(int width, int height) {
-        Viewport viewport = getViewport();
-        viewport.update(width, height, true);
-
-        float fuelX = viewport.getWorldWidth() - playerFuel.getWidth() - SAFE_ZONE_SIZE;
-        float fuelY = viewport.getWorldHeight() - playerFuel.getHeight() - SAFE_ZONE_SIZE;
-        float centerX = (viewport.getWorldWidth() - pauseWindow.getPrefWidth()) / 2;
-        float centerY = (viewport.getWorldHeight() - pauseWindow.getPrefHeight()) / 2;
-
-        playerFuel.setPosition(fuelX, fuelY);
-        pauseWindow.setPosition(centerX, centerY);
-    }
-
-    @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -171,7 +169,7 @@ public class GameScreen extends BaseScreen {
         batch.end();
 
         followPlayerObject();
-        updateFuelMeter();
+        updateDisplayInfo();
 
         act(delta);
         draw();
@@ -185,7 +183,7 @@ public class GameScreen extends BaseScreen {
             pauseWindow.setVisible(true);
         }
 
-        return super.keyDown(key);
+        return true;
     }
 
     @Override
