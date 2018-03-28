@@ -403,7 +403,7 @@ public class Player extends BaseObject {
         return String.format(
             "Current points: %d\nDepth reached: %.0f\nTotal fuel: %.2f\n" +
             "Radar power-up: %s\nSpeed power-up: %s\nDrill speed power-up: %s\n" +
-            "Point power-up: %s\n\nRotation: %d (%d)\nPosition (center): %.2f, %.2f\n%s",
+            "Point power-up: %s\n\nRotation: %d (%d)\n%s",
             getTotalScore(),
             getDrillDepth(),
             getFuel(),
@@ -413,7 +413,6 @@ public class Player extends BaseObject {
             formatPowerUp(collectibleTimer),
             getPlayerOrientation(),
             nextOrientation,
-            getX() + getWidth() / 2, getY() + getHeight() / 2,
             controller.toString()
         );
     }
