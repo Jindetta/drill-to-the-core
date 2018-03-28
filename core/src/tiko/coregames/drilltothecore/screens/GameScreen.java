@@ -179,8 +179,27 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public boolean keyDown(int key) {
-        if (key == Input.Keys.ESCAPE || key == Input.Keys.BACK) {
-            pauseWindow.setVisible(true);
+        switch (key) {
+            case Input.Keys.S:
+                player.collectItemByName(null, POWER_UP_SPEED_MULTIPLIER);
+                break;
+            case Input.Keys.D:
+                player.collectItemByName(null, POWER_UP_DRILL_MULTIPLIER);
+                break;
+            case Input.Keys.R:
+                player.collectItemByName(null, POWER_UP_RADAR_EXTENDER);
+                break;
+            case Input.Keys.C:
+                player.collectItemByName(null, POWER_UP_POINT_MULTIPLIER);
+                break;
+            case Input.Keys.PLUS:
+                player.collectItemByName(null, POWER_UP_RANDOMIZED);
+                break;
+
+            case Input.Keys.BACK:
+            case Input.Keys.ESCAPE:
+                pauseWindow.setVisible(true);
+                break;
         }
 
         return true;

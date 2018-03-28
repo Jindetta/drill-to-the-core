@@ -261,7 +261,7 @@ public class Player extends BaseObject {
         }
     }
 
-    private void collectItemByName(TiledMapTile tile, String key) {
+    public void collectItemByName(TiledMapTile tile, String key) {
         if (key == null) {
             key = map.getString(tile, "id", "");
         }
