@@ -59,6 +59,8 @@ public class GameScreen extends BaseScreen {
                 String name = event.getListenerActor().getName();
 
                 switch (name == null ? "" : name) {
+                    case "settings":
+                        return;
                     case "menu":
                         Setup.nextScreen(new MainMenuScreen());
                         break;
@@ -75,18 +77,23 @@ public class GameScreen extends BaseScreen {
         TextButton continueButton = new TextButton(localizer.getValue("continue"), skin);
         continueButton.addListener(clickListener);
 
+        TextButton settingsButton = new TextButton("Settings", skin);
+        continueButton.addListener(clickListener);
+        settingsButton.setName("settings");
+
         TextButton menuButton = new TextButton(localizer.getValue("exit"), skin);
         menuButton.addListener(clickListener);
         menuButton.setName("menu");
 
         pauseWindow.add(continueButton).row();
+        pauseWindow.add(settingsButton).padTop(MENU_PADDING_TOP).row();
         pauseWindow.add(menuButton).padTop(MENU_PADDING_TOP);
 
         addActor(pauseWindow);
     }
 
     private void createFuelMeter() {
-        playerFuel = new ProgressBar(0, PLAYER_FUEL_TANK_SIZE, 0.1f, false, skin);
+        playerFuel = new ProgressBar(0, PLAYER_FUEL_TANK_SIZE, 0.5f, false, skin);
         playerFuel.setDisabled(true);
 
         //addActor(playerFuel);

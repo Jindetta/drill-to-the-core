@@ -15,6 +15,16 @@ public abstract class BaseObject extends Sprite implements Disposable {
         setVisible(true);
     }
 
+    BaseObject(String texture, int x, int y, int width, int height) {
+        super(new Texture(texture));
+
+        setRegion(x, y, width, height);
+        setSize(width, height);
+
+        setOriginCenter();
+        setVisible(true);
+    }
+
     public boolean isAlive() {
         return alive;
     }

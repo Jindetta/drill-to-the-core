@@ -4,10 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -15,59 +12,59 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import tiko.coregames.drilltothecore.Setup;
 import tiko.coregames.drilltothecore.managers.SettingsManager;
 
-public class ConfigScreen extends BaseScreen {
+public class CalibrationScreen extends BaseScreen {
     private Table settingsTable;
 
-    public ConfigScreen() {
+    public CalibrationScreen() {
         final SettingsManager settings = SettingsManager.getDefaultProfile();
 
         final Label sensitivityLabelLeft = new Label("", skin);
-        final Slider sensitivityLeft = new Slider(0, 10, 0.05f, false, skin);
-        sensitivityLeft.setValue(settings.getFloat("sensitivityLeft"));
+        final Slider sensitivityLeft = new Slider(0, 10, 1, false, skin);
+        sensitivityLeft.setValue(settings.getInteger("sensitivityLeft"));
         sensitivityLeft.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                sensitivityLabelLeft.setText(String.format("Sensitivity (Left): %.2f", sensitivityLeft.getValue()));
-                settings.setFloatValue("sensitivityLeft", sensitivityLeft.getValue());
+                sensitivityLabelLeft.setText(String.format("Sensitivity (Left): %.0f", sensitivityLeft.getValue()));
+                settings.setIntegerValue("sensitivityLeft", Math.round(sensitivityLeft.getValue()));
                 settings.saveSettings();
             }
         });
         sensitivityLeft.fire(new ChangeListener.ChangeEvent());
 
         final Label sensitivityLabelRight = new Label("", skin);
-        final Slider sensitivityRight = new Slider(0, 10, 0.05f, false, skin);
-        sensitivityRight.setValue(settings.getFloat("sensitivityRight"));
+        final Slider sensitivityRight = new Slider(0, 10, 1, false, skin);
+        sensitivityRight.setValue(settings.getInteger("sensitivityRight"));
         sensitivityRight.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                sensitivityLabelRight.setText(String.format("Sensitivity (Right): %.2f", sensitivityRight.getValue()));
-                settings.setFloatValue("sensitivityRight", sensitivityRight.getValue());
+                sensitivityLabelRight.setText(String.format("Sensitivity (Right): %.0f", sensitivityRight.getValue()));
+                settings.setIntegerValue("sensitivityRight", Math.round(sensitivityRight.getValue()));
                 settings.saveSettings();
             }
         });
         sensitivityRight.fire(new ChangeListener.ChangeEvent());
 
         final Label sensitivityLabelUp = new Label("", skin);
-        final Slider sensitivityUp = new Slider(0, 10, 0.05f, false, skin);
-        sensitivityUp.setValue(settings.getFloat("sensitivityUp"));
+        final Slider sensitivityUp = new Slider(0, 10, 1, false, skin);
+        sensitivityUp.setValue(settings.getInteger("sensitivityUp"));
         sensitivityUp.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                sensitivityLabelUp.setText(String.format("Sensitivity (Up): %.2f", sensitivityUp.getValue()));
-                settings.setFloatValue("sensitivityUp", sensitivityUp.getValue());
+                sensitivityLabelUp.setText(String.format("Sensitivity (Up): %.0f", sensitivityUp.getValue()));
+                settings.setIntegerValue("sensitivityUp", Math.round(sensitivityUp.getValue()));
                 settings.saveSettings();
             }
         });
         sensitivityUp.fire(new ChangeListener.ChangeEvent());
 
         final Label sensitivityLabelDown = new Label("", skin);
-        final Slider sensitivityDown = new Slider(0, 10, 0.05f, false, skin);
-        sensitivityDown.setValue(settings.getFloat("sensitivityDown"));
+        final Slider sensitivityDown = new Slider(0, 10, 1, false, skin);
+        sensitivityDown.setValue(settings.getInteger("sensitivityDown"));
         sensitivityDown.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                sensitivityLabelDown.setText(String.format("Sensitivity (Down): %.2f", sensitivityDown.getValue()));
-                settings.setFloatValue("sensitivityDown", sensitivityDown.getValue());
+                sensitivityLabelDown.setText(String.format("Sensitivity (Down): %.0f", sensitivityDown.getValue()));
+                settings.setIntegerValue("sensitivityDown", Math.round(sensitivityDown.getValue()));
                 settings.saveSettings();
             }
         });
@@ -105,7 +102,7 @@ public class ConfigScreen extends BaseScreen {
         settingsTable.add(sensitivityDown).padTop(5).row();
 
         settingsTable.add(invertedX).padTop(15).row();
-        settingsTable.add(invertedY).padTop(5);
+        settingsTable.add(invertedY).padTop(5).row();
 
         addActor(settingsTable);
     }
@@ -113,7 +110,7 @@ public class ConfigScreen extends BaseScreen {
     @Override
     public boolean keyDown(int key) {
         if (key == Input.Keys.ESCAPE || key == Input.Keys.BACK) {
-            Setup.nextScreen(new MainMenuScreen());
+            Setup.nextScreen(new SettingsScreen());
         }
 
         return super.keyDown(key);

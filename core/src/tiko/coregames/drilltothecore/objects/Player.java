@@ -37,7 +37,8 @@ public class Player extends BaseObject {
     private int defaultOrientation;
 
     public Player(LevelManager map, LocalizationManager localizer, float x, float y) {
-        super("images/player.png");
+        super("images/player_atlas.png", 0, 0, TILE_WIDTH, TILE_HEIGHT);
+
         controller = new ControllerManager();
         playerView = new Circle(x + getWidth() / 2, y + getHeight() / 2, PLAYER_VIEW_RADIUS);
         setPosition(x, y);
@@ -263,7 +264,7 @@ public class Player extends BaseObject {
 
     public void collectItemByName(TiledMapTile tile, String key) {
         if (key == null) {
-            key = map.getString(tile, "id", "");
+            key = map.getString(tile, "id", POWER_UP_NOTHING);
         }
 
         switch (key) {

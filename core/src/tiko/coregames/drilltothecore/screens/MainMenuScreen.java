@@ -32,7 +32,7 @@ public class MainMenuScreen extends BaseScreen {
                         Setup.nextScreen(new GameScreen());
                         break;
                     case "settings":
-                        Setup.nextScreen(new ConfigScreen());
+                        Setup.nextScreen(new SettingsScreen());
                         break;
                     case "highScore":
                         Setup.nextScreen(new HighScoreScreen());
