@@ -37,6 +37,16 @@ public class SettingsManager {
         return profiles.hasValue(getProfileKey(index));
     }
 
+    private static String getProfileName(int index) {
+        if (hasProfile(index)) {
+            SettingsManager profiles = new SettingsManager();
+
+            return profiles.getString(getProfileKey(index));
+        }
+
+        return null;
+    }
+
     public static SettingsManager getDefaultProfile() {
         return new SettingsManager(getSaveName("defaultProfile"), true);
     }
@@ -73,13 +83,13 @@ public class SettingsManager {
             SettingsManager profiles = new SettingsManager();
 
             for (int i = 0; i < MAX_SAVED_PROFILES; i++) {
-                if (!hasProfile(i)) {
+                if (!hasProfile(i) || name.equals(getProfileName(i))) {
+                    profiles.setStringValue(getProfileKey(i), name);
+                    profiles.saveSettings();
+
                     if (setActive) {
                         setActiveProfile(i);
                     }
-
-                    profiles.setStringValue(getProfileKey(i), name);
-                    profiles.saveSettings();
 
                     return i;
                 }
