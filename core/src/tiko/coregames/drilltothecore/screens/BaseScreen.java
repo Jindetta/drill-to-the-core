@@ -9,6 +9,14 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
+/**
+ * BaseScreen class is core of every screen.
+ *
+ * @author  Joonas Lauhala <joonas.lauhala@cs.tamk.fi>
+ *          Saku Karvinen <saku.karvinen@cs.tamk.fi>
+ * @version 1.0
+ * @since   2018-02-01
+ */
 public abstract class BaseScreen extends Stage implements Screen {
     Skin skin;
 

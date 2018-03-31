@@ -6,6 +6,15 @@ import com.badlogic.gdx.math.*;
 
 import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
+/**
+ * ControllerManager will process all accelerometer input.
+ * Calibration and sensitivity processing is done by this class.
+ *
+ * @author  Joonas Lauhala <joonas.lauhala@cs.tamk.fi>
+ *          Saku Karvinen <saku.karvinen@cs.tamk.fi>
+ * @version 1.0
+ * @since   2018-02-01
+ */
 public class ControllerManager {
     private Vector2 previousValue;
     private Vector2 currentValue;
@@ -25,10 +34,16 @@ public class ControllerManager {
     private int sensitivityLeft, sensitivityRight;
     private int sensitivityUp, sensitivityDown;
 
+    /**
+     * Instantiates class.
+     */
     public ControllerManager() {
         reset();
     }
 
+    /**
+     * Resets all values.
+     */
     public void reset() {
         if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
             if (previousValue == null) {
@@ -72,6 +87,9 @@ public class ControllerManager {
         }
     }
 
+    /**
+     * Applies user settings.
+     */
     private void applySettings() {
         SettingsManager settings = SettingsManager.getDefaultProfile();
 
@@ -84,6 +102,13 @@ public class ControllerManager {
         setInvertedY(settings.getBoolean("invertedY"));
     }
 
+    /**
+     * Calibrates accelerometer baseline.
+     *
+     * @param x     Accelerometer X value
+     * @param y     Accelerometer Y value
+     * @return      True if calibration is active
+     */
     private boolean calibrationMode(float x, float y) {
         if (calibrationTime > 0) {
             calibrationTime -= Gdx.graphics.getDeltaTime();
@@ -143,6 +168,9 @@ public class ControllerManager {
         return 0;
     }
 
+    /**
+     * Updates all values.
+     */
     public void update() {
         if (baseline != null) {
             // Get value from accelerometer (Y = X)

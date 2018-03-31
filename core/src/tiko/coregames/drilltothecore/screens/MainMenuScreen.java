@@ -8,11 +8,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
 import tiko.coregames.drilltothecore.Setup;
 import tiko.coregames.drilltothecore.managers.LocalizationManager;
 
-import static tiko.coregames.drilltothecore.utilities.Constants.MENU_PADDING_TOP;
+import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
+/**
+ * MainMenuScreen class will display main menu.
+ *
+ * @author  Joonas Lauhala <joonas.lauhala@cs.tamk.fi>
+ *          Saku Karvinen <saku.karvinen@cs.tamk.fi>
+ * @version 1.0
+ * @since   2018-02-01
+ */
 public class MainMenuScreen extends BaseScreen {
     private Texture backgroundTexture;
     private Image background;

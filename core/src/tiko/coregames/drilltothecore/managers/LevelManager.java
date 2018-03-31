@@ -1,7 +1,10 @@
 package tiko.coregames.drilltothecore.managers;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -10,7 +13,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
@@ -34,7 +36,7 @@ public class LevelManager implements Disposable {
     /**
      * Stores background color
      */
-    private Color backgroundColor;
+    private Texture backgroundImage;
 
     /**
      * Renders level data.
@@ -47,12 +49,6 @@ public class LevelManager implements Disposable {
 
         // Choose level or tutorial if invalid value is given
         switch (levelValue) {
-            case -1:
-                path.append("tutorial_4x4.tmx");
-                break;
-            case -2:
-                path.append("tutorial_8x8.tmx");
-                break;
             default:
                 path.append("tutorial.tmx");
                 break;
@@ -80,9 +76,9 @@ public class LevelManager implements Disposable {
         mapWidth = width * tileWidth;
 
         try {
-            backgroundColor = Color.valueOf(properties.get("backgroundcolor", String.class));
+            backgroundImage = new Texture(properties.get("background", String.class));
         } catch (Exception e) {
-            backgroundColor = null;
+            backgroundImage = null;
         }
     }
 
@@ -91,16 +87,21 @@ public class LevelManager implements Disposable {
      */
     private void destroyLevel() {
         if (levelData != null) {
+            if (backgroundImage != null) {
+                backgroundImage.dispose();
+            }
+
             levelData.dispose();
         }
     }
 
-    public void renderView(Matrix4 cameraMatrix, float x, float y, float width, float height) {
-        if (backgroundColor != null) {
-            Gdx.gl.glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
-        }
+    public void renderView(SpriteBatch batch, Camera camera) {
+        batch.begin();
+        batch.setProjectionMatrix(camera.combined);
+        batch.draw(backgroundImage, 0, 0, mapWidth, mapHeight);
+        batch.end();
 
-        levelRenderer.setView(cameraMatrix, x, y, width, height);
+        levelRenderer.setView((OrthographicCamera) camera);
         levelRenderer.render();
     }
 
@@ -132,7 +133,7 @@ public class LevelManager implements Disposable {
     }
 
     public int getMapWidth() {
-         return mapWidth;
+        return mapWidth;
     }
 
     public int getMapHeight() {

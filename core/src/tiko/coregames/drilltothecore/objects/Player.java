@@ -2,7 +2,7 @@ package tiko.coregames.drilltothecore.objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Circle;
@@ -36,12 +36,13 @@ public class Player extends BaseObject {
     private int nextOrientation;
     private int defaultOrientation;
 
+    private float keyFrameState;
+    private Animation<TextureRegion> animation;
+
     public Player(LevelManager map, LocalizationManager localizer, float x, float y) {
-        super("images/player_atlas.png", 0, 0, TILE_WIDTH, TILE_HEIGHT);
+        super("images/player_atlas.png");
 
         controller = new ControllerManager();
-        playerView = new Circle(x + getWidth() / 2, y + getHeight() / 2, PLAYER_VIEW_RADIUS);
-        setPosition(x, y);
 
         startingDepth = y;
 
@@ -58,9 +59,27 @@ public class Player extends BaseObject {
         fuelConsumptionRate = PLAYER_FUEL_IDLE_MULTIPLIER;
         currentIdleTime = PLAYER_IDLE_STATE_DELAY;
 
+        // TODO: Make use of AnimationSet (for the blade)
+        TextureRegion bladeRegion = new TextureRegion(getTexture(), TILE_WIDTH * 3, TILE_HEIGHT);
+        animation = new Animation<>(1 / 15f, getFrames(bladeRegion, 3));
+        keyFrameState = 0;
+
+        playerView = new Circle(x + TILE_WIDTH / 2, y + TILE_HEIGHT / 2, PLAYER_VIEW_RADIUS);
+        setPosition(x, y);
+
         setDefaultOrientation();
         setInitialScoreValues();
         setMaxFuel();
+    }
+
+    private TextureRegion[] getFrames(TextureRegion region, int frameCount) {
+        TextureRegion[] frames = new TextureRegion[frameCount];
+
+        for (int i = 0; i < frameCount; i++) {
+            frames[i] = new TextureRegion(region, i * TILE_WIDTH, 0, TILE_WIDTH, TILE_HEIGHT);
+        }
+
+        return frames;
     }
 
     private void setDefaultOrientation() {
@@ -130,14 +149,15 @@ public class Player extends BaseObject {
         }
     }
 
-    private boolean startRotation(float delta) {
+    // TODO: Fix rotation
+    private void startRotation(float delta) {
         int orientation = getPlayerOrientation();
 
         if (nextOrientation != orientation) {
             int difference = nextOrientation - orientation;
 
             if (Math.abs(difference) == 180) {
-                //setRotation(difference);
+                setRotation(difference);
             } else {
                 float speed = 0;
 
@@ -149,12 +169,8 @@ public class Player extends BaseObject {
 
                 rotate(speed * delta);
                 setCurrentState(PLAYER_STATES.TURNING);
-
-                return true;
             }
         }
-
-        return false;
     }
 
     public float getFuel() {
@@ -163,7 +179,6 @@ public class Player extends BaseObject {
 
     public void resetCalibration() {
         controller.reset();
-        Gdx.app.log(getClass().getSimpleName(), "Calibration is reset");
     }
 
     private float getMovementSpeed() {
@@ -181,7 +196,6 @@ public class Player extends BaseObject {
 
         currentState = newState;
     }
-
 
     @Override
     public void draw(SpriteBatch batch, float delta) {
@@ -223,6 +237,7 @@ public class Player extends BaseObject {
 
             if (valueX != 0 || valueY != 0) {
                 setCurrentState(PLAYER_STATES.ACTIVE, PLAYER_STATES.TURNING);
+                keyFrameState += delta;
 
                 increaseMaximumDepth();
                 updateTileStatus();
@@ -230,7 +245,24 @@ public class Player extends BaseObject {
         }
 
         updateTimerStatus(delta);
-        super.draw(batch);
+        draw(batch);
+    }
+
+    @Override
+    public void draw(Batch batch) {
+        if (isVisible()) {
+            TextureRegion frame = animation.getKeyFrame(keyFrameState, true);
+
+            batch.draw(
+                frame, getX(), getY(),
+                frame.getRegionWidth() / 2,
+                frame.getRegionHeight() / 2,
+                frame.getRegionWidth(),
+                frame.getRegionHeight(),
+                getScaleX(), getScaleY(),
+                getRotation()
+            );
+        }
     }
 
     private void clearShroudTile(float x, float y) {
@@ -243,7 +275,7 @@ public class Player extends BaseObject {
     }
 
     private void updatePlayerView() {
-        playerView.setPosition(getX() + getWidth() / 2, getY() + getHeight() / 2);
+        playerView.setPosition(getX() + TILE_WIDTH / 2, getY() + TILE_HEIGHT / 2);
 
         for (float y = playerView.y - playerView.radius; y < playerView.y + playerView.radius; y++) {
             for (float x = playerView.x - playerView.radius; x < playerView.x + playerView.radius; x++) {
@@ -319,8 +351,8 @@ public class Player extends BaseObject {
         updatePlayerView();
 
         // TODO: Change "ground" destruction based on current heading
-        for (float y = getY(); y < getY() + getHeight(); y++) {
-            for (float x = getX(); x < getX() + getWidth(); x++) {
+        for (float y = getY(); y < getY() + TILE_WIDTH; y++) {
+            for (float x = getX(); x < getX() + TILE_HEIGHT; x++) {
                 TiledMapTileLayer.Cell cell = map.getCellFromPosition(x, y, "ground");
 
                 if (cell != null && cell.getTile() != null) {
@@ -331,7 +363,7 @@ public class Player extends BaseObject {
                     collisionInterval = .15f;
                 }
 
-                updateCollectibleStatus(x - getWidth() / 2, y - getHeight() / 2);
+                updateCollectibleStatus(x - TILE_WIDTH / 2, y - TILE_HEIGHT / 2);
             }
         }
 
@@ -382,8 +414,8 @@ public class Player extends BaseObject {
     private boolean isDirectionAllowed(char direction) {
         switch (direction) {
             case 'L': return getX() > 0;
-            case 'R': return getX() + getWidth() < map.getMapWidth();
-            case 'U': return getY() + getHeight() < map.getMapHeight() - TILE_HEIGHT * 3;
+            case 'R': return getX() + TILE_WIDTH < map.getMapWidth();
+            case 'U': return getY() < map.getMapHeight() - TILE_HEIGHT * 4;
             case 'D': return getY() > 0;
         }
 

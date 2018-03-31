@@ -32,7 +32,7 @@ public class GameScreen extends BaseScreen {
     private Player player;
 
     public GameScreen() {
-        map = new LevelManager(-2);
+        map = new LevelManager(0);
         Vector3 playerSpawn = map.getSpawnPoint("player");
         localizer = new LocalizationManager("game");
 
@@ -133,15 +133,6 @@ public class GameScreen extends BaseScreen {
         );
     }
 
-    private void renderLevelData(Camera camera) {
-        float x = camera.position.x - camera.viewportWidth / 2 - TILE_WIDTH;
-        float y = camera.position.y - camera.viewportHeight / 2 - TILE_HEIGHT;
-        float height = camera.viewportHeight + TILE_HEIGHT;
-        float width = camera.viewportWidth + TILE_WIDTH;
-
-        map.renderView(camera.combined, x, y, width, height);
-    }
-
     @Override
     public void show() {
         super.show();
@@ -168,7 +159,7 @@ public class GameScreen extends BaseScreen {
         Camera worldCamera = getCamera();
         SpriteBatch batch = Setup.getBatch();
 
-        renderLevelData(worldCamera);
+        map.renderView(batch, worldCamera);
 
         batch.begin();
         batch.setProjectionMatrix(worldCamera.combined);

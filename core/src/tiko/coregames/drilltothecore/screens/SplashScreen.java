@@ -3,10 +3,19 @@ package tiko.coregames.drilltothecore.screens;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
 import tiko.coregames.drilltothecore.Setup;
 
-import static tiko.coregames.drilltothecore.utilities.Constants.SINGLE_SPLASH_DURATION;
+import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
+/**
+ * SplashScreen class will display splash screen.
+ *
+ * @author  Joonas Lauhala <joonas.lauhala@cs.tamk.fi>
+ *          Saku Karvinen <saku.karvinen@cs.tamk.fi>
+ * @version 1.0
+ * @since   2018-02-01
+ */
 public class SplashScreen extends BaseScreen {
     private Texture texture;
     private float timeLeft;

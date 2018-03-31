@@ -9,6 +9,14 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import tiko.coregames.drilltothecore.Setup;
 
+/**
+ * SettingsScreen class will display all settings.
+ *
+ * @author  Joonas Lauhala <joonas.lauhala@cs.tamk.fi>
+ *          Saku Karvinen <saku.karvinen@cs.tamk.fi>
+ * @version 1.0
+ * @since   2018-02-01
+ */
 public class SettingsScreen extends BaseScreen {
     private Table settingsTable;
 
