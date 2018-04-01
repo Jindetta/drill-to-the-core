@@ -39,6 +39,10 @@ public class Player extends BaseObject {
     private float keyFrameState;
     private Animation<TextureRegion> animation;
 
+    private TextureRegion playerUnit;
+
+    private final TiledMapTile[] VIEW_TILES;
+
     public Player(LevelManager map, LocalizationManager localizer, float x, float y) {
         super("images/player_atlas.png");
 
@@ -48,6 +52,7 @@ public class Player extends BaseObject {
 
         this.map = map;
         this.localizer = localizer;
+        VIEW_TILES = map.getViewTiles();
 
         drillSpeedReduction = 0;
         speedMultiplier = 1;
@@ -61,6 +66,7 @@ public class Player extends BaseObject {
 
         // TODO: Make use of AnimationSet (for the blade)
         TextureRegion bladeRegion = new TextureRegion(getTexture(), TILE_WIDTH * 3, TILE_HEIGHT);
+        playerUnit = new TextureRegion(getTexture(), TILE_WIDTH * 3, 0, TILE_WIDTH, TILE_HEIGHT);
         animation = new Animation<>(1 / 15f, getFrames(bladeRegion, 3));
         keyFrameState = 0;
 
@@ -265,12 +271,28 @@ public class Player extends BaseObject {
         }
     }
 
+    private int calculateDistance(float x, float y, int value) {
+        double distance = Math.sqrt(Math.pow(playerView.x - x, 2) + Math.pow(playerView.y - y, 2));
+        return Math.abs(value - (int) (playerView.radius / (distance - value)));
+    }
+
     private void clearShroudTile(float x, float y) {
         TiledMapTileLayer.Cell cell = map.getCellFromPosition(x, y, "shroud");
 
         if (cell != null && cell.getTile() != null) {
-            addBonusScore(0.01f);
-            cell.setTile(null);
+            Integer value = map.getInteger(cell.getTile(), "view", VIEW_TILES.length);
+            int tileIndex = calculateDistance(x, y, value);
+
+            if (tileIndex > 0) {
+                tileIndex = tileIndex % VIEW_TILES.length;
+
+                if (tileIndex < value) {
+                    cell.setTile(VIEW_TILES[tileIndex]);
+                }
+            } else {
+                addBonusScore(0.01f);
+                cell.setTile(null);
+            }
         }
     }
 
@@ -337,6 +359,12 @@ public class Player extends BaseObject {
         Gdx.app.log(getClass().getSimpleName(), getCollectibleName(key));
     }
 
+    /**
+     * Updates collectible state.
+     *
+     * @param x     X index
+     * @param y     Y index
+     */
     private void updateCollectibleStatus(float x, float y) {
         TiledMapTileLayer.Cell cell = map.getCellFromPosition(x, y, "collectibles");
 
@@ -346,7 +374,9 @@ public class Player extends BaseObject {
         }
     }
 
-    // DEBUG - Destroy tiles
+    /**
+     * Updates map view.
+     */
     private void updateTileStatus() {
         updatePlayerView();
 

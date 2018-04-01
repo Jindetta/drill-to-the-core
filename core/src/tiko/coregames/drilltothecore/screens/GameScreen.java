@@ -47,6 +47,9 @@ public class GameScreen extends BaseScreen {
         Debug.addDebugger(customDebug, "player");
     }
 
+    /**
+     * Creates pause menu window.
+     */
     private void createPauseWindow() {
         pauseWindow = new Window(localizer.getValue("pause"), skin);
         pauseWindow.setResizable(false);
@@ -92,6 +95,9 @@ public class GameScreen extends BaseScreen {
         addActor(pauseWindow);
     }
 
+    /**
+     * Creates fuel gauge.
+     */
     private void createFuelMeter() {
         playerFuel = new ProgressBar(0, PLAYER_FUEL_TANK_SIZE, 0.5f, false, skin);
         playerFuel.setDisabled(true);
@@ -114,6 +120,9 @@ public class GameScreen extends BaseScreen {
         camera.update();
     }
 
+    /**
+     * Updates menu positioning.
+     */
     private void updateDisplayInfo() {
         Camera camera = getCamera();
 
@@ -143,8 +152,6 @@ public class GameScreen extends BaseScreen {
     public void hide() {
         customDebug.setDebugString(null);
         Gdx.input.setCatchBackKey(false);
-
-        Gdx.gl.glClearColor(0, 0, 0, 1);
         super.hide();
     }
 

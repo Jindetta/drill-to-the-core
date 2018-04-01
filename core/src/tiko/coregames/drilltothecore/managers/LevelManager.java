@@ -5,13 +5,11 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
@@ -95,6 +93,35 @@ public class LevelManager implements Disposable {
         }
     }
 
+    public TiledMapTile[] getViewTiles() {
+        try {
+            TiledMapTile[] tiles = new TiledMapTile[8];
+            TiledMapTileSet tileSet = levelData.getTileSets().getTileSet("foreground-tiles");
+
+            for (int i = 0; i < tileSet.size(); i++) {
+                TiledMapTile tile = tileSet.getTile(i);
+
+                if (tile != null) {
+                    MapProperties properties = tile.getProperties();
+
+                    if (properties != null && properties.containsKey("view")) {
+                        tiles[properties.get("view", Integer.class) - 1] = tile;
+                    }
+                }
+            }
+
+            return tiles;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * Renders map and background.
+     *
+     * @param batch     Batch to draw to
+     * @param camera    Camera to use
+     */
     public void renderView(SpriteBatch batch, Camera camera) {
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
