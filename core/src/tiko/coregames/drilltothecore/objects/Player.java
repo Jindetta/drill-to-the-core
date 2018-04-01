@@ -268,6 +268,17 @@ public class Player extends BaseObject {
                 getScaleX(), getScaleY(),
                 getRotation()
             );
+
+            // TODO: Fix overlapping "unit" and "blade"
+            batch.draw(
+                playerUnit, getX(), getY(),
+                frame.getRegionWidth() / 2,
+                frame.getRegionHeight() / 2,
+                frame.getRegionWidth(),
+                frame.getRegionHeight(),
+                getScaleX(), getScaleY(),
+                getRotation()
+            );
         }
     }
 

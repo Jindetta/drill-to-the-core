@@ -114,8 +114,8 @@ public class GameScreen extends BaseScreen {
         float viewportWidth = camera.viewportWidth * camera.zoom / 2;
         float viewportHeight = camera.viewportHeight * camera.zoom / 2;
 
-        camera.position.x = MathUtils.clamp(player.getX(), viewportWidth, map.getMapWidth() - viewportWidth);
-        camera.position.y = MathUtils.clamp(player.getY(), viewportHeight, map.getMapHeight() - viewportHeight);
+        camera.position.x = MathUtils.clamp((int) player.getX(), viewportWidth, map.getMapWidth() - viewportWidth);
+        camera.position.y = MathUtils.clamp((int) player.getY(), viewportHeight, map.getMapHeight() - viewportHeight);
 
         camera.update();
     }
