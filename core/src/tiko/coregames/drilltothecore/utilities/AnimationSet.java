@@ -54,7 +54,7 @@ public class AnimationSet implements Disposable {
         TextureRegion[] frames = new TextureRegion[rows * columns];
 
         for (int i = 0; i < frames.length; i++) {
-            frames[i] = new TextureRegion(texture, (i + offsetX) * TILE_WIDTH, 0, TILE_WIDTH, TILE_HEIGHT);
+            frames[i] = new TextureRegion(texture, (i + offsetX) * BIG_TILE_SIZE, 0, BIG_TILE_SIZE, BIG_TILE_SIZE);
         }
 
         animations.put(key, new FrameRegion(frames, framesPerSecond));

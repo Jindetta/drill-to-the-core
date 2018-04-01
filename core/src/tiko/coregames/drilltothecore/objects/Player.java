@@ -65,12 +65,12 @@ public class Player extends BaseObject {
         currentIdleTime = PLAYER_IDLE_STATE_DELAY;
 
         // TODO: Make use of AnimationSet (for the blade)
-        TextureRegion bladeRegion = new TextureRegion(getTexture(), TILE_WIDTH * 3, TILE_HEIGHT);
-        playerUnit = new TextureRegion(getTexture(), TILE_WIDTH * 3, 0, TILE_WIDTH, TILE_HEIGHT);
+        TextureRegion bladeRegion = new TextureRegion(getTexture(), BIG_TILE_SIZE * 3, BIG_TILE_SIZE);
+        playerUnit = new TextureRegion(getTexture(), BIG_TILE_SIZE * 3, 0, BIG_TILE_SIZE, BIG_TILE_SIZE);
         animation = new Animation<>(1 / 15f, getFrames(bladeRegion, 3));
         keyFrameState = 0;
 
-        playerView = new Circle(x + TILE_WIDTH / 2, y + TILE_HEIGHT / 2, PLAYER_VIEW_RADIUS);
+        playerView = new Circle(x + BIG_TILE_SIZE / 2, y + BIG_TILE_SIZE / 2, PLAYER_VIEW_RADIUS);
         setPosition(x, y);
 
         setDefaultOrientation();
@@ -82,7 +82,7 @@ public class Player extends BaseObject {
         TextureRegion[] frames = new TextureRegion[frameCount];
 
         for (int i = 0; i < frameCount; i++) {
-            frames[i] = new TextureRegion(region, i * TILE_WIDTH, 0, TILE_WIDTH, TILE_HEIGHT);
+            frames[i] = new TextureRegion(region, i * BIG_TILE_SIZE, 0, BIG_TILE_SIZE, BIG_TILE_SIZE);
         }
 
         return frames;
@@ -266,9 +266,11 @@ public class Player extends BaseObject {
                 getRotation()
             );
 
-            // TODO: Fix overlapping "unit" and "blade"
+            // TODO: Fix - method for orientation
             batch.draw(
-                playerUnit, getX(), getY(),
+                playerUnit,
+                getX() + BIG_TILE_SIZE - 1 + MathUtils.cos(getRotation()),
+                getY() + MathUtils.sin(getRotation()),
                 frame.getRegionWidth() / 2,
                 frame.getRegionHeight() / 2,
                 frame.getRegionWidth(),
@@ -305,11 +307,14 @@ public class Player extends BaseObject {
         }
     }
 
+    /**
+     * Updates player view.
+     */
     private void updatePlayerView() {
-        playerView.setPosition(getX() + TILE_WIDTH / 2, getY() + TILE_HEIGHT / 2);
+        playerView.setPosition(getX() + BIG_TILE_SIZE / 2, getY() + BIG_TILE_SIZE / 2);
 
-        for (float y = playerView.y - playerView.radius; y < playerView.y + playerView.radius; y += 8) {
-            for (float x = playerView.x - playerView.radius; x < playerView.x + playerView.radius; x += 8) {
+        for (float y = playerView.y - playerView.radius; y < playerView.y + playerView.radius; y += SMALL_TILE_SIZE) {
+            for (float x = playerView.x - playerView.radius; x < playerView.x + playerView.radius; x += SMALL_TILE_SIZE) {
                 if (playerView.contains(x, y)) {
                     clearShroudTile(x, y);
                 }
@@ -317,6 +322,12 @@ public class Player extends BaseObject {
         }
     }
 
+    /**
+     * Gets localized collectible name.
+     *
+     * @param key   Collectible identifier
+     * @return      Localized string
+     */
     private String getCollectibleName(String key) {
         try {
             return localizer.getValue(key);
@@ -325,6 +336,12 @@ public class Player extends BaseObject {
         }
     }
 
+    /**
+     * Processes all collectibles.
+     *
+     * @param tile  Collectible tile
+     * @param key   Collectible identifier
+     */
     public void collectItemByName(TiledMapTile tile, String key) {
         if (key == null) {
             key = map.getString(tile, "id", POWER_UP_NOTHING);
@@ -375,6 +392,9 @@ public class Player extends BaseObject {
      * @param y     Y index
      */
     private void updateCollectibleStatus(float x, float y) {
+        x -= BIG_TILE_SIZE / 2 - SMALL_TILE_SIZE;
+        y -= BIG_TILE_SIZE / 2 - SMALL_TILE_SIZE;
+
         TiledMapTileLayer.Cell cell = map.getCellFromPosition(x, y, "collectibles");
 
         if (cell != null && cell.getTile() != null) {
@@ -401,45 +421,22 @@ public class Player extends BaseObject {
     private void updateTileStatus() {
         updatePlayerView();
 
-        float x, y;
-
         // TODO: Change "ground" destruction based on current heading
-        switch (Math.round(getPlayerOrientation())) {
-            case PLAYER_ORIENTATION_DOWN:
-                for (x = getX(); x < getX() + TILE_WIDTH; x++) {
-                    updateGroundStatus(x, getY() + TILE_HEIGHT);
-                }
-                break;
-            case PLAYER_ORIENTATION_UP:
-                for (x = getX(); x < getX() + TILE_WIDTH; x++) {
-                    updateGroundStatus(x, getY());
-                }
-                break;
-            case PLAYER_ORIENTATION_LEFT:
-                for (y = getY(); y < getY() + TILE_HEIGHT; y++) {
-                    updateGroundStatus(getX() + TILE_WIDTH, y);
-                }
-                break;
-            case PLAYER_ORIENTATION_RIGHT:
-                for (y = getY(); y < getY() + TILE_HEIGHT; y++) {
-                    updateGroundStatus(getX(), y);
-                }
-                break;
-            default:
-                updateGroundStatus(getX() + TILE_WIDTH / 2, getY() + TILE_HEIGHT / 2);
-                break;
-        }
-
-        /*for (float y = getY(); y < getY() + TILE_WIDTH; y++) {
-            for (float x = getX(); x < getX() + TILE_HEIGHT; x++) {
+        for (float y = getY() + SMALL_TILE_SIZE; y < getY() + BIG_TILE_SIZE - SMALL_TILE_SIZE; y++) {
+            for (float x = getX() + SMALL_TILE_SIZE; x < getX() + BIG_TILE_SIZE - SMALL_TILE_SIZE; x++) {
+                updateCollectibleStatus(x, y);
                 updateGroundStatus(x, y);
-                updateCollectibleStatus(x - TILE_WIDTH / 2, y - TILE_HEIGHT / 2);
             }
-        }*/
+        }
 
         drillSpeedReduction = collisionInterval > 0 && drillTimer <= 0 ? PLAYER_DRILL_SPEED_REDUCTION : 0;
     }
 
+    /**
+     * Updates all in-game timers.
+     *
+     * @param delta Time delta
+     */
     private void updateTimerStatus(float delta) {
         if (viewTimer > 0) {
             viewTimer = Math.max(viewTimer - delta, 0);
@@ -484,38 +481,27 @@ public class Player extends BaseObject {
     private boolean isDirectionAllowed(char direction) {
         switch (direction) {
             case 'L': return getX() > 0;
-            case 'R': return getX() + TILE_WIDTH < map.getMapWidth();
-            case 'U': return getY() < map.getMapHeight() - TILE_HEIGHT * 4;
+            case 'R': return getX() + BIG_TILE_SIZE < map.getMapWidth();
+            case 'U': return getY() < map.getMapHeight() - BIG_TILE_SIZE * 4;
             case 'D': return getY() > 0;
         }
 
         return false;
     }
 
-    // DEBUG METHOD
-    private String formatPowerUp(float timer) {
-        if (timer > 0) {
-            return String.format("%.2f", timer);
-        }
-
-        return "N/A";
-    }
-
     @Override
     public String toString() {
         return String.format(
             "Current points: %d\nDepth reached: %.0f\nTotal fuel: %.2f\n" +
-            "Radar power-up: %s\nSpeed power-up: %s\nDrill speed power-up: %s\n" +
-            "Point power-up: %s\n\nRotation: %.2f (%.2f)\n%s",
+            "Radar power-up: %.1f\nSpeed power-up: %.1f\nDrill speed power-up: %.1f\n" +
+            "Point power-up: %.1f\n\n%s",
             getTotalScore(),
             getDrillDepth(),
             getFuel(),
-            formatPowerUp(viewTimer),
-            formatPowerUp(speedTimer),
-            formatPowerUp(drillTimer),
-            formatPowerUp(collectibleTimer),
-            getPlayerOrientation(),
-            nextOrientation,
+            viewTimer,
+            speedTimer,
+            drillTimer,
+            collectibleTimer,
             controller.toString()
         );
     }

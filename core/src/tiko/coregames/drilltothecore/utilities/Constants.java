@@ -4,8 +4,8 @@ public class Constants {
     public static final float WORLD_WIDTH = 576;
     public static final float WORLD_HEIGHT = 360;
 
-    public static final int TILE_WIDTH = 32;
-    public static final int TILE_HEIGHT = 32;
+    public static final int BIG_TILE_SIZE = 32;
+    public static final int SMALL_TILE_SIZE = 8;
 
     public static final float MAX_SENSOR_VALUE = 10;
     public static final float CONTROLLER_CALIBRATION_TIME = 1.5f;
@@ -25,7 +25,7 @@ public class Constants {
     public static final float PLAYER_IDLE_STATE_DELAY = 5;
     public static final float PLAYER_MOVEMENT_SPEED_MULTIPLIER = 1.33f;
     public static final float PLAYER_DRILL_SPEED_REDUCTION = .2f;
-    public static final float PLAYER_VIEW_RADIUS = 75;
+    public static final float PLAYER_VIEW_RADIUS = 82;
 
     public static final int PLAYER_ORIENTATION_UP = 0;
     public static final int PLAYER_ORIENTATION_UP_RIGHT = 45;
