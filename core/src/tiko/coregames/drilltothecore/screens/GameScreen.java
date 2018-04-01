@@ -68,7 +68,9 @@ public class GameScreen extends BaseScreen {
                         Setup.nextScreen(new MainMenuScreen());
                         break;
                     default:
-                        player.setMaxFuel();
+                        if (DEBUG_MODE) {
+                            player.setMaxFuel();
+                        }
                         break;
                 }
 
@@ -159,7 +161,9 @@ public class GameScreen extends BaseScreen {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if (pauseWindow.isVisible()) {
+        if (!pauseWindow.isVisible()) {
+            delta *= GAME_SPEED_MODIFIER;
+        } else {
             delta = 0;
         }
 

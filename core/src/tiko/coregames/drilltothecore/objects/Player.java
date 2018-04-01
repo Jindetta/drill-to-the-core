@@ -33,8 +33,8 @@ public class Player extends BaseObject {
 
     private Circle playerView;
 
-    private int nextOrientation;
-    private int defaultOrientation;
+    private float nextOrientation;
+    private float defaultOrientation;
 
     private float keyFrameState;
     private Animation<TextureRegion> animation;
@@ -130,8 +130,8 @@ public class Player extends BaseObject {
         return Math.round(baseScore * scoreMultiplier + bonusScore);
     }
 
-    public int getPlayerOrientation() {
-        int rotation = Math.round(Math.abs(defaultOrientation + getRotation()) % 360);
+    public float getPlayerOrientation() {
+        float rotation = Math.abs(defaultOrientation + getRotation()) % 360;
         boolean isStraightAngle = rotation % 90 == 0;
 
         if (rotation >= 0 && rotation < 90) {
@@ -149,7 +149,7 @@ public class Player extends BaseObject {
         return maximumDrillDepth;
     }
 
-    private void setNewOrientation(int orientation) {
+    private void setNewOrientation(float orientation) {
         if (currentState != PLAYER_STATES.TURNING) {
             nextOrientation = orientation;
         }
@@ -157,24 +157,21 @@ public class Player extends BaseObject {
 
     // TODO: Fix rotation
     private void startRotation(float delta) {
-        int orientation = getPlayerOrientation();
+        float orientation = getPlayerOrientation();
 
         if (nextOrientation != orientation) {
-            int difference = nextOrientation - orientation;
+            float difference = nextOrientation - orientation;
 
-            if (Math.abs(difference) == 180) {
+            if (MathUtils.isEqual(Math.abs(difference), 180)) {
                 setRotation(difference);
             } else {
-                float speed = 0;
+                setCurrentState(PLAYER_STATES.TURNING);
 
                 if (nextOrientation > orientation) {
-                    speed = PLAYER_ROTATION_SPEED;
+                    rotate(PLAYER_ROTATION_SPEED % difference * delta);
                 } else if (nextOrientation < orientation) {
-                    speed = -PLAYER_ROTATION_SPEED;
+                    rotate(-PLAYER_ROTATION_SPEED % difference * delta);
                 }
-
-                rotate(speed * delta);
-                setCurrentState(PLAYER_STATES.TURNING);
             }
         }
     }
@@ -284,7 +281,12 @@ public class Player extends BaseObject {
 
     private int calculateDistance(float x, float y, int value) {
         double distance = Math.sqrt(Math.pow(playerView.x - x, 2) + Math.pow(playerView.y - y, 2));
-        return Math.abs(value - (int) (playerView.radius / (distance - value)));
+
+        if (distance / 3 > playerView.radius / VIEW_TILES.length) {
+            return (int) (distance / (playerView.radius / value));
+        }
+
+        return -1;
     }
 
     private void clearShroudTile(float x, float y) {
@@ -294,12 +296,8 @@ public class Player extends BaseObject {
             Integer value = map.getInteger(cell.getTile(), "view", VIEW_TILES.length);
             int tileIndex = calculateDistance(x, y, value);
 
-            if (tileIndex > 0) {
-                tileIndex = tileIndex % VIEW_TILES.length;
-
-                if (tileIndex < value) {
-                    cell.setTile(VIEW_TILES[tileIndex]);
-                }
+            if (tileIndex >= 0) {
+                cell.setTile(VIEW_TILES[tileIndex % value]);
             } else {
                 addBonusScore(0.01f);
                 cell.setTile(null);
@@ -310,8 +308,8 @@ public class Player extends BaseObject {
     private void updatePlayerView() {
         playerView.setPosition(getX() + TILE_WIDTH / 2, getY() + TILE_HEIGHT / 2);
 
-        for (float y = playerView.y - playerView.radius; y < playerView.y + playerView.radius; y++) {
-            for (float x = playerView.x - playerView.radius; x < playerView.x + playerView.radius; x++) {
+        for (float y = playerView.y - playerView.radius; y < playerView.y + playerView.radius; y += 8) {
+            for (float x = playerView.x - playerView.radius; x < playerView.x + playerView.radius; x += 8) {
                 if (playerView.contains(x, y)) {
                     clearShroudTile(x, y);
                 }
@@ -385,28 +383,59 @@ public class Player extends BaseObject {
         }
     }
 
+    private void updateGroundStatus(float x, float y) {
+        TiledMapTileLayer.Cell cell = map.getCellFromPosition(x, y, "ground");
+
+        if (cell != null && cell.getTile() != null) {
+            // 1 point per 8 tiles
+            addBaseScore(0.125f);
+            cell.setTile(null);
+
+            collisionInterval = .15f;
+        }
+    }
+
     /**
      * Updates map view.
      */
     private void updateTileStatus() {
         updatePlayerView();
 
+        float x, y;
+
         // TODO: Change "ground" destruction based on current heading
-        for (float y = getY(); y < getY() + TILE_WIDTH; y++) {
-            for (float x = getX(); x < getX() + TILE_HEIGHT; x++) {
-                TiledMapTileLayer.Cell cell = map.getCellFromPosition(x, y, "ground");
-
-                if (cell != null && cell.getTile() != null) {
-                    // 1 point per 8 tiles
-                    addBaseScore(0.125f);
-                    cell.setTile(null);
-
-                    collisionInterval = .15f;
+        switch (Math.round(getPlayerOrientation())) {
+            case PLAYER_ORIENTATION_DOWN:
+                for (x = getX(); x < getX() + TILE_WIDTH; x++) {
+                    updateGroundStatus(x, getY() + TILE_HEIGHT);
                 }
+                break;
+            case PLAYER_ORIENTATION_UP:
+                for (x = getX(); x < getX() + TILE_WIDTH; x++) {
+                    updateGroundStatus(x, getY());
+                }
+                break;
+            case PLAYER_ORIENTATION_LEFT:
+                for (y = getY(); y < getY() + TILE_HEIGHT; y++) {
+                    updateGroundStatus(getX() + TILE_WIDTH, y);
+                }
+                break;
+            case PLAYER_ORIENTATION_RIGHT:
+                for (y = getY(); y < getY() + TILE_HEIGHT; y++) {
+                    updateGroundStatus(getX(), y);
+                }
+                break;
+            default:
+                updateGroundStatus(getX() + TILE_WIDTH / 2, getY() + TILE_HEIGHT / 2);
+                break;
+        }
 
+        /*for (float y = getY(); y < getY() + TILE_WIDTH; y++) {
+            for (float x = getX(); x < getX() + TILE_HEIGHT; x++) {
+                updateGroundStatus(x, y);
                 updateCollectibleStatus(x - TILE_WIDTH / 2, y - TILE_HEIGHT / 2);
             }
-        }
+        }*/
 
         drillSpeedReduction = collisionInterval > 0 && drillTimer <= 0 ? PLAYER_DRILL_SPEED_REDUCTION : 0;
     }
@@ -477,7 +506,7 @@ public class Player extends BaseObject {
         return String.format(
             "Current points: %d\nDepth reached: %.0f\nTotal fuel: %.2f\n" +
             "Radar power-up: %s\nSpeed power-up: %s\nDrill speed power-up: %s\n" +
-            "Point power-up: %s\n\nRotation: %d (%d)\n%s",
+            "Point power-up: %s\n\nRotation: %.2f (%.2f)\n%s",
             getTotalScore(),
             getDrillDepth(),
             getFuel(),
