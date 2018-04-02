@@ -93,27 +93,30 @@ public class LevelManager implements Disposable {
         }
     }
 
-    public TiledMapTile[] getViewTiles() {
-        try {
-            TiledMapTile[] tiles = new TiledMapTile[8];
-            TiledMapTileSet tileSet = levelData.getTileSets().getTileSet("foreground-tiles");
+    public int getRelativeTileIndex(String tileSet, int index) {
+        if (tileSet != null) {
+            TiledMapTileSet tiles = levelData.getTileSets().getTileSet(tileSet);
+            Integer offset = tiles.getProperties().get("firstgid", Integer.class);
 
-            for (int i = 0; i < tileSet.size(); i++) {
-                TiledMapTile tile = tileSet.getTile(i);
-
-                if (tile != null) {
-                    MapProperties properties = tile.getProperties();
-
-                    if (properties != null && properties.containsKey("view")) {
-                        tiles[properties.get("view", Integer.class) - 1] = tile;
-                    }
-                }
+            if (offset != null && index >= offset && index < offset + tiles.size()) {
+                return index - offset;
             }
-
-            return tiles;
-        } catch (Exception e) {
-            return null;
         }
+
+        return 0;
+    }
+
+    public TiledMapTile getTileByIndex(String tileSet, int index) {
+        if (tileSet != null) {
+            TiledMapTileSet tiles = levelData.getTileSets().getTileSet(tileSet);
+            Integer offset = tiles.getProperties().get("firstgid", Integer.class);
+
+            if (offset != null && index >= 0 && index < tiles.size()) {
+                return tiles.getTile(offset + index);
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -123,10 +126,12 @@ public class LevelManager implements Disposable {
      * @param camera    Camera to use
      */
     public void renderView(SpriteBatch batch, Camera camera) {
-        batch.begin();
-        batch.setProjectionMatrix(camera.combined);
-        batch.draw(backgroundImage, 0, 0, mapWidth, mapHeight);
-        batch.end();
+        if (backgroundImage != null) {
+            batch.begin();
+            batch.setProjectionMatrix(camera.combined);
+            batch.draw(backgroundImage, 0, 0, mapWidth, mapHeight);
+            batch.end();
+        }
 
         levelRenderer.setView((OrthographicCamera) camera);
         levelRenderer.render();

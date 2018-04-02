@@ -24,8 +24,9 @@ public class SplashScreen extends BaseScreen {
     public SplashScreen() {
         timeLeft = SINGLE_SPLASH_DURATION;
         texture = new Texture("images/splash.png");
-        splash = new Image(texture);
 
+        splash = new Image(texture);
+        splash.setSize(getWidth(), getHeight());
         addActor(splash);
     }
 

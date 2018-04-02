@@ -41,8 +41,6 @@ public class Player extends BaseObject {
 
     private TextureRegion playerUnit;
 
-    private final TiledMapTile[] VIEW_TILES;
-
     public Player(LevelManager map, LocalizationManager localizer, float x, float y) {
         super("images/player_atlas.png");
 
@@ -52,7 +50,6 @@ public class Player extends BaseObject {
 
         this.map = map;
         this.localizer = localizer;
-        VIEW_TILES = map.getViewTiles();
 
         drillSpeedReduction = 0;
         speedMultiplier = 1;
@@ -64,18 +61,21 @@ public class Player extends BaseObject {
         fuelConsumptionRate = PLAYER_FUEL_IDLE_MULTIPLIER;
         currentIdleTime = PLAYER_IDLE_STATE_DELAY;
 
-        // TODO: Make use of AnimationSet (for the blade)
+        createPlayerUnit(x, y);
+        setDefaultOrientation();
+        setInitialScoreValues();
+        setMaxFuel();
+    }
+
+    // TODO: Improve
+    private void createPlayerUnit(float x, float y) {
         TextureRegion bladeRegion = new TextureRegion(getTexture(), BIG_TILE_SIZE * 3, BIG_TILE_SIZE);
-        playerUnit = new TextureRegion(getTexture(), BIG_TILE_SIZE * 3, 0, BIG_TILE_SIZE, BIG_TILE_SIZE);
+        playerUnit = new TextureRegion(getTexture(), BIG_TILE_SIZE * 3, BIG_TILE_SIZE, BIG_TILE_SIZE, BIG_TILE_SIZE);
         animation = new Animation<>(1 / 15f, getFrames(bladeRegion, 3));
         keyFrameState = 0;
 
         playerView = new Circle(x + BIG_TILE_SIZE / 2, y + BIG_TILE_SIZE / 2, PLAYER_VIEW_RADIUS);
         setPosition(x, y);
-
-        setDefaultOrientation();
-        setInitialScoreValues();
-        setMaxFuel();
     }
 
     private TextureRegion[] getFrames(TextureRegion region, int frameCount) {
@@ -90,7 +90,7 @@ public class Player extends BaseObject {
 
     private void setDefaultOrientation() {
         defaultOrientation = 270;
-        nextOrientation = 270;
+        nextOrientation = 0;
     }
 
     public void setMaxFuel() {
@@ -151,29 +151,29 @@ public class Player extends BaseObject {
 
     private void setNewOrientation(float orientation) {
         if (currentState != PLAYER_STATES.TURNING) {
-            nextOrientation = orientation;
+            nextOrientation = orientation - getPlayerOrientation();
         }
     }
 
     // TODO: Fix rotation
-    private void startRotation(float delta) {
+    private boolean startRotation(float delta) {
         float orientation = getPlayerOrientation();
 
-        if (nextOrientation != orientation) {
-            float difference = nextOrientation - orientation;
-
-            if (MathUtils.isEqual(Math.abs(difference), 180)) {
-                setRotation(difference);
+        /*if (nextOrientation != 0) {
+            if (Math.abs(nextOrientation ) == 180) {
+                setRotation(nextOrientation);
+                nextOrientation = 0;
             } else {
                 setCurrentState(PLAYER_STATES.TURNING);
 
-                if (nextOrientation > orientation) {
-                    rotate(PLAYER_ROTATION_SPEED % difference * delta);
-                } else if (nextOrientation < orientation) {
-                    rotate(-PLAYER_ROTATION_SPEED % difference * delta);
-                }
+                rotate(PLAYER_ROTATION_SPEED * delta);
+
+                nextOrientation = Math.max(nextOrientation - PLAYER_ROTATION_SPEED * delta, 0);
+                return true;
             }
-        }
+        }*/
+
+        return false;
     }
 
     public float getFuel() {
@@ -211,34 +211,35 @@ public class Player extends BaseObject {
             float valueX = controller.getCurrentX();
             float valueY = controller.getCurrentY();
 
-            if (isDirectionAllowed('U') && (valueY > 0 || Gdx.input.isKeyPressed(Input.Keys.UP))) {
-                translateY(getMovementSpeed() * delta);
-                setNewOrientation(PLAYER_ORIENTATION_UP);
-                valueY = 1;
-            }
-            if (isDirectionAllowed('D') && (valueY < 0 || Gdx.input.isKeyPressed(Input.Keys.DOWN))) {
-                translateY(-getMovementSpeed() * delta);
-                setNewOrientation(PLAYER_ORIENTATION_DOWN);
-                valueY = -1;
-            }
+            if (!startRotation(delta)) {
 
-            // Allow only one axis movement
-            if (valueY == 0) {
-                if (isDirectionAllowed('R') && (valueX > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
-                    translateX(getMovementSpeed() * delta);
-                    setNewOrientation(PLAYER_ORIENTATION_RIGHT);
-                    valueX = 1;
+                if (isDirectionAllowed('U') && (valueY > 0 || Gdx.input.isKeyPressed(Input.Keys.UP))) {
+                    translateY(getMovementSpeed() * delta);
+                    setNewOrientation(PLAYER_ORIENTATION_UP);
+                    valueY = 1;
                 }
-                if (isDirectionAllowed('L') && (valueX < 0 || Gdx.input.isKeyPressed(Input.Keys.LEFT))) {
-                    translateX(-getMovementSpeed() * delta);
-                    setNewOrientation(PLAYER_ORIENTATION_LEFT);
-                    valueX = -1;
+                if (isDirectionAllowed('D') && (valueY < 0 || Gdx.input.isKeyPressed(Input.Keys.DOWN))) {
+                    translateY(-getMovementSpeed() * delta);
+                    setNewOrientation(PLAYER_ORIENTATION_DOWN);
+                    valueY = -1;
+                }
+
+                // Allow only one axis movement
+                if (valueY == 0) {
+                    if (isDirectionAllowed('R') && (valueX > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
+                        translateX(getMovementSpeed() * delta);
+                        setNewOrientation(PLAYER_ORIENTATION_RIGHT);
+                        valueX = 1;
+                    }
+                    if (isDirectionAllowed('L') && (valueX < 0 || Gdx.input.isKeyPressed(Input.Keys.LEFT))) {
+                        translateX(-getMovementSpeed() * delta);
+                        setNewOrientation(PLAYER_ORIENTATION_LEFT);
+                        valueX = -1;
+                    }
                 }
             }
 
-            startRotation(delta);
-
-            if (valueX != 0 || valueY != 0) {
+            if (valueX != 0 || valueY != 0 || currentState == PLAYER_STATES.TURNING) {
                 setCurrentState(PLAYER_STATES.ACTIVE, PLAYER_STATES.TURNING);
                 keyFrameState += delta;
 
@@ -258,7 +259,7 @@ public class Player extends BaseObject {
 
             batch.draw(
                 frame, getX(), getY(),
-                frame.getRegionWidth() / 2,
+                frame.getRegionWidth() / 2 + BIG_TILE_SIZE,
                 frame.getRegionHeight() / 2,
                 frame.getRegionWidth(),
                 frame.getRegionHeight(),
@@ -281,28 +282,19 @@ public class Player extends BaseObject {
         }
     }
 
-    private int calculateDistance(float x, float y, int value) {
-        double distance = Math.sqrt(Math.pow(playerView.x - x, 2) + Math.pow(playerView.y - y, 2));
-
-        if (distance / 3 > playerView.radius / VIEW_TILES.length) {
-            return (int) (distance / (playerView.radius / value));
-        }
-
-        return -1;
-    }
-
     private void clearShroudTile(float x, float y) {
         TiledMapTileLayer.Cell cell = map.getCellFromPosition(x, y, "shroud");
 
         if (cell != null && cell.getTile() != null) {
-            Integer value = map.getInteger(cell.getTile(), "view", VIEW_TILES.length);
-            int tileIndex = calculateDistance(x, y, value);
+            int relativeIndex = map.getRelativeTileIndex("shroud", cell.getTile().getId());
+            double distance = Math.sqrt(Math.pow(playerView.x - x, 2) + Math.pow(playerView.y - y, 2));
+            int tileIndex = (int) (distance / (playerView.radius / relativeIndex));
 
-            if (tileIndex >= 0) {
-                cell.setTile(VIEW_TILES[tileIndex % value]);
-            } else {
+            TiledMapTile tile = map.getTileByIndex("shroud", tileIndex) ;
+
+            cell.setTile(tile);
+            if (tile == null) {
                 addBonusScore(0.01f);
-                cell.setTile(null);
             }
         }
     }
