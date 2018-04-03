@@ -140,11 +140,13 @@ public class ControllerManager {
     private int calibratedValueX(float x, float baseline) {
         if (x < baseline) {
             x = normalized(x, -MAX_SENSOR_VALUE, baseline);
+            Gdx.app.log("X", "neg = " + x + " - threshold = " + negativeThreshold.x);
             if (x > negativeThreshold.x) {
                 return -1;
             }
         } else {
             x = normalized(x, baseline, MAX_SENSOR_VALUE);
+            Gdx.app.log("X", "pos = " + x + " - threshold = " + positiveThreshold.x);
             if (x > positiveThreshold.x) {
                 return 1;
             }
@@ -156,11 +158,13 @@ public class ControllerManager {
     private int calibratedValueY(float y, float baseline) {
         if (y < baseline) {
             y = normalized(y, -MAX_SENSOR_VALUE, baseline);
+            Gdx.app.log("Y", "neg = " + y + " - threshold = " + negativeThreshold.y);
             if (y > negativeThreshold.y) {
                 return -1;
             }
         } else {
             y = normalized(y, baseline, MAX_SENSOR_VALUE);
+            Gdx.app.log("Y", "pos = " + y + " - threshold = " + positiveThreshold.y);
             if (y > positiveThreshold.y) {
                 return 1;
             }
@@ -198,12 +202,10 @@ public class ControllerManager {
 
             if (Math.abs(x) > Math.abs(y)) {
                 currentValue.set(calibratedValueX(x, baseline.x), 0);
+            } else if (Math.abs(baseline.y) > Math.abs(baseline.z)) {
+                currentValue.set(0, calibratedValueY(-z, baseline.z));
             } else {
-                if (Math.abs(baseline.y) > Math.abs(baseline.z)) {
-                    currentValue.set(0, calibratedValueY(-z, baseline.z));
-                } else {
-                    currentValue.set(0, calibratedValueY(y, baseline.y));
-                }
+                currentValue.set(0, calibratedValueY(y, baseline.y));
             }
         }
     }
@@ -219,10 +221,7 @@ public class ControllerManager {
     @Override
     public String toString() {
         if (baseline != null) {
-            calibrationX.set(baseline.x + negativeThreshold.x, baseline.x + positiveThreshold.x);
-            calibrationY.set(baseline.y + negativeThreshold.y, baseline.y + positiveThreshold.y);
-
-            return "\nBASELINE\nX: " + calibrationX.toString() + "\nY: " + calibrationY.toString();
+            return "\nBASELINE: " + baseline.toString();
         }
 
         return "";

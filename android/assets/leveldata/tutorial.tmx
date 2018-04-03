@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.3" orientation="orthogonal" renderorder="right-down" width="128" height="256" tilewidth="8" tileheight="8" infinite="0" nextobjectid="2">
+<map version="1.0" tiledversion="1.1.2" orientation="orthogonal" renderorder="right-down" width="128" height="256" tilewidth="8" tileheight="8" infinite="0" nextobjectid="2">
  <properties>
   <property name="background" value="leveldata/tutorial.jpg"/>
  </properties>
@@ -135,7 +135,7 @@
    eJzt3UFywjAMBVCWLVBYpAy9/0m7aBctpcOQ2JGlvHcBPgyERJLt3Q4AAAAAAAAAAAAAAMjqIzpAY+/RAeBGtd8YEOslOkAjVd4HUMclOgAwy2t0AABIyDM5AFCRexwAAAC2YIoOkNQ56HUrzDScogNAALVGAAAAMqhQe6K2Y3QAurpGBxicfk4/++gAAJCcXigAAADc55kZfjOTAADAmpzpxdaYgwMAIAs9NAAYj/N2ASCWvTYA/jpEBwAAAGBTos6h+4/5mnl8btCOfQEAAAAAAKjMDD+w1Ck6QEH20QPIZ5R5LXMuAEBVo9xv8TxnZADAY1N0AAAA+KbfCAAAy+lvA1CZNU8A87mGtqOfAXCfuhQAAAAA0MshOkAHaqrAUvZVAgBYn1lMAKpTtyQz318AIJNjdAAAAIBOzDZCXuZiiFZx7RBj0lsGAAAAoDdnWQAAW6Yfl9dbdABYmesVwNgu0QEA4AfrLWjJ2gkAnmEGBQAAAOBLj/281ezbUMMCgLHYFxigDedKAcBYrAkGYCusYwMAGI+6BACZZfwfO0cHYJGRZ8tHzgbUYJ0S9POohzatkgJquEYHaOgTt6wD/Q==
   </data>
  </layer>
- <layer name="shroud" width="128" height="256" visible="0" locked="1">
+ <layer name="shroud" width="128" height="256" locked="1">
   <data encoding="base64" compression="zlib">
    eJztw8ENACAIBDDWV3Bnp/Bhrk1aBQAAAAAAAADAz47Rx+ht9G30paqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqD1/JM/wy
   </data>

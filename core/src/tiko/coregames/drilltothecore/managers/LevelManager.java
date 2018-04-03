@@ -93,30 +93,31 @@ public class LevelManager implements Disposable {
         }
     }
 
-    public int getRelativeTileIndex(String tileSet, int index) {
-        if (tileSet != null) {
-            TiledMapTileSet tiles = levelData.getTileSets().getTileSet(tileSet);
-            Integer offset = tiles.getProperties().get("firstgid", Integer.class);
-
-            if (offset != null && index >= offset && index < offset + tiles.size()) {
-                return index - offset;
-            }
-        }
-
-        return 0;
-    }
-
     public TiledMapTile getTileByIndex(String tileSet, int index) {
-        if (tileSet != null) {
+        try {
             TiledMapTileSet tiles = levelData.getTileSets().getTileSet(tileSet);
             Integer offset = tiles.getProperties().get("firstgid", Integer.class);
 
             if (offset != null && index >= 0 && index < tiles.size()) {
                 return tiles.getTile(offset + index);
             }
+        } catch (Exception e) {
+
         }
 
         return null;
+    }
+
+    public int getTileSetSize(String tileSet) {
+        if (tileSet != null) {
+            TiledMapTileSet tiles = levelData.getTileSets().getTileSet(tileSet);
+
+            if (tiles != null) {
+                return tiles.size();
+            }
+        }
+
+        return 0;
     }
 
     /**
