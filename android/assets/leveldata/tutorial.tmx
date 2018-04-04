@@ -1,85 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.2" orientation="orthogonal" renderorder="right-down" width="128" height="256" tilewidth="8" tileheight="8" infinite="0" nextobjectid="2">
+<map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="128" height="256" tilewidth="8" tileheight="8" infinite="0" nextobjectid="2">
  <properties>
   <property name="background" value="leveldata/tutorial.jpg"/>
  </properties>
- <tileset firstgid="1" name="background-tiles" tilewidth="32" tileheight="32" tilecount="24" columns="6">
-  <image source="../images/background-tiles.png" width="192" height="128"/>
-  <tile id="7">
-   <properties>
-    <property name="id" value="pinkGem"/>
-    <property name="value" type="int" value="1000"/>
-   </properties>
-  </tile>
-  <tile id="8">
-   <properties>
-    <property name="id" value="purpleGem"/>
-    <property name="value" type="int" value="1250"/>
-   </properties>
-  </tile>
-  <tile id="9">
-   <properties>
-    <property name="id" value="greenGem"/>
-    <property name="value" type="int" value="1500"/>
-   </properties>
-  </tile>
-  <tile id="10">
-   <properties>
-    <property name="id" value="blueGem"/>
-    <property name="value" type="int" value="2000"/>
-   </properties>
-  </tile>
-  <tile id="11">
-   <properties>
-    <property name="id" value="redGem"/>
-    <property name="value" type="int" value="2500"/>
-   </properties>
-  </tile>
-  <tile id="12">
-   <properties>
-    <property name="amount" type="float" value="100"/>
-    <property name="id" value="bigFuel"/>
-   </properties>
-  </tile>
-  <tile id="13">
-   <properties>
-    <property name="amount" type="float" value="50"/>
-    <property name="id" value="mediumFuel"/>
-   </properties>
-  </tile>
-  <tile id="14">
-   <properties>
-    <property name="amount" type="float" value="20"/>
-    <property name="id" value="smallFuel"/>
-   </properties>
-  </tile>
-  <tile id="18">
-   <properties>
-    <property name="id" value="radarPowerUp"/>
-   </properties>
-  </tile>
-  <tile id="19">
-   <properties>
-    <property name="id" value="speedMultiplier"/>
-   </properties>
-  </tile>
-  <tile id="20">
-   <properties>
-    <property name="id" value="drillMultiplier"/>
-   </properties>
-  </tile>
-  <tile id="22">
-   <properties>
-    <property name="id" value="pointMultiplier"/>
-   </properties>
-  </tile>
-  <tile id="23">
-   <properties>
-    <property name="id" value="randomPowerUp"/>
-   </properties>
-  </tile>
- </tileset>
- <tileset firstgid="25" name="foreground-tiles" tilewidth="8" tileheight="8" tilecount="112" columns="28">
+ <tileset firstgid="1" name="foreground-tiles" tilewidth="8" tileheight="8" tilecount="112" columns="28">
   <image source="../images/foreground-tiles.png" width="224" height="32"/>
   <tile id="24">
    <properties>
@@ -122,22 +46,138 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="137" name="shroud" tilewidth="8" tileheight="8" tilecount="5" columns="5">
+ <tileset firstgid="113" name="shroud" tilewidth="8" tileheight="8" tilecount="5" columns="5">
   <image source="../images/shroud.png" width="40" height="8"/>
+ </tileset>
+ <tileset firstgid="118" name="collectibles" tilewidth="32" tileheight="32" tilecount="24" columns="6">
+  <image source="../images/collectibles.png" width="192" height="128"/>
+  <tile id="0">
+   <properties>
+    <property name="id" value="pinkGem"/>
+    <property name="value" type="int" value="250"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="id" value="purpleGem"/>
+    <property name="value" type="int" value="500"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="id" value="tealGem"/>
+    <property name="value" type="int" value="750"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="id" value="blueGem"/>
+    <property name="value" type="int" value="1000"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="id" value="redGem"/>
+    <property name="value" type="int" value="1250"/>
+   </properties>
+  </tile>
+  <tile id="5">
+   <properties>
+    <property name="id" value="greenGem"/>
+    <property name="value" type="int" value="1000"/>
+   </properties>
+  </tile>
+  <tile id="6">
+   <properties>
+    <property name="id" value="mineralGold"/>
+    <property name="value" type="int" value="2000"/>
+   </properties>
+  </tile>
+  <tile id="7">
+   <properties>
+    <property name="id" value="mineralSilver"/>
+    <property name="value" type="int" value="900"/>
+   </properties>
+  </tile>
+  <tile id="8">
+   <properties>
+    <property name="id" value="mineralBronze"/>
+    <property name="value" type="int" value="200"/>
+   </properties>
+  </tile>
+  <tile id="9">
+   <properties>
+    <property name="id" value="mineralCoal"/>
+    <property name="value" type="int" value="100"/>
+   </properties>
+  </tile>
+  <tile id="12">
+   <properties>
+    <property name="id" value="randomFuel"/>
+   </properties>
+  </tile>
+  <tile id="13">
+   <properties>
+    <property name="amount" type="float" value="100"/>
+    <property name="id" value="bigFuel"/>
+   </properties>
+  </tile>
+  <tile id="14">
+   <properties>
+    <property name="amount" type="float" value="50"/>
+    <property name="id" value="mediumFuel"/>
+   </properties>
+  </tile>
+  <tile id="15">
+   <properties>
+    <property name="amount" type="float" value="20"/>
+    <property name="id" value="smallFuel"/>
+   </properties>
+  </tile>
+  <tile id="18">
+   <properties>
+    <property name="id" value="radarBoost"/>
+   </properties>
+  </tile>
+  <tile id="19">
+   <properties>
+    <property name="id" value="speedBoost"/>
+   </properties>
+  </tile>
+  <tile id="20">
+   <properties>
+    <property name="id" value="drillBoost"/>
+   </properties>
+  </tile>
+  <tile id="21">
+   <properties>
+    <property name="id" value="armorBoost"/>
+   </properties>
+  </tile>
+  <tile id="22">
+   <properties>
+    <property name="id" value="pointBoost"/>
+   </properties>
+  </tile>
+  <tile id="23">
+   <properties>
+    <property name="id" value="randomBoost"/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="ground" width="128" height="256" locked="1">
   <data encoding="base64" compression="zlib">
-   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
+   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
   </data>
  </layer>
- <layer name="collectibles" width="128" height="256" locked="1">
+ <layer name="collectibles" width="128" height="256">
   <data encoding="base64" compression="zlib">
-   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
+   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
   </data>
  </layer>
  <layer name="shroud" width="128" height="256" locked="1">
   <data encoding="base64" compression="zlib">
-   eJztw8ENACAIBDDWV3Bnp/Bhrk1aBQAAAAAAAADAz47Rx+ht9G30paqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqD1/JM/wy
+   eJztw8ENACAIBDBWVnB/p/Bhrk1aBQAAAAAAAADAz47Rx+ht9G30paqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqD19zgseN
   </data>
  </layer>
  <objectgroup name="spawns" locked="1">

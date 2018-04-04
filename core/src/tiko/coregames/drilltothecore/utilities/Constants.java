@@ -39,16 +39,18 @@ public class Constants {
 
     public static final float SINGLE_SPLASH_DURATION = 3;
 
-    public static final String POWER_UP_POINT_MULTIPLIER = "pointMultiplier";
-    public static final String POWER_UP_SPEED_MULTIPLIER = "speedMultiplier";
-    public static final String POWER_UP_DRILL_MULTIPLIER = "drillMultiplier";
-    public static final String POWER_UP_RADAR_EXTENDER = "radarPowerUp";
-    public static final String POWER_UP_RANDOMIZED = "randomPowerUp";
+    public static final String POWER_UP_POINT_MULTIPLIER = "pointBoost";
+    public static final String POWER_UP_SPEED_MULTIPLIER = "speedBoost";
+    public static final String POWER_UP_DRILL_MULTIPLIER = "drillBoost";
+    public static final String POWER_UP_RADAR_EXTENDER = "radarBoost";
+    public static final String POWER_UP_ARMOR_REPAIR = "armorBoost";
+    public static final String POWER_UP_RANDOMIZED = "randomBoost";
     public static final String POWER_UP_NOTHING = "";
 
     public static final String FUEL_CANISTER_REFILL_100 = "bigFuel";
     public static final String FUEL_CANISTER_REFILL_50 = "mediumFuel";
     public static final String FUEL_CANISTER_REFILL_20 = "smallFuel";
+    public static final String FUEL_CANISTER_REFILL_RANDOM = "randomFuel";
 
     public static final String[] RANDOM_POWER_UPS = {
         POWER_UP_NOTHING, POWER_UP_POINT_MULTIPLIER, POWER_UP_RADAR_EXTENDER,
