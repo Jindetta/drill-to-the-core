@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.MathUtils;
 import tiko.coregames.drilltothecore.managers.ControllerManager;
 import tiko.coregames.drilltothecore.managers.LevelManager;
 import tiko.coregames.drilltothecore.managers.LocalizationManager;
+import tiko.coregames.drilltothecore.managers.SettingsManager;
 
 import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
@@ -69,8 +70,11 @@ public class Player extends BaseObject {
 
     // TODO: Improve
     private void createPlayerUnit(float x, float y) {
+        SettingsManager settings = SettingsManager.getDefaultProfile();
+        int index = settings.getInteger("playerColor");
+
         TextureRegion bladeRegion = new TextureRegion(getTexture(), BIG_TILE_SIZE * 3, BIG_TILE_SIZE);
-        playerUnit = new TextureRegion(getTexture(), BIG_TILE_SIZE * 3, BIG_TILE_SIZE, BIG_TILE_SIZE, BIG_TILE_SIZE);
+        playerUnit = new TextureRegion(getTexture(), BIG_TILE_SIZE * 3, index * BIG_TILE_SIZE, BIG_TILE_SIZE, BIG_TILE_SIZE);
         animation = new Animation<>(1 / 15f, getFrames(bladeRegion, 3));
         keyFrameState = 0;
 

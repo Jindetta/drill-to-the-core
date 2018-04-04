@@ -2,12 +2,19 @@ package tiko.coregames.drilltothecore.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import tiko.coregames.drilltothecore.Setup;
+import tiko.coregames.drilltothecore.managers.SettingsManager;
+
+import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
 /**
  * SettingsScreen class will display all settings.
@@ -19,9 +26,11 @@ import tiko.coregames.drilltothecore.Setup;
  */
 public class SettingsScreen extends BaseScreen {
     private Table settingsTable;
+    private Texture playerImage;
 
     public SettingsScreen() {
         settingsTable = new Table();
+        playerImage = new Texture("images/player_atlas.png");
 
         TextButton calibration = new TextButton("Calibrate", skin);
         calibration.addListener(new ClickListener() {
@@ -31,7 +40,23 @@ public class SettingsScreen extends BaseScreen {
             }
         });
 
-        settingsTable.add(calibration);
+        settingsTable.add(calibration).row();
+        final SettingsManager settings = SettingsManager.getDefaultProfile();
+
+        for (int i = 0; i < playerImage.getHeight() / BIG_TILE_SIZE; i++) {
+            final int colorIndex = i;
+            TextureRegion region = new TextureRegion(playerImage, BIG_TILE_SIZE * 4, i * BIG_TILE_SIZE, BIG_TILE_SIZE, BIG_TILE_SIZE);
+            final Button button = new Button(new TextureRegionDrawable(region));
+            button.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    Gdx.app.log("playerColor", "Set to " + colorIndex);
+                    settings.setIntegerValue("playerColor", colorIndex);
+                    settings.saveSettings();
+                }
+            });
+            settingsTable.add(button).padTop(10).row();
+        }
 
         addActor(settingsTable);
     }
@@ -66,5 +91,11 @@ public class SettingsScreen extends BaseScreen {
     public void hide() {
         Gdx.input.setCatchBackKey(false);
         super.hide();
+    }
+
+    @Override
+    public void dispose() {
+        playerImage.dispose();
+        super.dispose();
     }
 }

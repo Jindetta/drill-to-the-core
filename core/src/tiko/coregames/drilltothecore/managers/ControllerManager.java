@@ -163,19 +163,13 @@ public class ControllerManager {
     }
 
     private int calibratedValue(float value, float baseline, float positive, float negative) {
-        float normalizedValue = normalized(value, -MAX_SENSOR_VALUE, MAX_SENSOR_VALUE);
-        float normalizedBase = normalized(baseline, -MAX_SENSOR_VALUE, MAX_SENSOR_VALUE);
+        baseline = normalized(baseline, -MAX_SENSOR_VALUE, MAX_SENSOR_VALUE);
+        value = normalized(value, -MAX_SENSOR_VALUE, MAX_SENSOR_VALUE);
 
-        if (normalizedValue <= (normalizedBase - negative)) {
-            return -1;
-        } else if (normalizedValue >= (normalizedBase + positive)) {
-            return 1;
-        }
+        return value <= (baseline - negative) ? -1 : value >= (baseline + positive) ? 1 : 0;
 
         /*float positiveRange = Math.max(normalizedBase, 1 - normalizedBase);
         float negativeRange = 1 - positiveRange;*/
-
-        return 0;
     }
 
     private float normalized(float value, float min, float max) {
@@ -235,10 +229,12 @@ public class ControllerManager {
     @Override
     public String toString() {
         if (baseline != null) {
-            float x = Gdx.input.getAccelerometerY() + (baseline.x < 0 ? Math.abs(baseline.x) : -baseline.x);
-            float y = Gdx.input.getAccelerometerZ() + (baseline.y < 0 ? Math.abs(baseline.y) : -baseline.y);
-            float z = Gdx.input.getAccelerometerX() + (baseline.z < 0 ? Math.abs(baseline.z) : -baseline.z);
-            return "\nBASELINE:\nX = " + x + "\nY = " + y + "\nZ = " + z;
+            return String.format(
+                "\nBASELINE\nX: %.2f%% Y: %.2f%% Z: %.2f%%",
+                normalized(baseline.x, -MAX_SENSOR_VALUE, MAX_SENSOR_VALUE) * 100,
+                normalized(baseline.y, -MAX_SENSOR_VALUE, MAX_SENSOR_VALUE) * 100,
+                normalized(baseline.z, -MAX_SENSOR_VALUE, MAX_SENSOR_VALUE) * 100
+            );
         }
 
         return "";
