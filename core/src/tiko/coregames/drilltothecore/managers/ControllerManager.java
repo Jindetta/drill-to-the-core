@@ -17,13 +17,11 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
  */
 public class ControllerManager {
     private Vector2 currentValue;
+    private Vector2 previousValue;
 
     private Vector2 positiveThreshold;
     private Vector2 negativeThreshold;
     private Vector3 baseline;
-
-    private Vector2 calibrationX;
-    private Vector2 calibrationY;
 
     private int calibrationIterations;
     private float calibrationTime;
@@ -59,9 +57,11 @@ public class ControllerManager {
                 negativeThreshold.setZero();
             }
 
-            // FOR DEBUGGING PURPOSES ONLY
-            calibrationX = new Vector2();
-            calibrationY = new Vector2();
+            if (previousValue == null) {
+                previousValue = new Vector2();
+            } else {
+                previousValue.setZero();
+            }
 
             if (baseline == null) {
                 baseline = new Vector3();
@@ -105,7 +105,7 @@ public class ControllerManager {
      * @param y     Accelerometer Y value
      * @return      True if calibration is active
      */
-    private boolean calibrationMode(float x, float y, float z) {
+    private boolean updateCalibrationValues(float x, float y, float z) {
         if (calibrationTime > 0) {
             calibrationTime -= Gdx.graphics.getDeltaTime();
 
@@ -121,11 +121,37 @@ public class ControllerManager {
                 positiveThreshold.set(SENSITIVITY_MULTIPLIER * sensitivityRight, SENSITIVITY_MULTIPLIER * sensitivityUp);
                 negativeThreshold.set(SENSITIVITY_MULTIPLIER * sensitivityLeft, SENSITIVITY_MULTIPLIER * sensitivityDown);
 
-                baseline.set(x, y, z);
+                try {
+                    validateCalibrationValues(x, positiveThreshold.x, negativeThreshold.x);
+
+                    if (Math.abs(y) < Math.abs(z)) {
+                        validateCalibrationValues(y, positiveThreshold.y, negativeThreshold.y);
+                    } else {
+                        validateCalibrationValues(z, positiveThreshold.y, negativeThreshold.y);
+                    }
+
+                    baseline.set(x, y, z);
+                } catch (Exception e) {
+                    calibrationTime = CONTROLLER_CALIBRATION_TIME;
+                    baseline.setZero();
+
+                    return true;
+                }
             }
         }
 
         return calibrationIterations > 0;
+    }
+
+    private void validateCalibrationValues(float value, float positive, float negative) {
+        value = normalized(value, -MAX_SENSOR_VALUE, MAX_SENSOR_VALUE);
+
+        negative += SENSITIVITY_MULTIPLIER / 2;
+        positive += SENSITIVITY_MULTIPLIER / 2;
+
+        if (value - negative < 0 || value + positive > 1) {
+            throw new IllegalArgumentException("Calibration values are invalidated");
+        }
     }
 
     private void setInvertedX(boolean inverted) {
@@ -136,46 +162,24 @@ public class ControllerManager {
         invertedY = inverted;
     }
 
-    // Additional calibration method
-    private int calibratedValueX(float x, float baseline) {
-        if (x < baseline) {
-            x = normalized(x, -MAX_SENSOR_VALUE, baseline);
-            Gdx.app.log("X", "neg = " + x + " - threshold = " + negativeThreshold.x);
-            if (x > negativeThreshold.x) {
-                return -1;
-            }
-        } else {
-            x = normalized(x, baseline, MAX_SENSOR_VALUE);
-            Gdx.app.log("X", "pos = " + x + " - threshold = " + positiveThreshold.x);
-            if (x > positiveThreshold.x) {
-                return 1;
-            }
+    private int calibratedValue(float value, float baseline, float positive, float negative) {
+        float normalizedValue = normalized(value, -MAX_SENSOR_VALUE, MAX_SENSOR_VALUE);
+        float normalizedBase = normalized(baseline, -MAX_SENSOR_VALUE, MAX_SENSOR_VALUE);
+
+        if (normalizedValue <= (normalizedBase - negative)) {
+            return -1;
+        } else if (normalizedValue >= (normalizedBase + positive)) {
+            return 1;
         }
 
-        return 0;
-    }
-
-    private int calibratedValueY(float y, float baseline) {
-        if (y < baseline) {
-            y = normalized(y, -MAX_SENSOR_VALUE, baseline);
-            Gdx.app.log("Y", "neg = " + y + " - threshold = " + negativeThreshold.y);
-            if (y > negativeThreshold.y) {
-                return -1;
-            }
-        } else {
-            y = normalized(y, baseline, MAX_SENSOR_VALUE);
-            Gdx.app.log("Y", "pos = " + y + " - threshold = " + positiveThreshold.y);
-            if (y > positiveThreshold.y) {
-                return 1;
-            }
-        }
+        /*float positiveRange = Math.max(normalizedBase, 1 - normalizedBase);
+        float negativeRange = 1 - positiveRange;*/
 
         return 0;
     }
 
     private float normalized(float value, float min, float max) {
-        value = (value - min) / (max - min);
-        return value < 0 ? 1 - value : value;
+        return (value - Math.min(min, max)) / (Math.max(min, max) - Math.min(min, max));
     }
 
     /**
@@ -190,7 +194,7 @@ public class ControllerManager {
             // Y axis (alternate axis)
             float z = Gdx.input.getAccelerometerX();
 
-            if (calibrationMode(x, y, z)) {
+            if (updateCalibrationValues(x, y, z)) {
                 return;
             }
 
@@ -200,12 +204,22 @@ public class ControllerManager {
                 z = invertedY ? -z : z;
             }
 
-            if (Math.abs(x) > Math.abs(y)) {
-                currentValue.set(calibratedValueX(x, baseline.x), 0);
-            } else if (Math.abs(baseline.y) > Math.abs(baseline.z)) {
-                currentValue.set(0, calibratedValueY(-z, baseline.z));
-            } else {
-                currentValue.set(0, calibratedValueY(y, baseline.y));
+            updateValues(x, Math.abs(baseline.y) < Math.abs(baseline.z) ? y : -z);
+        }
+    }
+
+    private void updateValues(float x, float y) {
+        if (Math.abs(x) > Math.abs(y)) {
+            x = calibratedValue(x, baseline.x, positiveThreshold.x, negativeThreshold.x);
+
+            if (x == 0 || !MathUtils.isZero(Math.abs(currentValue.x + x))) {
+                currentValue.set(x, 0);
+            }
+        } else {
+            y = calibratedValue(y, baseline.y, positiveThreshold.y, negativeThreshold.y);
+
+            if (y == 0 || !MathUtils.isZero(Math.abs(currentValue.y + y))) {
+                currentValue.set(0, y);
             }
         }
     }
@@ -221,7 +235,10 @@ public class ControllerManager {
     @Override
     public String toString() {
         if (baseline != null) {
-            return "\nBASELINE: " + baseline.toString();
+            float x = Gdx.input.getAccelerometerY() + (baseline.x < 0 ? Math.abs(baseline.x) : -baseline.x);
+            float y = Gdx.input.getAccelerometerZ() + (baseline.y < 0 ? Math.abs(baseline.y) : -baseline.y);
+            float z = Gdx.input.getAccelerometerX() + (baseline.z < 0 ? Math.abs(baseline.z) : -baseline.z);
+            return "\nBASELINE:\nX = " + x + "\nY = " + y + "\nZ = " + z;
         }
 
         return "";

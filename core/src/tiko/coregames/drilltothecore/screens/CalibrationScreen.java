@@ -27,7 +27,7 @@ public class CalibrationScreen extends BaseScreen {
         final SettingsManager settings = SettingsManager.getDefaultProfile();
 
         final Label sensitivityLabelLeft = new Label("", skin);
-        final Slider sensitivityLeft = new Slider(0, 10, 1, false, skin);
+        final Slider sensitivityLeft = new Slider(1, 10, 1, false, skin);
         sensitivityLeft.setValue(settings.getInteger("sensitivityLeft"));
         sensitivityLeft.addListener(new ChangeListener() {
             @Override
@@ -40,7 +40,7 @@ public class CalibrationScreen extends BaseScreen {
         sensitivityLeft.fire(new ChangeListener.ChangeEvent());
 
         final Label sensitivityLabelRight = new Label("", skin);
-        final Slider sensitivityRight = new Slider(0, 10, 1, false, skin);
+        final Slider sensitivityRight = new Slider(1, 10, 1, false, skin);
         sensitivityRight.setValue(settings.getInteger("sensitivityRight"));
         sensitivityRight.addListener(new ChangeListener() {
             @Override
@@ -53,7 +53,7 @@ public class CalibrationScreen extends BaseScreen {
         sensitivityRight.fire(new ChangeListener.ChangeEvent());
 
         final Label sensitivityLabelUp = new Label("", skin);
-        final Slider sensitivityUp = new Slider(0, 10, 1, false, skin);
+        final Slider sensitivityUp = new Slider(1, 10, 1, false, skin);
         sensitivityUp.setValue(settings.getInteger("sensitivityUp"));
         sensitivityUp.addListener(new ChangeListener() {
             @Override
@@ -66,7 +66,7 @@ public class CalibrationScreen extends BaseScreen {
         sensitivityUp.fire(new ChangeListener.ChangeEvent());
 
         final Label sensitivityLabelDown = new Label("", skin);
-        final Slider sensitivityDown = new Slider(0, 10, 1, false, skin);
+        final Slider sensitivityDown = new Slider(1, 10, 1, false, skin);
         sensitivityDown.setValue(settings.getInteger("sensitivityDown"));
         sensitivityDown.addListener(new ChangeListener() {
             @Override

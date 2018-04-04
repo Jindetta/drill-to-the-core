@@ -286,9 +286,10 @@ public class Player extends BaseObject {
         TiledMapTileLayer.Cell cell = map.getCellFromPosition(x, y, "shroud");
 
         if (cell != null && cell.getTile() != null) {
-            double distance = Math.sqrt(Math.pow(playerView.x - x, 2) + Math.pow(playerView.y - y, 2));
-            int newIndex = (int) Math.ceil((playerView.radius - distance) / (playerView.radius / map.getTileSetSize("shroud")));
-            TiledMapTile tile = map.getTileByIndex("shroud", newIndex);
+            int tileSize = map.getTileSetSize("shroud");
+            double distance = Math.hypot(playerView.x - x, playerView.y - y);
+            double newIndex = Math.ceil((playerView.radius - distance) / (playerView.radius / tileSize));
+            TiledMapTile tile = map.getTileByIndex("shroud", (int) newIndex);
 
             if (tile == null || cell.getTile().getId() < tile.getId()) {
                 if (tile == null) {
