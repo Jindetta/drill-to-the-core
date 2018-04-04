@@ -374,7 +374,7 @@ public class Player extends BaseObject {
                 totalFuel = MathUtils.clamp(totalFuel + multiplier, totalFuel, PLAYER_FUEL_TANK_SIZE);
                 break;
             case FUEL_CANISTER_REFILL_RANDOM:
-                totalFuel = MathUtils.clamp(totalFuel * MathUtils.random(1, 1.75f), totalFuel, PLAYER_FUEL_TANK_SIZE);
+                totalFuel = MathUtils.clamp(totalFuel * MathUtils.random(10), totalFuel, PLAYER_FUEL_TANK_SIZE);
                 break;
             default:
                 Integer value = map.getInteger(tile, "value", 0);

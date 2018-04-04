@@ -40,22 +40,21 @@ public class SettingsScreen extends BaseScreen {
             }
         });
 
-        settingsTable.add(calibration).row();
+        settingsTable.add(calibration).colspan(10).row();
         final SettingsManager settings = SettingsManager.getDefaultProfile();
 
         for (int i = 0; i < playerImage.getHeight() / BIG_TILE_SIZE; i++) {
             final int colorIndex = i;
             TextureRegion region = new TextureRegion(playerImage, BIG_TILE_SIZE * 4, i * BIG_TILE_SIZE, BIG_TILE_SIZE, BIG_TILE_SIZE);
-            final Button button = new Button(new TextureRegionDrawable(region));
+            final ImageButton button = new ImageButton(new TextureRegionDrawable(region));
             button.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    Gdx.app.log("playerColor", "Set to " + colorIndex);
                     settings.setIntegerValue("playerColor", colorIndex);
                     settings.saveSettings();
                 }
             });
-            settingsTable.add(button).padTop(10).row();
+            settingsTable.add(button).center().pad(15);
         }
 
         addActor(settingsTable);
