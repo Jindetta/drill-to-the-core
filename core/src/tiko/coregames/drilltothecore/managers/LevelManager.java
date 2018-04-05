@@ -29,7 +29,7 @@ public class LevelManager implements Disposable {
     /**
      * Stores map size
      */
-    private int mapWidth, mapHeight;
+    private int mapWidth, mapHeight, mapDepth;
 
     /**
      * Stores background color
@@ -70,6 +70,7 @@ public class LevelManager implements Disposable {
         int tileWidth = properties.get("tilewidth", Integer.class);
         int tileHeight = properties.get("tileheight", Integer.class);
 
+        mapDepth = properties.get("depth", 1000, Integer.class);
         mapHeight = height * tileHeight;
         mapWidth = width * tileWidth;
 
@@ -163,6 +164,10 @@ public class LevelManager implements Disposable {
 
         // Invalid value - return null
         return null;
+    }
+
+    public int getDepth() {
+        return mapDepth;
     }
 
     public int getMapWidth() {

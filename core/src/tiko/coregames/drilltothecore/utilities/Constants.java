@@ -24,6 +24,7 @@ public class Constants {
     public static final float PLAYER_FUEL_MIN_CONSUMPTION = 1f;
     public static final float PLAYER_FUEL_IDLE_MULTIPLIER = .25f;
     public static final float PLAYER_IDLE_STATE_DELAY = 5;
+    public static final float PLAYER_DRILL_DEPTH_MULTIPLIER = 5;
     public static final float PLAYER_MOVEMENT_SPEED_MULTIPLIER = 1.33f;
     public static final float PLAYER_DRILL_SPEED_REDUCTION = .2f;
     public static final float PLAYER_VIEW_RADIUS = 82;
@@ -56,8 +57,4 @@ public class Constants {
         POWER_UP_NOTHING, POWER_UP_POINT_MULTIPLIER, POWER_UP_RADAR_EXTENDER,
         POWER_UP_DRILL_MULTIPLIER, POWER_UP_SPEED_MULTIPLIER
     };
-
-    public enum PLAYER_STATES {
-        IDLE, ACTIVE, TURNING, JAMMED, DESTROYED
-    }
 }

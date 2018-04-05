@@ -20,7 +20,7 @@ public class Player extends BaseObject {
     private LocalizationManager localizer;
     private LevelManager map;
 
-    private PLAYER_STATES currentState;
+    private STATES currentState;
 
     private float maximumDrillDepth;
     private float totalFuel, fuelConsumptionRate;
@@ -42,12 +42,12 @@ public class Player extends BaseObject {
 
     private TextureRegion playerUnit;
 
+    private enum STATES {
+        IDLE, ACTIVE, TURNING, JAMMED, DESTROYED
+    }
+
     public Player(LevelManager map, LocalizationManager localizer, float x, float y) {
         super("images/player_atlas.png");
-
-        controller = new ControllerManager();
-
-        startingDepth = y;
 
         this.map = map;
         this.localizer = localizer;
@@ -59,6 +59,7 @@ public class Player extends BaseObject {
         speedTimer = 0;
         viewTimer = 0;
 
+        controller = new ControllerManager();
         fuelConsumptionRate = PLAYER_FUEL_IDLE_MULTIPLIER;
         currentIdleTime = PLAYER_IDLE_STATE_DELAY;
 
@@ -75,9 +76,10 @@ public class Player extends BaseObject {
 
         TextureRegion bladeRegion = new TextureRegion(getTexture(), BIG_TILE_SIZE * 3, BIG_TILE_SIZE);
         playerUnit = new TextureRegion(getTexture(), BIG_TILE_SIZE * 3, index * BIG_TILE_SIZE, BIG_TILE_SIZE, BIG_TILE_SIZE);
-        animation = new Animation<>(1 / 15f, getFrames(bladeRegion, 3));
+        animation = new Animation<>(1 / 20f, getFrames(bladeRegion, 3));
         keyFrameState = 0;
 
+        startingDepth = y;
         playerView = new Circle(x + BIG_TILE_SIZE / 2, y + BIG_TILE_SIZE / 2, PLAYER_VIEW_RADIUS);
         setPosition(x, y);
     }
@@ -124,10 +126,10 @@ public class Player extends BaseObject {
     }
 
     private void increaseMaximumDepth() {
-        maximumDrillDepth = Math.max(maximumDrillDepth, Math.round(startingDepth - getY()));
+        maximumDrillDepth = Math.max(maximumDrillDepth, startingDepth - getY());
 
-        //DEBUG
-        scoreMultiplier = maximumDrillDepth / 150f;
+        //TODO: Remove this when score is shown at the end of the game
+        scoreMultiplier = Math.max(1, getDrillDepthMultiplier() * PLAYER_DRILL_DEPTH_MULTIPLIER);
     }
 
     public int getTotalScore() {
@@ -149,12 +151,16 @@ public class Player extends BaseObject {
         }
     }
 
+    private float getDrillDepthMultiplier() {
+        return Math.min(maximumDrillDepth / startingDepth, 1);
+    }
+
     public float getDrillDepth() {
-        return maximumDrillDepth;
+        return getDrillDepthMultiplier() * map.getDepth();
     }
 
     private void setNewOrientation(float orientation) {
-        if (currentState != PLAYER_STATES.TURNING) {
+        if (currentState != STATES.TURNING) {
             nextOrientation = orientation - getPlayerOrientation();
         }
     }
@@ -168,7 +174,7 @@ public class Player extends BaseObject {
                 setRotation(nextOrientation);
                 nextOrientation = 0;
             } else {
-                setCurrentState(PLAYER_STATES.TURNING);
+                setCurrentState(STATES.TURNING);
 
                 rotate(PLAYER_ROTATION_SPEED * delta);
 
@@ -192,9 +198,9 @@ public class Player extends BaseObject {
         return PLAYER_MOVE_SPEED * (speedMultiplier - drillSpeedReduction);
     }
 
-    private void setCurrentState(PLAYER_STATES newState, PLAYER_STATES... ignoreStates) {
+    private void setCurrentState(STATES newState, STATES... ignoreStates) {
         if (ignoreStates != null && ignoreStates.length > 0) {
-            for (PLAYER_STATES state : ignoreStates) {
+            for (STATES state : ignoreStates) {
                 if (currentState == state) {
                     return;
                 }
@@ -209,7 +215,7 @@ public class Player extends BaseObject {
         // Update movement based on controller input
         controller.update();
         // Set state to idle by default
-        setCurrentState(PLAYER_STATES.IDLE);
+        setCurrentState(STATES.IDLE);
 
         if (consumeFuel(delta)) {
             float valueX = controller.getCurrentX();
@@ -243,8 +249,8 @@ public class Player extends BaseObject {
                 }
             }
 
-            if (valueX != 0 || valueY != 0 || currentState == PLAYER_STATES.TURNING) {
-                setCurrentState(PLAYER_STATES.ACTIVE, PLAYER_STATES.TURNING);
+            if (valueX != 0 || valueY != 0 || currentState == STATES.TURNING) {
+                setCurrentState(STATES.ACTIVE, STATES.TURNING);
                 keyFrameState += delta;
 
                 increaseMaximumDepth();
@@ -467,7 +473,7 @@ public class Player extends BaseObject {
             drillTimer = Math.max(drillTimer - delta, 0);
         }
 
-        if (currentState == PLAYER_STATES.IDLE) {
+        if (currentState == STATES.IDLE) {
             currentIdleTime = Math.min(currentIdleTime + delta, PLAYER_IDLE_STATE_DELAY);
         } else {
             currentIdleTime = 0;
@@ -484,7 +490,12 @@ public class Player extends BaseObject {
             case 'L': return getX() > 0;
             case 'R': return getX() + BIG_TILE_SIZE < map.getMapWidth();
             case 'U': return getY() < map.getMapHeight() - BIG_TILE_SIZE * 4;
-            case 'D': return getY() > 0;
+            case 'D':
+                if (getY() > 0) {
+                    return true;
+                }
+                setVisible(false);
+                break;
         }
 
         return false;
@@ -493,7 +504,7 @@ public class Player extends BaseObject {
     @Override
     public String toString() {
         return String.format(
-            "Current points: %d\nDepth reached: %.0f\nTotal fuel: %.2f\n" +
+            "Current points: %d\nDepth reached: %.0f m\nTotal fuel: %.2f\n" +
             "Radar power-up: %.1f\nSpeed power-up: %.1f\nDrill speed power-up: %.1f\n" +
             "Point power-up: %.1f\n\n%s",
             getTotalScore(),

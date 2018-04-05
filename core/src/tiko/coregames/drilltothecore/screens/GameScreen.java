@@ -163,6 +163,11 @@ public class GameScreen extends BaseScreen {
 
         if (!pauseWindow.isVisible()) {
             delta *= GAME_SPEED_MODIFIER;
+
+            if (!player.isVisible()) {
+                delta = 0;
+                pause();
+            }
         } else {
             delta = 0;
         }
