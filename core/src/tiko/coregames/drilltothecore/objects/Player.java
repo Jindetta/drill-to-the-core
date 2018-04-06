@@ -132,7 +132,7 @@ public class Player extends BaseObject {
         scoreMultiplier = Math.max(1, getDrillDepthMultiplier() * PLAYER_DRILL_DEPTH_MULTIPLIER);
     }
 
-    public int getTotalScore() {
+    private int getTotalScore() {
         return Math.round(baseScore * scoreMultiplier + bonusScore);
     }
 
@@ -155,32 +155,30 @@ public class Player extends BaseObject {
         return Math.min(maximumDrillDepth / startingDepth, 1);
     }
 
-    public float getDrillDepth() {
+    private float getDrillDepth() {
         return getDrillDepthMultiplier() * map.getDepth();
     }
 
     private void setNewOrientation(float orientation) {
         if (currentState != STATES.TURNING) {
-            nextOrientation = orientation - getPlayerOrientation();
+            nextOrientation = defaultOrientation + orientation;
         }
     }
 
     // TODO: Fix rotation
     private boolean startRotation(float delta) {
-        float orientation = getPlayerOrientation();
-
         /*if (nextOrientation != 0) {
-            if (Math.abs(nextOrientation ) == 180) {
-                setRotation(nextOrientation);
-                nextOrientation = 0;
-            } else {
-                setCurrentState(STATES.TURNING);
+            setCurrentState(STATES.TURNING);
 
+            if (nextOrientation < 0) {
+                nextOrientation = Math.max(nextOrientation + PLAYER_ROTATION_SPEED * delta, 0);
                 rotate(PLAYER_ROTATION_SPEED * delta);
-
-                nextOrientation = Math.max(nextOrientation - PLAYER_ROTATION_SPEED * delta, 0);
-                return true;
+            } else {
+                nextOrientation = Math.min(nextOrientation - PLAYER_ROTATION_SPEED * delta, 0);
+                rotate(-PLAYER_ROTATION_SPEED * delta);
             }
+
+            return true;
         }*/
 
         return false;
@@ -268,8 +266,8 @@ public class Player extends BaseObject {
             TextureRegion frame = animation.getKeyFrame(keyFrameState, true);
 
             batch.draw(
-                frame, getX(), getY(),
-                frame.getRegionWidth() / 2 + BIG_TILE_SIZE,
+                playerUnit, getX(), getY(),
+                frame.getRegionWidth() / 2,
                 frame.getRegionHeight() / 2,
                 frame.getRegionWidth(),
                 frame.getRegionHeight(),
@@ -279,10 +277,10 @@ public class Player extends BaseObject {
 
             // TODO: Fix - method for orientation
             batch.draw(
-                playerUnit,
-                getX() + BIG_TILE_SIZE - 1 + MathUtils.cos(getRotation()),
+                frame,
+                getX() - BIG_TILE_SIZE + MathUtils.cos(getRotation()),
                 getY() + MathUtils.sin(getRotation()),
-                frame.getRegionWidth() / 2,
+                frame.getRegionWidth() / 2 + BIG_TILE_SIZE,
                 frame.getRegionHeight() / 2,
                 frame.getRegionWidth(),
                 frame.getRegionHeight(),
@@ -302,10 +300,9 @@ public class Player extends BaseObject {
             TiledMapTile tile = map.getTileByIndex("shroud", (int) newIndex);
 
             if (tile == null || cell.getTile().getId() < tile.getId()) {
-                if (tile == null) {
-                    addBonusScore(0.01f);
+                if (newIndex >= tileSize / 2) {
+                    addBonusScore(0.005f);
                 }
-
                 cell.setTile(tile);
             }
         }
@@ -429,7 +426,7 @@ public class Player extends BaseObject {
         updatePlayerView();
 
         // TODO: Change "ground" destruction based on current heading
-        for (float y = getY() + SMALL_TILE_SIZE; y < getY() + BIG_TILE_SIZE - SMALL_TILE_SIZE; y++) {
+        for (float y = getY() - SMALL_TILE_SIZE; y < getY() + BIG_TILE_SIZE - SMALL_TILE_SIZE; y++) {
             for (float x = getX() + SMALL_TILE_SIZE; x < getX() + BIG_TILE_SIZE - SMALL_TILE_SIZE; x++) {
                 updateCollectibleStatus(x, y);
                 updateGroundStatus(x, y);
