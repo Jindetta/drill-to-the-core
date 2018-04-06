@@ -105,51 +105,43 @@ public class ControllerManager {
      * @param y     Accelerometer Y value
      * @return      True if calibration is active
      */
-    private boolean updateCalibrationValues(float x, float y, float z) {
+    private void updateCalibrationValues(float x, float y, float z) {
+        calibrationTime -= Gdx.graphics.getDeltaTime();
+
         if (calibrationTime > 0) {
-            calibrationTime -= Gdx.graphics.getDeltaTime();
+            calibrationIterations++;
+            baseline.add(x, y, z);
+        } else {
+            x = baseline.x / calibrationIterations;
+            y = baseline.y / calibrationIterations;
+            z = baseline.z / calibrationIterations;
+            calibrationIterations = 0;
 
-            if (calibrationTime > 0) {
-                calibrationIterations++;
-                baseline.add(x, y, z);
-            } else {
-                x = baseline.x / calibrationIterations;
-                y = baseline.y / calibrationIterations;
-                z = baseline.z / calibrationIterations;
-                calibrationIterations = 0;
+            positiveThreshold.set(SENSITIVITY_MULTIPLIER * sensitivityRight, SENSITIVITY_MULTIPLIER * sensitivityUp);
+            negativeThreshold.set(SENSITIVITY_MULTIPLIER * sensitivityLeft, SENSITIVITY_MULTIPLIER * sensitivityDown);
 
-                positiveThreshold.set(SENSITIVITY_MULTIPLIER * sensitivityRight, SENSITIVITY_MULTIPLIER * sensitivityUp);
-                negativeThreshold.set(SENSITIVITY_MULTIPLIER * sensitivityLeft, SENSITIVITY_MULTIPLIER * sensitivityDown);
+            try {
+                validateCalibrationValues(x, positiveThreshold.x, negativeThreshold.x);
 
-                try {
-                    validateCalibrationValues(x, positiveThreshold.x, negativeThreshold.x);
-
-                    if (Math.abs(y) < Math.abs(z)) {
-                        validateCalibrationValues(y, positiveThreshold.y, negativeThreshold.y);
-                    } else {
-                        validateCalibrationValues(z, positiveThreshold.y, negativeThreshold.y);
-                    }
-
-                    baseline.set(x, y, z);
-                } catch (Exception e) {
-                    calibrationTime = CONTROLLER_CALIBRATION_TIME;
-                    baseline.setZero();
-
-                    return true;
+                if (Math.abs(y) < Math.abs(z)) {
+                    validateCalibrationValues(y, positiveThreshold.y, negativeThreshold.y);
+                } else {
+                    validateCalibrationValues(z, positiveThreshold.y, negativeThreshold.y);
                 }
+
+                baseline.set(x, y, z);
+            } catch (Exception e) {
+                calibrationTime = CONTROLLER_CALIBRATION_TIME;
+                baseline.setZero();
             }
         }
-
-        return calibrationIterations > 0;
     }
 
     private void validateCalibrationValues(float value, float positive, float negative) {
-        value = normalized(value, -MAX_SENSOR_VALUE, MAX_SENSOR_VALUE);
+        float minValue = normalized(value, value - MAX_SENSOR_VALUE, value);
+        float maxValue = normalized(value, value, value + MAX_SENSOR_VALUE);
 
-        negative += SENSITIVITY_MULTIPLIER / 2;
-        positive += SENSITIVITY_MULTIPLIER / 2;
-
-        if (value - negative < 0 || value + positive > 1) {
+        if (minValue - negative <= 0 || maxValue + positive >= 1) {
             throw new IllegalArgumentException("Calibration values are invalidated");
         }
     }
@@ -163,10 +155,17 @@ public class ControllerManager {
     }
 
     private int calibratedValue(float value, float baseline, float positive, float negative) {
-        baseline = normalized(baseline, -MAX_SENSOR_VALUE, MAX_SENSOR_VALUE);
-        value = normalized(value, -MAX_SENSOR_VALUE, MAX_SENSOR_VALUE);
+        if (value < baseline) {
+            if (normalized(value, baseline - MAX_SENSOR_VALUE, baseline) + negative < 1) {
+                return -1;
+            }
+        } else {
+            if (normalized(value, baseline, baseline + MAX_SENSOR_VALUE) - positive < 0) {
+                return 1;
+            }
+        }
 
-        return value <= (baseline - negative) ? -1 : value >= (baseline + positive) ? 1 : 0;
+        return 0;
 
         /*float positiveRange = Math.max(normalizedBase, 1 - normalizedBase);
         float negativeRange = 1 - positiveRange;*/
@@ -188,7 +187,8 @@ public class ControllerManager {
             // Y axis (alternate axis)
             float z = Gdx.input.getAccelerometerX();
 
-            if (updateCalibrationValues(x, y, z)) {
+            if (isCalibrating()) {
+                updateCalibrationValues(x, y, z);
                 return;
             }
 
@@ -198,22 +198,28 @@ public class ControllerManager {
                 z = invertedY ? -z : z;
             }
 
-            updateValues(x, Math.abs(baseline.y) < Math.abs(baseline.z) ? y : -z);
+            x += baseline.x < 0 ? Math.abs(baseline.x) : -baseline.x;
+            y += baseline.y < 0 ? Math.abs(baseline.y) : -baseline.y;
+            z += baseline.z < 0 ? Math.abs(baseline.z) : -baseline.z;
+
+            updateValues(x, y, -z);
         }
     }
 
-    private void updateValues(float x, float y) {
-        if (Math.abs(x) > Math.abs(y)) {
-            x = calibratedValue(x, baseline.x, positiveThreshold.x, negativeThreshold.x);
+    public boolean isCalibrating() {
+        return baseline != null && calibrationTime > 0;
+    }
 
-            if (x == 0 || !MathUtils.isZero(Math.abs(currentValue.x + x))) {
-                currentValue.set(x, 0);
-            }
+    private void updateValues(float x, float y, float z) {
+        boolean useZ = Math.abs(baseline.y) > Math.abs(baseline.z);
+
+        if ((!useZ && Math.abs(x) > Math.abs(y)) || (useZ && Math.abs(x) > Math.abs(z))) {
+            currentValue.set(calibratedValue(x, baseline.x, positiveThreshold.x, negativeThreshold.x), 0);
         } else {
-            y = calibratedValue(y, baseline.y, positiveThreshold.y, negativeThreshold.y);
-
-            if (y == 0 || !MathUtils.isZero(Math.abs(currentValue.y + y))) {
-                currentValue.set(0, y);
+            if (useZ) {
+                currentValue.set(0, calibratedValue(z, baseline.z, positiveThreshold.y, negativeThreshold.y));
+            } else {
+                currentValue.set(0, calibratedValue(y, baseline.y, positiveThreshold.y, negativeThreshold.y));
             }
         }
     }
