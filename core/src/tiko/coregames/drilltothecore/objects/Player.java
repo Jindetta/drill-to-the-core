@@ -38,7 +38,7 @@ public class Player extends BaseObject {
     private Animation<TextureRegion> animation;
 
     private TextureRegion playerUnit;
-    private String collectedItemName;
+    private TextureRegion Tracks;
 
     private enum STATES {
         IDLE, ACTIVE, JAMMED, IMMOBILIZED, DONE
@@ -72,6 +72,7 @@ public class Player extends BaseObject {
         int index = settings.getInteger("playerColor");
 
         TextureRegion bladeRegion = new TextureRegion(getTexture(), BIG_TILE_SIZE * 3, BIG_TILE_SIZE);
+        Tracks = new TextureRegion(getTexture(), 0, BIG_TILE_SIZE, BIG_TILE_SIZE, BIG_TILE_SIZE);
         playerUnit = new TextureRegion(getTexture(), BIG_TILE_SIZE * 3, index * BIG_TILE_SIZE, BIG_TILE_SIZE, BIG_TILE_SIZE);
         animation = new Animation<>(1 / 20f, getFrames(bladeRegion, 3));
         keyFrameState = 0;
@@ -232,6 +233,16 @@ public class Player extends BaseObject {
                 getRotation()
             );
 
+            batch.draw(
+                    Tracks, getX(), getY(),
+                    frame.getRegionWidth() / 2,
+                    frame.getRegionHeight() / 2,
+                    frame.getRegionWidth(),
+                    frame.getRegionHeight(),
+                    getScaleX(), getScaleY(),
+                    getRotation()
+            );
+
             // TODO: Fix - method for orientation
             batch.draw(
                 frame,
@@ -343,7 +354,6 @@ public class Player extends BaseObject {
                 break;
         }
 
-        collectedItemName = getCollectibleName(key);
         Gdx.app.log(getClass().getSimpleName(), getCollectibleName(key));
     }
 
