@@ -38,7 +38,7 @@ public class Player extends BaseObject {
     private Animation<TextureRegion> animation;
 
     private TextureRegion playerUnit;
-    private TextureRegion Tracks;
+    private TextureRegion playerTracks;
 
     private enum STATES {
         IDLE, ACTIVE, JAMMED, IMMOBILIZED, DONE
@@ -72,7 +72,7 @@ public class Player extends BaseObject {
         int index = settings.getInteger("playerColor");
 
         TextureRegion bladeRegion = new TextureRegion(getTexture(), BIG_TILE_SIZE * 3, BIG_TILE_SIZE);
-        Tracks = new TextureRegion(getTexture(), 0, BIG_TILE_SIZE, BIG_TILE_SIZE, BIG_TILE_SIZE);
+        playerTracks = new TextureRegion(getTexture(), 0, BIG_TILE_SIZE, BIG_TILE_SIZE, BIG_TILE_SIZE);
         playerUnit = new TextureRegion(getTexture(), BIG_TILE_SIZE * 3, index * BIG_TILE_SIZE, BIG_TILE_SIZE, BIG_TILE_SIZE);
         animation = new Animation<>(1 / 20f, getFrames(bladeRegion, 3));
         keyFrameState = 0;
@@ -234,7 +234,7 @@ public class Player extends BaseObject {
             );
 
             batch.draw(
-                    Tracks, getX(), getY(),
+                playerTracks, getX(), getY(),
                     frame.getRegionWidth() / 2,
                     frame.getRegionHeight() / 2,
                     frame.getRegionWidth(),
