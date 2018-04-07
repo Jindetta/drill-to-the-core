@@ -138,12 +138,11 @@ public class ControllerManager {
     }
 
     private void validateCalibrationValues(float value, float positive, float negative) {
-        float minValue = normalized(value, value - MAX_SENSOR_VALUE, value);
-        float maxValue = normalized(value, value, value + MAX_SENSOR_VALUE);
+        /*value -= MAX_SENSOR_VALUE;
 
-        if (minValue - negative <= 0 || maxValue + positive >= 1) {
+        if (value - negative * MAX_SENSOR_VALUE <= 0 || value - positive * MAX_SENSOR_VALUE <= 0) {
             throw new IllegalArgumentException("Calibration values are invalidated");
-        }
+        }*/
     }
 
     private void setInvertedX(boolean inverted) {
@@ -156,23 +155,25 @@ public class ControllerManager {
 
     private int calibratedValue(float value, float baseline, float positive, float negative) {
         if (value < baseline) {
-            if (normalized(value, baseline - MAX_SENSOR_VALUE, baseline) + negative < 1) {
+            float negBaseline = normalized(value, baseline - MAX_SENSOR_VALUE, baseline);
+            value = normalized(value, baseline - MAX_SENSOR_VALUE, baseline) - negative;
+
+            if (negBaseline + value > negative) {
                 return -1;
             }
         } else {
-            if (normalized(value, baseline, baseline + MAX_SENSOR_VALUE) - positive < 0) {
+            value = normalized(value, baseline, baseline + MAX_SENSOR_VALUE);
+
+            if (value - positive > positive) {
                 return 1;
             }
         }
 
         return 0;
-
-        /*float positiveRange = Math.max(normalizedBase, 1 - normalizedBase);
-        float negativeRange = 1 - positiveRange;*/
     }
 
     private float normalized(float value, float min, float max) {
-        return (value - Math.min(min, max)) / (Math.max(min, max) - Math.min(min, max));
+        return (value - min) / (max - min);
     }
 
     /**
@@ -202,6 +203,10 @@ public class ControllerManager {
             y += baseline.y < 0 ? Math.abs(baseline.y) : -baseline.y;
             z += baseline.z < 0 ? Math.abs(baseline.z) : -baseline.z;
 
+            Gdx.app.log("X", String.valueOf(x));
+            Gdx.app.log("Y", String.valueOf(y));
+            Gdx.app.log("Z", String.valueOf(z));
+
             updateValues(x, y, -z);
         }
     }
@@ -213,7 +218,7 @@ public class ControllerManager {
     private void updateValues(float x, float y, float z) {
         boolean useZ = Math.abs(baseline.y) > Math.abs(baseline.z);
 
-        if ((!useZ && Math.abs(x) > Math.abs(y)) || (useZ && Math.abs(x) > Math.abs(z))) {
+        /*if ((!useZ && Math.abs(x) > Math.abs(y)) || (useZ && Math.abs(x) > Math.abs(z))) {
             currentValue.set(calibratedValue(x, baseline.x, positiveThreshold.x, negativeThreshold.x), 0);
         } else {
             if (useZ) {
@@ -221,6 +226,18 @@ public class ControllerManager {
             } else {
                 currentValue.set(0, calibratedValue(y, baseline.y, positiveThreshold.y, negativeThreshold.y));
             }
+        }*/
+
+        if (Math.abs(baseline.y) > Math.abs(baseline.z)) {
+            currentValue.set(
+                calibratedValue(x, baseline.x, positiveThreshold.x, negativeThreshold.x),
+                calibratedValue(z, baseline.z, positiveThreshold.y, negativeThreshold.y)
+            );
+        } else {
+            currentValue.set(
+                calibratedValue(x, baseline.x, positiveThreshold.x, negativeThreshold.x),
+                calibratedValue(y, baseline.y, positiveThreshold.y, negativeThreshold.y)
+            );
         }
     }
 

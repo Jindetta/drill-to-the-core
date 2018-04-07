@@ -34,16 +34,14 @@ public class Player extends BaseObject {
 
     private Circle playerView;
 
-    private float nextOrientation;
-    private float defaultOrientation;
-
     private float keyFrameState;
     private Animation<TextureRegion> animation;
 
     private TextureRegion playerUnit;
+    private String collectedItemName;
 
     private enum STATES {
-        IDLE, ACTIVE, TURNING, JAMMED, DESTROYED
+        IDLE, ACTIVE, JAMMED, IMMOBILIZED, DONE
     }
 
     public Player(LevelManager map, LocalizationManager localizer, float x, float y) {
@@ -64,7 +62,6 @@ public class Player extends BaseObject {
         currentIdleTime = PLAYER_IDLE_STATE_DELAY;
 
         createPlayerUnit(x, y);
-        setDefaultOrientation();
         setInitialScoreValues();
         setMaxFuel();
     }
@@ -92,11 +89,6 @@ public class Player extends BaseObject {
         }
 
         return frames;
-    }
-
-    private void setDefaultOrientation() {
-        defaultOrientation = 270;
-        nextOrientation = 0;
     }
 
     public void setMaxFuel() {
@@ -136,52 +128,12 @@ public class Player extends BaseObject {
         return Math.round(baseScore * scoreMultiplier + bonusScore);
     }
 
-    public float getPlayerOrientation() {
-        float rotation = Math.abs(defaultOrientation + getRotation()) % 360;
-        boolean isStraightAngle = rotation % 90 == 0;
-
-        if (rotation >= 0 && rotation < 90) {
-            return isStraightAngle ? PLAYER_ORIENTATION_UP : PLAYER_ORIENTATION_UP_RIGHT;
-        } else if (rotation >= 90 && rotation < 180) {
-            return isStraightAngle ? PLAYER_ORIENTATION_RIGHT : PLAYER_ORIENTATION_DOWN_RIGHT;
-        } else if (rotation >= 180 && rotation < 270) {
-            return isStraightAngle ? PLAYER_ORIENTATION_DOWN : PLAYER_ORIENTATION_DOWN_LEFT;
-        } else {
-            return isStraightAngle ? PLAYER_ORIENTATION_LEFT : PLAYER_ORIENTATION_UP_LEFT;
-        }
-    }
-
     private float getDrillDepthMultiplier() {
         return Math.min(maximumDrillDepth / startingDepth, 1);
     }
 
     private float getDrillDepth() {
         return getDrillDepthMultiplier() * map.getDepth();
-    }
-
-    private void setNewOrientation(float orientation) {
-        if (currentState != STATES.TURNING) {
-            nextOrientation = defaultOrientation + orientation;
-        }
-    }
-
-    // TODO: Fix rotation
-    private boolean startRotation(float delta) {
-        /*if (nextOrientation != 0) {
-            setCurrentState(STATES.TURNING);
-
-            if (nextOrientation < 0) {
-                nextOrientation = Math.max(nextOrientation + PLAYER_ROTATION_SPEED * delta, 0);
-                rotate(PLAYER_ROTATION_SPEED * delta);
-            } else {
-                nextOrientation = Math.min(nextOrientation - PLAYER_ROTATION_SPEED * delta, 0);
-                rotate(-PLAYER_ROTATION_SPEED * delta);
-            }
-
-            return true;
-        }*/
-
-        return false;
     }
 
     public float getFuel() {
@@ -196,6 +148,10 @@ public class Player extends BaseObject {
         return PLAYER_MOVE_SPEED * (speedMultiplier - drillSpeedReduction);
     }
 
+    private float getRotationSpeed() {
+        return PLAYER_ROTATION_SPEED * speedMultiplier;
+    }
+
     private void setCurrentState(STATES newState, STATES... ignoreStates) {
         if (ignoreStates != null && ignoreStates.length > 0) {
             for (STATES state : ignoreStates) {
@@ -208,55 +164,56 @@ public class Player extends BaseObject {
         currentState = newState;
     }
 
+    private void moveByRotation(float speed) {
+        translate(
+            speed * MathUtils.cosDeg(getRotation()),
+            speed * MathUtils.sinDeg(getRotation())
+        );
+    }
+
     @Override
     public void draw(SpriteBatch batch, float delta) {
         // Update movement based on controller input
         controller.update();
-        // Set state to idle by default
-        setCurrentState(STATES.IDLE);
 
-        if (consumeFuel(delta)) {
-            float valueX = controller.getCurrentX();
-            float valueY = controller.getCurrentY();
+        if (!controller.isCalibrating()) {
+            // Set state to idle by default
+            setCurrentState(STATES.IDLE);
 
-            if (!startRotation(delta)) {
+            if (consumeFuel(delta)) {
+                float valueX = controller.getCurrentX();
+                float valueY = controller.getCurrentY();
 
                 if (isDirectionAllowed('U') && (valueY > 0 || Gdx.input.isKeyPressed(Input.Keys.UP))) {
-                    translateY(getMovementSpeed() * delta);
-                    setNewOrientation(PLAYER_ORIENTATION_UP);
+                    moveByRotation(getMovementSpeed() * delta);
                     valueY = 1;
                 }
                 if (isDirectionAllowed('D') && (valueY < 0 || Gdx.input.isKeyPressed(Input.Keys.DOWN))) {
-                    translateY(-getMovementSpeed() * delta);
-                    setNewOrientation(PLAYER_ORIENTATION_DOWN);
+                    moveByRotation(-getMovementSpeed() * delta);
                     valueY = -1;
                 }
 
-                // Allow only one axis movement
-                if (valueY == 0) {
-                    if (isDirectionAllowed('R') && (valueX > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
-                        translateX(getMovementSpeed() * delta);
-                        setNewOrientation(PLAYER_ORIENTATION_RIGHT);
-                        valueX = 1;
-                    }
-                    if (isDirectionAllowed('L') && (valueX < 0 || Gdx.input.isKeyPressed(Input.Keys.LEFT))) {
-                        translateX(-getMovementSpeed() * delta);
-                        setNewOrientation(PLAYER_ORIENTATION_LEFT);
-                        valueX = -1;
-                    }
+                if (isDirectionAllowed('R') && (valueX > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
+                    rotate(-getRotationSpeed() * delta);
+                    valueX = 1;
+                }
+                if (isDirectionAllowed('L') && (valueX < 0 || Gdx.input.isKeyPressed(Input.Keys.LEFT))) {
+                    rotate(getRotationSpeed() * delta);
+                    valueX = -1;
+                }
+
+                if (valueX != 0 || valueY != 0) {
+                    setCurrentState(STATES.ACTIVE);
+                    keyFrameState += delta;
+
+                    increaseMaximumDepth();
+                    updateTileStatus();
                 }
             }
 
-            if (valueX != 0 || valueY != 0 || currentState == STATES.TURNING) {
-                setCurrentState(STATES.ACTIVE, STATES.TURNING);
-                keyFrameState += delta;
-
-                increaseMaximumDepth();
-                updateTileStatus();
-            }
+            updateTimerStatus(delta);
         }
 
-        updateTimerStatus(delta);
         draw(batch);
     }
 
@@ -278,8 +235,8 @@ public class Player extends BaseObject {
             // TODO: Fix - method for orientation
             batch.draw(
                 frame,
-                getX() - BIG_TILE_SIZE + MathUtils.cos(getRotation()),
-                getY() + MathUtils.sin(getRotation()),
+                getX() - BIG_TILE_SIZE + MathUtils.cosDeg(getRotation()),
+                getY() + MathUtils.sinDeg(getRotation()),
                 frame.getRegionWidth() / 2 + BIG_TILE_SIZE,
                 frame.getRegionHeight() / 2,
                 frame.getRegionWidth(),
@@ -386,6 +343,7 @@ public class Player extends BaseObject {
                 break;
         }
 
+        collectedItemName = getCollectibleName(key);
         Gdx.app.log(getClass().getSimpleName(), getCollectibleName(key));
     }
 
