@@ -28,7 +28,6 @@ public abstract class BaseScreen extends Stage implements Screen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(this);
-        Gdx.graphics.setTitle("Drill to the Core - " + toString());
     }
 
     @Override
@@ -63,10 +62,5 @@ public abstract class BaseScreen extends Stage implements Screen {
     public void dispose() {
         super.dispose();
         skin.dispose();
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getSimpleName();
     }
 }

@@ -3,17 +3,13 @@ package tiko.coregames.drilltothecore.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
@@ -29,12 +25,13 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
 public class GameScreen extends BaseScreen {
     private LocalizationManager localizer;
-    private Debug.CustomDebug customDebug;
     private LevelManager map;
 
     private Window pauseWindow;
     private ProgressBar playerFuel;
     private Player player;
+
+    private float totalGameTime;
 
     public GameScreen() {
         map = new LevelManager(0);
@@ -47,9 +44,7 @@ public class GameScreen extends BaseScreen {
         }
 
         createPauseWindow();
-
-        customDebug = new Debug.CustomDebug();
-        Debug.addDebugger(customDebug, "player");
+        totalGameTime = 0;
     }
 
     /**
@@ -157,7 +152,7 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public void hide() {
-        customDebug.setDebugString(null);
+        Debug.setCustomDebugString("");
         Gdx.input.setCatchBackKey(false);
         super.hide();
     }
@@ -177,6 +172,8 @@ public class GameScreen extends BaseScreen {
             delta = 0;
         }
 
+        totalGameTime += delta;
+
         Camera worldCamera = getCamera();
         SpriteBatch batch = Setup.getBatch();
 
@@ -193,7 +190,7 @@ public class GameScreen extends BaseScreen {
         act(delta);
         draw();
 
-        customDebug.setDebugString(player.toString());
+        Debug.setCustomDebugString(toString());
     }
 
     @Override
@@ -217,7 +214,7 @@ public class GameScreen extends BaseScreen {
 
             case Input.Keys.BACK:
             case Input.Keys.ESCAPE:
-                pauseWindow.setVisible(true);
+                pauseWindow.setVisible(!pauseWindow.isVisible());
                 break;
         }
 
@@ -234,5 +231,16 @@ public class GameScreen extends BaseScreen {
         super.dispose();
         player.dispose();
         map.dispose();
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+            "Current playtime: %d:%02d:%02d\n%s",
+            (int) totalGameTime / (60 * 60),
+            (int) totalGameTime / 60 % 60,
+            (int) totalGameTime % 60,
+            player.toString()
+        );
     }
 }

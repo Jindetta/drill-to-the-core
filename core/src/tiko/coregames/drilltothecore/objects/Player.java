@@ -40,6 +40,11 @@ public class Player extends BaseObject {
     private TextureRegion playerUnit;
     private TextureRegion playerTracks;
 
+    private boolean isAllowedToMoveForward;
+    private boolean isAllowedToMoveBackward;
+    private boolean isAllowedToRotateRight;
+    private boolean isAllowedToRotateLeft;
+
     private enum STATES {
         IDLE, ACTIVE, JAMMED, IMMOBILIZED, DONE
     }
@@ -50,6 +55,7 @@ public class Player extends BaseObject {
         this.map = map;
         this.localizer = localizer;
 
+        // TODO: Cleanup initialization
         drillSpeedReduction = 0;
         speedMultiplier = 1;
         collisionInterval = 0;
@@ -66,7 +72,7 @@ public class Player extends BaseObject {
         setMaxFuel();
     }
 
-    // TODO: Improve
+    // TODO: Dirty AF - improve
     private void createPlayerUnit(float x, float y) {
         SettingsManager settings = SettingsManager.getDefaultProfile();
         int index = settings.getInteger("playerColor");
@@ -165,7 +171,7 @@ public class Player extends BaseObject {
         currentState = newState;
     }
 
-    private void moveByRotation(float speed) {
+    private void moveToAngle(float speed) {
         translate(
             speed * MathUtils.cosDeg(getRotation()),
             speed * MathUtils.sinDeg(getRotation())
@@ -179,26 +185,34 @@ public class Player extends BaseObject {
 
         if (!controller.isCalibrating()) {
             // Set state to idle by default
-            setCurrentState(STATES.IDLE);
+            setCurrentState(STATES.IDLE, STATES.JAMMED, STATES.IMMOBILIZED);
 
-            if (consumeFuel(delta)) {
+            if (consumeFuel(delta) && currentState != STATES.IMMOBILIZED) {
                 float valueX = controller.getCurrentX();
                 float valueY = controller.getCurrentY();
 
-                if (isDirectionAllowed('U') && (valueY > 0 || Gdx.input.isKeyPressed(Input.Keys.UP))) {
-                    moveByRotation(getMovementSpeed() * delta);
+                if (currentState != STATES.JAMMED) {
+                    checkMovementConditions(delta);
+                } else {
+                    isAllowedToMoveForward = false;
+                    isAllowedToRotateRight = false;
+                    isAllowedToRotateLeft = false;
+                }
+
+                if (isAllowedToMoveBackward && (valueY > 0 || Gdx.input.isKeyPressed(Input.Keys.DOWN))) {
+                    moveToAngle(getMovementSpeed() * delta);
                     valueY = 1;
                 }
-                if (isDirectionAllowed('D') && (valueY < 0 || Gdx.input.isKeyPressed(Input.Keys.DOWN))) {
-                    moveByRotation(-getMovementSpeed() * delta);
+                if (isAllowedToMoveForward && (valueY < 0 || Gdx.input.isKeyPressed(Input.Keys.UP))) {
+                    moveToAngle(-getMovementSpeed() * delta);
                     valueY = -1;
                 }
 
-                if (isDirectionAllowed('R') && (valueX > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
+                if (isAllowedToRotateRight && (valueX > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
                     rotate(-getRotationSpeed() * delta);
                     valueX = 1;
                 }
-                if (isDirectionAllowed('L') && (valueX < 0 || Gdx.input.isKeyPressed(Input.Keys.LEFT))) {
+                if (isAllowedToRotateLeft && (valueX < 0 || Gdx.input.isKeyPressed(Input.Keys.LEFT))) {
                     rotate(getRotationSpeed() * delta);
                     valueX = -1;
                 }
@@ -221,6 +235,7 @@ public class Player extends BaseObject {
     @Override
     public void draw(Batch batch) {
         if (isVisible()) {
+            // TODO: Do code cleanup - this is messy AF
             TextureRegion frame = animation.getKeyFrame(keyFrameState, true);
 
             batch.draw(
@@ -243,7 +258,6 @@ public class Player extends BaseObject {
                     getRotation()
             );
 
-            // TODO: Fix - method for orientation
             batch.draw(
                 frame,
                 getX() - BIG_TILE_SIZE + MathUtils.cosDeg(getRotation()),
@@ -269,7 +283,7 @@ public class Player extends BaseObject {
 
             if (tile == null || cell.getTile().getId() < tile.getId()) {
                 if (newIndex >= tileSize / 2) {
-                    addBonusScore(0.005f);
+                    addBonusScore(SCORE_TILE_REVEALED);
                 }
                 cell.setTile(tile);
             }
@@ -316,23 +330,28 @@ public class Player extends BaseObject {
             key = map.getString(tile, "id", POWER_UP_NOTHING);
         }
 
+        // TODO: Too dirty - make code cleanup
         switch (key) {
             case POWER_UP_RANDOMIZED:
                 collectItemByName(tile, RANDOM_POWER_UPS[MathUtils.random(0, RANDOM_POWER_UPS.length - 1)]);
                 return;
             case POWER_UP_RADAR_EXTENDER:
+                addBonusScore(SCORE_POWER_UP_PICKUP);
                 playerView.setRadius(PLAYER_VIEW_RADIUS * 1.5f);
                 viewTimer = 5;
                 break;
             case POWER_UP_POINT_MULTIPLIER:
+                addBonusScore(SCORE_POWER_UP_PICKUP);
                 collectibleMultiplier = 1.5f;
                 collectibleTimer = 30;
                 break;
             case POWER_UP_DRILL_MULTIPLIER:
+                addBonusScore(SCORE_POWER_UP_PICKUP);
                 drillTimer = 15;
                 drillSpeedReduction = 0;
                 break;
             case POWER_UP_SPEED_MULTIPLIER:
+                addBonusScore(SCORE_POWER_UP_PICKUP);
                 speedMultiplier = PLAYER_MOVEMENT_SPEED_MULTIPLIER;
                 speedTimer = 10;
                 break;
@@ -369,6 +388,7 @@ public class Player extends BaseObject {
 
         TiledMapTileLayer.Cell cell = map.getCellFromPosition(x, y, "collectibles");
 
+        // TODO: Make sure collectibles are picked up at the right time
         if (cell != null && cell.getTile() != null) {
             collectItemByName(cell.getTile(), null);
             cell.setTile(null);
@@ -376,14 +396,36 @@ public class Player extends BaseObject {
     }
 
     private void updateGroundStatus(float x, float y) {
-        TiledMapTileLayer.Cell cell = map.getCellFromPosition(x, y, "ground");
+        TiledMapTileLayer.Cell groundCell = map.getCellFromPosition(x, y, "ground");
 
-        if (cell != null && cell.getTile() != null) {
-            // 1 point per 8 tiles
-            addBaseScore(0.125f);
-            cell.setTile(null);
+        if (groundCell != null && groundCell.getTile() != null) {
+            TiledMapTileLayer.Cell obstacleCell = map.getCellFromPosition(x, y, "obstacles");
+
+            if (obstacleCell != null && obstacleCell.getTile() != null) {
+                switch (map.getString(obstacleCell.getTile(), "id", "")) {
+                    // TODO: Update to work with hard "rock" properly - and make constant for this type
+                    case "rock":
+                        setCurrentState(STATES.JAMMED);
+                        break;
+                    // TODO: Update to work with this type - and make constant for this type
+                    case "lava":
+                        break;
+                    // TODO: Update to work with this type - and make constant for this type
+                    case "water":
+                        break;
+                    default:
+                        obstacleCell.setTile(null);
+                        updateGroundStatus(x, y);
+                        return;
+                }
+
+                collisionInterval = .25f;
+                return;
+            }
 
             collisionInterval = .15f;
+            addBaseScore(SCORE_GROUND_TILE_OPENED);
+            groundCell.setTile(null);
         }
     }
 
@@ -394,7 +436,7 @@ public class Player extends BaseObject {
         updatePlayerView();
 
         // TODO: Change "ground" destruction based on current heading
-        for (float y = getY() - SMALL_TILE_SIZE; y < getY() + BIG_TILE_SIZE - SMALL_TILE_SIZE; y++) {
+        for (float y = getY() + SMALL_TILE_SIZE; y < getY() + BIG_TILE_SIZE - SMALL_TILE_SIZE; y++) {
             for (float x = getX() + SMALL_TILE_SIZE; x < getX() + BIG_TILE_SIZE - SMALL_TILE_SIZE; x++) {
                 updateCollectibleStatus(x, y);
                 updateGroundStatus(x, y);
@@ -450,23 +492,58 @@ public class Player extends BaseObject {
         collisionInterval = Math.max(collisionInterval - delta, 0);
     }
 
-    private boolean isDirectionAllowed(char direction) {
-        switch (direction) {
-            case 'L': return getX() > 0;
-            case 'R': return getX() + BIG_TILE_SIZE < map.getMapWidth();
-            case 'U': return getY() < map.getMapHeight() - BIG_TILE_SIZE * 4;
-            case 'D':
-                if (getY() > 0) {
-                    return true;
-                }
-                setVisible(false);
-                break;
+    // TODO: Change to disallow rotation to awkward directions and movement over border
+    private void checkMovementConditions(float delta) {
+        float sin = MathUtils.sinDeg(getRotation() + getRotationSpeed() * delta);
+        float cos = MathUtils.cosDeg(getRotation() + getRotationSpeed() * delta);
+
+        final float ROTATION = getRotationSpeed() * delta;
+        final float GROUND_LEVEL = map.getMapHeight() - BIG_TILE_SIZE * 4;
+
+        float originX = getX() + BIG_TILE_SIZE / 2;
+        float originY = getY() + BIG_TILE_SIZE / 2;
+
+        float radius = BIG_TILE_SIZE * 1.5f;
+
+        isAllowedToRotateLeft = true;
+        isAllowedToRotateRight = true;
+
+        // Ground
+        if (getY() >= GROUND_LEVEL) {
+            if (originY + radius * cos >= GROUND_LEVEL) {
+                isAllowedToRotateRight = false;
+            }
+            if (originY - radius * cos >= GROUND_LEVEL) {
+                isAllowedToRotateLeft = false;
+            }
         }
 
-        return false;
+        // Left side
+        if (getX() - BIG_TILE_SIZE <= 0) {
+            if (originX + radius * MathUtils.cosDeg(getRotation() - ROTATION) <= 0) {
+                isAllowedToRotateRight = false;
+            }
+            if (originX - radius * MathUtils.cosDeg(getRotation() + ROTATION) <= 0) {
+                isAllowedToRotateLeft = false;
+            }
+        }
+
+        // Right side
+        if (getX() + BIG_TILE_SIZE * 2 >= map.getMapWidth()) {
+            if (originX + radius * MathUtils.cosDeg(getRotation() - ROTATION) >= map.getMapWidth()) {
+                isAllowedToRotateRight = false;
+            }
+            if (originX - radius * MathUtils.cosDeg(getRotation() + ROTATION) >= map.getMapWidth()) {
+                isAllowedToRotateLeft = false;
+            }
+        }
+
+        isAllowedToMoveForward = true;
+        isAllowedToMoveBackward = true;
     }
 
     @Override
+    // TODO: Remove before release
     public String toString() {
         return String.format(
             "Current points: %d\nDepth reached: %.0f m\nTotal fuel: %.2f\n" +

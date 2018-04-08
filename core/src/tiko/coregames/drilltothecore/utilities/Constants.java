@@ -8,7 +8,7 @@ public class Constants {
     public static final int SMALL_TILE_SIZE = 8;
 
     public static final float MAX_SENSOR_VALUE = 10;
-    public static final float SENSITIVITY_MULTIPLIER = 0.095f;
+    public static final float SENSITIVITY_MULTIPLIER = .095f;
     public static final float CONTROLLER_CALIBRATION_TIME = 1.5f;
     public static final int MAX_SAVED_PROFILES = 25;
 
@@ -29,14 +29,9 @@ public class Constants {
     public static final float PLAYER_DRILL_SPEED_REDUCTION = .2f;
     public static final float PLAYER_VIEW_RADIUS = 82;
 
-    public static final int PLAYER_ORIENTATION_UP = 0;
-    public static final int PLAYER_ORIENTATION_UP_RIGHT = 45;
-    public static final int PLAYER_ORIENTATION_RIGHT = 90;
-    public static final int PLAYER_ORIENTATION_DOWN_RIGHT = 135;
-    public static final int PLAYER_ORIENTATION_DOWN = 180;
-    public static final int PLAYER_ORIENTATION_DOWN_LEFT = 225;
-    public static final int PLAYER_ORIENTATION_LEFT = 270;
-    public static final int PLAYER_ORIENTATION_UP_LEFT = 315;
+    public static final float SCORE_TILE_REVEALED = .005f;
+    public static final float SCORE_POWER_UP_PICKUP = 1.25f;
+    public static final float SCORE_GROUND_TILE_OPENED = .125f;
 
     public static final float SINGLE_SPLASH_DURATION = 3;
 
