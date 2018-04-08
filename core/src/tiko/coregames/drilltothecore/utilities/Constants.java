@@ -16,7 +16,7 @@ public class Constants {
 
     public static final float SAFE_ZONE_SIZE = 5;
     public static final float GAME_SPEED_MODIFIER = 1;
-    public static final boolean DEBUG_MODE = true;
+    public static final boolean DEBUG_MODE = false;
 
     public static final float PLAYER_MOVE_SPEED = 85;
     public static final float PLAYER_ROTATION_SPEED = 130;
