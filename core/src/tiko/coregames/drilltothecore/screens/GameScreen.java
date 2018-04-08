@@ -111,7 +111,7 @@ public class GameScreen extends BaseScreen {
         TextButton continueButton = new TextButton(localizer.getValue("continue"), skin);
         continueButton.addListener(clickListener);
 
-        TextButton settingsButton = new TextButton("Settings", skin);
+        TextButton settingsButton = new TextButton(localizer.getValue("settings"), skin);
         settingsButton.addListener(clickListener);
         settingsButton.setName("settings");
 
