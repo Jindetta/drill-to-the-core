@@ -50,7 +50,7 @@ public class Debug {
     }
 
     public static void resize(int width, int height) {
-        if (instance.screen != null) {
+        if (instance != null) {
             instance.screen.setToOrtho(false, width, height);
         }
     }
