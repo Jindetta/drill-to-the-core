@@ -28,9 +28,6 @@ public class ControllerManager {
 
     private boolean invertedX, invertedY;
 
-    private int sensitivityLeft, sensitivityRight;
-    private int sensitivityUp, sensitivityDown;
-
     private boolean requiresSpecialMovement;
 
     /**
@@ -89,10 +86,13 @@ public class ControllerManager {
     private void applySettings() {
         SettingsManager settings = SettingsManager.getDefaultProfile();
 
-        sensitivityUp = settings.getInteger("sensitivityUp");
-        sensitivityDown = settings.getInteger("sensitivityDown");
-        sensitivityRight = settings.getInteger("sensitivityRight");
-        sensitivityLeft = settings.getInteger("sensitivityLeft");
+        int sensitivityUp = MathUtils.clamp(settings.getInteger("sensitivityUp"), 1, 10);
+        int sensitivityDown = MathUtils.clamp(settings.getInteger("sensitivityDown"), 1, 10);
+        int sensitivityRight = MathUtils.clamp(settings.getInteger("sensitivityRight"), 1, 10);
+        int sensitivityLeft = MathUtils.clamp(settings.getInteger("sensitivityLeft"), 1, 10);
+
+        positiveThreshold.set(SENSITIVITY_MULTIPLIER * sensitivityRight, SENSITIVITY_MULTIPLIER * sensitivityUp);
+        negativeThreshold.set(SENSITIVITY_MULTIPLIER * sensitivityLeft, SENSITIVITY_MULTIPLIER * sensitivityDown);
 
         setInvertedX(settings.getBoolean("invertedX"));
         setInvertedY(settings.getBoolean("invertedY"));
@@ -117,9 +117,6 @@ public class ControllerManager {
             z = baseline.z / calibrationIterations;
             calibrationIterations = 0;
 
-            positiveThreshold.set(SENSITIVITY_MULTIPLIER * sensitivityRight, SENSITIVITY_MULTIPLIER * sensitivityUp);
-            negativeThreshold.set(SENSITIVITY_MULTIPLIER * sensitivityLeft, SENSITIVITY_MULTIPLIER * sensitivityDown);
-
             try {
                 validateCalibrationValues(x, positiveThreshold.x, negativeThreshold.x);
 
@@ -138,11 +135,9 @@ public class ControllerManager {
     }
 
     private void validateCalibrationValues(float value, float positive, float negative) {
-        /*value -= MAX_SENSOR_VALUE;
-
-        if (value - negative * MAX_SENSOR_VALUE <= 0 || value - positive * MAX_SENSOR_VALUE <= 0) {
+        if (value - negative <= -MAX_SENSOR_VALUE || value + positive >= MAX_SENSOR_VALUE) {
             throw new IllegalArgumentException("Calibration values are invalidated");
-        }*/
+        }
     }
 
     private void setInvertedX(boolean inverted) {
@@ -154,19 +149,10 @@ public class ControllerManager {
     }
 
     private int calibratedValue(float value, float baseline, float positive, float negative) {
-        if (value < baseline) {
-            float negBaseline = normalized(value, baseline - MAX_SENSOR_VALUE, baseline);
-            value = normalized(value, baseline - MAX_SENSOR_VALUE, baseline) - negative;
-
-            if (negBaseline + value > negative) {
-                return -1;
-            }
-        } else {
-            value = normalized(value, baseline, baseline + MAX_SENSOR_VALUE);
-
-            if (value - positive > positive) {
-                return 1;
-            }
+        if (value < baseline - negative) {
+            return -1;
+        } else if (value > baseline + positive) {
+            return 1;
         }
 
         return 0;
@@ -199,14 +185,6 @@ public class ControllerManager {
                 z = invertedY ? -z : z;
             }
 
-            x += baseline.x < 0 ? Math.abs(baseline.x) : -baseline.x;
-            y += baseline.y < 0 ? Math.abs(baseline.y) : -baseline.y;
-            z += baseline.z < 0 ? Math.abs(baseline.z) : -baseline.z;
-
-            Gdx.app.log("X", String.valueOf(x));
-            Gdx.app.log("Y", String.valueOf(y));
-            Gdx.app.log("Z", String.valueOf(z));
-
             updateValues(x, y, -z);
         }
     }
@@ -216,18 +194,6 @@ public class ControllerManager {
     }
 
     private void updateValues(float x, float y, float z) {
-        boolean useZ = Math.abs(baseline.y) > Math.abs(baseline.z);
-
-        /*if ((!useZ && Math.abs(x) > Math.abs(y)) || (useZ && Math.abs(x) > Math.abs(z))) {
-            currentValue.set(calibratedValue(x, baseline.x, positiveThreshold.x, negativeThreshold.x), 0);
-        } else {
-            if (useZ) {
-                currentValue.set(0, calibratedValue(z, baseline.z, positiveThreshold.y, negativeThreshold.y));
-            } else {
-                currentValue.set(0, calibratedValue(y, baseline.y, positiveThreshold.y, negativeThreshold.y));
-            }
-        }*/
-
         if (Math.abs(baseline.y) > Math.abs(baseline.z)) {
             currentValue.set(
                 calibratedValue(x, baseline.x, positiveThreshold.x, negativeThreshold.x),
@@ -247,6 +213,10 @@ public class ControllerManager {
 
     public float getCurrentY() {
         return currentValue.y;
+    }
+
+    public void setSpecialMovement(boolean value) {
+        requiresSpecialMovement = value;
     }
 
     @Override

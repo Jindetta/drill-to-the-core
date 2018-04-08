@@ -29,7 +29,7 @@ public class LocalizationManager {
     }
 
     private Locale getProfileLocale() {
-        SettingsManager profile = SettingsManager.getActiveProfile();
+        SettingsManager profile = SettingsManager.getActiveProfile(true);
 
         if (profile != null && profile.hasValue("locale")) {
             return new Locale(profile.getString("locale"));

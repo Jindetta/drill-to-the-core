@@ -28,6 +28,7 @@ public abstract class BaseScreen extends Stage implements Screen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(this);
+        Gdx.input.setCatchBackKey(true);
     }
 
     @Override
@@ -55,6 +56,7 @@ public abstract class BaseScreen extends Stage implements Screen {
 
     @Override
     public void hide() {
+        Gdx.input.setCatchBackKey(false);
         dispose();
     }
 

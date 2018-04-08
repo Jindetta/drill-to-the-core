@@ -1,5 +1,6 @@
 package tiko.coregames.drilltothecore.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -50,6 +51,12 @@ public class SplashScreen extends BaseScreen {
         }
 
         super.render(delta);
+    }
+
+    @Override
+    public void show() {
+        super.show();
+        Gdx.input.setCatchBackKey(false);
     }
 
     @Override

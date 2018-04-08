@@ -1,6 +1,5 @@
 package tiko.coregames.drilltothecore.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -28,6 +27,9 @@ public class SettingsScreen extends BaseScreen {
     private Table settingsTable;
     private Texture playerImage;
 
+    private SettingsManager settings;
+    private ImageButton[] buttons;
+
     public SettingsScreen() {
         settingsTable = new Table();
         playerImage = new Texture("images/player_atlas.png");
@@ -41,20 +43,21 @@ public class SettingsScreen extends BaseScreen {
         });
 
         settingsTable.add(calibration).colspan(10).row();
-        final SettingsManager settings = SettingsManager.getDefaultProfile();
+        buttons = new ImageButton[playerImage.getHeight() / BIG_TILE_SIZE];
+        settings = SettingsManager.getActiveProfile(true);
 
-        for (int i = 0; i < playerImage.getHeight() / BIG_TILE_SIZE; i++) {
+        for (int i = 0; i < buttons.length; i++) {
             final int colorIndex = i;
             TextureRegion region = new TextureRegion(playerImage, BIG_TILE_SIZE * 4, i * BIG_TILE_SIZE, BIG_TILE_SIZE, BIG_TILE_SIZE);
-            final ImageButton button = new ImageButton(new TextureRegionDrawable(region));
-            button.addListener(new ClickListener() {
+            buttons[i] = new ImageButton(new TextureRegionDrawable(region));
+            buttons[i].addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     settings.setIntegerValue("playerColor", colorIndex);
                     settings.saveSettings();
                 }
             });
-            settingsTable.add(button).center().pad(15);
+            settingsTable.add(buttons[i]).center().pad(15);
         }
 
         addActor(settingsTable);
@@ -81,15 +84,16 @@ public class SettingsScreen extends BaseScreen {
     }
 
     @Override
-    public void show() {
-        super.show();
-        Gdx.input.setCatchBackKey(true);
-    }
+    public void render(float delta) {
+        for (int i = 0; i < buttons.length; i++) {
+            buttons[i].setSize(BIG_TILE_SIZE, BIG_TILE_SIZE);
 
-    @Override
-    public void hide() {
-        Gdx.input.setCatchBackKey(false);
-        super.hide();
+            if (settings.hasValue("playerColor") && i == settings.getInteger("playerColor")) {
+                buttons[i].setSize(BIG_TILE_SIZE, BIG_TILE_SIZE * 1.5f);
+            }
+        }
+
+        super.render(delta);
     }
 
     @Override

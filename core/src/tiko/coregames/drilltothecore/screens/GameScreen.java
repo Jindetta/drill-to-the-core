@@ -3,17 +3,21 @@ package tiko.coregames.drilltothecore.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import tiko.coregames.drilltothecore.Setup;
 import tiko.coregames.drilltothecore.managers.LevelManager;
@@ -29,6 +33,7 @@ public class GameScreen extends BaseScreen {
 
     private Window pauseWindow;
     private ProgressBar playerFuel;
+    private Label collectedItem;
     private Player player;
 
     private float totalGameTime;
@@ -44,7 +49,30 @@ public class GameScreen extends BaseScreen {
         }
 
         createPauseWindow();
+        createNotificationLabel();
         totalGameTime = 0;
+    }
+
+    private void createNotificationLabel() {
+        collectedItem = new Label("", skin);
+        collectedItem.setAlignment(Align.center);
+        collectedItem.setVisible(false);
+
+        addActor(collectedItem);
+    }
+
+    private void setNotificationActive() {
+        if (player.getRecentlyCollected() != null) {
+            SequenceAction sequence = Actions.sequence();
+            sequence.addAction(Actions.alpha(1));
+            sequence.addAction(Actions.fadeOut(3));
+            sequence.addAction(Actions.visible(false));
+
+            collectedItem.setText(player.getRecentlyCollected());
+            collectedItem.getActions().clear();
+            collectedItem.addAction(sequence);
+            collectedItem.setVisible(true);
+        }
     }
 
     /**
@@ -63,6 +91,7 @@ public class GameScreen extends BaseScreen {
 
                 switch (name == null ? "" : name) {
                     case "settings":
+                        Setup.nextScreen(new SettingsScreen());
                         return;
                     case "menu":
                         Setup.nextScreen(new MainMenuScreen());
@@ -83,7 +112,7 @@ public class GameScreen extends BaseScreen {
         continueButton.addListener(clickListener);
 
         TextButton settingsButton = new TextButton("Settings", skin);
-        continueButton.addListener(clickListener);
+        settingsButton.addListener(clickListener);
         settingsButton.setName("settings");
 
         TextButton menuButton = new TextButton(localizer.getValue("exit"), skin);
@@ -142,18 +171,16 @@ public class GameScreen extends BaseScreen {
             camera.position.x - pauseWindow.getWidth() / 2,
             camera.position.y - pauseWindow.getHeight() / 2
         );
-    }
 
-    @Override
-    public void show() {
-        super.show();
-        Gdx.input.setCatchBackKey(true);
+        collectedItem.setPosition(
+            camera.position.x - collectedItem.getWidth() / 2,
+            camera.position.y - collectedItem.getHeight() / 2
+        );
     }
 
     @Override
     public void hide() {
         Debug.setCustomDebugString("");
-        Gdx.input.setCatchBackKey(false);
         super.hide();
     }
 
@@ -185,6 +212,7 @@ public class GameScreen extends BaseScreen {
         batch.end();
 
         followPlayerObject();
+        setNotificationActive();
         updateDisplayInfo();
 
         act(delta);

@@ -45,6 +45,8 @@ public class Player extends BaseObject {
     private boolean isAllowedToRotateRight;
     private boolean isAllowedToRotateLeft;
 
+    private String recentlyCollectedItem;
+
     private enum STATES {
         IDLE, ACTIVE, JAMMED, IMMOBILIZED, DONE
     }
@@ -178,6 +180,10 @@ public class Player extends BaseObject {
         );
     }
 
+    public String getRecentlyCollected() {
+        return recentlyCollectedItem;
+    }
+
     @Override
     public void draw(SpriteBatch batch, float delta) {
         // Update movement based on controller input
@@ -186,6 +192,8 @@ public class Player extends BaseObject {
         if (!controller.isCalibrating()) {
             // Set state to idle by default
             setCurrentState(STATES.IDLE, STATES.JAMMED, STATES.IMMOBILIZED);
+
+            recentlyCollectedItem = null;
 
             if (consumeFuel(delta) && currentState != STATES.IMMOBILIZED) {
                 float valueX = controller.getCurrentX();
@@ -373,7 +381,7 @@ public class Player extends BaseObject {
                 break;
         }
 
-        Gdx.app.log(getClass().getSimpleName(), getCollectibleName(key));
+        recentlyCollectedItem = getCollectibleName(key);
     }
 
     /**
@@ -406,6 +414,7 @@ public class Player extends BaseObject {
                     // TODO: Update to work with hard "rock" properly - and make constant for this type
                     case "rock":
                         setCurrentState(STATES.JAMMED);
+                        controller.setSpecialMovement(true);
                         break;
                     // TODO: Update to work with this type - and make constant for this type
                     case "lava":
@@ -519,7 +528,7 @@ public class Player extends BaseObject {
         }
 
         // Left side
-        if (getX() - BIG_TILE_SIZE <= 0) {
+        if (getX() - BIG_TILE_SIZE * 2 <= 0) {
             if (originX + radius * MathUtils.cosDeg(getRotation() - ROTATION) <= 0) {
                 isAllowedToRotateRight = false;
             }

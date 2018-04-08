@@ -93,6 +93,12 @@ public class MainMenuScreen extends BaseScreen {
     }
 
     @Override
+    public void show() {
+        super.show();
+        Gdx.input.setCatchBackKey(false);
+    }
+
+    @Override
     public void dispose() {
         backgroundTexture.dispose();
         super.dispose();

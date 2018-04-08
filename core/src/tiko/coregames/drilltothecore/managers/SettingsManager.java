@@ -59,14 +59,14 @@ public class SettingsManager {
         return defaultProfile ? getDefaultProfile() : null;
     }
 
-    public static SettingsManager getActiveProfile() {
+    public static SettingsManager getActiveProfile(boolean defaultProfile) {
         SettingsManager profile = getDefaultProfile();
 
         if (profile.defaultProfile && profile.hasValue("activeProfile")) {
             return getUserProfile(profile.getInteger("activeProfile"), false);
         }
 
-        return null;
+        return defaultProfile ? getDefaultProfile() : null;
     }
 
     public static void setActiveProfile(int index) {

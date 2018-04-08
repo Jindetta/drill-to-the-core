@@ -37,18 +37,6 @@ public class HighScoreScreen extends BaseScreen {
     }
 
     @Override
-    public void show() {
-        super.show();
-        Gdx.input.setCatchBackKey(true);
-    }
-
-    @Override
-    public void hide() {
-        Gdx.input.setCatchBackKey(false);
-        super.hide();
-    }
-
-    @Override
     public void resize(int width, int height) {
         Viewport viewport = getViewport();
         viewport.update(width, height, true);

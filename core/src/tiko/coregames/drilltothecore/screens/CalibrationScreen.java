@@ -1,6 +1,5 @@
 package tiko.coregames.drilltothecore.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -9,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import tiko.coregames.drilltothecore.Setup;
 import tiko.coregames.drilltothecore.managers.SettingsManager;
 
 /**
@@ -118,7 +116,7 @@ public class CalibrationScreen extends BaseScreen {
     @Override
     public boolean keyDown(int key) {
         if (key == Input.Keys.ESCAPE || key == Input.Keys.BACK) {
-            Setup.nextScreen(new SettingsScreen());
+            hide();
         }
 
         return super.keyDown(key);
@@ -133,17 +131,5 @@ public class CalibrationScreen extends BaseScreen {
         float centerY = (viewport.getWorldHeight() - settingsTable.getHeight()) / 2;
 
         settingsTable.setPosition(centerX, centerY);
-    }
-
-    @Override
-    public void show() {
-        super.show();
-        Gdx.input.setCatchBackKey(true);
-    }
-
-    @Override
-    public void hide() {
-        Gdx.input.setCatchBackKey(false);
-        super.hide();
     }
 }
