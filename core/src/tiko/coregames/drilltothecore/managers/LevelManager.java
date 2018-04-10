@@ -139,8 +139,8 @@ public class LevelManager implements Disposable {
             camera.combined,
             camera.position.x - camera.viewportWidth / 2 - BIG_TILE_SIZE,
             camera.position.y - camera.viewportHeight / 2 - BIG_TILE_SIZE,
-            camera.position.x + camera.viewportHeight,
-            camera.position.y + camera.viewportWidth
+            camera.position.x + camera.viewportHeight + BIG_TILE_SIZE,
+            camera.position.y + camera.viewportWidth + BIG_TILE_SIZE
         );
 
         levelRenderer.render();
@@ -198,10 +198,9 @@ public class LevelManager implements Disposable {
             TiledMapTileLayer layer = (TiledMapTileLayer) levelData.getLayers().get(name);
 
             if (layer != null) {
-                int tileX = (int) (x / layer.getTileWidth());
-                int tileY = (int) (y / layer.getTileHeight());
-
-                return layer.getCell(tileX, tileY);
+                return layer.getCell(
+                    (int) (x / layer.getTileWidth()), (int) (y / layer.getTileHeight())
+                );
             }
         } catch (Exception e) {
             Gdx.app.log(LevelManager.class.getSimpleName(), "Could not find cell.");

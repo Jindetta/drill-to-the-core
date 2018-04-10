@@ -11,10 +11,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
@@ -259,8 +256,16 @@ public class GameScreen extends BaseScreen {
             case Input.Keys.C:
                 player.collectItemByName(null, POWER_UP_POINT_MULTIPLIER);
                 break;
+            case Input.Keys.F:
+                player.collectItemByName(null, POWER_UP_UNLIMITED_FUEL);
+                break;
             case Input.Keys.PLUS:
                 player.collectItemByName(null, POWER_UP_RANDOMIZED);
+                break;
+            case Input.Keys.MINUS:
+                for (String id : RANDOM_POWER_UPS) {
+                    player.collectItemByName(null, id);
+                }
                 break;
 
             case Input.Keys.BACK:

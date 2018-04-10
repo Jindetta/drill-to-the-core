@@ -2074,7 +2074,7 @@
   </tile>
   <tile id="12">
    <properties>
-    <property name="id" value="randomFuel"/>
+    <property name="id" value="fuelBoost"/>
    </properties>
   </tile>
   <tile id="13">

@@ -8,7 +8,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 
-
 import tiko.coregames.drilltothecore.managers.ControllerManager;
 import tiko.coregames.drilltothecore.managers.LevelManager;
 import tiko.coregames.drilltothecore.managers.LocalizationManager;
@@ -27,12 +26,12 @@ public class Player extends BaseObject {
     private float totalFuel, fuelConsumptionRate;
     private float baseScore, bonusScore;
     private float scoreMultiplier;
-    private float viewZoneFactor;
+    private float shroudOpacity;
 
     private float startingDepth;
 
     private float collectibleMultiplier, speedMultiplier, drillSpeedReduction;
-    private float collectibleTimer, speedTimer, viewTimer, currentIdleTime, drillTimer, collisionInterval;
+    private float collectibleTimer, speedTimer, viewTimer, currentIdleTime, drillTimer, collisionInterval, fuelTimer;
 
     private Circle playerView;
 
@@ -66,7 +65,8 @@ public class Player extends BaseObject {
         drillTimer = 0;
         speedTimer = 0;
         viewTimer = 0;
-        viewZoneFactor = 1;
+        shroudOpacity = 1;
+        fuelTimer = 0;
 
         controller = new ControllerManager();
         fuelConsumptionRate = PLAYER_FUEL_IDLE_MULTIPLIER;
@@ -85,7 +85,7 @@ public class Player extends BaseObject {
         TextureRegion bladeRegion = new TextureRegion(getTexture(), 0, BIG_TILE_SIZE * 2,BIG_TILE_SIZE * 3, BIG_TILE_SIZE  );
         playerTracks = new TextureRegion(getTexture(), BIG_TILE_SIZE * 1, BIG_TILE_SIZE , BIG_TILE_SIZE, BIG_TILE_SIZE);
         playerUnit = new TextureRegion(getTexture(), BIG_TILE_SIZE * 4, index * BIG_TILE_SIZE, BIG_TILE_SIZE, BIG_TILE_SIZE);
-        playerUnit.flip(true, true);
+        playerUnit.flip(false, true);
 
         animation = new Animation<>(1 / 20f, getFrames(bladeRegion, 3));
         keyFrameState = 0;
@@ -101,7 +101,7 @@ public class Player extends BaseObject {
 
         for (int i = 0; i < frameCount; i++) {
             frames[i] = new TextureRegion(region, i * BIG_TILE_SIZE, 0, BIG_TILE_SIZE, BIG_TILE_SIZE);
-            frames[i].flip(true, true);
+            frames[i].flip(false, true);
         }
 
         return frames;
@@ -112,7 +112,7 @@ public class Player extends BaseObject {
     }
 
     private boolean consumeFuel(float delta) {
-        totalFuel = Math.max(0, totalFuel - PLAYER_FUEL_MIN_CONSUMPTION * (fuelConsumptionRate * delta));
+        totalFuel -= PLAYER_FUEL_MIN_CONSUMPTION * (fuelConsumptionRate * delta);
 
         return totalFuel > 0;
     }
@@ -153,7 +153,7 @@ public class Player extends BaseObject {
     }
 
     public float getFuel() {
-        return totalFuel;
+        return Math.max(0, totalFuel);
     }
 
     public void resetCalibration() {
@@ -254,13 +254,13 @@ public class Player extends BaseObject {
             TextureRegion frame = animation.getKeyFrame(keyFrameState, true);
 
             batch.draw(
-                    playerTracks, getX(), getY(),
-                    frame.getRegionWidth() / 2,
-                    frame.getRegionHeight() / 2,
-                    frame.getRegionWidth(),
-                    frame.getRegionHeight(),
-                    getScaleX(), getScaleY(),
-                    getRotation() -90
+                playerTracks, getX(), getY(),
+                frame.getRegionWidth() / 2,
+                frame.getRegionHeight() / 2,
+                frame.getRegionWidth(),
+                frame.getRegionHeight(),
+                getScaleX(), getScaleY(),
+                getRotation() -90
             );
 
             batch.draw(
@@ -275,7 +275,7 @@ public class Player extends BaseObject {
 
             batch.draw(
                 frame,
-                getX()  + MathUtils.cosDeg(getRotation()),
+                getX() + MathUtils.cosDeg(getRotation()),
                 getY() - BIG_TILE_SIZE + MathUtils.sinDeg(getRotation()),
                 frame.getRegionWidth() / 2,
                 frame.getRegionHeight() / 2 + BIG_TILE_SIZE,
@@ -369,6 +369,9 @@ public class Player extends BaseObject {
                 speedMultiplier = PLAYER_MOVEMENT_SPEED_MULTIPLIER;
                 speedTimer = 10;
                 break;
+            case POWER_UP_UNLIMITED_FUEL:
+                fuelTimer = 7.5f;
+                break;
             case FUEL_CANISTER_REFILL_20:
             case FUEL_CANISTER_REFILL_50:
             case FUEL_CANISTER_REFILL_100:
@@ -377,17 +380,20 @@ public class Player extends BaseObject {
                 float multiplier = PLAYER_FUEL_TANK_SIZE * (amount / 100);
                 totalFuel = MathUtils.clamp(totalFuel + multiplier, totalFuel, PLAYER_FUEL_TANK_SIZE);
                 break;
-            case FUEL_CANISTER_REFILL_RANDOM:
-                totalFuel = MathUtils.clamp(totalFuel * MathUtils.random(10), totalFuel, PLAYER_FUEL_TANK_SIZE);
-                break;
             default:
-                Integer value = map.getInteger(tile, "value", 0);
+                Integer baseValue = map.getInteger(tile, "value", 0);
 
-                addBaseScore(value * collectibleMultiplier);
+                addBaseScore(baseValue * collectibleMultiplier);
+
+                Float bonusValue = map.getFloat(tile, "bonus", 0f);
+
+                addBonusScore(bonusValue);
                 break;
         }
 
-        recentlyCollectedItem = getCollectibleName(key);
+        if (tile != null) {
+            recentlyCollectedItem = getCollectibleName(key);
+        }
     }
 
     /**
@@ -467,15 +473,15 @@ public class Player extends BaseObject {
      * @param delta Time delta
      */
     private void updateTimerStatus(float delta) {
-        if (viewTimer > 0 || viewZoneFactor < 1) {
+        if (viewTimer > 0 || shroudOpacity < 1) {
             viewTimer = Math.max(viewTimer - delta, 0);
 
-            if (viewTimer <= 0 && viewZoneFactor < 1) {
-                viewZoneFactor = Math.min(1, viewZoneFactor + delta);
-                map.setShroudLayerOpacity(MathUtils.lerp(0, 1, Math.min(1, viewZoneFactor)));
+            if (viewTimer <= 0 && shroudOpacity < 1) {
+                shroudOpacity = Math.min(1, shroudOpacity + delta);
+                map.setShroudLayerOpacity(MathUtils.lerp(0, 1, Math.min(1, shroudOpacity)));
             } else {
-                viewZoneFactor = Math.max(0, viewZoneFactor - delta);
-                map.setShroudLayerOpacity(MathUtils.lerp(0, 1, viewZoneFactor));
+                shroudOpacity = Math.max(0, shroudOpacity - delta);
+                map.setShroudLayerOpacity(MathUtils.lerp(0, 1, shroudOpacity));
             }
         }
 
@@ -507,6 +513,14 @@ public class Player extends BaseObject {
 
         float baseMultiplier = (1 + PLAYER_FUEL_IDLE_MULTIPLIER) - currentIdleTime / PLAYER_IDLE_STATE_DELAY;
         fuelConsumptionRate = Math.max(PLAYER_FUEL_IDLE_MULTIPLIER, Math.min(baseMultiplier, 1));
+
+        if (fuelTimer > 0) {
+            fuelTimer = Math.max(fuelTimer - delta, 0);
+
+            if (fuelTimer > 0) {
+                fuelConsumptionRate = 0;
+            }
+        }
 
         collisionInterval = Math.max(collisionInterval - delta, 0);
     }
@@ -567,7 +581,7 @@ public class Player extends BaseObject {
         return String.format(
             "Current points: %d\nDepth reached: %.0f m\nTotal fuel: %.2f\n" +
             "Radar power-up: %.1f\nSpeed power-up: %.1f\nDrill speed power-up: %.1f\n" +
-            "Point power-up: %.1f\n\n%s",
+            "Point power-up: %.1f\nFuel power-up: %.1f\n%s",
             getTotalScore(),
             getDrillDepth(),
             getFuel(),
@@ -575,6 +589,7 @@ public class Player extends BaseObject {
             speedTimer,
             drillTimer,
             collectibleTimer,
+            fuelTimer,
             controller.toString()
         );
     }
