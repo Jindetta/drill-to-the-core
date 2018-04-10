@@ -27,6 +27,7 @@ public class Player extends BaseObject {
     private float totalFuel, fuelConsumptionRate;
     private float baseScore, bonusScore;
     private float scoreMultiplier;
+    private float viewZoneFactor;
 
     private float startingDepth;
 
@@ -65,6 +66,7 @@ public class Player extends BaseObject {
         drillTimer = 0;
         speedTimer = 0;
         viewTimer = 0;
+        viewZoneFactor = 1;
 
         controller = new ControllerManager();
         fuelConsumptionRate = PLAYER_FUEL_IDLE_MULTIPLIER;
@@ -147,7 +149,7 @@ public class Player extends BaseObject {
     }
 
     private float getDrillDepth() {
-        return getDrillDepthMultiplier() * map.getDepth();
+        return getDrillDepthMultiplier() * map.getVirtualDepth();
     }
 
     public float getFuel() {
@@ -271,8 +273,6 @@ public class Player extends BaseObject {
                 getRotation() -90
             );
 
-
-
             batch.draw(
                 frame,
                 getX()  + MathUtils.cosDeg(getRotation()),
@@ -352,7 +352,6 @@ public class Player extends BaseObject {
                 return;
             case POWER_UP_RADAR_EXTENDER:
                 addBonusScore(SCORE_POWER_UP_PICKUP);
-                map.setShroudVisiblitity(false);
                 viewTimer = 5;
                 break;
             case POWER_UP_POINT_MULTIPLIER:
@@ -468,11 +467,15 @@ public class Player extends BaseObject {
      * @param delta Time delta
      */
     private void updateTimerStatus(float delta) {
-        if (viewTimer > 0) {
+        if (viewTimer > 0 || viewZoneFactor < 1) {
             viewTimer = Math.max(viewTimer - delta, 0);
 
-            if (MathUtils.isZero(viewTimer)) {
-                map.setShroudVisiblitity(true);
+            if (viewTimer <= 0 && viewZoneFactor < 1) {
+                viewZoneFactor = Math.min(1, viewZoneFactor + delta);
+                map.setShroudLayerOpacity(MathUtils.lerp(0, 1, Math.min(1, viewZoneFactor)));
+            } else {
+                viewZoneFactor = Math.max(0, viewZoneFactor - delta);
+                map.setShroudLayerOpacity(MathUtils.lerp(0, 1, viewZoneFactor));
             }
         }
 

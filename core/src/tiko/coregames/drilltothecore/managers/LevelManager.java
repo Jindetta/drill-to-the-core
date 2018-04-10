@@ -2,10 +2,8 @@ package tiko.coregames.drilltothecore.managers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -16,6 +14,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 
 import tiko.coregames.drilltothecore.Setup;
+
+import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
 /**
  * Handles everything related to levels.
@@ -29,7 +29,7 @@ public class LevelManager implements Disposable {
     /**
      * Stores map size
      */
-    private int mapWidth, mapHeight, mapDepth;
+    private int mapWidth, mapHeight, virtualMapDepth;
 
     /**
      * Stores background color
@@ -70,7 +70,7 @@ public class LevelManager implements Disposable {
         int tileWidth = properties.get("tilewidth", Integer.class);
         int tileHeight = properties.get("tileheight", Integer.class);
 
-        mapDepth = properties.get("depth", 1000, Integer.class);
+        virtualMapDepth = properties.get("depth", 1000, Integer.class);
         mapHeight = height * tileHeight;
         mapWidth = width * tileWidth;
 
@@ -135,7 +135,14 @@ public class LevelManager implements Disposable {
             batch.end();
         }
 
-        levelRenderer.setView((OrthographicCamera) camera);
+        levelRenderer.setView(
+            camera.combined,
+            camera.position.x - camera.viewportWidth / 2 - BIG_TILE_SIZE,
+            camera.position.y - camera.viewportHeight / 2 - BIG_TILE_SIZE,
+            camera.position.x + camera.viewportHeight,
+            camera.position.y + camera.viewportWidth
+        );
+
         levelRenderer.render();
     }
 
@@ -166,8 +173,8 @@ public class LevelManager implements Disposable {
         return null;
     }
 
-    public int getDepth() {
-        return mapDepth;
+    public int getVirtualDepth() {
+        return virtualMapDepth;
     }
 
     public int getMapWidth() {
@@ -178,30 +185,11 @@ public class LevelManager implements Disposable {
         return mapHeight;
     }
 
-    /**
-     * Gets "Tile" from given coordinates.
-     *
-     * @param x             X index.
-     * @param y             Y index.
-     * @param name          Layer name.
-     * @return              Returns Tile instance.
-     */
-    public TiledMapTile getTileFromPosition(float x, float y, String name) {
-        try {
-            return getCellFromPosition(x, y, name).getTile();
-        } catch (Exception e) {
-            Gdx.app.log(LevelManager.class.getSimpleName(), "Could not find tile.");
-        }
-
-        // Invalid value - return null
-        return null;
-    }
-
-    public void setShroudVisiblitity(boolean value) {
+    public void setShroudLayerOpacity(float value) {
         TiledMapTileLayer layer = (TiledMapTileLayer) levelData.getLayers().get("shroud");
 
         if (layer != null) {
-            layer.setVisible(value);
+            layer.setOpacity(value);
         }
     }
 
