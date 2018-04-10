@@ -66,7 +66,7 @@ public class SettingsManager {
             return getUserProfile(profile.getInteger("activeProfile"), false);
         }
 
-        return defaultProfile ? getDefaultProfile() : null;
+        return defaultProfile ? profile : null;
     }
 
     public static void setActiveProfile(int index) {

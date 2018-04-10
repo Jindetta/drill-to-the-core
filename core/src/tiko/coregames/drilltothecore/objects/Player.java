@@ -51,11 +51,11 @@ public class Player extends BaseObject {
         IDLE, ACTIVE, JAMMED, IMMOBILIZED, DONE
     }
 
-    public Player(LevelManager map, LocalizationManager localizer, float x, float y) {
+    public Player(LevelManager map, float x, float y) {
         super("images/player_atlas.png");
 
         this.map = map;
-        this.localizer = localizer;
+        localizer = new LocalizationManager("game");
 
         // TODO: Cleanup initialization
         drillSpeedReduction = 0;
@@ -345,7 +345,7 @@ public class Player extends BaseObject {
                 return;
             case POWER_UP_RADAR_EXTENDER:
                 addBonusScore(SCORE_POWER_UP_PICKUP);
-                playerView.setRadius(PLAYER_VIEW_RADIUS * 1.5f);
+                map.setShroudVisiblitity(false);
                 viewTimer = 5;
                 break;
             case POWER_UP_POINT_MULTIPLIER:
@@ -465,7 +465,7 @@ public class Player extends BaseObject {
             viewTimer = Math.max(viewTimer - delta, 0);
 
             if (MathUtils.isZero(viewTimer)) {
-                playerView.radius = PLAYER_VIEW_RADIUS;
+                map.setShroudVisiblitity(true);
             }
         }
 

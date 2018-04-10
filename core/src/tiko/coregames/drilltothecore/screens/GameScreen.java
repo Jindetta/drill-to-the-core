@@ -17,18 +17,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 import tiko.coregames.drilltothecore.Setup;
 import tiko.coregames.drilltothecore.managers.LevelManager;
-import tiko.coregames.drilltothecore.managers.LocalizationManager;
 import tiko.coregames.drilltothecore.objects.Player;
 import tiko.coregames.drilltothecore.utilities.Debug;
+
+import java.util.Locale;
 
 import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
 public class GameScreen extends BaseScreen {
-    private LocalizationManager localizer;
     private LevelManager map;
 
     private Window pauseWindow;
@@ -37,28 +36,35 @@ public class GameScreen extends BaseScreen {
     private Player player;
 
     private float totalGameTime;
+    private Label gameTimer;
 
     public GameScreen() {
         map = new LevelManager(0);
         Vector3 playerSpawn = map.getSpawnPoint("player");
-        localizer = new LocalizationManager("game");
 
         if (playerSpawn != null) {
-            player = new Player(map, localizer, playerSpawn.x, playerSpawn.y);
+            player = new Player(map, playerSpawn.x, playerSpawn.y);
             createFuelMeter();
         }
 
         createPauseWindow();
-        createNotificationLabel();
+        createDisplayElements();
         totalGameTime = 0;
     }
 
-    private void createNotificationLabel() {
+    private void createDisplayElements() {
+        // Notification popup for collected items
         collectedItem = new Label("", skin);
         collectedItem.setAlignment(Align.center);
         collectedItem.setVisible(false);
 
         addActor(collectedItem);
+
+        // Game time
+        gameTimer = new Label("", skin);
+        gameTimer.setAlignment(Align.center);
+
+        addActor(gameTimer);
     }
 
     private void setNotificationActive() {
@@ -79,7 +85,7 @@ public class GameScreen extends BaseScreen {
      * Creates pause menu window.
      */
     private void createPauseWindow() {
-        pauseWindow = new Window(localizer.getValue("pause"), skin);
+        pauseWindow = new Window(coreLocalization.getValue("pause_title"), skin);
         pauseWindow.setResizable(false);
         pauseWindow.setMovable(false);
         pauseWindow.setVisible(false);
@@ -90,7 +96,7 @@ public class GameScreen extends BaseScreen {
                 String name = event.getListenerActor().getName();
 
                 switch (name == null ? "" : name) {
-                    case "settings":
+                    case "menu_settings":
                         Setup.nextScreen(new SettingsScreen());
                         return;
                     case "menu":
@@ -108,14 +114,14 @@ public class GameScreen extends BaseScreen {
             }
         };
 
-        TextButton continueButton = new TextButton(localizer.getValue("continue"), skin);
+        TextButton continueButton = new TextButton(coreLocalization.getValue("pause_continue"), skin);
         continueButton.addListener(clickListener);
 
-        TextButton settingsButton = new TextButton(localizer.getValue("settings"), skin);
+        TextButton settingsButton = new TextButton(coreLocalization.getValue("pause_settings"), skin);
         settingsButton.addListener(clickListener);
         settingsButton.setName("settings");
 
-        TextButton menuButton = new TextButton(localizer.getValue("exit"), skin);
+        TextButton menuButton = new TextButton(coreLocalization.getValue("pause_exit"), skin);
         menuButton.addListener(clickListener);
         menuButton.setName("menu");
 
@@ -174,7 +180,22 @@ public class GameScreen extends BaseScreen {
 
         collectedItem.setPosition(
             camera.position.x - collectedItem.getWidth() / 2,
-            camera.position.y - collectedItem.getHeight() / 2
+            viewportY - collectedItem.getPrefHeight() * 4
+        );
+
+        gameTimer.setText(
+            String.format(
+                Locale.ENGLISH,
+                "%02d:%02d:%02d",
+                (int) totalGameTime / (60 * 60),
+                (int) totalGameTime / 60 % 60,
+                (int) totalGameTime % 60
+            )
+        );
+
+        gameTimer.setPosition(
+            camera.position.x - collectedItem.getWidth() / 2,
+            viewportY - gameTimer.getPrefHeight() / 2 - SAFE_ZONE_SIZE
         );
     }
 
@@ -218,7 +239,7 @@ public class GameScreen extends BaseScreen {
         act(delta);
         draw();
 
-        Debug.setCustomDebugString(toString());
+        Debug.setCustomDebugString(player.toString());
     }
 
     @Override
@@ -259,16 +280,5 @@ public class GameScreen extends BaseScreen {
         super.dispose();
         player.dispose();
         map.dispose();
-    }
-
-    @Override
-    public String toString() {
-        return String.format(
-            "Current playtime: %d:%02d:%02d\n%s",
-            (int) totalGameTime / (60 * 60),
-            (int) totalGameTime / 60 % 60,
-            (int) totalGameTime % 60,
-            player.toString()
-        );
     }
 }

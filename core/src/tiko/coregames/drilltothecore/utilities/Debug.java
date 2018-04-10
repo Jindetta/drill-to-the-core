@@ -64,6 +64,7 @@ public class Debug {
     public static void dispose() {
         if (instance != null) {
             instance.font.dispose();
+            instance = null;
         }
     }
 

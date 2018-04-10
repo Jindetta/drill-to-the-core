@@ -197,6 +197,14 @@ public class LevelManager implements Disposable {
         return null;
     }
 
+    public void setShroudVisiblitity(boolean value) {
+        TiledMapTileLayer layer = (TiledMapTileLayer) levelData.getLayers().get("shroud");
+
+        if (layer != null) {
+            layer.setVisible(value);
+        }
+    }
+
     public TiledMapTileLayer.Cell getCellFromPosition(float x, float y, String name) {
         try {
             TiledMapTileLayer layer = (TiledMapTileLayer) levelData.getLayers().get(name);

@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import tiko.coregames.drilltothecore.Setup;
-import tiko.coregames.drilltothecore.managers.LocalizationManager;
 
 import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
@@ -28,8 +27,7 @@ public class MainMenuScreen extends BaseScreen {
     private Table gameMenu;
 
     public MainMenuScreen() {
-        LocalizationManager menu = new LocalizationManager("menu");
-        backgroundTexture = new Texture("images/menu-background.jpg");
+        backgroundTexture = new Texture("images/menu-background.png");
 
         ClickListener clickListener = new ClickListener() {
             @Override
@@ -53,19 +51,19 @@ public class MainMenuScreen extends BaseScreen {
             }
         };
 
-        TextButton play = new TextButton(menu.getValue("play"), skin);
+        TextButton play = new TextButton(coreLocalization.getValue("menu_play"), skin);
         play.addListener(clickListener);
         play.setName("play");
 
-        TextButton settings = new TextButton(menu.getValue("settings"), skin);
+        TextButton settings = new TextButton(coreLocalization.getValue("menu_settings"), skin);
         settings.addListener(clickListener);
         settings.setName("settings");
 
-        TextButton highScore = new TextButton(menu.getValue("highScore"), skin);
+        TextButton highScore = new TextButton(coreLocalization.getValue("menu_highScore"), skin);
         highScore.addListener(clickListener);
         highScore.setName("highScore");
 
-        TextButton exit = new TextButton(menu.getValue("exit"), skin);
+        TextButton exit = new TextButton(coreLocalization.getValue("menu_exit"), skin);
         exit.addListener(clickListener);
 
         background = new Image(backgroundTexture);

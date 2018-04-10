@@ -7,6 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
+import tiko.coregames.drilltothecore.managers.LocalizationManager;
+import tiko.coregames.drilltothecore.managers.SettingsManager;
+
 import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
 /**
@@ -18,11 +21,15 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
  * @since   2018-02-01
  */
 public abstract class BaseScreen extends Stage implements Screen {
+    LocalizationManager coreLocalization;
+    SettingsManager settings;
     Skin skin;
 
     BaseScreen() {
         super(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT));
         skin = new Skin(Gdx.files.internal("menu/skin.json"));
+        coreLocalization = new LocalizationManager("core");
+        settings = SettingsManager.getActiveProfile(true);
     }
 
     @Override

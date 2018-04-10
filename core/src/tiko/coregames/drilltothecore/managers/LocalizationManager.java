@@ -16,12 +16,11 @@ public class LocalizationManager {
         StringBuilder path = new StringBuilder("localization/");
 
         switch (bundleKey) {
-            case "menu":
             case "game":
                 path.append(bundleKey);
                 break;
             default:
-                path.append("core");
+                path.append("menu");
                 break;
         }
 

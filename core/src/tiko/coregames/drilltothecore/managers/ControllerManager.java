@@ -83,7 +83,7 @@ public class ControllerManager {
     /**
      * Applies user settings.
      */
-    private void applySettings() {
+    protected void applySettings() {
         SettingsManager settings = SettingsManager.getDefaultProfile();
 
         int sensitivityUp = MathUtils.clamp(settings.getInteger("sensitivityUp"), 1, 10);
@@ -149,7 +149,7 @@ public class ControllerManager {
     }
 
     private int calibratedValue(float value, float baseline, float positive, float negative) {
-        if (value < baseline - negative) {
+        if (value < MathUtils.lerp(0, -9, negative / 10)) {
             return -1;
         } else if (value > baseline + positive) {
             return 1;
@@ -184,6 +184,10 @@ public class ControllerManager {
                 y = invertedY ? -y : y;
                 z = invertedY ? -z : z;
             }
+
+            x += baseline.x < 0 ? Math.abs(baseline.x) : -baseline.x;
+            y += baseline.y < 0 ? Math.abs(baseline.y) : -baseline.y;
+            z += baseline.z < 0 ? Math.abs(baseline.z) : -baseline.z;
 
             updateValues(x, y, -z);
         }

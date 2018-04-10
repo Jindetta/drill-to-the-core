@@ -1,7 +1,6 @@
 package tiko.coregames.drilltothecore.screens;
 
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -11,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import tiko.coregames.drilltothecore.Setup;
-import tiko.coregames.drilltothecore.managers.SettingsManager;
 
 import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
@@ -27,14 +25,13 @@ public class SettingsScreen extends BaseScreen {
     private Table settingsTable;
     private Texture playerImage;
 
-    private SettingsManager settings;
     private ImageButton[] buttons;
 
     public SettingsScreen() {
         settingsTable = new Table();
         playerImage = new Texture("images/player_atlas.png");
 
-        TextButton calibration = new TextButton("Calibrate", skin);
+        TextButton calibration = new TextButton(coreLocalization.getValue("menu_calibrate"), skin);
         calibration.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -42,9 +39,16 @@ public class SettingsScreen extends BaseScreen {
             }
         });
 
+        CheckBox useGameXRChair = new CheckBox(coreLocalization.getValue("menu_gameXR"), skin);
+        useGameXRChair.setDisabled(true);
+
+        CheckBox useDifficulty = new CheckBox(coreLocalization.getValue("menu_difficulty"), skin);
+        useDifficulty.setDisabled(true);
+
+        settingsTable.add(useGameXRChair).colspan(10).row();
+        settingsTable.add(useDifficulty).colspan(10).row();
         settingsTable.add(calibration).colspan(10).row();
         buttons = new ImageButton[playerImage.getHeight() / BIG_TILE_SIZE];
-        settings = SettingsManager.getActiveProfile(true);
 
         for (int i = 0; i < buttons.length; i++) {
             final int colorIndex = i;
