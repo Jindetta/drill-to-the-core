@@ -8,6 +8,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 
+
 import tiko.coregames.drilltothecore.managers.ControllerManager;
 import tiko.coregames.drilltothecore.managers.LevelManager;
 import tiko.coregames.drilltothecore.managers.LocalizationManager;
@@ -79,15 +80,18 @@ public class Player extends BaseObject {
         SettingsManager settings = SettingsManager.getDefaultProfile();
         int index = settings.getInteger("playerColor");
 
-        TextureRegion bladeRegion = new TextureRegion(getTexture(), BIG_TILE_SIZE * 3, BIG_TILE_SIZE);
-        playerTracks = new TextureRegion(getTexture(), 0, BIG_TILE_SIZE, BIG_TILE_SIZE, BIG_TILE_SIZE);
-        playerUnit = new TextureRegion(getTexture(), BIG_TILE_SIZE * 3, index * BIG_TILE_SIZE, BIG_TILE_SIZE, BIG_TILE_SIZE);
+        TextureRegion bladeRegion = new TextureRegion(getTexture(), 0, BIG_TILE_SIZE * 2,BIG_TILE_SIZE * 3, BIG_TILE_SIZE  );
+        playerTracks = new TextureRegion(getTexture(), BIG_TILE_SIZE * 1, BIG_TILE_SIZE , BIG_TILE_SIZE, BIG_TILE_SIZE);
+        playerUnit = new TextureRegion(getTexture(), BIG_TILE_SIZE * 4, index * BIG_TILE_SIZE, BIG_TILE_SIZE, BIG_TILE_SIZE);
+        playerUnit.flip(true, true);
+
         animation = new Animation<>(1 / 20f, getFrames(bladeRegion, 3));
         keyFrameState = 0;
 
         startingDepth = y;
         playerView = new Circle(x + BIG_TILE_SIZE / 2, y + BIG_TILE_SIZE / 2, PLAYER_VIEW_RADIUS);
         setPosition(x, y);
+        setRotation(90);
     }
 
     private TextureRegion[] getFrames(TextureRegion region, int frameCount) {
@@ -95,6 +99,7 @@ public class Player extends BaseObject {
 
         for (int i = 0; i < frameCount; i++) {
             frames[i] = new TextureRegion(region, i * BIG_TILE_SIZE, 0, BIG_TILE_SIZE, BIG_TILE_SIZE);
+            frames[i].flip(true, true);
         }
 
         return frames;
@@ -247,35 +252,37 @@ public class Player extends BaseObject {
             TextureRegion frame = animation.getKeyFrame(keyFrameState, true);
 
             batch.draw(
+                    playerTracks, getX(), getY(),
+                    frame.getRegionWidth() / 2,
+                    frame.getRegionHeight() / 2,
+                    frame.getRegionWidth(),
+                    frame.getRegionHeight(),
+                    getScaleX(), getScaleY(),
+                    getRotation() -90
+            );
+
+            batch.draw(
                 playerUnit, getX(), getY(),
                 frame.getRegionWidth() / 2,
                 frame.getRegionHeight() / 2,
                 frame.getRegionWidth(),
                 frame.getRegionHeight(),
                 getScaleX(), getScaleY(),
-                getRotation()
+                getRotation() -90
             );
 
-            batch.draw(
-                playerTracks, getX(), getY(),
-                    frame.getRegionWidth() / 2,
-                    frame.getRegionHeight() / 2,
-                    frame.getRegionWidth(),
-                    frame.getRegionHeight(),
-                    getScaleX(), getScaleY(),
-                    getRotation()
-            );
+
 
             batch.draw(
                 frame,
-                getX() - BIG_TILE_SIZE + MathUtils.cosDeg(getRotation()),
-                getY() + MathUtils.sinDeg(getRotation()),
-                frame.getRegionWidth() / 2 + BIG_TILE_SIZE,
-                frame.getRegionHeight() / 2,
+                getX()  + MathUtils.cosDeg(getRotation()),
+                getY() - BIG_TILE_SIZE + MathUtils.sinDeg(getRotation()),
+                frame.getRegionWidth() / 2,
+                frame.getRegionHeight() / 2 + BIG_TILE_SIZE,
                 frame.getRegionWidth(),
                 frame.getRegionHeight(),
                 getScaleX(), getScaleY(),
-                getRotation()
+                getRotation() -90
             );
         }
     }
