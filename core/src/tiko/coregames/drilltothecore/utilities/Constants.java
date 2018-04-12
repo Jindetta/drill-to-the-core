@@ -20,9 +20,9 @@ public class Constants {
 
     public static final float PLAYER_MOVE_SPEED = 85;
     public static final float PLAYER_ROTATION_SPEED = 130;
-    public static final float PLAYER_FUEL_TANK_SIZE = 90;
+    public static final float PLAYER_FUEL_TANK_SIZE = 150;
     public static final float PLAYER_FUEL_MIN_CONSUMPTION = 1f;
-    public static final float PLAYER_FUEL_IDLE_MULTIPLIER = .25f;
+    public static final float PLAYER_FUEL_IDLE_MULTIPLIER = .33f;
     public static final float PLAYER_IDLE_STATE_DELAY = 5;
     public static final float PLAYER_DRILL_DEPTH_MULTIPLIER = 5;
     public static final float PLAYER_MOVEMENT_SPEED_MULTIPLIER = 1.33f;

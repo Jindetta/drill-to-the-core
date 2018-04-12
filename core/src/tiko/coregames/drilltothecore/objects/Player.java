@@ -52,7 +52,7 @@ public class Player extends BaseObject {
         IDLE, ACTIVE, JAMMED, IMMOBILIZED, DONE
     }
 
-    private ParticleEffect smokeParticles;
+    private ParticleEffect effect;
 
     public Player(LevelManager map, float x, float y) {
         super("images/player_atlas.png");
@@ -74,9 +74,9 @@ public class Player extends BaseObject {
         fuelConsumptionRate = PLAYER_FUEL_IDLE_MULTIPLIER;
         currentIdleTime = PLAYER_IDLE_STATE_DELAY;
 
-        smokeParticles = new ParticleEffect();
-        smokeParticles.load(Gdx.files.internal("images/player.fx"), Gdx.files.internal("images"));
-        smokeParticles.start();
+        effect = new ParticleEffect();
+        effect.load(Gdx.files.internal("images/fx/player.fx"), Gdx.files.internal("images/fx"));
+        effect.start();
 
         createPlayerUnit(x, y);
         setInitialScoreValues();
@@ -95,8 +95,6 @@ public class Player extends BaseObject {
 
         animation = new Animation<>(1 / 20f, getFrames(bladeRegion, 3));
         keyFrameState = 0;
-
-
 
         startingDepth = y;
         playerView = new Circle(x + BIG_TILE_SIZE / 2, y + BIG_TILE_SIZE / 2, PLAYER_VIEW_RADIUS);
@@ -240,31 +238,47 @@ public class Player extends BaseObject {
                 }
             }
 
-            // TODO: Improve effect and tie to engine activity
-            ParticleEmitter emitter = smokeParticles.findEmitter("engine");
-            emitter.getAngle().setHighMax(getRotation() + 50);
-            emitter.getAngle().setHighMin(getRotation() - 50);
-            emitter.getAngle().setLowMax(getRotation() + 50);
-            emitter.getAngle().setLowMin(getRotation() - 50);
-            smokeParticles.setPosition(
-                getX() + BIG_TILE_SIZE / 2 + MathUtils.cosDeg(getRotation()),
-                getY() + BIG_TILE_SIZE / 2 + MathUtils.sinDeg(getRotation())
-            );
-            smokeParticles.draw(batch, delta);
+            drawEffect(batch, delta);
             updateTimerStatus(delta);
         }
 
         draw(batch);
     }
 
+    private void drawEffect(SpriteBatch batch, float delta) {
+        // TODO: Improve effect and tie to engine activity
+        ParticleEmitter smoke = effect.findEmitter("engine");
+        smoke.getAngle().setHighMax(getRotation() + 50);
+        smoke.getAngle().setHighMin(getRotation() - 50);
+        smoke.getAngle().setLowMax(getRotation() + 50);
+        smoke.getAngle().setLowMin(getRotation() - 50);
+
+        ParticleEmitter rocket = effect.findEmitter("rocket");
+        rocket.getAngle().setHighMax(getRotation() + 50);
+        rocket.getAngle().setHighMin(getRotation() - 50);
+        rocket.getAngle().setLowMax(getRotation() + 50);
+        rocket.getAngle().setLowMin(getRotation() - 50);
+
+        effect.setPosition(
+            getCenterX() + MathUtils.cosDeg(getRotation()),
+            getCenterY() + MathUtils.sinDeg(getRotation())
+        );
+        effect.draw(batch, delta);
+    }
+
+    private float getCenterX() {
+        return getX() + BIG_TILE_SIZE / 2;
+    }
+
+    private float getCenterY() {
+        return getY() + BIG_TILE_SIZE / 2;
+    }
+
     private void rotateToPoint(float pointX, float pointY, float delta) {
-        float centerX = getX() + BIG_TILE_SIZE / 2;
-        float centerY = getY() + BIG_TILE_SIZE / 2;
+        pointX = getCenterX() - pointX;
+        pointY = getCenterY() - pointY;
 
-        pointX = centerX - pointX;
-        pointY = centerY - pointY;
-
-        float angle = MathUtils.atan2(pointY - centerY, pointX - centerX) * MathUtils.radiansToDegrees;
+        float angle = MathUtils.atan2(pointY - getCenterY(), pointX - getCenterX()) * MathUtils.radiansToDegrees;
 
         if (angle <= 0) {
             angle += 360;
@@ -364,7 +378,7 @@ public class Player extends BaseObject {
      * Updates player view.
      */
     private void updatePlayerView() {
-        playerView.setPosition(getX() + BIG_TILE_SIZE / 2, getY() + BIG_TILE_SIZE / 2);
+        playerView.setPosition(getCenterX(), getCenterY());
 
         for (float y = playerView.y - playerView.radius; y < playerView.y + playerView.radius; y += SMALL_TILE_SIZE) {
             for (float x = playerView.x - playerView.radius; x < playerView.x + playerView.radius; x += SMALL_TILE_SIZE) {
@@ -588,8 +602,8 @@ public class Player extends BaseObject {
         final float ROTATION = getRotationSpeed() * delta;
         final float GROUND_LEVEL = map.getMapHeight() - BIG_TILE_SIZE * 4;
 
-        float originX = getX() + BIG_TILE_SIZE / 2;
-        float originY = getY() + BIG_TILE_SIZE / 2;
+        float originX = getCenterX();
+        float originY = getCenterY();
 
         float radius = BIG_TILE_SIZE * 1.5f;
 
@@ -651,7 +665,7 @@ public class Player extends BaseObject {
 
     @Override
     public void dispose() {
-        smokeParticles.dispose();
+        effect.dispose();
         super.dispose();
     }
 }

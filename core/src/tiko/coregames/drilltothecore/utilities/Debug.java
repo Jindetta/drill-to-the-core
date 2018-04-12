@@ -20,7 +20,7 @@ public class Debug {
     private Debug() {
         customDebugString = "";
         screen = new OrthographicCamera();
-        font = new BitmapFont(Gdx.files.internal("menu/debug.fnt"));
+        font = new BitmapFont(Gdx.files.internal("ui/debug.fnt"));
     }
 
     public static void initialize() {
