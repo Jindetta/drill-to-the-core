@@ -52,6 +52,8 @@ public class Player extends BaseObject {
         IDLE, ACTIVE, JAMMED, IMMOBILIZED, DONE
     }
 
+    private ParticleEffect smokeParticles;
+
     public Player(LevelManager map, float x, float y) {
         super("images/player_atlas.png");
 
@@ -72,6 +74,10 @@ public class Player extends BaseObject {
         fuelConsumptionRate = PLAYER_FUEL_IDLE_MULTIPLIER;
         currentIdleTime = PLAYER_IDLE_STATE_DELAY;
 
+        smokeParticles = new ParticleEffect();
+        smokeParticles.load(Gdx.files.internal("images/player.fx"), Gdx.files.internal("images"));
+        smokeParticles.start();
+
         createPlayerUnit(x, y);
         setInitialScoreValues();
         setMaxFuel();
@@ -89,6 +95,8 @@ public class Player extends BaseObject {
 
         animation = new Animation<>(1 / 20f, getFrames(bladeRegion, 3));
         keyFrameState = 0;
+
+
 
         startingDepth = y;
         playerView = new Circle(x + BIG_TILE_SIZE / 2, y + BIG_TILE_SIZE / 2, PLAYER_VIEW_RADIUS);
@@ -180,13 +188,6 @@ public class Player extends BaseObject {
         currentState = newState;
     }
 
-    private void moveToAngle(float speed) {
-        translate(
-            speed * MathUtils.cosDeg(getRotation()),
-            speed * MathUtils.sinDeg(getRotation())
-        );
-    }
-
     public String getRecentlyCollected() {
         return recentlyCollectedItem;
     }
@@ -206,29 +207,26 @@ public class Player extends BaseObject {
                 float valueX = controller.getCurrentX();
                 float valueY = controller.getCurrentY();
 
-                if (currentState != STATES.JAMMED) {
+                /*if (currentState != STATES.JAMMED) {
                     checkMovementConditions(delta);
                 } else {
                     isAllowedToMoveForward = false;
                     isAllowedToRotateRight = false;
                     isAllowedToRotateLeft = false;
-                }
+                }*/
+                checkMovementConditions(delta);
 
-                if (isAllowedToMoveBackward && (valueY > 0 || Gdx.input.isKeyPressed(Input.Keys.DOWN))) {
-                    moveToAngle(getMovementSpeed() * delta);
+                if (isAllowedToMoveBackward && (valueY > 0 || Gdx.input.isKeyPressed(Input.Keys.UP))) {
                     valueY = 1;
                 }
-                if (isAllowedToMoveForward && (valueY < 0 || Gdx.input.isKeyPressed(Input.Keys.UP))) {
-                    moveToAngle(-getMovementSpeed() * delta);
+                if (isAllowedToMoveForward && (valueY < 0 || Gdx.input.isKeyPressed(Input.Keys.DOWN))) {
                     valueY = -1;
                 }
 
                 if (isAllowedToRotateRight && (valueX > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
-                    rotate(-getRotationSpeed() * delta);
                     valueX = 1;
                 }
                 if (isAllowedToRotateLeft && (valueX < 0 || Gdx.input.isKeyPressed(Input.Keys.LEFT))) {
-                    rotate(getRotationSpeed() * delta);
                     valueX = -1;
                 }
 
@@ -236,15 +234,72 @@ public class Player extends BaseObject {
                     setCurrentState(STATES.ACTIVE);
                     keyFrameState += delta;
 
+                    rotateToPoint(valueX, valueY, delta);
                     increaseMaximumDepth();
                     updateTileStatus();
                 }
             }
 
+            // TODO: Improve effect and tie to engine activity
+            ParticleEmitter emitter = smokeParticles.findEmitter("engine");
+            emitter.getAngle().setHighMax(getRotation() + 50);
+            emitter.getAngle().setHighMin(getRotation() - 50);
+            emitter.getAngle().setLowMax(getRotation() + 50);
+            emitter.getAngle().setLowMin(getRotation() - 50);
+            smokeParticles.setPosition(
+                getX() + BIG_TILE_SIZE / 2 + MathUtils.cosDeg(getRotation()),
+                getY() + BIG_TILE_SIZE / 2 + MathUtils.sinDeg(getRotation())
+            );
+            smokeParticles.draw(batch, delta);
             updateTimerStatus(delta);
         }
 
         draw(batch);
+    }
+
+    private void rotateToPoint(float pointX, float pointY, float delta) {
+        float centerX = getX() + BIG_TILE_SIZE / 2;
+        float centerY = getY() + BIG_TILE_SIZE / 2;
+
+        pointX = centerX - pointX;
+        pointY = centerY - pointY;
+
+        float angle = MathUtils.atan2(pointY - centerY, pointX - centerX) * MathUtils.radiansToDegrees;
+
+        if (angle <= 0) {
+            angle += 360;
+        }
+
+        float rotation = getRotation();
+
+        if (rotation <= 0) {
+            rotation += 360;
+        }
+
+        int difference = Math.round(angle - rotation) % 360;
+
+        Gdx.app.log("newAngle", String.valueOf(Math.round(angle)));
+        Gdx.app.log("currentAngle", String.valueOf(Math.round(rotation)));
+        Gdx.app.log("difference", String.valueOf(difference));
+
+        if (Math.abs(difference) > 180) {
+            difference = -difference;
+        }
+
+        if (MathUtils.isEqual(Math.abs(difference), 180, 5)) {
+            setRotation(angle);
+        } else {
+            // TODO: Fix rotation speed irregularities
+            rotation = rotation + difference * delta;
+            setRotation(rotation % 360);
+        }
+
+        float speed = -getMovementSpeed() * delta;
+
+        translate(
+            speed * MathUtils.cosDeg(getRotation()),
+            speed * MathUtils.sinDeg(getRotation())
+        );
     }
 
     @Override
@@ -260,7 +315,7 @@ public class Player extends BaseObject {
                 frame.getRegionWidth(),
                 frame.getRegionHeight(),
                 getScaleX(), getScaleY(),
-                getRotation() -90
+                getRotation() - 90
             );
 
             batch.draw(
@@ -270,7 +325,7 @@ public class Player extends BaseObject {
                 frame.getRegionWidth(),
                 frame.getRegionHeight(),
                 getScaleX(), getScaleY(),
-                getRotation() -90
+                getRotation() - 90
             );
 
             batch.draw(
@@ -282,7 +337,7 @@ public class Player extends BaseObject {
                 frame.getRegionWidth(),
                 frame.getRegionHeight(),
                 getScaleX(), getScaleY(),
-                getRotation() -90
+                getRotation() - 90
             );
         }
     }
@@ -542,7 +597,7 @@ public class Player extends BaseObject {
         isAllowedToRotateRight = true;
 
         // Ground
-        if (getY() >= GROUND_LEVEL) {
+        /*if (getY() >= GROUND_LEVEL) {
             if (originY + radius * cos >= GROUND_LEVEL) {
                 isAllowedToRotateRight = false;
             }
@@ -569,7 +624,7 @@ public class Player extends BaseObject {
             if (originX - radius * MathUtils.cosDeg(getRotation() + ROTATION) >= map.getMapWidth()) {
                 isAllowedToRotateLeft = false;
             }
-        }
+        }*/
 
         isAllowedToMoveForward = true;
         isAllowedToMoveBackward = true;
@@ -592,5 +647,11 @@ public class Player extends BaseObject {
             fuelTimer,
             controller.toString()
         );
+    }
+
+    @Override
+    public void dispose() {
+        smokeParticles.dispose();
+        super.dispose();
     }
 }
