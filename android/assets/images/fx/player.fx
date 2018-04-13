@@ -1,19 +1,17 @@
 engine
 - Delay -
-active: true
-lowMin: 0.0
-lowMax: 0.0
+active: false
 - Duration - 
-lowMin: 50.0
-lowMax: 50.0
+lowMin: 25.0
+lowMax: 25.0
 - Count - 
-min: 0
-max: 200
+min: 25
+max: 150
 - Emission - 
-lowMin: 0.0
-lowMax: 0.0
-highMin: 200.0
-highMax: 200.0
+lowMin: 25.0
+lowMax: 25.0
+highMin: 150.0
+highMax: 150.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -136,18 +134,16 @@ smoke.png
 
 rocket
 - Delay -
-active: true
-lowMin: 0.0
-lowMax: 0.0
+active: false
 - Duration - 
-lowMin: 50.0
-lowMax: 50.0
+lowMin: 25.0
+lowMax: 25.0
 - Count - 
-min: 0
-max: 200
+min: 25
+max: 150
 - Emission - 
-lowMin: 0.0
-lowMax: 0.0
+lowMin: 25.0
+lowMax: 25.0
 highMin: 150.0
 highMax: 150.0
 relative: false
@@ -220,10 +216,10 @@ timelineCount: 1
 timeline0: 0.0
 - Angle - 
 active: true
-lowMin: 40.0
-lowMax: 140.0
-highMin: 40.0
-highMax: 140.0
+lowMin: 45.0
+lowMax: 135.0
+highMin: 45.0
+highMax: 135.0
 relative: false
 scalingCount: 2
 scaling0: 0.0

@@ -8,10 +8,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 
-import tiko.coregames.drilltothecore.managers.ControllerManager;
-import tiko.coregames.drilltothecore.managers.LevelManager;
-import tiko.coregames.drilltothecore.managers.LocalizationManager;
-import tiko.coregames.drilltothecore.managers.SettingsManager;
+import tiko.coregames.drilltothecore.managers.*;
 
 import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
@@ -254,10 +251,10 @@ public class Player extends BaseObject {
         smoke.getAngle().setLowMin(getRotation() - 50);
 
         ParticleEmitter rocket = effect.findEmitter("rocket");
-        rocket.getAngle().setHighMax(getRotation() + 50);
-        rocket.getAngle().setHighMin(getRotation() - 50);
-        rocket.getAngle().setLowMax(getRotation() + 50);
-        rocket.getAngle().setLowMin(getRotation() - 50);
+        rocket.getAngle().setHighMax(getRotation() + 45);
+        rocket.getAngle().setHighMin(getRotation() - 45);
+        rocket.getAngle().setLowMax(getRotation() + 45);
+        rocket.getAngle().setLowMin(getRotation() - 45);
 
         effect.setPosition(
             getCenterX() + MathUtils.cosDeg(getRotation()),
@@ -275,10 +272,10 @@ public class Player extends BaseObject {
     }
 
     private void rotateToPoint(float pointX, float pointY, float delta) {
-        pointX = getCenterX() - pointX;
-        pointY = getCenterY() - pointY;
-
-        float angle = MathUtils.atan2(pointY - getCenterY(), pointX - getCenterX()) * MathUtils.radiansToDegrees;
+        float angle = MathUtils.atan2(
+                (getCenterY() - pointY) - getCenterY(),
+                (getCenterX() - pointX) - getCenterX()
+        ) * MathUtils.radiansToDegrees;
 
         if (angle <= 0) {
             angle += 360;
@@ -292,13 +289,15 @@ public class Player extends BaseObject {
 
         int difference = Math.round(angle - rotation) % 360;
 
+        if (Math.abs(difference) > 180) {
+            difference = (180 - difference) % 360;
+        } else if (MathUtils.isEqual(angle, 360)) {
+            difference = (360 - difference) % 360;
+        }
+
         Gdx.app.log("newAngle", String.valueOf(Math.round(angle)));
         Gdx.app.log("currentAngle", String.valueOf(Math.round(rotation)));
         Gdx.app.log("difference", String.valueOf(difference));
-
-        if (Math.abs(difference) > 180) {
-            difference = -difference;
-        }
 
         if (MathUtils.isEqual(Math.abs(difference), 180, 5)) {
             setRotation(angle);

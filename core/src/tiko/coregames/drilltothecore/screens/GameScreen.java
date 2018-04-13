@@ -36,8 +36,14 @@ public class GameScreen extends BaseScreen {
     private Label gameTimer;
 
     public GameScreen() {
+        resetLevel();
+    }
+
+    private void resetLevel() {
         map = new LevelManager(0);
         Vector3 playerSpawn = map.getSpawnPoint("player");
+
+        clear();
 
         if (playerSpawn != null) {
             player = new Player(map, playerSpawn.x, playerSpawn.y);
@@ -99,6 +105,9 @@ public class GameScreen extends BaseScreen {
                     case "menu":
                         Setup.nextScreen(new MainMenuScreen());
                         break;
+                    case "restart":
+                        resetLevel();
+                        break;
                     default:
                         if (DEBUG_MODE) {
                             player.setMaxFuel();
@@ -114,6 +123,10 @@ public class GameScreen extends BaseScreen {
         TextButton continueButton = new TextButton(coreLocalization.getValue("pause_continue"), skin);
         continueButton.addListener(clickListener);
 
+        TextButton restartButton = new TextButton(coreLocalization.getValue("pause_restartLevel"), skin);
+        restartButton.addListener(clickListener);
+        restartButton.setName("restart");
+
         TextButton settingsButton = new TextButton(coreLocalization.getValue("pause_settings"), skin);
         settingsButton.addListener(clickListener);
         settingsButton.setName("settings");
@@ -123,6 +136,7 @@ public class GameScreen extends BaseScreen {
         menuButton.setName("menu");
 
         pauseWindow.add(continueButton).row();
+        pauseWindow.add(restartButton).padTop(MENU_PADDING_TOP).row();
         pauseWindow.add(settingsButton).padTop(MENU_PADDING_TOP).row();
         pauseWindow.add(menuButton).padTop(MENU_PADDING_TOP);
 
