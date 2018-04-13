@@ -6,12 +6,12 @@ lowMin: 25.0
 lowMax: 25.0
 - Count - 
 min: 25
-max: 150
+max: 50
 - Emission - 
 lowMin: 25.0
 lowMax: 25.0
-highMin: 150.0
-highMax: 150.0
+highMin: 50.0
+highMax: 50.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -140,12 +140,12 @@ lowMin: 25.0
 lowMax: 25.0
 - Count - 
 min: 25
-max: 150
+max: 50
 - Emission - 
 lowMin: 25.0
 lowMax: 25.0
-highMin: 150.0
-highMax: 150.0
+highMin: 50.0
+highMax: 50.0
 relative: false
 scalingCount: 1
 scaling0: 1.0

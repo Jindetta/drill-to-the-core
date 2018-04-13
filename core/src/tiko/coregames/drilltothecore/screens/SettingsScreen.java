@@ -39,8 +39,14 @@ public class SettingsScreen extends BaseScreen {
             }
         });
 
-        CheckBox useGameXRChair = new CheckBox(coreLocalization.getValue("menu_gameXR"), skin);
-        useGameXRChair.setDisabled(true);
+        final CheckBox useGameXRChair = new CheckBox(coreLocalization.getValue("menu_gameXR"), skin);
+        useGameXRChair.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                settings.setBooleanValue("gamingXR", useGameXRChair.isChecked());
+                settings.saveSettings();
+            }
+        });
 
         CheckBox useDifficulty = new CheckBox(coreLocalization.getValue("menu_difficulty"), skin);
         useDifficulty.setDisabled(true);

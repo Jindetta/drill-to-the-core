@@ -289,12 +289,6 @@ public class Player extends BaseObject {
 
         int difference = Math.round(angle - rotation) % 360;
 
-        if (Math.abs(difference) > 180) {
-            difference = (180 - difference) % 360;
-        } else if (MathUtils.isEqual(angle, 360)) {
-            difference = (360 - difference) % 360;
-        }
-
         Gdx.app.log("newAngle", String.valueOf(Math.round(angle)));
         Gdx.app.log("currentAngle", String.valueOf(Math.round(rotation)));
         Gdx.app.log("difference", String.valueOf(difference));
@@ -302,6 +296,12 @@ public class Player extends BaseObject {
         if (MathUtils.isEqual(Math.abs(difference), 180, 5)) {
             setRotation(angle);
         } else {
+            if (Math.abs(difference) > 180) {
+                difference = (180 - difference) % 360;
+            } else if (MathUtils.isEqual(angle, 360) && rotation < 180) {
+                difference = (360 - difference) % 360;
+            }
+
             // TODO: Fix rotation speed irregularities
             rotation = rotation + difference * delta;
             setRotation(rotation % 360);
@@ -546,7 +546,7 @@ public class Player extends BaseObject {
 
             if (viewTimer <= 0 && shroudOpacity < 1) {
                 shroudOpacity = Math.min(1, shroudOpacity + delta);
-                map.setShroudLayerOpacity(MathUtils.lerp(0, 1, Math.min(1, shroudOpacity)));
+                map.setShroudLayerOpacity(MathUtils.lerp(0, 1, shroudOpacity));
             } else {
                 shroudOpacity = Math.max(0, shroudOpacity - delta);
                 map.setShroudLayerOpacity(MathUtils.lerp(0, 1, shroudOpacity));
@@ -595,16 +595,11 @@ public class Player extends BaseObject {
 
     // TODO: Change to disallow rotation to awkward directions and movement over border
     private void checkMovementConditions(float delta) {
-        float sin = MathUtils.sinDeg(getRotation() + getRotationSpeed() * delta);
-        float cos = MathUtils.cosDeg(getRotation() + getRotationSpeed() * delta);
+        float sin = MathUtils.sinDeg(getRotation());
+        float cos = MathUtils.cosDeg(getRotation());
 
         final float ROTATION = getRotationSpeed() * delta;
         final float GROUND_LEVEL = map.getMapHeight() - BIG_TILE_SIZE * 4;
-
-        float originX = getCenterX();
-        float originY = getCenterY();
-
-        float radius = BIG_TILE_SIZE * 1.5f;
 
         isAllowedToRotateLeft = true;
         isAllowedToRotateRight = true;
