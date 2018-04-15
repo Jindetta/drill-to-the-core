@@ -3,9 +3,7 @@ package tiko.coregames.drilltothecore.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -24,7 +22,7 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
 public class MainMenuScreen extends BaseScreen {
     private Texture backgroundTexture;
     private Image background;
-    private Table gameMenu;
+    private Table gameMenu, quickMenu;
 
     public MainMenuScreen() {
         backgroundTexture = new Texture("images/menu-background.png");
@@ -76,6 +74,16 @@ public class MainMenuScreen extends BaseScreen {
         gameMenu.add(exit).padTop(MENU_PADDING_TOP);
 
         addActor(gameMenu);
+
+        quickMenu = new Table();
+
+        CheckBox muteSounds = new CheckBox("", skin, "Sound");
+        CheckBox muteMusic = new CheckBox("", skin, "music");
+
+        quickMenu.add(muteSounds).padRight(15);
+        quickMenu.add(muteMusic);
+
+        addActor(quickMenu);
     }
 
     @Override
@@ -88,6 +96,8 @@ public class MainMenuScreen extends BaseScreen {
 
         background.setSize(viewport.getWorldWidth(), viewport.getWorldHeight());
         gameMenu.setPosition(centerX, centerY);
+
+        quickMenu.setPosition(SAFE_ZONE_SIZE * 10, SAFE_ZONE_SIZE * 4);
     }
 
     @Override
