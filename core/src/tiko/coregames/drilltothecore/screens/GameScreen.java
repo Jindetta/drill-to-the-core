@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -29,12 +30,13 @@ public class GameScreen extends BaseScreen {
     private LevelManager map;
 
     private Window pauseWindow;
-    private ProgressBar playerFuel;
     private Label collectedItem;
     private Player player;
 
     private float totalGameTime;
     private Label gameTimer;
+
+    private TiledDrawable playerFuel, fuelColor;
 
     public GameScreen() {
         resetLevel();
@@ -100,7 +102,7 @@ public class GameScreen extends BaseScreen {
                 String name = event.getListenerActor().getName();
 
                 switch (name == null ? "" : name) {
-                    case "menu_settings":
+                    case "settings":
                         Setup.nextScreen(new SettingsScreen());
                         return;
                     case "menu":
@@ -148,10 +150,22 @@ public class GameScreen extends BaseScreen {
      * Creates fuel gauge.
      */
     private void createFuelMeter() {
-        playerFuel = new ProgressBar(0, PLAYER_FUEL_TANK_SIZE, 0.5f, false, skin);
-        playerFuel.setDisabled(true);
+        playerFuel = skin.getTiledDrawable("Gasmeter");
+        updateFuelColor();
+    }
 
-        addActor(playerFuel);
+    private void updateFuelColor() {
+        float fuelAmount = player.getFuel() / PLAYER_FUEL_TANK_SIZE;
+
+        if (fuelAmount >= .75f) {
+            fuelColor = skin.getTiledDrawable("Gas_100");
+        } else if (fuelAmount >= .50f) {
+            fuelColor = skin.getTiledDrawable("Gas_75");
+        } else if (fuelAmount >= .25f) {
+            fuelColor = skin.getTiledDrawable("Gas_50");
+        } else {
+            fuelColor = skin.getTiledDrawable("Gas_25");
+        }
     }
 
     /**
@@ -180,13 +194,6 @@ public class GameScreen extends BaseScreen {
         float viewportX = camera.position.x + camera.viewportWidth / 2;
         float viewportY = camera.position.y + camera.viewportHeight / 2;
 
-        playerFuel.setPosition(
-            viewportX - playerFuel.getWidth() - SAFE_ZONE_SIZE,
-            viewportY - playerFuel.getHeight() - SAFE_ZONE_SIZE
-        );
-
-        playerFuel.setValue(player.getFuel());
-
         pauseWindow.setPosition(
             camera.position.x - pauseWindow.getWidth() / 2,
             camera.position.y - pauseWindow.getHeight() / 2
@@ -211,6 +218,8 @@ public class GameScreen extends BaseScreen {
             camera.position.x - collectedItem.getWidth() / 2,
             viewportY - gameTimer.getPrefHeight() / 2 - SAFE_ZONE_SIZE
         );
+
+        updateFuelColor();
     }
 
     @Override
@@ -254,6 +263,10 @@ public class GameScreen extends BaseScreen {
         draw();
 
         Debug.setCustomDebugString(player.toString());
+
+        if (player.isDepthGoalAchieved()) {
+            Setup.nextScreen(new EndScreen());
+        }
     }
 
     @Override

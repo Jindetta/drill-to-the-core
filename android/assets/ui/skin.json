@@ -106,7 +106,6 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
 		font: Superstar
-		background: Name_asker_or_boostertimer
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {

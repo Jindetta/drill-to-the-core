@@ -38,10 +38,10 @@ public class Player extends BaseObject {
     private TextureRegion playerUnit;
     private TextureRegion playerTracks;
 
-    private boolean isAllowedToMoveForward;
-    private boolean isAllowedToMoveBackward;
-    private boolean isAllowedToRotateRight;
-    private boolean isAllowedToRotateLeft;
+    private boolean isAllowedToMoveDown;
+    private boolean isAllowedToMoveUp;
+    private boolean isAllowedToMoveRight;
+    private boolean isAllowedToMoveLeft;
 
     private String recentlyCollectedItem;
 
@@ -194,7 +194,7 @@ public class Player extends BaseObject {
 
         if (!controller.isCalibrating()) {
             // Set state to idle by default
-            setCurrentState(STATES.IDLE, STATES.JAMMED, STATES.IMMOBILIZED);
+            setCurrentState(STATES.IDLE, STATES.JAMMED, STATES.IMMOBILIZED, STATES.DONE);
 
             recentlyCollectedItem = null;
 
@@ -205,28 +205,28 @@ public class Player extends BaseObject {
                 /*if (currentState != STATES.JAMMED) {
                     checkMovementConditions(delta);
                 } else {
-                    isAllowedToMoveForward = false;
-                    isAllowedToRotateRight = false;
-                    isAllowedToRotateLeft = false;
+                    isAllowedToMoveDown = false;
+                    isAllowedToMoveRight = false;
+                    isAllowedToMoveLeft = false;
                 }*/
                 checkMovementConditions(delta);
 
-                if (isAllowedToMoveBackward && (valueY > 0 || Gdx.input.isKeyPressed(Input.Keys.UP))) {
+                if (isAllowedToMoveUp && (valueY > 0 || Gdx.input.isKeyPressed(Input.Keys.UP))) {
                     valueY = 1;
                 }
-                if (isAllowedToMoveForward && (valueY < 0 || Gdx.input.isKeyPressed(Input.Keys.DOWN))) {
+                if (isAllowedToMoveDown && (valueY < 0 || Gdx.input.isKeyPressed(Input.Keys.DOWN))) {
                     valueY = -1;
                 }
 
-                if (isAllowedToRotateRight && (valueX > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
+                if (isAllowedToMoveRight && (valueX > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
                     valueX = 1;
                 }
-                if (isAllowedToRotateLeft && (valueX < 0 || Gdx.input.isKeyPressed(Input.Keys.LEFT))) {
+                if (isAllowedToMoveLeft && (valueX < 0 || Gdx.input.isKeyPressed(Input.Keys.LEFT))) {
                     valueX = -1;
                 }
 
                 if (valueX != 0 || valueY != 0) {
-                    setCurrentState(STATES.ACTIVE);
+                    setCurrentState(STATES.ACTIVE, STATES.DONE);
                     keyFrameState += delta;
 
                     rotateToPoint(valueX, valueY, delta);
@@ -271,48 +271,54 @@ public class Player extends BaseObject {
         return getY() + BIG_TILE_SIZE / 2;
     }
 
+    private int getShortestRotation(float currentAngle, float newAngle) {
+        float rotateLeft = (360 - currentAngle) + newAngle;
+        float rotateRight = currentAngle - newAngle;
+
+        if(currentAngle < newAngle)  {
+            if(newAngle > 0) {
+                rotateLeft = newAngle - currentAngle;
+                rotateRight = (360 - newAngle) + currentAngle;
+            } else {
+                rotateLeft = (360 - newAngle) + currentAngle;
+                rotateRight = newAngle - currentAngle;
+            }
+        }
+
+        return Math.round(rotateLeft <= rotateRight ? rotateLeft : -rotateRight) % 360;
+    }
+
     private void rotateToPoint(float pointX, float pointY, float delta) {
         float angle = MathUtils.atan2(
                 (getCenterY() - pointY) - getCenterY(),
                 (getCenterX() - pointX) - getCenterX()
         ) * MathUtils.radiansToDegrees;
 
-        if (angle <= 0) {
+        if (angle < 0) {
             angle += 360;
         }
 
         float rotation = getRotation();
 
-        if (rotation <= 0) {
+        if (rotation < 0) {
             rotation += 360;
         }
 
-        int difference = Math.round(angle - rotation) % 360;
-
-        Gdx.app.log("newAngle", String.valueOf(Math.round(angle)));
-        Gdx.app.log("currentAngle", String.valueOf(Math.round(rotation)));
-        Gdx.app.log("difference", String.valueOf(difference));
+        int difference = getShortestRotation(rotation, angle);
 
         if (MathUtils.isEqual(Math.abs(difference), 180, 5)) {
             setRotation(angle);
         } else {
-            if (Math.abs(difference) > 180) {
-                difference = (180 - difference) % 360;
-            } else if (MathUtils.isEqual(angle, 360) && rotation < 180) {
-                difference = (360 - difference) % 360;
-            }
-
             // TODO: Fix rotation speed irregularities
-            rotation = rotation + difference * delta;
+            float speed = -getMovementSpeed() * delta;
+            rotation += difference * delta;
             setRotation(rotation % 360);
+
+            translate(
+                speed * MathUtils.cosDeg(getRotation()),
+                speed * MathUtils.sinDeg(getRotation())
+            );
         }
-
-        float speed = -getMovementSpeed() * delta;
-
-        translate(
-            speed * MathUtils.cosDeg(getRotation()),
-            speed * MathUtils.sinDeg(getRotation())
-        );
     }
 
     @Override
@@ -359,13 +365,15 @@ public class Player extends BaseObject {
         TiledMapTileLayer.Cell cell = map.getCellFromPosition(x, y, "shroud");
 
         if (cell != null && cell.getTile() != null) {
-            int tileSize = map.getTileSetSize("shroud");
+            final int TRANSPARENT_TILES = 4;
+
+            int tileSize = map.getTileSetSize("shroud") + TRANSPARENT_TILES;
             double distance = Math.hypot(playerView.x - x, playerView.y - y);
             double newIndex = Math.ceil((playerView.radius - distance) / (playerView.radius / tileSize));
             TiledMapTile tile = map.getTileByIndex("shroud", (int) newIndex);
 
             if (tile == null || cell.getTile().getId() < tile.getId()) {
-                if (newIndex >= tileSize / 2) {
+                if (newIndex >= tileSize - TRANSPARENT_TILES) {
                     addBonusScore(SCORE_TILE_REVEALED);
                 }
                 cell.setTile(tile);
@@ -598,44 +606,39 @@ public class Player extends BaseObject {
         float sin = MathUtils.sinDeg(getRotation());
         float cos = MathUtils.cosDeg(getRotation());
 
-        final float ROTATION = getRotationSpeed() * delta;
+        final float angleX = cos * BIG_TILE_SIZE;
+        final float angleY = sin * BIG_TILE_SIZE;
         final float GROUND_LEVEL = map.getMapHeight() - BIG_TILE_SIZE * 4;
 
-        isAllowedToRotateLeft = true;
-        isAllowedToRotateRight = true;
+        isAllowedToMoveLeft = true;
+        isAllowedToMoveRight = true;
+        isAllowedToMoveDown = true;
+        isAllowedToMoveUp = true;
 
         // Ground
-        /*if (getY() >= GROUND_LEVEL) {
-            if (originY + radius * cos >= GROUND_LEVEL) {
-                isAllowedToRotateRight = false;
-            }
-            if (originY - radius * cos >= GROUND_LEVEL) {
-                isAllowedToRotateLeft = false;
-            }
+        if (getY() - angleY >= GROUND_LEVEL) {
+            // Block going through the sky
+            isAllowedToMoveUp = false;
         }
 
         // Left side
-        if (getX() - BIG_TILE_SIZE * 2 <= 0) {
-            if (originX + radius * MathUtils.cosDeg(getRotation() - ROTATION) <= 0) {
-                isAllowedToRotateRight = false;
-            }
-            if (originX - radius * MathUtils.cosDeg(getRotation() + ROTATION) <= 0) {
-                isAllowedToRotateLeft = false;
-            }
+        if (getX() - angleX <= 0) {
+            isAllowedToMoveLeft = false;
         }
 
         // Right side
-        if (getX() + BIG_TILE_SIZE * 2 >= map.getMapWidth()) {
-            if (originX + radius * MathUtils.cosDeg(getRotation() - ROTATION) >= map.getMapWidth()) {
-                isAllowedToRotateRight = false;
-            }
-            if (originX - radius * MathUtils.cosDeg(getRotation() + ROTATION) >= map.getMapWidth()) {
-                isAllowedToRotateLeft = false;
-            }
-        }*/
+        if (getX() + angleX >= map.getMapWidth()) {
+            isAllowedToMoveRight = false;
+        }
 
-        isAllowedToMoveForward = true;
-        isAllowedToMoveBackward = true;
+        // Goal
+        if (getY() + angleY <= 0) {
+            setCurrentState(STATES.DONE);
+        }
+    }
+
+    public boolean isDepthGoalAchieved() {
+        return currentState == STATES.DONE;
     }
 
     @Override
