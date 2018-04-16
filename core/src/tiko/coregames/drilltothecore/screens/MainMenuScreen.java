@@ -79,9 +79,16 @@ public class MainMenuScreen extends BaseScreen {
 
         CheckBox muteSounds = new CheckBox("", skin, "Sound");
         CheckBox muteMusic = new CheckBox("", skin, "music");
+        Button languageSelection = new Button(skin);
+        SelectBox<String> profiles = new SelectBox<>(skin);
 
-        quickMenu.add(muteSounds).padRight(15);
+        profiles.setItems("default");
+
+        quickMenu.add(muteSounds);
         quickMenu.add(muteMusic);
+        quickMenu.add(languageSelection);
+        quickMenu.add(profiles);
+        quickMenu.debug();
 
         addActor(quickMenu);
     }
@@ -97,7 +104,7 @@ public class MainMenuScreen extends BaseScreen {
         background.setSize(viewport.getWorldWidth(), viewport.getWorldHeight());
         gameMenu.setPosition(centerX, centerY);
 
-        quickMenu.setPosition(SAFE_ZONE_SIZE * 10, SAFE_ZONE_SIZE * 4);
+        quickMenu.setPosition(centerX, SAFE_ZONE_SIZE * 4);
     }
 
     @Override
