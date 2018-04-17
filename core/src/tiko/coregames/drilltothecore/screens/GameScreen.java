@@ -6,12 +6,9 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
@@ -74,7 +71,7 @@ public class GameScreen extends BaseScreen {
     }
 
     private void setNotificationActive() {
-        if (player.getRecentlyCollected() != null) {
+        /*if (player.getRecentlyCollected() != null) {
             SequenceAction sequence = Actions.sequence();
             sequence.addAction(Actions.alpha(1));
             sequence.addAction(Actions.fadeOut(3));
@@ -84,7 +81,7 @@ public class GameScreen extends BaseScreen {
             collectedItem.getActions().clear();
             collectedItem.addAction(sequence);
             collectedItem.setVisible(true);
-        }
+        }*/
     }
 
     /**
@@ -150,12 +147,12 @@ public class GameScreen extends BaseScreen {
      * Creates fuel gauge.
      */
     private void createFuelMeter() {
-        playerFuel = skin.getTiledDrawable("Gasmeter");
-        updateFuelColor();
+        /*playerFuel = skin.getTiledDrawable("Gasmeter");
+        updateFuelColor();*/
     }
 
     private void updateFuelColor() {
-        float fuelAmount = player.getFuel() / PLAYER_FUEL_TANK_SIZE;
+       /*float fuelAmount = player.getFuel() / PLAYER_FUEL_TANK_SIZE;
 
         if (fuelAmount >= .75f) {
             fuelColor = skin.getTiledDrawable("Gas_100");
@@ -165,7 +162,7 @@ public class GameScreen extends BaseScreen {
             fuelColor = skin.getTiledDrawable("Gas_50");
         } else {
             fuelColor = skin.getTiledDrawable("Gas_25");
-        }
+        }*/
     }
 
     /**
@@ -234,11 +231,6 @@ public class GameScreen extends BaseScreen {
 
         if (!pauseWindow.isVisible()) {
             delta *= GAME_SPEED_MODIFIER;
-
-            if (!player.isVisible()) {
-                delta = 0;
-                pause();
-            }
         } else {
             delta = 0;
         }
@@ -264,7 +256,7 @@ public class GameScreen extends BaseScreen {
 
         Debug.setCustomDebugString(player.toString());
 
-        if (player.isDepthGoalAchieved()) {
+        if (player.isDepthGoalAchieved() || player.getFuel() <= 0) {
             Setup.nextScreen(new EndScreen());
         }
     }

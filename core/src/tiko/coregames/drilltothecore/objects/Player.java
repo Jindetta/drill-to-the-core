@@ -501,7 +501,7 @@ public class Player extends BaseObject {
                 switch (map.getString(obstacleCell.getTile(), "id", "")) {
                     // TODO: Update to work with hard "rock" properly - and make constant for this type
                     case "rock":
-                        setCurrentState(STATES.JAMMED);
+                        //setCurrentState(STATES.JAMMED);
                         controller.setSpecialMovement(true);
                         break;
                     // TODO: Update to work with this type - and make constant for this type
@@ -606,8 +606,8 @@ public class Player extends BaseObject {
         float sin = MathUtils.sinDeg(getRotation());
         float cos = MathUtils.cosDeg(getRotation());
 
-        final float angleX = cos * BIG_TILE_SIZE;
-        final float angleY = sin * BIG_TILE_SIZE;
+        final float angleX = cos * BIG_TILE_SIZE / 2;
+        final float angleY = sin * BIG_TILE_SIZE / 2;
         final float GROUND_LEVEL = map.getMapHeight() - BIG_TILE_SIZE * 4;
 
         isAllowedToMoveLeft = true;
@@ -616,23 +616,25 @@ public class Player extends BaseObject {
         isAllowedToMoveUp = true;
 
         // Ground
-        if (getY() - angleY >= GROUND_LEVEL) {
+        if (getY() + BIG_TILE_SIZE >= GROUND_LEVEL) {
             // Block going through the sky
             isAllowedToMoveUp = false;
-        }
-
-        // Left side
-        if (getX() - angleX <= 0) {
             isAllowedToMoveLeft = false;
-        }
-
-        // Right side
-        if (getX() + angleX >= map.getMapWidth()) {
             isAllowedToMoveRight = false;
         }
 
+        // Left side
+        if (getX() + BIG_TILE_SIZE < 0) {
+            setPosition(map.getMapWidth(), getY());
+        }
+
+        // Right side
+        if (getX() > map.getMapWidth()) {
+            setPosition(-BIG_TILE_SIZE, getY());
+        }
+
         // Goal
-        if (getY() + angleY <= 0) {
+        if (getY() + BIG_TILE_SIZE <= 0) {
             setCurrentState(STATES.DONE);
         }
     }

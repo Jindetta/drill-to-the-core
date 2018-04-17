@@ -77,8 +77,8 @@ public class MainMenuScreen extends BaseScreen {
 
         quickMenu = new Table();
 
-        CheckBox muteSounds = new CheckBox("", skin, "Sound");
-        CheckBox muteMusic = new CheckBox("", skin, "music");
+        CheckBox muteSounds = new CheckBox("", skin);
+        CheckBox muteMusic = new CheckBox("", skin);
         Button languageSelection = new Button(skin);
         SelectBox<String> profiles = new SelectBox<>(skin);
 

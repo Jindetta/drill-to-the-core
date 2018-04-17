@@ -94,8 +94,8 @@ public class ControllerManager {
         int sensitivityRight = MathUtils.clamp(settings.getInteger("sensitivityRight"), 1, 10);
         int sensitivityLeft = MathUtils.clamp(settings.getInteger("sensitivityLeft"), 1, 10);
 
-        positiveThreshold.set(SENSITIVITY_MULTIPLIER * sensitivityRight, SENSITIVITY_MULTIPLIER * sensitivityUp);
-        negativeThreshold.set(SENSITIVITY_MULTIPLIER * sensitivityLeft, SENSITIVITY_MULTIPLIER * sensitivityDown);
+        positiveThreshold.set(sensitivityRight, sensitivityUp);
+        negativeThreshold.set(sensitivityLeft, sensitivityDown);
 
         setInvertedX(settings.getBoolean("invertedX"));
         setInvertedY(settings.getBoolean("invertedY"));
@@ -120,26 +120,7 @@ public class ControllerManager {
             z = baseline.z / calibrationIterations;
             calibrationIterations = 0;
 
-            try {
-                validateCalibrationValues(x, positiveThreshold.x, negativeThreshold.x);
-
-                if (Math.abs(y) < Math.abs(z)) {
-                    validateCalibrationValues(y, positiveThreshold.y, negativeThreshold.y);
-                } else {
-                    validateCalibrationValues(z, positiveThreshold.y, negativeThreshold.y);
-                }
-
-                baseline.set(x, y, z);
-            } catch (Exception e) {
-                calibrationTime = CONTROLLER_CALIBRATION_TIME;
-                baseline.setZero();
-            }
-        }
-    }
-
-    private void validateCalibrationValues(float value, float positive, float negative) {
-        if (value - negative <= -MAX_SENSOR_VALUE || value + positive >= MAX_SENSOR_VALUE) {
-            throw new IllegalArgumentException("Calibration values are invalidated");
+            baseline.set(x, y, z);
         }
     }
 
@@ -152,9 +133,9 @@ public class ControllerManager {
     }
 
     private int calibratedValue(float value, float baseline, float positive, float negative) {
-        if (value < MathUtils.lerp(0, -9, negative / 10)) {
+        if (value < MathUtils.lerp(baseline, baseline - negative, negative / 10)) {
             return -1;
-        } else if (value > baseline + positive) {
+        } else if (value > MathUtils.lerp(baseline, baseline + positive, positive / 10)) {
             return 1;
         }
 
