@@ -603,11 +603,6 @@ public class Player extends BaseObject {
 
     // TODO: Change to disallow rotation to awkward directions and movement over border
     private void checkMovementConditions(float delta) {
-        float sin = MathUtils.sinDeg(getRotation());
-        float cos = MathUtils.cosDeg(getRotation());
-
-        final float angleX = cos * BIG_TILE_SIZE / 2;
-        final float angleY = sin * BIG_TILE_SIZE / 2;
         final float GROUND_LEVEL = map.getMapHeight() - BIG_TILE_SIZE * 4;
 
         isAllowedToMoveLeft = true;
