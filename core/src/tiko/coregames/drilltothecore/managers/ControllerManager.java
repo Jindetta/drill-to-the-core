@@ -85,7 +85,7 @@ public class ControllerManager {
      * Applies user settings.
      */
     protected void applySettings() {
-        SettingsManager settings = SettingsManager.getDefaultProfile();
+        SettingsManager settings = SettingsManager.getActiveProfile(true);
 
         gamingXRActive = settings.isGamingXREnabled();
 
@@ -106,7 +106,6 @@ public class ControllerManager {
      *
      * @param x     Accelerometer X value
      * @param y     Accelerometer Y value
-     * @return      True if calibration is active
      */
     private void updateCalibrationValues(float x, float y, float z) {
         calibrationTime -= Gdx.graphics.getDeltaTime();
@@ -132,10 +131,10 @@ public class ControllerManager {
         invertedY = inverted;
     }
 
-    private int calibratedValue(float value, float baseline, float positive, float negative) {
-        if (value < MathUtils.lerp(baseline, baseline - negative, negative / 10)) {
+    private int calibratedValue(float value, float baseline, float positive, float negative, float maxValue) {
+        if (value < MathUtils.lerp(baseline, baseline - maxValue, negative / 10)) {
             return -1;
-        } else if (value > MathUtils.lerp(baseline, baseline + positive, positive / 10)) {
+        } else if (value > MathUtils.lerp(baseline, baseline + maxValue, positive / 10)) {
             return 1;
         }
 
@@ -169,10 +168,6 @@ public class ControllerManager {
                 z = invertedY ? -z : z;
             }
 
-            x += baseline.x < 0 ? Math.abs(baseline.x) : -baseline.x;
-            y += baseline.y < 0 ? Math.abs(baseline.y) : -baseline.y;
-            z += baseline.z < 0 ? Math.abs(baseline.z) : -baseline.z;
-
             updateValues(x, y, -z);
         }
     }
@@ -184,23 +179,31 @@ public class ControllerManager {
     private void updateValues(float x, float y, float z) {
         if (Math.abs(baseline.y) > Math.abs(baseline.z)) {
             currentValue.set(
-                calibratedValue(x, baseline.x, positiveThreshold.x, negativeThreshold.x),
-                calibratedValue(z, baseline.z, positiveThreshold.y, negativeThreshold.y)
+                calibratedValue(x, baseline.x, positiveThreshold.x, negativeThreshold.x, 5),
+                calibratedValue(z, baseline.z, positiveThreshold.y, negativeThreshold.y, 4)
             );
         } else {
             currentValue.set(
-                calibratedValue(x, baseline.x, positiveThreshold.x, negativeThreshold.x),
-                calibratedValue(y, baseline.y, positiveThreshold.y, negativeThreshold.y)
+                calibratedValue(x, baseline.x, positiveThreshold.x, negativeThreshold.x, 5),
+                calibratedValue(y, baseline.y, positiveThreshold.y, negativeThreshold.y, 4)
             );
         }
     }
 
-    public float getCurrentX() {
-        return currentValue.x;
+    public boolean isMovingUp() {
+        return currentValue.y > 0 || Gdx.input.isKeyPressed(Input.Keys.UP);
     }
 
-    public float getCurrentY() {
-        return currentValue.y;
+    public boolean isMovingDown() {
+        return currentValue.y < 0 || Gdx.input.isKeyPressed(Input.Keys.DOWN);
+    }
+
+    public boolean isMovingLeft() {
+        return currentValue.x < 0 || Gdx.input.isKeyPressed(Input.Keys.LEFT);
+    }
+
+    public boolean isMovingRight() {
+        return currentValue.x > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT);
     }
 
     public void setSpecialMovement(boolean value) {

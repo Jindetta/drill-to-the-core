@@ -257,7 +257,7 @@ public class GameScreen extends BaseScreen {
         Debug.setCustomDebugString(player.toString());
 
         if (player.isDepthGoalAchieved() || player.getFuel() <= 0) {
-            Setup.nextScreen(new EndScreen());
+            Setup.nextScreen(new EndScreen("Game ended", player.getTotalScore()));
         }
     }
 

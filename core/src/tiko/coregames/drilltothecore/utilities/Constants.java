@@ -8,7 +8,6 @@ public class Constants {
     public static final int SMALL_TILE_SIZE = 8;
 
     public static final float MAX_SENSOR_VALUE = 10;
-    public static final float SENSITIVITY_MULTIPLIER = .09f;
     public static final float CONTROLLER_CALIBRATION_TIME = 1.5f;
     public static final int MAX_SAVED_PROFILES = 25;
 
@@ -19,7 +18,7 @@ public class Constants {
     public static final boolean DEBUG_MODE = true;
 
     public static final float PLAYER_MOVE_SPEED = 85;
-    public static final float PLAYER_ROTATION_SPEED = 130;
+    public static final float PLAYER_ROTATION_MULTIPLIER = 2.5f;
     public static final float PLAYER_FUEL_TANK_SIZE = 150;
     public static final float PLAYER_FUEL_MIN_CONSUMPTION = 1f;
     public static final float PLAYER_FUEL_IDLE_MULTIPLIER = .33f;

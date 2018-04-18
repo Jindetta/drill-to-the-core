@@ -70,12 +70,15 @@ public class SettingsManager {
     }
 
     public static void setActiveProfile(int index) {
-        if (hasProfile(index)) {
-            SettingsManager profile = getDefaultProfile();
+        SettingsManager profile = getDefaultProfile();
 
+        if (hasProfile(index)) {
             profile.setIntegerValue("activeProfile", index);
-            profile.saveSettings();
+        } else {
+            profile.removeKey("activeProfile");
         }
+
+        profile.saveSettings();
     }
 
     public static int createUserProfile(String name, boolean setActive) {
@@ -99,8 +102,22 @@ public class SettingsManager {
         return -1;
     }
 
+    public String[] getProfileNames() {
+        String[] profiles = new String[MAX_SAVED_PROFILES];
+
+        for (int i = 1; i < profiles.length; i++) {
+            profiles[i] = getProfileName(i);
+        }
+
+        return profiles;
+    }
+
     public boolean hasValue(String key) {
         return preferences.contains(key);
+    }
+
+    public boolean isDefaultProfile() {
+        return defaultProfile;
     }
 
     public void setStringValue(String key, String value) {
@@ -133,6 +150,10 @@ public class SettingsManager {
 
     public String getString(String key) {
         return preferences.getString(key);
+    }
+
+    public void removeKey(String key) {
+        preferences.remove(key);
     }
 
     public boolean isGamingXREnabled() {

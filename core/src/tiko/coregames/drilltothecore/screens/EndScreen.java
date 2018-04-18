@@ -1,7 +1,7 @@
 package tiko.coregames.drilltothecore.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -11,7 +11,7 @@ import tiko.coregames.drilltothecore.Setup;
 public class EndScreen extends BaseScreen {
     private Table layout;
 
-    public EndScreen() {
+    public EndScreen(String message, int highScore) {
         layout = new Table();
 
         ClickListener clickListener = new ClickListener() {
@@ -34,6 +34,8 @@ public class EndScreen extends BaseScreen {
             }
         };
 
+        Label title = new Label(message + ": " + highScore, skin);
+
         TextButton continueButton = new TextButton(coreLocalization.getValue("game_nextLevel"), skin);
         continueButton.addListener(clickListener);
         continueButton.setName("continue");
@@ -45,6 +47,7 @@ public class EndScreen extends BaseScreen {
         TextButton exitButton = new TextButton(coreLocalization.getValue("pause_exit"), skin);
         exitButton.addListener(clickListener);
 
+        layout.add(title).row();
         layout.add(continueButton).row();
         layout.add(restartButton).padTop(15).row();
         layout.add(exitButton).padTop(15);

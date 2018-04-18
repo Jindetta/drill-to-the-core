@@ -143,7 +143,7 @@ public class Player extends BaseObject {
         scoreMultiplier = Math.max(1, getDrillDepthMultiplier() * PLAYER_DRILL_DEPTH_MULTIPLIER);
     }
 
-    private int getTotalScore() {
+    public int getTotalScore() {
         return Math.round(baseScore * scoreMultiplier + bonusScore);
     }
 
@@ -165,10 +165,6 @@ public class Player extends BaseObject {
 
     private float getMovementSpeed() {
         return PLAYER_MOVE_SPEED * (speedMultiplier - drillSpeedReduction);
-    }
-
-    private float getRotationSpeed() {
-        return PLAYER_ROTATION_SPEED * speedMultiplier;
     }
 
     private void setCurrentState(STATES newState, STATES... ignoreStates) {
@@ -199,8 +195,8 @@ public class Player extends BaseObject {
             recentlyCollectedItem = null;
 
             if (consumeFuel(delta) && currentState != STATES.IMMOBILIZED) {
-                float valueX = controller.getCurrentX();
-                float valueY = controller.getCurrentY();
+                float valueX = 0;
+                float valueY = 0;
 
                 /*if (currentState != STATES.JAMMED) {
                     checkMovementConditions(delta);
@@ -211,17 +207,17 @@ public class Player extends BaseObject {
                 }*/
                 checkMovementConditions(delta);
 
-                if (isAllowedToMoveUp && (valueY > 0 || Gdx.input.isKeyPressed(Input.Keys.UP))) {
+                if (isAllowedToMoveUp && controller.isMovingUp()) {
                     valueY = 1;
                 }
-                if (isAllowedToMoveDown && (valueY < 0 || Gdx.input.isKeyPressed(Input.Keys.DOWN))) {
+                if (isAllowedToMoveDown && controller.isMovingDown()) {
                     valueY = -1;
                 }
 
-                if (isAllowedToMoveRight && (valueX > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
+                if (isAllowedToMoveRight && controller.isMovingRight()) {
                     valueX = 1;
                 }
-                if (isAllowedToMoveLeft && (valueX < 0 || Gdx.input.isKeyPressed(Input.Keys.LEFT))) {
+                if (isAllowedToMoveLeft && controller.isMovingLeft()) {
                     valueX = -1;
                 }
 
@@ -311,7 +307,7 @@ public class Player extends BaseObject {
         } else {
             // TODO: Fix rotation speed irregularities
             float speed = -getMovementSpeed() * delta;
-            rotation += difference * delta;
+            rotation += difference * PLAYER_ROTATION_MULTIPLIER * delta;
             setRotation(rotation % 360);
 
             translate(
