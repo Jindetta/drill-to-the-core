@@ -1,6 +1,7 @@
 package tiko.coregames.drilltothecore.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import tiko.coregames.drilltothecore.Setup;
+import tiko.coregames.drilltothecore.managers.SettingsManager;
 
 import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
@@ -42,6 +44,8 @@ public class MainMenuScreen extends BaseScreen {
                     case "highScore":
                         Setup.nextScreen(new HighScoreScreen());
                         break;
+                    case "profiles":
+                        break;
                     default:
                         Gdx.app.exit();
                         break;
@@ -49,13 +53,13 @@ public class MainMenuScreen extends BaseScreen {
             }
         };
 
-        TextButton play = new TextButton(coreLocalization.getValue("menu_play"), skin);
-        play.addListener(clickListener);
-        play.setName("play");
+        TextButton playButton = new TextButton(coreLocalization.getValue("menu_play"), skin);
+        playButton.addListener(clickListener);
+        playButton.setName("play");
 
-        TextButton settings = new TextButton(coreLocalization.getValue("menu_settings"), skin);
-        settings.addListener(clickListener);
-        settings.setName("settings");
+        TextButton settingsButton = new TextButton(coreLocalization.getValue("menu_settings"), skin);
+        settingsButton.addListener(clickListener);
+        settingsButton.setName("settings");
 
         TextButton highScore = new TextButton(coreLocalization.getValue("menu_highScore"), skin);
         highScore.addListener(clickListener);
@@ -68,8 +72,8 @@ public class MainMenuScreen extends BaseScreen {
         addActor(background);
 
         gameMenu = new Table();
-        gameMenu.add(play).row();
-        gameMenu.add(settings).padTop(MENU_PADDING_TOP).row();
+        gameMenu.add(playButton).row();
+        gameMenu.add(settingsButton).padTop(MENU_PADDING_TOP).row();
         gameMenu.add(highScore).padTop(MENU_PADDING_TOP).row();
         gameMenu.add(exit).padTop(MENU_PADDING_TOP);
 
@@ -80,14 +84,33 @@ public class MainMenuScreen extends BaseScreen {
         CheckBox muteSounds = new CheckBox("", skin);
         CheckBox muteMusic = new CheckBox("", skin);
         Button languageSelection = new Button(skin);
-        SelectBox<String> profiles = new SelectBox<>(skin);
+        final SelectBox<String> profiles = new SelectBox<>(skin);
+        profiles.setItems(SettingsManager.getProfileNames());
+        Button addProfile = new Button(skin);
+        addProfile.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.input.setOnscreenKeyboardVisible(true);
+                Gdx.input.getTextInput(new Input.TextInputListener() {
+                    @Override
+                    public void input(String text) {
+                        SettingsManager.createUserProfile(text, true);
+                        profiles.setItems(SettingsManager.getProfileNames());
+                    }
 
-        profiles.setItems("default");
+                    @Override
+                    public void canceled() {
+
+                    }
+                }, "New profile", "", "Profile name");
+            }
+        });
 
         quickMenu.add(muteSounds);
         quickMenu.add(muteMusic);
         quickMenu.add(languageSelection);
         quickMenu.add(profiles);
+        quickMenu.add(addProfile);
         quickMenu.debug();
 
         addActor(quickMenu);

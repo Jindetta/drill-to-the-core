@@ -26,7 +26,11 @@ public class HighScoreScreen extends BaseScreen {
             SettingsManager profile = SettingsManager.getUserProfile(i, false);
 
             if (profile != null) {
-                text = String.valueOf(profile.getInteger("highScore"));
+                int value = profile.getInteger("highScore");
+
+                if (value > 0) {
+                    text = String.valueOf(value);
+                }
             }
 
             scoreList.add(new Label(text, skin)).padBottom(5).row();

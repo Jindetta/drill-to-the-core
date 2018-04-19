@@ -3,6 +3,7 @@ package tiko.coregames.drilltothecore.managers;
 import java.util.Locale;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.utils.Array;
 
 import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
@@ -102,11 +103,16 @@ public class SettingsManager {
         return -1;
     }
 
-    public String[] getProfileNames() {
-        String[] profiles = new String[MAX_SAVED_PROFILES];
+    public static Array<String> getProfileNames() {
+        Array<String> profiles = new Array<>(MAX_SAVED_PROFILES + 1);
 
-        for (int i = 1; i < profiles.length; i++) {
-            profiles[i] = getProfileName(i);
+        profiles.add("defaultProfile");
+        for (int i = 0; i < MAX_SAVED_PROFILES; i++) {
+            String name = getProfileName(i);
+
+            if (name != null) {
+                profiles.add(name);
+            }
         }
 
         return profiles;
