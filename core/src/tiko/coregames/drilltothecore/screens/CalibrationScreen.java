@@ -23,8 +23,6 @@ public class CalibrationScreen extends BaseScreen {
     private Table settingsTable;
 
     public CalibrationScreen() {
-        final SettingsManager settings = SettingsManager.getDefaultProfile();
-
         final Label sensitivityLabelLeft = new Label("", skin);
         final Slider sensitivityLeft = new Slider(1, 10, 1, false, skin);
         sensitivityLeft.setValue(settings.getInteger("sensitivityLeft"));
