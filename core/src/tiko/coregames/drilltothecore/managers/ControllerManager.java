@@ -162,13 +162,7 @@ public class ControllerManager {
                 return;
             }
 
-            if (invertedX || invertedY) {
-                x = invertedX ? -x : x;
-                y = invertedY ? -y : y;
-                z = invertedY ? -z : z;
-            }
-
-            updateValues(x, y, -z);
+            updateValues(invertedX ? -x : x, invertedY ? y : -y, invertedY ? -z : z);
         }
     }
 
