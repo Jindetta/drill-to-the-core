@@ -53,6 +53,11 @@ public class EndScreen extends BaseScreen {
         layout.add(exitButton).padTop(15);
 
         addActor(layout);
+
+        if (settings.getInteger("highScore") < highScore) {
+            settings.setIntegerValue("highScore", highScore);
+            settings.saveSettings();
+        }
     }
 
     public void setTitle(String title) {

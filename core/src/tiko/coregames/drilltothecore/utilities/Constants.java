@@ -39,7 +39,6 @@ public class Constants {
     public static final String POWER_UP_DRILL_MULTIPLIER = "drillBoost";
     public static final String POWER_UP_RADAR_EXTENDER = "radarBoost";
     public static final String POWER_UP_UNLIMITED_FUEL = "fuelBoost";
-    public static final String POWER_UP_ARMOR_REPAIR = "armorBoost";
     public static final String POWER_UP_RANDOMIZED = "randomBoost";
     public static final String POWER_UP_NOTHING = "";
 
