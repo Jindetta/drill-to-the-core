@@ -3,8 +3,10 @@ package tiko.coregames.drilltothecore.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -83,7 +85,16 @@ public class MainMenuScreen extends BaseScreen {
 
         CheckBox muteSounds = new CheckBox("", skin);
         CheckBox muteMusic = new CheckBox("", skin);
-        Button languageSelection = new Button(skin);
+        final CheckBox languageSelection = new CheckBox("", skin);
+        languageSelection.setChecked(!settings.getString("locale").equals("fi_FI"));
+        languageSelection.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                settings.setStringValue("locale", languageSelection.isChecked() ? "en_EN" : "fi_FI");
+                settings.saveSettings();
+            }
+        });
+
         final SelectBox<String> profiles = new SelectBox<>(skin);
         profiles.setItems(SettingsManager.getProfileNames());
         Button addProfile = new Button(skin);

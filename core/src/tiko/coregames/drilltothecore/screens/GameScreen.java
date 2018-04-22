@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
@@ -71,7 +73,7 @@ public class GameScreen extends BaseScreen {
     }
 
     private void setNotificationActive() {
-        /*if (player.getRecentlyCollected() != null) {
+        if (player.getRecentlyCollected() != null) {
             SequenceAction sequence = Actions.sequence();
             sequence.addAction(Actions.alpha(1));
             sequence.addAction(Actions.fadeOut(3));
@@ -81,7 +83,7 @@ public class GameScreen extends BaseScreen {
             collectedItem.getActions().clear();
             collectedItem.addAction(sequence);
             collectedItem.setVisible(true);
-        }*/
+        }
     }
 
     /**
