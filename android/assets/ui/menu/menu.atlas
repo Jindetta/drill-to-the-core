@@ -1,0 +1,428 @@
+
+menu.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Abduction
+  rotate: false
+  xy: 1, 1
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+
+menu2.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+ArialBlack
+  rotate: false
+  xy: 1, 1
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+
+menu3.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Superstar
+  rotate: false
+  xy: 1, 1
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+
+menu4.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Tagon
+  rotate: false
+  xy: 1, 1
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+
+menu5.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+TheNextFont
+  rotate: false
+  xy: 1, 1
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+
+menu6.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Calibration_mark
+  rotate: false
+  xy: 346, 321
+  size: 16, 18
+  orig: 16, 18
+  offset: 0, 0
+  index: -1
+Calibration_window
+  rotate: false
+  xy: 223, 168
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+Checkbox
+  rotate: false
+  xy: 858, 939
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+Checkbox_marked
+  rotate: false
+  xy: 638, 860
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+Continuebutton
+  rotate: false
+  xy: 662, 903
+  size: 96, 41
+  orig: 96, 41
+  offset: 0, 0
+  index: -1
+Continuebutton_pressed
+  rotate: false
+  xy: 760, 914
+  size: 96, 41
+  orig: 96, 41
+  offset: 0, 0
+  index: -1
+Drills_choice_menu_blank
+  rotate: false
+  xy: 1, 375
+  size: 450, 134
+  orig: 450, 134
+  offset: 0, 0
+  index: -1
+Drills_choice_platform
+  rotate: false
+  xy: 148, 87
+  size: 48, 62
+  orig: 48, 62
+  offset: 0, 0
+  index: -1
+Drills_color_choice_menu
+  rotate: false
+  xy: 515, 946
+  size: 225, 77
+  orig: 225, 77
+  offset: 0, 0
+  index: -1
+Gas_blue
+  rotate: false
+  xy: 515, 912
+  size: 145, 32
+  orig: 145, 32
+  offset: 0, 0
+  index: -1
+Gas_empty
+  rotate: false
+  xy: 742, 991
+  size: 145, 32
+  orig: 145, 32
+  offset: 0, 0
+  index: -1
+Gas_green
+  rotate: false
+  xy: 1, 117
+  size: 145, 32
+  orig: 145, 32
+  offset: 0, 0
+  index: -1
+Gas_red
+  rotate: false
+  xy: 223, 341
+  size: 145, 32
+  orig: 145, 32
+  offset: 0, 0
+  index: -1
+Gas_yellow
+  rotate: false
+  xy: 515, 878
+  size: 145, 32
+  orig: 145, 32
+  offset: 0, 0
+  index: -1
+Gasmeter
+  rotate: false
+  xy: 742, 957
+  size: 145, 32
+  orig: 145, 32
+  offset: 0, 0
+  index: -1
+Gatherbooster
+  rotate: false
+  xy: 198, 100
+  size: 42, 49
+  orig: 42, 49
+  offset: 0, 0
+  index: -1
+Gathergas
+  rotate: false
+  xy: 242, 117
+  size: 42, 49
+  orig: 42, 49
+  offset: 0, 0
+  index: -1
+Gatherminerals
+  rotate: false
+  xy: 504, 402
+  size: 45, 49
+  orig: 45, 49
+  offset: 0, 0
+  index: -1
+Gatherwindow_boosters
+  rotate: false
+  xy: 223, 290
+  size: 121, 49
+  orig: 121, 49
+  offset: 0, 0
+  index: -1
+Gatherwindow_gas
+  rotate: false
+  xy: 515, 827
+  size: 121, 49
+  orig: 121, 49
+  offset: 0, 0
+  index: -1
+Gatherwindow_minerals
+  rotate: false
+  xy: 1, 32
+  size: 121, 49
+  orig: 121, 49
+  offset: 0, 0
+  index: -1
+Help_window
+  rotate: false
+  xy: 124, 1
+  size: 94, 80
+  orig: 94, 80
+  offset: 0, 0
+  index: -1
+Label
+  rotate: false
+  xy: 662, 869
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: -1
+Language_english
+  rotate: false
+  xy: 453, 438
+  size: 49, 33
+  orig: 49, 33
+  offset: 0, 0
+  index: -1
+Language_finnish
+  rotate: false
+  xy: 453, 403
+  size: 49, 33
+  orig: 49, 33
+  offset: 0, 0
+  index: -1
+Leaderboard
+  rotate: false
+  xy: 515, 665
+  size: 112, 160
+  orig: 112, 160
+  offset: 0, 0
+  index: -1
+Level_complete_menu
+  rotate: false
+  xy: 889, 911
+  size: 134, 112
+  orig: 134, 112
+  offset: 0, 0
+  index: -1
+List
+  rotate: false
+  xy: 515, 453
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+Menu
+  rotate: false
+  xy: 1, 151
+  size: 220, 222
+  orig: 220, 222
+  offset: 0, 0
+  index: -1
+Menubutton
+  rotate: false
+  xy: 453, 473
+  size: 60, 36
+  orig: 60, 36
+  offset: 0, 0
+  index: -1
+Menubutton_pressed
+  rotate: false
+  xy: 760, 876
+  size: 60, 36
+  orig: 60, 36
+  offset: 0, 0
+  index: -1
+Meter
+  rotate: false
+  xy: 565, 469
+  size: 48, 32
+  orig: 48, 32
+  offset: 0, 0
+  index: -1
+MusicOff
+  rotate: false
+  xy: 1, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+MusicOff2
+  rotate: false
+  xy: 370, 347
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+MusicOn
+  rotate: false
+  xy: 822, 896
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+MusicOn2
+  rotate: false
+  xy: 453, 385
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+Name_asker_or_boostertimer
+  rotate: false
+  xy: 1, 83
+  size: 128, 32
+  orig: 128, 32
+  offset: 0, 0
+  index: -1
+Pausemenu
+  rotate: false
+  xy: 515, 503
+  size: 112, 160
+  orig: 112, 160
+  offset: 0, 0
+  index: -1
+Questionbutton
+  rotate: false
+  xy: 286, 150
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+Questionbutton_pressed
+  rotate: false
+  xy: 346, 303
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+Slider_horizontal
+  rotate: false
+  xy: 629, 721
+  size: 10, 104
+  orig: 10, 104
+  offset: 0, 0
+  index: -1
+Slider_knob_horizontal
+  rotate: false
+  xy: 615, 481
+  size: 10, 20
+  orig: 10, 20
+  offset: 0, 0
+  index: -1
+Slider_knob_vertical
+  rotate: false
+  xy: 131, 103
+  size: 12, 12
+  orig: 12, 12
+  offset: 0, 0
+  index: -1
+Slider_vertical
+  rotate: false
+  xy: 370, 365
+  size: 62, 8
+  orig: 62, 8
+  offset: 0, 0
+  index: -1
+SoundOff
+  rotate: false
+  xy: 858, 921
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+SoundOff2
+  rotate: false
+  xy: 638, 842
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+SoundOn
+  rotate: false
+  xy: 19, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+SoundOn2
+  rotate: false
+  xy: 388, 347
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+XRbutton
+  rotate: false
+  xy: 822, 878
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+XRbutton_Off
+  rotate: false
+  xy: 840, 896
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+SegoeBlack
+  rotate: false
+  xy: 1, 511
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1

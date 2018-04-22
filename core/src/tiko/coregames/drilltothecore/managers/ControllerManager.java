@@ -159,10 +159,9 @@ public class ControllerManager {
 
             if (isCalibrating()) {
                 updateCalibrationValues(x, y, z);
-                return;
+            } else {
+                updateValues(invertedX ? -x : x, invertedY ? -y : y, invertedY ? z : -z);
             }
-
-            updateValues(invertedX ? -x : x, invertedY ? y : -y, invertedY ? -z : z);
         }
     }
 
@@ -173,13 +172,13 @@ public class ControllerManager {
     private void updateValues(float x, float y, float z) {
         if (Math.abs(baseline.y) > Math.abs(baseline.z)) {
             currentValue.set(
-                calibratedValue(x, baseline.x, positiveThreshold.x, negativeThreshold.x, gamingXRActive ? 5 : 8.5f),
-                calibratedValue(z, baseline.z, positiveThreshold.y, negativeThreshold.y, gamingXRActive ? 4 : 8)
+                calibratedValue(x, baseline.x, positiveThreshold.x, negativeThreshold.x, 5),
+                calibratedValue(z, baseline.z, positiveThreshold.y, negativeThreshold.y, 4)
             );
         } else {
             currentValue.set(
-                calibratedValue(x, baseline.x, positiveThreshold.x, negativeThreshold.x, gamingXRActive ? 5 : 8.5f),
-                calibratedValue(y, baseline.y, positiveThreshold.y, negativeThreshold.y, gamingXRActive ? 4 : 8)
+                calibratedValue(x, baseline.x, positiveThreshold.x, negativeThreshold.x, 5),
+                calibratedValue(y, baseline.y, positiveThreshold.y, negativeThreshold.y, 4)
             );
         }
     }

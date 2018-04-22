@@ -1,0 +1,190 @@
+{
+com.badlogic.gdx.graphics.g2d.BitmapFont: {
+	Abduction: {
+		file: Abduction.fnt
+	}
+	ArialBlack: {
+		file: ArialBlack.fnt
+	}
+	SegoeBlack: {
+		file: SegoeBlack.fnt
+	}
+	Superstar: {
+		file: Superstar.fnt
+	}
+	Tagon: {
+		file: Tagon.fnt
+	}
+	TheNextFont: {
+		file: TheNextFont.fnt
+	}
+}
+com.badlogic.gdx.graphics.Color: {
+	black: {
+		r: 0
+		g: 0
+		b: 0
+		a: 1
+	}
+	white: {
+		r: 1
+		g: 1
+		b: 1
+		a: 1
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
+	default: {
+		up: Menubutton
+		down: Menubutton_pressed
+	}
+	button2: {
+		up: Continuebutton
+		down: Continuebutton_pressed
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
+	default: {
+		checkboxOn: Checkbox
+		checkboxOff: Checkbox_marked
+		font: SegoeBlack
+	}
+	music1: {
+		checkboxOn: MusicOn
+		checkboxOff: MusicOff
+		font: SegoeBlack
+	}
+	music2: {
+		checkboxOn: MusicOn2
+		checkboxOff: MusicOff2
+		font: SegoeBlack
+	}
+	sound1: {
+		checkboxOn: SoundOn
+		checkboxOff: SoundOff
+		font: SegoeBlack
+	}
+	sound2: {
+		checkboxOn: SoundOn2
+		checkboxOff: SoundOff2
+		font: SegoeBlack
+	}
+	language: {
+		checkboxOn: Language_finnish
+		checkboxOff: Language_english
+		font: SegoeBlack
+	}
+	xr: {
+		checkboxOn: XRbutton
+		checkboxOff: XRbutton_Off
+		font: SegoeBlack
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle: {
+	default: {
+		imageUp: Gatherminerals
+		font: SegoeBlack
+	}
+	gas: {
+		imageUp: Gathergas
+		font: SegoeBlack
+	}
+	booster: {
+		imageUp: Gatherbooster
+		font: Superstar
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+	default: {
+		font: SegoeBlack
+		background: Label
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
+    default: {
+        background: List
+    }
+}
+com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
+    default: {
+        font: SegoeBlack
+        background: Menu
+        scrollStyle: default
+        listStyle: {
+            font: SegoeBlack
+            selection: Menu
+        }
+    }
+}
+com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
+	default: {
+		font: ArialBlack
+		fontColorSelected: white
+		fontColorUnselected: black
+		selection: Menu
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
+	default-horizontal: {
+		background: Gasmeter
+		knobBefore: Gas_green
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
+	default-horizontal: {
+		background: Slider_horizontal
+		knob: Slider_knob_horizontal
+	}
+	default-vertical: {
+		background: Slider_vertical
+		knob: Slider_knob_vertical
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+	default: {
+		font: Abduction
+		up: Menubutton
+		down: Menubutton_pressed
+	}
+	button2: {
+		font: Abduction
+		up: Continuebutton
+		down: Continuebutton_pressed
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
+	default: {
+		font: TheNextFont
+		fontColor: white
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
+	default: {
+		label: default
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Touchpad$TouchpadStyle: {
+	default: {
+		background: Calibration_window
+		knob: Calibration_mark
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
+	default: {
+		background: Menu
+		titleFont: Abduction
+	}
+	leaderboard: {
+		background: Leaderboard
+		titleFont: SegoeBlack
+	}
+	levelcomplete: {
+		background: Level_complete_menu
+		titleFont: SegoeBlack
+	}
+	pausemenu: {
+		background: Pausemenu
+		titleFont: SegoeBlack
+	}
+}
+}

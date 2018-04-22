@@ -54,7 +54,7 @@ public class EndScreen extends BaseScreen {
 
         addActor(layout);
 
-        if (settings.getInteger("highScore") < highScore) {
+        if (!settings.hasValue("highScore") || settings.getInteger("highScore") < highScore) {
             settings.setIntegerValue("highScore", highScore);
             settings.saveSettings();
         }

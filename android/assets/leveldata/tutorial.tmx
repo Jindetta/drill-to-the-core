@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.2" orientation="orthogonal" renderorder="right-down" width="128" height="256" tilewidth="8" tileheight="8" infinite="0" nextobjectid="2">
+<map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="128" height="256" tilewidth="8" tileheight="8" infinite="0" nextobjectid="2">
  <properties>
   <property name="background" value="leveldata/tutorial.jpg"/>
   <property name="depth" type="int" value="1500"/>
@@ -2373,14 +2373,14 @@
    eJzt01eqFFEYRtE2izmDWbzmBGYxZzCLOc9/GO4ZtBQ0HJv1w/dWC+rh7NnMOeecc84555xzzjnnnHPOOeecc//7rWqr25q2tm1qm9uWtrVta9vbjraz7Wq72562t+2bYOZ9P+UfFvGfy2jWtfVtQ9vY9rcD7WA71I63lXainWyn2ul2pp1t59r5dqFdbJcmmHnfT/mHRfznMprD7Ug72o61y+1Ku9qutdvtTrvb7rX77UF72B61x+1Je9qetecTzLzvp/zDIv5zGc31dqPdbLfai/ayvWqv24f2sX1qn9uX9rV9a9/bj/az/Wq/258JZt73U/5hEf+5jOZNe9vetfezsd8qs3gz8ltlFm9GfJOM/hn9M/pn9M/on9E/o39G/4z+Gf0z+mf0z+if0T+jf0b/jP4Z/TP6Z/TP6J/RP6N/Rv+M/hn9M2O+SUb/jP4Z/TP6Z/TP6J/RP6N/Rv+M/hn9M/pn9M/on9E/o39G/4z+Gf0z+mf0z+if0T+jf0b/jP6ZMd8ko39G/4z+Gf0z+mf0z+if0T+jf0b/jP4Z/TP6Z/TP6J/RP6N/Rv+M/hn9M/pn9M/on9E/o39G/8yYb5LRP6N/Rv+M/hn9M/pn9M/on9E/o39G/4z+Gf0z+mf0z+if0T+jf0b/jP4Z/TP6Z/TP6J/RP6N/Zsw3yeif0T+jf0b/jP4Z/TP6Z/TP6J/RP6N/Rv+M/hn9M/pn9M/on9E/o39G/4z+Gf0z+mf0z+if0T8z5ptk9M/on9E/o39G/4z+Gf0z+mf0z+if0T+jf0b/jP4Z/TP6Z/TP6J/RP6N/Rv+M/hn9M/pn9M/onxnzTTL6Z/TP6J/RP6N/Rv+M/hn9M/pn9M/on9E/o39G/4z+Gf0z+mf0z+if0T+jf0b/jP4Z/TP6Z/TPjPkmGf0z+mf0z+if0T+jf0b/jP4Z/TP6Z/TP6J/RP6N/Rv+M/hn9M/pn9M/on9E/o39G/4z+Gf0z+mfGfJOM/hn9M/pn9M/on9E/o39G/4z+Gf0z+mf0z+if0T+jf0b/jP6ZfzN/AfRrZlo=
   </data>
  </layer>
- <layer name="obstacles" width="128" height="256" visible="0">
+ <layer name="obstacles" width="128" height="256" locked="1">
   <data encoding="base64" compression="zlib">
-   eJzt2DsKwzAQBNC12+SSye3s5BbJhfI5QLZxY1xsQCAV78EUUwgEqkYRAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADQ3n2OWDJr5jbX+iPPPXtfnCa++Z6vzDvzmWv9NEWcp943BwAA6OuSuUZ9S1e7zX1stL+LJbNGfUtXu819zN8FAMBYtj3UagftO2Pb9lCrHbTvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADA/36rMXYv
+   eJztwTEBAAAAwqD1T+1hDaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbgAeAAE=
   </data>
  </layer>
- <layer name="collectibles" width="128" height="256">
+ <layer name="collectibles" width="128" height="256" locked="1">
   <data encoding="base64" compression="zlib">
-   eJzt2tcNwkAQBUBL9F8YOfdBhk8oACHC3t1azFRg+YLs97brAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgFomg9ZPwL+zBwEAAAAAAKCusY4OAAAAAFIyXw+0oDcAAAAAAMhjJLMl0M5+AgAA3mB+CAAAAKAuswH9MLVOAAAAAEAFQ1kkAAAAADRlXhD4xd4dAhSiRwQAAMhLrgwAwCsyfihn5nwBAAAAgeYNsoaDfCPE2XsEAAAAAB4uskIAgNQWvtcAAAAAAIAvLHUMKVwD1uFoLQEAAAAAgMJO+giAj6zcmwAAQLC1/wzotZszDAAAAAAAAABpbPT4AAAAAATZypoAAAAAAAAAAAAA4Kk7jY0amQ==
+   eJzt3Ulu3TAMANAAvf/BOqbjPZK0GZZdFEXRIo39bQ0k9d4BgnxJlkSZlK+uAAAAAAAAAAAAAAAAAIDIHl/N/g8AAIDMbsUUab3TdwxmzJ2j/XJ70n8wlTmUyMRUAETzydrEYMZcXz+0bxPiSshhtTnP3ATx2etSkfWnH3UdAPRi/Wa2UWPQWKcq+afQx2rvFBjLvoSsvhu7z3qrXQjOO0kiMi7hMmII2HbvOWGym4Rj8JJ41vs8qjHWAIBe7DNYyZ3xfpr8pPj0UVzVczXsKYAZqs+tq3nQn8AEH809AMAJUWoMesTHUX7bKq61N1DEG/MZDWWsdyAX918BzCPHjSzEODnIH9omvxPac7chL6ky71ZaY8UgENdnz+ezxKNAdOapHN7rJzikUjy8OvEG1FDlvBV+c14NnNFyj2uNPc6ZC5G13mt82fn3XnsugA0zz13te/J53Ogz+zEgg9brjz03ALBFrNSXnLIcPuinw24XbLve+fDutTpG3mc9zjSgDrVkQGUR87vFFLW1WFd9a228im3uXJmInCUAR5g7oI9Lny15+0S2t0ZulBb5DZ459vItWqKKcr9/i/lUTAJUE23/DMC26wlz912x840zv+dM7tF9oDYAiEx9Zy43+ouFZaq9MbfWFCnOmi1jnrQaa4jDfAp/m3EGTU5y1XhJppiZeVrlrES8O4D8eteZu0OxhhHnruY4tlTbd8nVB6AF68k+R9rpm7YFBnOGsp85Op9qd11mzN+CXrxLj2HrG9l7RLknhT6i50iNymtUZwCMIFebvdTZnCM2ZwX2rwCMdOT9W8S1au85p7NtmKdCzcDXwL/B2RTU4xwRapIvGk+1ukX+6PldkohnI1kc7Rcxz363DdvKnrQe32yC3J48wwQhjgKy2PPttJlxT4X3p2es/vshioekz2LUHLCRe+WtvL+Z31jzPozs3GsDY61+l+Lqv58cIudPszb15r9c2g4Z7gT0XjSnVWMp62QOcj6J4M44TGXkuhb1nQcA9VxSS9CjhmfrbmS5ROfM3FOIjVlRr/qsVc/YnqNmgZdYe+jl7D7Y3BVD9O+ysCYxL6Ns3ck7a61yx0UuYtOYouU9RPt/srFnheNa3q1GHO4XZJazexpjN74z9e7u4KQS9VcxHaktjl4T5p6ROv6XizbzHpsMnK1uO5Lv4S4GAP71E+0VwHE=
   </data>
  </layer>
  <layer name="shroud" width="128" height="256" locked="1">
