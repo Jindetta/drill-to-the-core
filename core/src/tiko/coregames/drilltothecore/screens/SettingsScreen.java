@@ -38,21 +38,6 @@ public class SettingsScreen extends BaseScreen {
                 Setup.nextScreen(new CalibrationScreen());
             }
         });
-
-        final CheckBox useGameXRChair = new CheckBox(coreLocalization.getValue("menu_gameXR"), skin);
-        useGameXRChair.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                settings.setBooleanValue("gamingXR", useGameXRChair.isChecked());
-                settings.saveSettings();
-            }
-        });
-
-        CheckBox useDifficulty = new CheckBox(coreLocalization.getValue("menu_difficulty"), skin);
-        useDifficulty.setDisabled(true);
-
-        settingsTable.add(useGameXRChair).colspan(10).row();
-        settingsTable.add(useDifficulty).colspan(10).row();
         settingsTable.add(calibration).colspan(10).row();
         buttons = new ImageButton[playerImage.getHeight() / BIG_TILE_SIZE];
 

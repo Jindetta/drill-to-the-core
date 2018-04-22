@@ -162,10 +162,6 @@ public class SettingsManager {
         preferences.remove(key);
     }
 
-    public boolean isGamingXREnabled() {
-        return hasValue("gamingXR") && getBoolean("gamingXR");
-    }
-
     public void resetProfile() {
         preferences.clear();
         saveSettings();

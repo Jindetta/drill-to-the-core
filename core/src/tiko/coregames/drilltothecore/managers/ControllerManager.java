@@ -29,7 +29,6 @@ public class ControllerManager {
     private boolean invertedX, invertedY;
 
     private boolean requiresSpecialMovement;
-    private boolean gamingXRActive;
 
     /**
      * Instantiates class.
@@ -86,8 +85,6 @@ public class ControllerManager {
      */
     protected void applySettings() {
         SettingsManager settings = SettingsManager.getActiveProfile(true);
-
-        gamingXRActive = settings.isGamingXREnabled();
 
         int sensitivityUp = MathUtils.clamp(settings.getInteger("sensitivityUp"), 1, 10);
         int sensitivityDown = MathUtils.clamp(settings.getInteger("sensitivityDown"), 1, 10);
