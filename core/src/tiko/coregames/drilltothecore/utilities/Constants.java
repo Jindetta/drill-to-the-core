@@ -15,12 +15,12 @@ public class Constants {
 
     public static final float SAFE_ZONE_SIZE = 5;
     public static final float GAME_SPEED_MODIFIER = 1;
-    public static final boolean DEBUG_MODE = false;
+    public static final boolean DEBUG_MODE = true;
 
     public static final float PLAYER_MOVE_SPEED = 85;
     public static final float PLAYER_ROTATION_MULTIPLIER = 2.5f;
     public static final float PLAYER_FUEL_TANK_SIZE = 150;
-    public static final float PLAYER_FUEL_MIN_CONSUMPTION = 0f;
+    public static final float PLAYER_FUEL_MIN_CONSUMPTION = 1f;
     public static final float PLAYER_FUEL_IDLE_MULTIPLIER = .33f;
     public static final float PLAYER_IDLE_STATE_DELAY = 5;
     public static final float PLAYER_DRILL_DEPTH_MULTIPLIER = 5;

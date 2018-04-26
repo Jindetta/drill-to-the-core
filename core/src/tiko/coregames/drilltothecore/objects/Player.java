@@ -1,7 +1,6 @@
 package tiko.coregames.drilltothecore.objects;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -14,7 +13,6 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
 public class Player extends BaseObject {
     private ControllerManager controller;
-    private LocalizationManager localizer;
     private LevelManager map;
 
     private STATES currentState;
@@ -43,7 +41,7 @@ public class Player extends BaseObject {
     private boolean isAllowedToMoveRight;
     private boolean isAllowedToMoveLeft;
 
-    private String recentlyCollectedItem;
+    private int recentlyAddedScore;
 
     private enum STATES {
         IDLE, ACTIVE, JAMMED, IMMOBILIZED, DONE
@@ -55,7 +53,6 @@ public class Player extends BaseObject {
         super("images/player_atlas.png");
 
         this.map = map;
-        localizer = new LocalizationManager("game");
 
         // TODO: Cleanup initialization
         drillSpeedReduction = 0;
@@ -179,8 +176,14 @@ public class Player extends BaseObject {
         currentState = newState;
     }
 
-    public String getRecentlyCollected() {
-        return recentlyCollectedItem;
+    public String getRecentScoreString() {
+        if (recentlyAddedScore > 0) {
+            return String.format("+%d", recentlyAddedScore);
+        } else if (recentlyAddedScore < 0) {
+            return String.format("-%d", recentlyAddedScore);
+        }
+
+        return null;
     }
 
     @Override
@@ -192,7 +195,7 @@ public class Player extends BaseObject {
             // Set state to idle by default
             setCurrentState(STATES.IDLE, STATES.JAMMED, STATES.IMMOBILIZED, STATES.DONE);
 
-            recentlyCollectedItem = null;
+            recentlyAddedScore = 0;
 
             if (consumeFuel(delta) && currentState != STATES.IMMOBILIZED) {
                 float valueX = 0;
@@ -393,20 +396,6 @@ public class Player extends BaseObject {
     }
 
     /**
-     * Gets localized collectible name.
-     *
-     * @param key   Collectible identifier
-     * @return      Localized string
-     */
-    private String getCollectibleName(String key) {
-        try {
-            return localizer.getValue(key);
-        } catch (Exception e) {
-            return localizer.getValue("collectible");
-        }
-    }
-
-    /**
      * Processes all collectibles.
      *
      * @param tile  Collectible tile
@@ -457,14 +446,14 @@ public class Player extends BaseObject {
 
                 addBaseScore(baseValue * collectibleMultiplier);
 
+                if (baseValue > 0) {
+                    recentlyAddedScore = Math.round(baseValue * collectibleMultiplier);
+                }
+
                 Float bonusValue = map.getFloat(tile, "bonus", 0f);
 
                 addBonusScore(bonusValue);
                 break;
-        }
-
-        if (tile != null) {
-            recentlyCollectedItem = getCollectibleName(key);
         }
     }
 

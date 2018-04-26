@@ -3,6 +3,7 @@ package tiko.coregames.drilltothecore.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -61,6 +62,7 @@ public class GameScreen extends BaseScreen {
         // Notification popup for collected items
         collectedItem = new Label("", skin);
         collectedItem.setAlignment(Align.center);
+        collectedItem.setColor(Color.GREEN);
         collectedItem.setVisible(false);
 
         addActor(collectedItem);
@@ -73,13 +75,13 @@ public class GameScreen extends BaseScreen {
     }
 
     private void setNotificationActive() {
-        if (player.getRecentlyCollected() != null) {
+        if (player.getRecentScoreString() != null) {
             SequenceAction sequence = Actions.sequence();
             sequence.addAction(Actions.alpha(1));
             sequence.addAction(Actions.fadeOut(3));
             sequence.addAction(Actions.visible(false));
 
-            collectedItem.setText(player.getRecentlyCollected());
+            collectedItem.setText(player.getRecentScoreString());
             collectedItem.getActions().clear();
             collectedItem.addAction(sequence);
             collectedItem.setVisible(true);
