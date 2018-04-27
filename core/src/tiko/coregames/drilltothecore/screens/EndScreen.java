@@ -46,7 +46,7 @@ public class EndScreen extends BaseScreen {
         Label title = new Label(message + ": ", skin);
         Label baseScore = new Label("Basescore: " + Math.round(basescore), skin);
         Label Depth = new Label("Maximum Depth achieved: " + Math.round(drillDepth),skin );
-        totalScoreLabel = new Label("Total Score: ", skin);
+        totalScoreLabel = new Label("", skin);
 
         TextButton continueButton = new TextButton(coreLocalization.getValue("game_nextLevel"), skin);
         continueButton.addListener(clickListener);

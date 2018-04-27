@@ -19,7 +19,8 @@ public class Player extends BaseObject {
 
     private float maximumDrillDepth;
     private float totalFuel, fuelConsumptionRate;
-    private float baseScore, bonusScore;
+    private float bonusScore;
+    private long baseScore;
     private float scoreMultiplier;
     private float shroudOpacity;
 
@@ -79,7 +80,7 @@ public class Player extends BaseObject {
 
     // TODO: Dirty AF - improve
     private void createPlayerUnit(float x, float y) {
-        SettingsManager settings = SettingsManager.getDefaultProfile();
+        SettingsManager settings = SettingsManager.getActiveProfile(true);
         int index = settings.getInteger("playerColor");
 
         TextureRegion bladeRegion = new TextureRegion(getTexture(), 0, BIG_TILE_SIZE * 2,BIG_TILE_SIZE * 3, BIG_TILE_SIZE  );
