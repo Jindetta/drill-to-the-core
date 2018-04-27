@@ -14,7 +14,7 @@ public class EndScreen extends BaseScreen {
     private int scorePerSecond = 1000;
     private int totalScore = 0;
 
-    public EndScreen(String message, int highScore, float basescore, float drillDepth, int levelIndex) {
+    public EndScreen(String message, int highScore, float basescore, float drillDepth, final int levelIndex) {
         layout = new Table();
 
         ClickListener clickListener = new ClickListener() {
@@ -25,10 +25,10 @@ public class EndScreen extends BaseScreen {
                 switch (name == null ? "" : name) {
                     case "continue":
                         // Next level
-                        Setup.nextScreen(new GameScreen());
+                        Setup.nextScreen(new GameScreen(levelIndex + 1, false));
                         break;
                     case "restart":
-                        Setup.nextScreen(new GameScreen());
+                        Setup.nextScreen(new GameScreen(levelIndex, false));
                         break;
                     default:
                         Setup.nextScreen(new MainMenuScreen());
