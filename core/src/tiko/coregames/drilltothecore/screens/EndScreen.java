@@ -10,9 +10,11 @@ import tiko.coregames.drilltothecore.Setup;
 
 public class EndScreen extends BaseScreen {
     private Table layout;
-    private int testScore = 0;
-    private int scorePerSecond = 1000;
-    private int totalScore = 0;
+    private int gradualHighScore;
+    private int scorePerSecond;
+    private int totalScore;
+
+    private Label totalScoreLabel;
 
     public EndScreen(String message, int highScore, float basescore, float drillDepth, final int levelIndex) {
         layout = new Table();
@@ -36,11 +38,15 @@ public class EndScreen extends BaseScreen {
                 }
             }
         };
-        testScore = highScore;
+
+        gradualHighScore = 0;
+        scorePerSecond = highScore / 3;
+        totalScore = highScore;
+
         Label title = new Label(message + ": ", skin);
         Label baseScore = new Label("Basescore: " + Math.round(basescore), skin);
         Label Depth = new Label("Maximum Depth achieved: " + Math.round(drillDepth),skin );
-        Label totalSore = new Label("Total Score: " + totalScore, skin);
+        totalScoreLabel = new Label("Total Score: ", skin);
 
         TextButton continueButton = new TextButton(coreLocalization.getValue("game_nextLevel"), skin);
         continueButton.addListener(clickListener);
@@ -57,7 +63,7 @@ public class EndScreen extends BaseScreen {
         layout.add(title).row();
         layout.add(baseScore).row();
         layout.add(Depth).row();
-        layout.add(totalSore).row();
+        layout.add(totalScoreLabel).row();
         layout.add(continueButton).row();
         layout.add(restartButton).padTop(15).row();
         layout.add(exitButton).padTop(15);
@@ -73,16 +79,12 @@ public class EndScreen extends BaseScreen {
     public void setTitle(String title) {
         //Not implemented
     }
-    public void incrementHighscore() {
-        if (this.totalScore < this.testScore) {
-            this.totalScore++;
-        }
-
-    }
 
     @Override
     public void render(float delta) {
         super.render(delta);
+        totalScoreLabel.setText("Total Score: " + gradualHighScore);
+        gradualHighScore = Math.min(totalScore, Math.round(gradualHighScore + scorePerSecond * delta));
     }
 
     @Override
