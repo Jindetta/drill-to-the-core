@@ -46,6 +46,7 @@ public class GameScreen extends BaseScreen {
     }
 
     public GameScreen(int level, boolean loadCurrent) {
+        super();
         if (loadCurrent && settings.hasValue("currentLevel")) {
             level = settings.getInteger("currentLevel");
         }
@@ -273,7 +274,8 @@ public class GameScreen extends BaseScreen {
         Debug.setCustomDebugString(player.toString());
 
         if (player.isDepthGoalAchieved() || player.getFuel() <= 0) {
-            Setup.nextScreen(new EndScreen("Game ended", player.getTotalScore(), levelIndex));
+            Setup.nextScreen(new EndScreen("Game ended", player.getTotalScore(),
+                    0, player.getDrillDepth(), levelIndex));
         }
     }
 
