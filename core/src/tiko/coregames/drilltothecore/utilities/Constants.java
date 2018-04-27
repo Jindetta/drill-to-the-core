@@ -11,11 +11,13 @@ public class Constants {
     public static final float CONTROLLER_CALIBRATION_TIME = 1.5f;
     public static final int MAX_SAVED_PROFILES = 25;
 
-    public static final float MENU_PADDING_TOP = 15;
+    public static final float MENU_PADDING_TOP = 5;
 
     public static final float SAFE_ZONE_SIZE = 5;
     public static final float GAME_SPEED_MODIFIER = 1;
     public static final boolean DEBUG_MODE = true;
+
+    public static final int LEVEL_COUNT = 3;
 
     public static final float PLAYER_MOVE_SPEED = 85;
     public static final float PLAYER_ROTATION_MULTIPLIER = 2.5f;

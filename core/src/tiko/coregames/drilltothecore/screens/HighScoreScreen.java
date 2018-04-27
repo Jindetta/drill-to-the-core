@@ -4,8 +4,11 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
 import tiko.coregames.drilltothecore.Setup;
 import tiko.coregames.drilltothecore.managers.SettingsManager;
+
+import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
 /**
  * HighScoreScreen class will display high scores.
@@ -26,10 +29,15 @@ public class HighScoreScreen extends BaseScreen {
             SettingsManager profile = SettingsManager.getUserProfile(i, false);
 
             if (profile != null) {
-                int value = profile.getInteger("highScore");
+                long totalHighScore = 0;
 
-                if (value > 0) {
-                    text = String.valueOf(value);
+                for (int j = 1; j <= LEVEL_COUNT; j++) {
+                    int value = profile.getInteger("level_" + j);
+                    totalHighScore += value;
+                }
+
+                if (totalHighScore > 0) {
+                    text = String.valueOf(totalHighScore);
                 }
             }
 

@@ -86,11 +86,11 @@ public class MainMenuScreen extends BaseScreen {
         CheckBox muteSounds = new CheckBox("", skin);
         CheckBox muteMusic = new CheckBox("", skin);
         final CheckBox languageSelection = new CheckBox("", skin);
-        languageSelection.setChecked(!settings.getString("locale").equals("fi_FI"));
+        languageSelection.setChecked(!settings.getCurrentLocale().contains("fi"));
         languageSelection.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                settings.setStringValue("locale", languageSelection.isChecked() ? "en_EN" : "fi_FI");
+                settings.setCurrentLocale(languageSelection.isChecked() ? "en" : "fi");
                 settings.saveSettings();
             }
         });

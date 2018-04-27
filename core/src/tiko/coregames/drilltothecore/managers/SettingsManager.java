@@ -1,6 +1,7 @@
 package tiko.coregames.drilltothecore.managers;
 
 import java.util.Locale;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.Array;
@@ -104,9 +105,8 @@ public class SettingsManager {
     }
 
     public static Array<String> getProfileNames() {
-        Array<String> profiles = new Array<>(MAX_SAVED_PROFILES + 1);
+        Array<String> profiles = new Array<>(MAX_SAVED_PROFILES);
 
-        profiles.add("defaultProfile");
         for (int i = 0; i < MAX_SAVED_PROFILES; i++) {
             String name = getProfileName(i);
 
@@ -156,6 +156,26 @@ public class SettingsManager {
 
     public String getString(String key) {
         return preferences.getString(key);
+    }
+
+    public void setCurrentLocale(String localeKey) {
+        Locale locale;
+
+        if (localeKey == null) {
+            locale = Locale.getDefault();
+        } else {
+            if (localeKey.equals("fi")) {
+                locale = new Locale("fi", "FI");
+            } else {
+                locale = new Locale("en", "US");
+            }
+        }
+
+        setStringValue("locale", String.format("%s_%s", locale.getLanguage(), locale.getCountry()));
+    }
+
+    public String getCurrentLocale() {
+        return getString("locale");
     }
 
     public void removeKey(String key) {

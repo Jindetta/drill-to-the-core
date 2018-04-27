@@ -28,6 +28,7 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
 public class GameScreen extends BaseScreen {
     private LevelManager map;
+    private int levelIndex;
 
     private Window pauseWindow;
     private Label collectedItem;
@@ -39,11 +40,22 @@ public class GameScreen extends BaseScreen {
     private TiledDrawable playerFuel, fuelColor;
 
     public GameScreen() {
+        super();
+        levelIndex = 0;
+        resetLevel();
+    }
+
+    public GameScreen(int level, boolean loadCurrent) {
+        if (loadCurrent && settings.hasValue("currentLevel")) {
+            level = settings.getInteger("currentLevel");
+        }
+
+        levelIndex = level;
         resetLevel();
     }
 
     private void resetLevel() {
-        map = new LevelManager(0);
+        map = new LevelManager(levelIndex);
         Vector3 playerSpawn = map.getSpawnPoint("player");
 
         clear();
@@ -78,7 +90,7 @@ public class GameScreen extends BaseScreen {
         if (player.getRecentScoreString() != null) {
             SequenceAction sequence = Actions.sequence();
             sequence.addAction(Actions.alpha(1));
-            sequence.addAction(Actions.fadeOut(3));
+            sequence.addAction(Actions.fadeOut(2));
             sequence.addAction(Actions.visible(false));
 
             collectedItem.setText(player.getRecentScoreString());
@@ -261,7 +273,7 @@ public class GameScreen extends BaseScreen {
         Debug.setCustomDebugString(player.toString());
 
         if (player.isDepthGoalAchieved() || player.getFuel() <= 0) {
-            Setup.nextScreen(new EndScreen("Game ended", player.getTotalScore()));
+            Setup.nextScreen(new EndScreen("Game ended", player.getTotalScore(), levelIndex));
         }
     }
 

@@ -47,6 +47,15 @@ public class LevelManager implements Disposable {
 
         // Choose level or tutorial if invalid value is given
         switch (levelValue) {
+            case 1:
+                path.append("level_1.tmx");
+                break;
+            case 2:
+                path.append("level_2.tmx");
+                break;
+            case 3:
+                path.append("level_3.tmx");
+                break;
             default:
                 path.append("tutorial.tmx");
                 break;

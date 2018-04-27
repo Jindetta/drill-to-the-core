@@ -11,7 +11,7 @@ import tiko.coregames.drilltothecore.Setup;
 public class EndScreen extends BaseScreen {
     private Table layout;
 
-    public EndScreen(String message, int highScore) {
+    public EndScreen(String message, int highScore, final int levelIndex) {
         layout = new Table();
 
         ClickListener clickListener = new ClickListener() {
@@ -22,10 +22,10 @@ public class EndScreen extends BaseScreen {
                 switch (name == null ? "" : name) {
                     case "continue":
                         // Next level
-                        Setup.nextScreen(new GameScreen());
+                        Setup.nextScreen(new GameScreen(levelIndex + 1, false));
                         break;
                     case "restart":
-                        Setup.nextScreen(new GameScreen());
+                        Setup.nextScreen(new GameScreen(levelIndex, false));
                         break;
                     default:
                         Setup.nextScreen(new MainMenuScreen());
@@ -54,8 +54,8 @@ public class EndScreen extends BaseScreen {
 
         addActor(layout);
 
-        if (!settings.hasValue("highScore") || settings.getInteger("highScore") < highScore) {
-            settings.setIntegerValue("highScore", highScore);
+        if (!settings.hasValue("level_" + levelIndex) || settings.getInteger("level_" + levelIndex) < highScore) {
+            settings.setIntegerValue("level_" + levelIndex, highScore);
             settings.saveSettings();
         }
     }
