@@ -10,10 +10,12 @@ import tiko.coregames.drilltothecore.Setup;
 
 public class EndScreen extends BaseScreen {
     private Table layout;
+    private int testScore = 0;
+    private int scorePerSecond = 1000;
+    private int totalScore = 0;
 
-    public EndScreen(String message, int highScore) {
+    public EndScreen(String message, int highScore, float basescore, float drillDepth) {
         layout = new Table();
-
         ClickListener clickListener = new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -33,8 +35,11 @@ public class EndScreen extends BaseScreen {
                 }
             }
         };
-
-        Label title = new Label(message + ": " + highScore, skin);
+        testScore = highScore;
+        Label title = new Label(message + ": ", skin);
+        Label baseScore = new Label("Basescore: " + Math.round(basescore), skin);
+        Label Depth = new Label("Maximum Depth achieved: " + Math.round(drillDepth),skin );
+        Label totalSore = new Label("Total Score: " + totalScore, skin);
 
         TextButton continueButton = new TextButton(coreLocalization.getValue("game_nextLevel"), skin);
         continueButton.addListener(clickListener);
@@ -47,7 +52,11 @@ public class EndScreen extends BaseScreen {
         TextButton exitButton = new TextButton(coreLocalization.getValue("pause_exit"), skin);
         exitButton.addListener(clickListener);
 
+
         layout.add(title).row();
+        layout.add(baseScore).row();
+        layout.add(Depth).row();
+        layout.add(totalSore).row();
         layout.add(continueButton).row();
         layout.add(restartButton).padTop(15).row();
         layout.add(exitButton).padTop(15);
@@ -62,6 +71,17 @@ public class EndScreen extends BaseScreen {
 
     public void setTitle(String title) {
         //Not implemented
+    }
+    public void incrementHighscore() {
+        if (this.totalScore < this.testScore) {
+            this.totalScore++;
+        }
+
+    }
+
+    @Override
+    public void render(float delta) {
+        super.render(delta);
     }
 
     @Override

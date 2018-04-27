@@ -144,11 +144,13 @@ public class Player extends BaseObject {
         return Math.round(baseScore * scoreMultiplier + bonusScore);
     }
 
+    public float getBaseScore() { return baseScore; }
+
     private float getDrillDepthMultiplier() {
         return Math.min(maximumDrillDepth / startingDepth, 1);
     }
 
-    private float getDrillDepth() {
+    public float getDrillDepth() {
         return getDrillDepthMultiplier() * map.getVirtualDepth();
     }
 
