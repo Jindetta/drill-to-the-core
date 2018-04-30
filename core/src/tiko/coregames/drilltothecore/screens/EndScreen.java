@@ -57,15 +57,15 @@ public class EndScreen extends BaseScreen {
         Label Depth = new Label("Maximum Depth achieved: " + Math.round(drillDepth),skin );
         totalScoreLabel = new Label("", skin);
 
-        ImageButton continueButton = new ImageButton(skin, "button8_eng");
+        ImageButton continueButton = new ImageButton(skin, coreLocalization.getValue("next_small"));
         continueButton.addListener(clickListener);
         continueButton.setName("continue");
 
-        ImageButton restartButton = new ImageButton(skin, "button8_eng");
+        ImageButton restartButton = new ImageButton(skin, coreLocalization.getValue("restart_small"));
         restartButton.addListener(clickListener);
         restartButton.setName("restart");
 
-        ImageButton exitButton = new ImageButton(skin, "button6_eng");
+        ImageButton exitButton = new ImageButton(skin, coreLocalization.getValue("return_small"));
         exitButton.addListener(clickListener);
 
         layout.add(title).row();

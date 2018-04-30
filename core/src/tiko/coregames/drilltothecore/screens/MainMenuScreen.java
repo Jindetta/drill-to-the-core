@@ -53,19 +53,19 @@ public class MainMenuScreen extends BaseScreen {
             }
         };
 
-        ImageButton playButton = new ImageButton(skin, "button1_eng");
+        ImageButton playButton = new ImageButton(skin, coreLocalization.getValue("play"));
         playButton.addListener(clickListener);
         playButton.setName("play");
 
-        ImageButton settingsButton = new ImageButton(skin, "button4_eng");
+        final ImageButton settingsButton = new ImageButton(skin, coreLocalization.getValue("settings"));
         settingsButton.addListener(clickListener);
         settingsButton.setName("settings");
 
-        ImageButton highScore = new ImageButton(skin, "button2_eng");
+        ImageButton highScore = new ImageButton(skin, coreLocalization.getValue("scores"));
         highScore.addListener(clickListener);
         highScore.setName("highScore");
 
-        ImageButton exit = new ImageButton(skin, "button3_eng");
+        ImageButton exit = new ImageButton(skin, coreLocalization.getValue("quit"));
         exit.addListener(clickListener);
 
         background = new Image(backgroundTexture);
@@ -83,13 +83,11 @@ public class MainMenuScreen extends BaseScreen {
 
         CheckBox muteSounds = new CheckBox("", skin, "checkbox6");
         CheckBox muteMusic = new CheckBox("", skin, "checkbox7");
-        final Button languageSelection = new Button(skin);
-        languageSelection.setChecked(!settings.getCurrentLocale().contains("fi"));
-        languageSelection.addListener(new ChangeListener() {
+        final Button languageSelection = new Button(skin, coreLocalization.getValue("language"));
+        languageSelection.addListener(new ClickListener() {
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                settings.setCurrentLocale(languageSelection.isChecked() ? "en" : "fi");
-                settings.saveSettings();
+            public void clicked(InputEvent event, float x, float y) {
+                settings.setCurrentLocale("");
             }
         });
 

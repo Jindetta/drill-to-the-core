@@ -104,7 +104,7 @@ public class GameScreen extends BaseScreen {
      * Creates pause menu window.
      */
     private void createPauseWindow() {
-        pauseWindow = new Window(coreLocalization.getValue("pause_title"), skin);
+        pauseWindow = new Window("", skin);
         pauseWindow.setResizable(false);
         pauseWindow.setMovable(false);
         pauseWindow.setVisible(false);
@@ -136,18 +136,18 @@ public class GameScreen extends BaseScreen {
             }
         };
 
-        ImageButton continueButton = new ImageButton(skin, "button7_eng");
+        ImageButton continueButton = new ImageButton(skin, coreLocalization.getValue("continue"));
         continueButton.addListener(clickListener);
 
-        ImageButton restartButton = new ImageButton(skin, "button8_eng");
+        ImageButton restartButton = new ImageButton(skin, coreLocalization.getValue("restart_small"));
         restartButton.addListener(clickListener);
         restartButton.setName("restart");
 
-        ImageButton settingsButton = new ImageButton(skin, "button5_eng");
+        ImageButton settingsButton = new ImageButton(skin, coreLocalization.getValue("settings_small"));
         settingsButton.addListener(clickListener);
         settingsButton.setName("settings");
 
-        ImageButton menuButton = new ImageButton(skin, "button6_eng");
+        ImageButton menuButton = new ImageButton(skin, coreLocalization.getValue("return_small"));
         menuButton.addListener(clickListener);
         menuButton.setName("menu");
 

@@ -11,9 +11,11 @@ com.badlogic.gdx.graphics.g2d.BitmapFont: {
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
-	default: {
+	lang_eng: {
 		up: Language_english
-		down: Language_finnish
+	}
+	lang_fin: {
+		up: Language_finnish
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
