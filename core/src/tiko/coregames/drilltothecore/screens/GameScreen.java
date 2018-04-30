@@ -136,7 +136,7 @@ public class GameScreen extends BaseScreen {
             }
         };
 
-        ImageButton continueButton = new ImageButton(skin, coreLocalization.getValue("continue"));
+        ImageButton continueButton = new ImageButton(skin, coreLocalization.getValue("continue_small"));
         continueButton.addListener(clickListener);
 
         ImageButton restartButton = new ImageButton(skin, coreLocalization.getValue("restart_small"));

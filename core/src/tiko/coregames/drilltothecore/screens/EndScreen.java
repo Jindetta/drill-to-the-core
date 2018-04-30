@@ -34,7 +34,7 @@ public class EndScreen extends BaseScreen {
                 String name = event.getListenerActor().getName();
 
                 switch (name == null ? "" : name) {
-                    case "continue":
+                    case "continue_small":
                         // Next level
                         Setup.nextScreen(new GameScreen(levelIndex + 1, false));
                         break;
@@ -59,7 +59,7 @@ public class EndScreen extends BaseScreen {
 
         ImageButton continueButton = new ImageButton(skin, coreLocalization.getValue("next_small"));
         continueButton.addListener(clickListener);
-        continueButton.setName("continue");
+        continueButton.setName("continue_small");
 
         ImageButton restartButton = new ImageButton(skin, coreLocalization.getValue("restart_small"));
         restartButton.addListener(clickListener);
