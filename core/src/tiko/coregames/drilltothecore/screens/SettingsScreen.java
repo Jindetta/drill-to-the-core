@@ -22,16 +22,23 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
  * @since   2018-02-01
  */
 public class SettingsScreen extends BaseScreen {
+    private Image background;
+    private Texture backgroundTexture;
     private Table settingsTable;
     private Texture playerImage;
 
     private ImageButton[] buttons;
 
     public SettingsScreen() {
+        backgroundTexture = new Texture("images/settings-background.png");
+
+        background = new Image(backgroundTexture);
+        addActor(background);
+
         settingsTable = new Table();
         playerImage = new Texture("images/player_atlas.png");
 
-        TextButton calibration = new TextButton(coreLocalization.getValue("menu_calibrate"), skin);
+        ImageButton calibration = new ImageButton(skin, "button9_eng");
         calibration.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -75,6 +82,7 @@ public class SettingsScreen extends BaseScreen {
         float centerX = (viewport.getWorldWidth() - settingsTable.getWidth()) / 2;
         float centerY = (viewport.getWorldHeight() - settingsTable.getHeight()) / 2;
 
+        background.setSize(viewport.getWorldWidth(), viewport.getWorldHeight());
         settingsTable.setPosition(centerX, centerY);
     }
 
@@ -93,6 +101,7 @@ public class SettingsScreen extends BaseScreen {
 
     @Override
     public void dispose() {
+        backgroundTexture.dispose();
         playerImage.dispose();
         super.dispose();
     }

@@ -40,7 +40,6 @@ public class GameScreen extends BaseScreen {
     private TiledDrawable playerFuel, fuelColor;
 
     public GameScreen() {
-        super();
         levelIndex = 0;
         resetLevel();
     }
@@ -137,18 +136,18 @@ public class GameScreen extends BaseScreen {
             }
         };
 
-        TextButton continueButton = new TextButton(coreLocalization.getValue("pause_continue"), skin);
+        ImageButton continueButton = new ImageButton(skin, "button7_eng");
         continueButton.addListener(clickListener);
 
-        TextButton restartButton = new TextButton(coreLocalization.getValue("pause_restartLevel"), skin);
+        ImageButton restartButton = new ImageButton(skin, "button8_eng");
         restartButton.addListener(clickListener);
         restartButton.setName("restart");
 
-        TextButton settingsButton = new TextButton(coreLocalization.getValue("pause_settings"), skin);
+        ImageButton settingsButton = new ImageButton(skin, "button5_eng");
         settingsButton.addListener(clickListener);
         settingsButton.setName("settings");
 
-        TextButton menuButton = new TextButton(coreLocalization.getValue("pause_exit"), skin);
+        ImageButton menuButton = new ImageButton(skin, "button6_eng");
         menuButton.addListener(clickListener);
         menuButton.setName("menu");
 

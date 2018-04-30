@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import tiko.coregames.drilltothecore.Setup;
-import tiko.coregames.drilltothecore.managers.SettingsManager;
 
 /**
  * CalibrationScreen class will display calibration settings.
@@ -75,7 +74,7 @@ public class CalibrationScreen extends BaseScreen {
         });
         sensitivityDown.fire(new ChangeListener.ChangeEvent());
 
-        final CheckBox invertedX = new CheckBox(" Invert X-axis", skin);
+        final CheckBox invertedX = new CheckBox(" Invert X-axis", skin, "checkbox5");
         invertedX.setChecked(settings.getBoolean("invertedX"));
         invertedX.addListener(new ClickListener() {
             @Override
@@ -85,7 +84,7 @@ public class CalibrationScreen extends BaseScreen {
             }
         });
 
-        final CheckBox invertedY = new CheckBox(" Invert Y-axis", skin);
+        final CheckBox invertedY = new CheckBox(" Invert Y-axis", skin, "checkbox5");
         invertedY.setChecked(settings.getBoolean("invertedY"));
         invertedY.addListener(new ClickListener() {
             @Override

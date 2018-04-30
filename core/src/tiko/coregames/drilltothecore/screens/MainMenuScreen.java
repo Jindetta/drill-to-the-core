@@ -1,7 +1,6 @@
 package tiko.coregames.drilltothecore.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -11,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import tiko.coregames.drilltothecore.Setup;
-import tiko.coregames.drilltothecore.managers.SettingsManager;
 
 import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
@@ -55,19 +53,19 @@ public class MainMenuScreen extends BaseScreen {
             }
         };
 
-        TextButton playButton = new TextButton(coreLocalization.getValue("menu_play"), skin);
+        ImageButton playButton = new ImageButton(skin, "button1_eng");
         playButton.addListener(clickListener);
         playButton.setName("play");
 
-        TextButton settingsButton = new TextButton(coreLocalization.getValue("menu_settings"), skin);
+        ImageButton settingsButton = new ImageButton(skin, "button4_eng");
         settingsButton.addListener(clickListener);
         settingsButton.setName("settings");
 
-        TextButton highScore = new TextButton(coreLocalization.getValue("menu_highScore"), skin);
+        ImageButton highScore = new ImageButton(skin, "button2_eng");
         highScore.addListener(clickListener);
         highScore.setName("highScore");
 
-        TextButton exit = new TextButton(coreLocalization.getValue("menu_exit"), skin);
+        ImageButton exit = new ImageButton(skin, "button3_eng");
         exit.addListener(clickListener);
 
         background = new Image(backgroundTexture);
@@ -83,9 +81,9 @@ public class MainMenuScreen extends BaseScreen {
 
         quickMenu = new Table();
 
-        CheckBox muteSounds = new CheckBox("", skin);
-        CheckBox muteMusic = new CheckBox("", skin);
-        final CheckBox languageSelection = new CheckBox("", skin);
+        CheckBox muteSounds = new CheckBox("", skin, "checkbox6");
+        CheckBox muteMusic = new CheckBox("", skin, "checkbox7");
+        final Button languageSelection = new Button(skin);
         languageSelection.setChecked(!settings.getCurrentLocale().contains("fi"));
         languageSelection.addListener(new ChangeListener() {
             @Override
@@ -95,7 +93,7 @@ public class MainMenuScreen extends BaseScreen {
             }
         });
 
-        final SelectBox<String> profiles = new SelectBox<>(skin);
+        /*final SelectBox<String> profiles = new SelectBox<>(skin);
         profiles.setItems(SettingsManager.getProfileNames());
         Button addProfile = new Button(skin);
         addProfile.addListener(new ClickListener() {
@@ -115,13 +113,13 @@ public class MainMenuScreen extends BaseScreen {
                     }
                 }, "New profile", "", "Profile name");
             }
-        });
+        });*/
 
         quickMenu.add(muteSounds);
         quickMenu.add(muteMusic);
         quickMenu.add(languageSelection);
-        quickMenu.add(profiles);
-        quickMenu.add(addProfile);
+        //quickMenu.add(profiles);
+        //quickMenu.add(addProfile);
         quickMenu.debug();
 
         addActor(quickMenu);

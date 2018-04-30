@@ -1,15 +1,19 @@
 package tiko.coregames.drilltothecore.screens;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import tiko.coregames.drilltothecore.Setup;
 
 public class EndScreen extends BaseScreen {
     private Table layout;
+    private Image background;
+    private Texture backgroundTexture;
     private int gradualHighScore;
     private int scorePerSecond;
     private int totalScore;
@@ -17,6 +21,11 @@ public class EndScreen extends BaseScreen {
     private Label totalScoreLabel;
 
     public EndScreen(String message, int highScore, float basescore, float drillDepth, final int levelIndex) {
+        backgroundTexture = new Texture("images/endscreen-background.png");
+
+        background = new Image(backgroundTexture);
+        addActor(background);
+
         layout = new Table();
 
         ClickListener clickListener = new ClickListener() {
@@ -48,17 +57,16 @@ public class EndScreen extends BaseScreen {
         Label Depth = new Label("Maximum Depth achieved: " + Math.round(drillDepth),skin );
         totalScoreLabel = new Label("", skin);
 
-        TextButton continueButton = new TextButton(coreLocalization.getValue("game_nextLevel"), skin);
+        ImageButton continueButton = new ImageButton(skin, "button8_eng");
         continueButton.addListener(clickListener);
         continueButton.setName("continue");
 
-        TextButton restartButton = new TextButton(coreLocalization.getValue("pause_restartLevel"), skin);
+        ImageButton restartButton = new ImageButton(skin, "button8_eng");
         restartButton.addListener(clickListener);
         restartButton.setName("restart");
 
-        TextButton exitButton = new TextButton(coreLocalization.getValue("pause_exit"), skin);
+        ImageButton exitButton = new ImageButton(skin, "button6_eng");
         exitButton.addListener(clickListener);
-
 
         layout.add(title).row();
         layout.add(baseScore).row();
@@ -96,5 +104,13 @@ public class EndScreen extends BaseScreen {
             (viewport.getWorldWidth() - layout.getWidth()) / 2,
             (viewport.getWorldHeight() - layout.getHeight()) / 2
         );
+
+        background.setSize(viewport.getWorldWidth(), viewport.getWorldHeight());
+    }
+
+    @Override
+    public void dispose() {
+        backgroundTexture.dispose();
+        super.dispose();
     }
 }

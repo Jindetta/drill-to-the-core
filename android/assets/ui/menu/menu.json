@@ -1,133 +1,124 @@
 {
 com.badlogic.gdx.graphics.g2d.BitmapFont: {
-	Abduction: {
-		file: Abduction.fnt
+	Abduction2002: {
+		file: Abduction2002.fnt
 	}
 	ArialBlack: {
 		file: ArialBlack.fnt
 	}
-	SegoeBlack: {
-		file: SegoeBlack.fnt
-	}
-	Superstar: {
-		file: Superstar.fnt
-	}
-	Tagon: {
-		file: Tagon.fnt
-	}
-	TheNextFont: {
-		file: TheNextFont.fnt
-	}
-}
-com.badlogic.gdx.graphics.Color: {
-	black: {
-		r: 0
-		g: 0
-		b: 0
-		a: 1
-	}
-	white: {
-		r: 1
-		g: 1
-		b: 1
-		a: 1
+	SuperQuickFormula: {
+		file: SuperQuickFormula.fnt
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 	default: {
-		up: Menubutton
-		down: Menubutton_pressed
-	}
-	button2: {
-		up: Continuebutton
-		down: Continuebutton_pressed
+		up: Language_english
+		down: Language_finnish
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
-	default: {
-		checkboxOn: Checkbox
-		checkboxOff: Checkbox_marked
-		font: SegoeBlack
+	checkbox5: {
+		checkboxOn: Voice2
+		checkboxOff: Voice2_off
+		font: ArialBlack
 	}
-	music1: {
-		checkboxOn: MusicOn
-		checkboxOff: MusicOff
-		font: SegoeBlack
+	checkbox6: {
+		checkboxOn: Music1
+		checkboxOff: Music1_off
+		font: ArialBlack
 	}
-	music2: {
-		checkboxOn: MusicOn2
-		checkboxOff: MusicOff2
-		font: SegoeBlack
-	}
-	sound1: {
-		checkboxOn: SoundOn
-		checkboxOff: SoundOff
-		font: SegoeBlack
-	}
-	sound2: {
-		checkboxOn: SoundOn2
-		checkboxOff: SoundOff2
-		font: SegoeBlack
-	}
-	language: {
-		checkboxOn: Language_finnish
-		checkboxOff: Language_english
-		font: SegoeBlack
-	}
-	xr: {
-		checkboxOn: XRbutton
-		checkboxOff: XRbutton_Off
-		font: SegoeBlack
+	checkbox7: {
+		checkboxOn: Music2
+		checkboxOff: Music2_off
+		font: ArialBlack
 	}
 }
-com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle: {
-	default: {
-		imageUp: Gatherminerals
-		font: SegoeBlack
+com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
+	button1_eng: {
+		imageUp: Button1_eng
+		imageDown: Button1_pressed_eng
 	}
-	gas: {
-		imageUp: Gathergas
-		font: SegoeBlack
+	button1_fin: {
+		imageUp: Button1_fin
+		imageDown: Button1_pressed_fin
 	}
-	booster: {
-		imageUp: Gatherbooster
-		font: Superstar
+	button2_eng: {
+		imageUp: Button2_eng
+		imageDown: Button2_pressed_eng
+	}
+	button2_fin: {
+		imageUp: Button2_fin
+		imageDown: Button2_pressed_fin
+	}
+	button3_eng: {
+		imageUp: Button3_eng
+		imageDown: Button3_pressed_eng
+	}
+	button3_fin: {
+		imageUp: Button3_fin
+		imageDown: Button3_pressed_fin
+	}
+	button4_eng: {
+		imageUp: Button4_eng
+		imageDown: Button4_pressed_eng
+	}
+	button4_fin: {
+		imageUp: Button4_fin
+		imageDown: Button4_pressed_fin
+	}
+	button5_eng: {
+		imageUp: Button5_eng
+		imageDown: Button5_pressed_eng
+	}
+	button5_fin: {
+		imageUp: Button5_fin
+		imageDown: Button5_pressed_fin
+	}
+	button6_eng: {
+		imageUp: Button6_eng
+		imageDown: Button6_pressed_eng
+	}
+	button6_fin: {
+		imageUp: Button6_fin
+		imageDown: Button6_pressed_fin
+	}
+	button7_eng: {
+		imageUp: Button7_eng
+		imageDown: Button7_pressed_eng
+	}
+	button7_fin: {
+		imageUp: Button7_fin
+		imageDown: Button7_pressed_fin
+	}
+	button8_eng: {
+		imageUp: Button8_eng
+		imageDown: Button8_pressed_eng
+	}
+	button8_fin: {
+		imageUp: Button8_fin
+		imageDown: Button8_pressed_fin
+	}
+	button9_eng: {
+		imageUp: Button9_eng
+		imageDown: Button9_pressed_eng
+	}
+	button9_fin: {
+		imageUp: Button9_fin
+		imageDown: Button9_pressed_fin
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
-		font: SegoeBlack
-		background: Label
+		font: SuperQuickFormula
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
-    default: {
-        background: List
-    }
-}
-com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
-    default: {
-        font: SegoeBlack
-        background: Menu
-        scrollStyle: default
-        listStyle: {
-            font: SegoeBlack
-            selection: Menu
-        }
-    }
-}
-com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 	default: {
-		font: ArialBlack
-		fontColorSelected: white
-		fontColorUnselected: black
-		selection: Menu
-	}
-}
-com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
-	default-horizontal: {
-		background: Gasmeter
-		knobBefore: Gas_green
+		background: Screen9
+		hScroll: Slider_vertical
+		hScrollKnob: Slider_knob_horizontal
+		vScroll: Slider_horizontal
+		vScrollKnob: Slider_knob_vertical
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
@@ -140,51 +131,22 @@ com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
 		knob: Slider_knob_vertical
 	}
 }
-com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
-	default: {
-		font: Abduction
-		up: Menubutton
-		down: Menubutton_pressed
-	}
-	button2: {
-		font: Abduction
-		up: Continuebutton
-		down: Continuebutton_pressed
-	}
-}
-com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
-	default: {
-		font: TheNextFont
-		fontColor: white
-	}
-}
 com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
 	default: {
 		label: default
+		background: Screen9
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Touchpad$TouchpadStyle: {
 	default: {
-		background: Calibration_window
-		knob: Calibration_mark
+		background: Screen6
+		knob: Screen6_mark
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 	default: {
-		background: Menu
-		titleFont: Abduction
-	}
-	leaderboard: {
-		background: Leaderboard
-		titleFont: SegoeBlack
-	}
-	levelcomplete: {
-		background: Level_complete_menu
-		titleFont: SegoeBlack
-	}
-	pausemenu: {
-		background: Pausemenu
-		titleFont: SegoeBlack
+		background: Screen7
+		titleFont: SuperQuickFormula
 	}
 }
 }
