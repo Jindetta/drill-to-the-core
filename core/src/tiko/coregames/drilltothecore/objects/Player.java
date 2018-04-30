@@ -1,6 +1,7 @@
 package tiko.coregames.drilltothecore.objects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -44,6 +45,8 @@ public class Player extends BaseObject {
 
     private int recentlyAddedScore;
 
+    private float[] defaultRocketColor, boostedRocketColor;
+
     private enum STATES {
         IDLE, ACTIVE, JAMMED, IMMOBILIZED, DONE
     }
@@ -54,6 +57,16 @@ public class Player extends BaseObject {
         super("images/player_atlas.png");
 
         this.map = map;
+
+        defaultRocketColor = new float[] {
+            0.7529412f, 0.3529412f, 0.007843138f,
+            1f, 0.06666667f, 0.06666667f
+        };
+
+        boostedRocketColor = new float[] {
+            0.105882354f, 0.20392157f, 0.7529412f,
+            0.043137256f, 0.28627452f, 1f
+        };
 
         // TODO: Cleanup initialization
         drillSpeedReduction = 0;
@@ -183,7 +196,7 @@ public class Player extends BaseObject {
         if (recentlyAddedScore > 0) {
             return String.format("+%d", recentlyAddedScore);
         } else if (recentlyAddedScore < 0) {
-            return String.format("-%d", recentlyAddedScore);
+            return String.format("%d", recentlyAddedScore);
         }
 
         return null;
@@ -257,6 +270,12 @@ public class Player extends BaseObject {
         rocket.getAngle().setHighMin(getRotation() - 45);
         rocket.getAngle().setLowMax(getRotation() + 45);
         rocket.getAngle().setLowMin(getRotation() - 45);
+
+        if (speedTimer > 0) {
+            rocket.getTint().setColors(boostedRocketColor);
+        } else {
+            rocket.getTint().setColors(defaultRocketColor);
+        }
 
         effect.setPosition(
             getCenterX() + MathUtils.cosDeg(getRotation()),
@@ -349,6 +368,9 @@ public class Player extends BaseObject {
                 getRotation() - 90
             );
 
+            if (drillTimer > 0) {
+                batch.setColor(Color.TEAL);
+            }
             batch.draw(
                 frame,
                 getX() + MathUtils.cosDeg(getRotation()),
@@ -360,6 +382,7 @@ public class Player extends BaseObject {
                 getScaleX(), getScaleY(),
                 getRotation() - 90
             );
+            batch.setColor(Color.WHITE);
         }
     }
 
