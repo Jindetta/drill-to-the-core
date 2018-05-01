@@ -21,6 +21,7 @@ import com.badlogic.gdx.utils.Align;
 
 import tiko.coregames.drilltothecore.Setup;
 import tiko.coregames.drilltothecore.managers.LevelManager;
+import tiko.coregames.drilltothecore.managers.SoundManager;
 import tiko.coregames.drilltothecore.objects.Player;
 import tiko.coregames.drilltothecore.utilities.Debug;
 
@@ -41,16 +42,20 @@ public class GameScreen extends BaseScreen {
 
     private TiledDrawable playerFuel, fuelColor;
 
+    private SoundManager sounds;
+
     public GameScreen() {
-        levelIndex = 0;
-        resetLevel();
+        this(0, false);
     }
 
     public GameScreen(int level, boolean loadCurrent) {
         super();
-        if (loadCurrent && settings.hasValue("currentLevel")) {
-            level = settings.getInteger("currentLevel");
+        if (loadCurrent) {
+            level = settings.getIntegerIfExists("currentLevel", 0);
         }
+
+        sounds = new SoundManager(settings);
+        sounds.addSound("collect", "sounds/item-pickup.mp3");
 
         levelIndex = level;
         resetLevel();
@@ -99,6 +104,8 @@ public class GameScreen extends BaseScreen {
             collectedItem.getActions().clear();
             collectedItem.addAction(sequence);
             collectedItem.setVisible(true);
+
+            sounds.playSound("collect");
         }
     }
 
@@ -152,38 +159,6 @@ public class GameScreen extends BaseScreen {
         ImageButton menuButton = new ImageButton(skin, coreLocalization.getValue("return_small"));
         menuButton.addListener(clickListener);
         menuButton.setName("menu");
-
-        final CheckBox muteSounds = new CheckBox("", skin, "checkbox5");
-        muteSounds.setChecked(settings.getBooleanIfExists("soundsMuted", false));
-        muteSounds.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                settings.setBooleanValue("soundsMuted", muteSounds.isChecked());
-                //sounds.muteSounds(muteSounds.isChecked());
-                settings.saveSettings();
-            }
-        });
-
-        final CheckBox muteMusic = new CheckBox("", skin, "checkbox3");
-        muteMusic.setChecked(settings.getBooleanIfExists("musicMuted", false));
-        muteMusic.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                settings.setBooleanValue("musicMuted", muteMusic.isChecked());
-                //sounds.muteMusic(muteMusic.isChecked());
-                settings.saveSettings();
-            }
-        });
-        final Button languageSelection = new Button(skin, coreLocalization.getValue("language"));
-        languageSelection.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                settings.setCurrentLocale(coreLocalization.getValue("swappedLocale"));
-                settings.saveSettings();
-
-                Setup.nextScreen(new MainMenuScreen());
-            }
-        });
 
         pauseWindow.add(continueButton).row();
         pauseWindow.add(restartButton).padTop(MENU_PADDING_TOP).row();
@@ -357,6 +332,7 @@ public class GameScreen extends BaseScreen {
     @Override
     public void dispose() {
         super.dispose();
+        sounds.dispose();
         player.dispose();
         map.dispose();
     }

@@ -89,12 +89,12 @@ public class MainMenuScreen extends BaseScreen {
         quickMenu = new Table();
 
         final CheckBox muteSounds = new CheckBox("", skin, "checkbox5");
-        muteSounds.setChecked(settings.getBooleanIfExists("soundsMuted", false));
+        muteSounds.setChecked(settings.getBooleanIfExists("soundMuted", false));
         muteSounds.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                settings.setBooleanValue("soundsMuted", muteSounds.isChecked());
-                //sounds.muteSounds(muteSounds.isChecked());
+                settings.setBooleanValue("soundMuted", muteSounds.isChecked());
+                sounds.muteSounds(muteSounds.isChecked());
                 settings.saveSettings();
             }
         });

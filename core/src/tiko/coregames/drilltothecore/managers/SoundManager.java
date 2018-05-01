@@ -12,14 +12,14 @@ public class SoundManager implements Disposable {
     private HashMap<String, Sound> sounds;
     private Music music;
 
-    private boolean soundsMuted, musicMuted;
+    private boolean soundMuted, musicMuted;
     private float soundVolume, musicVolume;
 
     public SoundManager(SettingsManager settings) {
         sounds = new HashMap<>();
 
         soundVolume = settings.getFloatIfExists("soundVolume", 0.5f);
-        soundsMuted = settings.getBooleanIfExists("soundMuted", false);
+        soundMuted = settings.getBooleanIfExists("soundMuted", false);
 
         musicVolume = settings.getFloatIfExists("musicVolume", 0.5f);
         musicMuted = settings.getBooleanIfExists("musicMuted", false);
@@ -36,7 +36,7 @@ public class SoundManager implements Disposable {
     }
 
     private float getSoundVolume() {
-        return soundsMuted ? 0 : soundVolume;
+        return soundMuted ? 0 : soundVolume;
     }
 
     public void playSound(String identifier) {
@@ -49,6 +49,16 @@ public class SoundManager implements Disposable {
     public void deleteSound(String identifier) {
         if (sounds.containsKey(identifier)) {
             sounds.remove(identifier).dispose();
+        }
+    }
+
+    public void muteSounds(boolean value) {
+        soundMuted = value;
+
+        if (sounds != null && !sounds.isEmpty()) {
+            for (Sound sound : sounds.values()) {
+                sound.setVolume(-1, getSoundVolume());
+            }
         }
     }
 
