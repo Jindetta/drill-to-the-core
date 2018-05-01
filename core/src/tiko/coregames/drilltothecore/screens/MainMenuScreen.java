@@ -88,11 +88,15 @@ public class MainMenuScreen extends BaseScreen {
         quickMenu = new Table();
 
         CheckBox muteSounds = new CheckBox("", skin, "checkbox5");
+
         final CheckBox muteMusic = new CheckBox("", skin, "checkbox3");
+        muteMusic.setChecked(settings.getBooleanIfExists("musicMuted", false));
         muteMusic.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                settings.setBooleanValue("musicMuted", muteMusic.isChecked());
                 sounds.muteMusic(muteMusic.isChecked());
+                settings.saveSettings();
             }
         });
         final Button languageSelection = new Button(skin, coreLocalization.getValue("language"));
@@ -100,6 +104,9 @@ public class MainMenuScreen extends BaseScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 settings.setCurrentLocale(coreLocalization.getValue("swappedLocale"));
+                settings.saveSettings();
+
+                Setup.nextScreen(new MainMenuScreen());
             }
         });
 
