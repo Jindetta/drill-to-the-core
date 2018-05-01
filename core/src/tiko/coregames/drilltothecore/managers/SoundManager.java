@@ -46,6 +46,13 @@ public class SoundManager implements Disposable {
         }
     }
 
+    public void loopSound(String identifier) {
+        if (sounds.containsKey(identifier)) {
+            Sound sound = sounds.get(identifier);
+            sound.loop(getSoundVolume());
+        }
+    }
+
     public void deleteSound(String identifier) {
         if (sounds.containsKey(identifier)) {
             sounds.remove(identifier).dispose();

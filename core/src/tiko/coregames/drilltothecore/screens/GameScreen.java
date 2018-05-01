@@ -9,12 +9,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 import com.badlogic.gdx.utils.Align;
@@ -55,7 +53,6 @@ public class GameScreen extends BaseScreen {
         }
 
         sounds = new SoundManager(settings);
-        sounds.addSound("collect", "sounds/item-pickup.mp3");
 
         levelIndex = level;
         resetLevel();
@@ -68,7 +65,7 @@ public class GameScreen extends BaseScreen {
         clear();
 
         if (playerSpawn != null) {
-            player = new Player(map, playerSpawn.x, playerSpawn.y);
+            player = new Player(map, playerSpawn.x, playerSpawn.y, sounds);
             createFuelMeter();
         }
 
@@ -104,8 +101,6 @@ public class GameScreen extends BaseScreen {
             collectedItem.getActions().clear();
             collectedItem.addAction(sequence);
             collectedItem.setVisible(true);
-
-            sounds.playSound("collect");
         }
     }
 

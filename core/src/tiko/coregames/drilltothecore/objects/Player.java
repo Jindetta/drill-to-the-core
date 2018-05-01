@@ -13,6 +13,7 @@ import tiko.coregames.drilltothecore.managers.*;
 import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
 public class Player extends BaseObject {
+    private SoundManager soundEffects;
     private ControllerManager controller;
     private LevelManager map;
 
@@ -53,10 +54,14 @@ public class Player extends BaseObject {
 
     private ParticleEffect effect;
 
-    public Player(LevelManager map, float x, float y) {
+    public Player(LevelManager map, float x, float y, SoundManager sounds) {
         super("images/player_atlas.png");
 
         this.map = map;
+        soundEffects = sounds;
+
+        soundEffects.addSound("collect", "sounds/item-pickup.mp3");
+        soundEffects.addSound("engine", "sounds/engine.mp3");
 
         defaultRocketColor = new float[] {
             0.7529412f, 0.3529412f, 0.007843138f,
@@ -481,6 +486,8 @@ public class Player extends BaseObject {
                 addBonusScore(bonusValue);
                 break;
         }
+
+        soundEffects.playSound("collect");
     }
 
     /**
