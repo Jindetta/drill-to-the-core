@@ -9,10 +9,12 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 import com.badlogic.gdx.utils.Align;
@@ -151,10 +153,42 @@ public class GameScreen extends BaseScreen {
         menuButton.addListener(clickListener);
         menuButton.setName("menu");
 
+        final CheckBox muteSounds = new CheckBox("", skin, "checkbox5");
+        muteSounds.setChecked(settings.getBooleanIfExists("soundsMuted", false));
+        muteSounds.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                settings.setBooleanValue("soundsMuted", muteSounds.isChecked());
+                //sounds.muteSounds(muteSounds.isChecked());
+                settings.saveSettings();
+            }
+        });
+
+        final CheckBox muteMusic = new CheckBox("", skin, "checkbox3");
+        muteMusic.setChecked(settings.getBooleanIfExists("musicMuted", false));
+        muteMusic.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                settings.setBooleanValue("musicMuted", muteMusic.isChecked());
+                //sounds.muteMusic(muteMusic.isChecked());
+                settings.saveSettings();
+            }
+        });
+        final Button languageSelection = new Button(skin, coreLocalization.getValue("language"));
+        languageSelection.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                settings.setCurrentLocale(coreLocalization.getValue("swappedLocale"));
+                settings.saveSettings();
+
+                Setup.nextScreen(new MainMenuScreen());
+            }
+        });
+
         pauseWindow.add(continueButton).row();
         pauseWindow.add(restartButton).padTop(MENU_PADDING_TOP).row();
         pauseWindow.add(settingsButton).padTop(MENU_PADDING_TOP).row();
-        pauseWindow.add(menuButton).padTop(MENU_PADDING_TOP);
+        pauseWindow.add(menuButton).padTop(MENU_PADDING_TOP).row();
         pauseWindow.setSize(250, 300);
 
         addActor(pauseWindow);

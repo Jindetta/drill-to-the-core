@@ -1,6 +1,7 @@
 package tiko.coregames.drilltothecore.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -33,7 +34,7 @@ public class MainMenuScreen extends BaseScreen {
         sounds = new SoundManager(settings);
         backgroundTexture = new Texture("images/menu-background.png");
 
-        sounds.playMusic("sounds/background-music.mp3", true);
+        sounds.playMusic("sounds/background-music.mp3");
 
         ClickListener clickListener = new ClickListener() {
             @Override
@@ -87,7 +88,16 @@ public class MainMenuScreen extends BaseScreen {
 
         quickMenu = new Table();
 
-        CheckBox muteSounds = new CheckBox("", skin, "checkbox5");
+        final CheckBox muteSounds = new CheckBox("", skin, "checkbox5");
+        muteSounds.setChecked(settings.getBooleanIfExists("soundsMuted", false));
+        muteSounds.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                settings.setBooleanValue("soundsMuted", muteSounds.isChecked());
+                //sounds.muteSounds(muteSounds.isChecked());
+                settings.saveSettings();
+            }
+        });
 
         final CheckBox muteMusic = new CheckBox("", skin, "checkbox3");
         muteMusic.setChecked(settings.getBooleanIfExists("musicMuted", false));
@@ -111,16 +121,16 @@ public class MainMenuScreen extends BaseScreen {
         });
 
         /*final SelectBox<String> profiles = new SelectBox<>(skin);
-        profiles.setItems(SettingsManager.getProfileNames());
-        Button addProfile = new Button(skin);
-        addProfile.addListener(new ClickListener() {
+        profiles.setItems(SettingsManager.getProfileNames());*/
+        CheckBox addProfile = new CheckBox("", skin);
+        /*addProfile.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.input.setOnscreenKeyboardVisible(true);
                 Gdx.input.getTextInput(new Input.TextInputListener() {
                     @Override
                     public void input(String text) {
-                        SettingsManager.createUserProfile(text, true);
+                        /*SettingsManager.createUserProfile(text, true);
                         profiles.setItems(SettingsManager.getProfileNames());
                     }
 
@@ -132,11 +142,11 @@ public class MainMenuScreen extends BaseScreen {
             }
         });*/
 
-        quickMenu.add(muteSounds);
-        quickMenu.add(muteMusic);
-        quickMenu.add(languageSelection);
+        quickMenu.add(muteSounds).left().padLeft(SAFE_ZONE_SIZE);
+        quickMenu.add(muteMusic).left();
+        quickMenu.add(languageSelection).expandX().center();
         //quickMenu.add(profiles);
-        //quickMenu.add(addProfile);
+        quickMenu.add(addProfile).right().padRight(SAFE_ZONE_SIZE);
         quickMenu.debug();
 
         addActor(quickMenu);
@@ -153,7 +163,8 @@ public class MainMenuScreen extends BaseScreen {
         background.setSize(viewport.getWorldWidth(), viewport.getWorldHeight());
         gameMenu.setPosition(centerX, centerY);
 
-        quickMenu.setPosition(centerX, SAFE_ZONE_SIZE * 4);
+        quickMenu.setWidth(viewport.getWorldWidth());
+        quickMenu.setPosition(0, SAFE_ZONE_SIZE * 4);
     }
 
     @Override

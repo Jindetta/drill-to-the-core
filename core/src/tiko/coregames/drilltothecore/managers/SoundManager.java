@@ -56,11 +56,11 @@ public class SoundManager implements Disposable {
         return musicMuted ? 0 : musicVolume;
     }
 
-    public void playMusic(String file, boolean looping) {
+    public void playMusic(String file) {
         if (music == null) {
             music = Gdx.audio.newMusic(Gdx.files.internal(file));
 
-            music.setLooping(looping);
+            music.setLooping(true);
             music.setVolume(getMusicVolume());
             music.play();
         }
