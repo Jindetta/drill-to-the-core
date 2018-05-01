@@ -15,9 +15,14 @@ public class SoundManager implements Disposable {
     private boolean soundsMuted, musicMuted;
     private float soundVolume, musicVolume;
 
-    public SoundManager() {
-        // Not implemented
+    public SoundManager(SettingsManager settings) {
         sounds = new HashMap<>();
+
+        soundVolume = settings.getFloatIfExists("soundVolume", 0.5f);
+        soundsMuted = settings.getBooleanIfExists("soundMuted", false);
+
+        musicVolume = settings.getFloatIfExists("musicVolume", 0.5f);
+        musicMuted = settings.getBooleanIfExists("musicMuted", false);
     }
 
     public void addSound(String identifier, String fileName) {
@@ -47,9 +52,34 @@ public class SoundManager implements Disposable {
         }
     }
 
+    private float getMusicVolume() {
+        return musicMuted ? 0 : musicVolume;
+    }
+
+    public void playMusic(String file, boolean looping) {
+        if (music == null) {
+            music = Gdx.audio.newMusic(Gdx.files.internal(file));
+
+            music.setLooping(looping);
+            music.setVolume(getMusicVolume());
+            music.play();
+        }
+    }
+
+    public void muteMusic(boolean value) {
+        musicMuted = value;
+
+        if (music != null && music.isPlaying()) {
+            music.setVolume(getMusicVolume());
+        }
+    }
+
     @Override
     public void dispose() {
-        music.dispose();
+        if (music != null) {
+            music.dispose();
+        }
+
         for (Sound sound : sounds.values()) {
             sound.dispose();
         }

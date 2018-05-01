@@ -146,16 +146,48 @@ public class SettingsManager {
         return preferences.getInteger(key);
     }
 
+    public int getIntegerIfExists(String key, int defaultValue) {
+        if (hasValue(key)) {
+            return getInteger(key);
+        }
+
+        return defaultValue;
+    }
+
     public float getFloat(String key) {
         return preferences.getFloat(key);
+    }
+
+    public float getFloatIfExists(String key, float defaultValue) {
+        if (hasValue(key)) {
+            return getFloat(key);
+        }
+
+        return defaultValue;
     }
 
     public boolean getBoolean(String key) {
         return preferences.getBoolean(key);
     }
 
+    public boolean getBooleanIfExists(String key, boolean defaultValue) {
+        if (hasValue(key)) {
+            return getBoolean(key);
+        }
+
+        return defaultValue;
+    }
+
     public String getString(String key) {
         return preferences.getString(key);
+    }
+
+    public String getStringIfExists(String key, String defaultValue) {
+        if (hasValue(key)) {
+            return getString(key);
+        }
+
+        return defaultValue;
     }
 
     public void setCurrentLocale(String localeKey) {

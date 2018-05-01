@@ -38,7 +38,7 @@ public class SettingsScreen extends BaseScreen {
         settingsTable = new Table();
         playerImage = new Texture("images/player_atlas.png");
 
-        ImageButton calibration = new ImageButton(skin, "button9_eng");
+        ImageButton calibration = new ImageButton(skin, coreLocalization.getValue("calibrate"));
         calibration.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

@@ -24,7 +24,7 @@ public class CalibrationScreen extends BaseScreen {
     public CalibrationScreen() {
         final Label sensitivityLabelLeft = new Label("", skin);
         final Slider sensitivityLeft = new Slider(1, 10, 1, false, skin);
-        sensitivityLeft.setValue(settings.getInteger("sensitivityLeft"));
+        sensitivityLeft.setValue(settings.getIntegerIfExists("sensitivityLeft", 1));
         sensitivityLeft.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -37,7 +37,7 @@ public class CalibrationScreen extends BaseScreen {
 
         final Label sensitivityLabelRight = new Label("", skin);
         final Slider sensitivityRight = new Slider(1, 10, 1, false, skin);
-        sensitivityRight.setValue(settings.getInteger("sensitivityRight"));
+        sensitivityRight.setValue(settings.getIntegerIfExists("sensitivityRight", 1));
         sensitivityRight.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -50,7 +50,7 @@ public class CalibrationScreen extends BaseScreen {
 
         final Label sensitivityLabelUp = new Label("", skin);
         final Slider sensitivityUp = new Slider(1, 10, 1, false, skin);
-        sensitivityUp.setValue(settings.getInteger("sensitivityUp"));
+        sensitivityUp.setValue(settings.getIntegerIfExists("sensitivityUp", 1));
         sensitivityUp.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -63,7 +63,7 @@ public class CalibrationScreen extends BaseScreen {
 
         final Label sensitivityLabelDown = new Label("", skin);
         final Slider sensitivityDown = new Slider(1, 10, 1, false, skin);
-        sensitivityDown.setValue(settings.getInteger("sensitivityDown"));
+        sensitivityDown.setValue(settings.getIntegerIfExists("sensitivityDown", 1));
         sensitivityDown.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -75,7 +75,7 @@ public class CalibrationScreen extends BaseScreen {
         sensitivityDown.fire(new ChangeListener.ChangeEvent());
 
         final CheckBox invertedX = new CheckBox(" Invert X-axis", skin, "checkbox5");
-        invertedX.setChecked(settings.getBoolean("invertedX"));
+        invertedX.setChecked(settings.getBooleanIfExists("invertedX", false));
         invertedX.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -85,7 +85,7 @@ public class CalibrationScreen extends BaseScreen {
         });
 
         final CheckBox invertedY = new CheckBox(" Invert Y-axis", skin, "checkbox5");
-        invertedY.setChecked(settings.getBoolean("invertedY"));
+        invertedY.setChecked(settings.getBooleanIfExists("invertedY", false));
         invertedY.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

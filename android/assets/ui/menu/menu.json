@@ -19,19 +19,39 @@ com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
-	checkbox5: {
-		checkboxOn: Voice2
-		checkboxOff: Voice2_off
+	default: {
+		checkboxOn: Checkbox
+		checkboxOff: Checkbox_marked
 		font: ArialBlack
 	}
-	checkbox6: {
-		checkboxOn: Music1
+	checkbox2: {
+		checkboxOn: Music1_on
 		checkboxOff: Music1_off
 		font: ArialBlack
 	}
-	checkbox7: {
-		checkboxOn: Music2
+	checkbox3: {
+		checkboxOn: Music2_on
 		checkboxOff: Music2_off
+		font: ArialBlack
+	}
+	checkbox4: {
+		checkboxOn: Sound1_on
+		checkboxOff: Sound1_off
+		font: ArialBlack
+	}
+	checkbox5: {
+		checkboxOn: Sound2_on
+		checkboxOff: Sound2_off
+		font: ArialBlack
+	}
+	checkbox6: {
+		checkboxOn: GameXRbox
+		checkboxOff: GameXRbox_Off
+		font: ArialBlack
+	}
+	checkbox8: {
+		checkboxOn: Questionbox
+		checkboxOff: Questionbox_pressed
 		font: ArialBlack
 	}
 }
@@ -108,6 +128,30 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 		imageUp: Button9_fin
 		imageDown: Button9_pressed_fin
 	}
+	button10and11_eng: {
+		imageUp: Button11_eng
+		imageDown: Button10_eng
+	}
+	button10and11_fin: {
+		imageUp: Button11_fin
+		imageDown: Button10_fin
+	}
+	button12_eng: {
+		imageUp: Button12_eng
+		imageDown: Button12_pressed_eng
+	}
+	button12_fin: {
+		imageUp: Button12_fin
+		imageDown: Button12_pressed_fin
+	}
+	button13_eng: {
+		imageUp: Button13_eng
+		imageDown: Button13_pressed_eng
+	}
+	button13_fin: {
+		imageUp: Button13_fin
+		imageDown: Button13_pressed_fin
+	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
@@ -147,8 +191,8 @@ com.badlogic.gdx.scenes.scene2d.ui.Touchpad$TouchpadStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 	default: {
-		background: Screen7
-		titleFont: SuperQuickFormula
+		background: Screen1
+		titleFont: Abduction2002
 	}
 }
 }

@@ -155,6 +155,7 @@ public class GameScreen extends BaseScreen {
         pauseWindow.add(restartButton).padTop(MENU_PADDING_TOP).row();
         pauseWindow.add(settingsButton).padTop(MENU_PADDING_TOP).row();
         pauseWindow.add(menuButton).padTop(MENU_PADDING_TOP);
+        pauseWindow.setSize(250, 300);
 
         addActor(pauseWindow);
     }

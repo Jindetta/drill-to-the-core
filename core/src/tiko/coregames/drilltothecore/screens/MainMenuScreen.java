@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import tiko.coregames.drilltothecore.Setup;
+import tiko.coregames.drilltothecore.managers.SoundManager;
 
 import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
@@ -26,8 +27,13 @@ public class MainMenuScreen extends BaseScreen {
     private Image background;
     private Table gameMenu, quickMenu;
 
+    private SoundManager sounds;
+
     public MainMenuScreen() {
+        sounds = new SoundManager(settings);
         backgroundTexture = new Texture("images/menu-background.png");
+
+        sounds.playMusic("sounds/background-music.mp3", true);
 
         ClickListener clickListener = new ClickListener() {
             @Override
@@ -36,7 +42,7 @@ public class MainMenuScreen extends BaseScreen {
 
                 switch (name == null ? "" : name) {
                     case "play":
-                        Setup.nextScreen(new GameScreen());
+                        Setup.nextScreen(new LevelSelectScreen());
                         break;
                     case "settings":
                         Setup.nextScreen(new SettingsScreen());
@@ -81,13 +87,19 @@ public class MainMenuScreen extends BaseScreen {
 
         quickMenu = new Table();
 
-        CheckBox muteSounds = new CheckBox("", skin, "checkbox6");
-        CheckBox muteMusic = new CheckBox("", skin, "checkbox7");
+        CheckBox muteSounds = new CheckBox("", skin, "checkbox5");
+        final CheckBox muteMusic = new CheckBox("", skin, "checkbox3");
+        muteMusic.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                sounds.muteMusic(muteMusic.isChecked());
+            }
+        });
         final Button languageSelection = new Button(skin, coreLocalization.getValue("language"));
         languageSelection.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                settings.setCurrentLocale("");
+                settings.setCurrentLocale(coreLocalization.getValue("swappedLocale"));
             }
         });
 
@@ -146,6 +158,7 @@ public class MainMenuScreen extends BaseScreen {
     @Override
     public void dispose() {
         backgroundTexture.dispose();
+        sounds.dispose();
         super.dispose();
     }
 }

@@ -369,7 +369,7 @@ public class Player extends BaseObject {
             );
 
             if (drillTimer > 0) {
-                batch.setColor(Color.TEAL);
+                batch.setColor(Color.SKY);
             }
             batch.draw(
                 frame,
