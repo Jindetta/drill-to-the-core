@@ -28,7 +28,7 @@ public abstract class BaseScreen extends Stage implements Screen {
     BaseScreen() {
         super(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT));
         skin = new Skin(Gdx.files.internal("ui/menu/menu.json"));
-        coreLocalization = new LocalizationManager("core");
+        coreLocalization = new LocalizationManager();
         settings = SettingsManager.getActiveProfile(true);
     }
 

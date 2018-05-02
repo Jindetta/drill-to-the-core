@@ -8,23 +8,8 @@ import java.util.Locale;
 public class LocalizationManager {
     private I18NBundle bundle;
 
-    public LocalizationManager(String bundleKey) {
-        initializeBundle(bundleKey == null ? "" : bundleKey);
-    }
-
-    private void initializeBundle(String bundleKey) {
-        StringBuilder path = new StringBuilder("localization/");
-
-        switch (bundleKey) {
-            case "game":
-                path.append(bundleKey);
-                break;
-            default:
-                path.append("menu");
-                break;
-        }
-
-        bundle = I18NBundle.createBundle(Gdx.files.internal(path.toString()), getProfileLocale());
+    public LocalizationManager() {
+        bundle = I18NBundle.createBundle(Gdx.files.internal("localization/menu"), getProfileLocale());
     }
 
     private Locale getProfileLocale() {
