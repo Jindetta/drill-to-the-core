@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import tiko.coregames.drilltothecore.Setup;
+import tiko.coregames.drilltothecore.managers.SettingsManager;
 import tiko.coregames.drilltothecore.managers.SoundManager;
 
 import static tiko.coregames.drilltothecore.utilities.Constants.*;
@@ -120,17 +121,17 @@ public class MainMenuScreen extends BaseScreen {
             }
         });
 
-        /*final SelectBox<String> profiles = new SelectBox<>(skin);
-        profiles.setItems(SettingsManager.getProfileNames());*/
-        CheckBox addProfile = new CheckBox("", skin);
-        /*addProfile.addListener(new ClickListener() {
+        final SelectBox<String> profiles = new SelectBox<>(skin);
+        profiles.setItems("<unused profile>");
+        Button addProfile = new Button(skin, "icon1");
+        addProfile.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.input.setOnscreenKeyboardVisible(true);
                 Gdx.input.getTextInput(new Input.TextInputListener() {
                     @Override
                     public void input(String text) {
-                        /*SettingsManager.createUserProfile(text, true);
+                        SettingsManager.createUserProfile(text, true);
                         profiles.setItems(SettingsManager.getProfileNames());
                     }
 
@@ -140,12 +141,12 @@ public class MainMenuScreen extends BaseScreen {
                     }
                 }, "New profile", "", "Profile name");
             }
-        });*/
+        });
 
         quickMenu.add(muteSounds).left().padLeft(SAFE_ZONE_SIZE);
         quickMenu.add(muteMusic).left();
-        quickMenu.add(languageSelection).expandX().center();
-        //quickMenu.add(profiles);
+        quickMenu.add(languageSelection).expandX().center().padLeft(profiles.getPrefWidth() - addProfile.getPrefWidth());
+        quickMenu.add(profiles).right();
         quickMenu.add(addProfile).right().padRight(SAFE_ZONE_SIZE);
         quickMenu.debug();
 

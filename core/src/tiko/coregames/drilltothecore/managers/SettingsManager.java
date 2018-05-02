@@ -191,6 +191,15 @@ public class SettingsManager {
     }
 
     public void setCurrentLocale(String localeKey) {
+        Locale locale = getLocaleById(localeKey);
+        setStringValue("locale", locale.getLanguage());
+    }
+
+    public String getLocaleString() {
+        return getString("locale");
+    }
+
+    public Locale getLocaleById(String localeKey) {
         Locale locale;
 
         if (localeKey == null) {
@@ -203,11 +212,7 @@ public class SettingsManager {
             }
         }
 
-        setStringValue("locale", String.format("%s_%s", locale.getLanguage(), locale.getCountry()));
-    }
-
-    public String getCurrentLocale() {
-        return getString("locale");
+        return locale;
     }
 
     public void removeKey(String key) {

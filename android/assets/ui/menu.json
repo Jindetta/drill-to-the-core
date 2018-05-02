@@ -10,12 +10,44 @@ com.badlogic.gdx.graphics.g2d.BitmapFont: {
 		file: SuperQuickFormula.fnt
 	}
 }
+com.badlogic.gdx.graphics.Color: {
+	red: {
+		r: 0.45666668
+		g: 0.123299986
+		b: 0.12885617
+		a: 1
+	}
+	white: {
+		r: 0.98
+		g: 0.98
+		b: 0.98
+		a: 1
+	}
+	black: {
+		r: 0.023333283
+		g: 0.022399953
+		b: 0.022399953
+		a: 1
+	}
+}
 com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
-	lang_eng: {
-		up: Language_english
+	default: {
+		up: Questionbox
+		down: Questionbox_pressed
+	}
+	icon1: {
+		up: IconPlus
+		down: IconPlus_pressed
+	}
+	icon2: {
+		up: IconMinus
+		down: IconMinus_pressed
 	}
 	lang_fin: {
 		up: Language_finnish
+	}
+	lang_eng: {
+		up: Language_english
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
@@ -49,7 +81,7 @@ com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 		checkboxOff: GameXRbox_Off
 		font: ArialBlack
 	}
-	checkbox8: {
+	checkbox7: {
 		checkboxOn: Questionbox
 		checkboxOff: Questionbox_pressed
 		font: ArialBlack
@@ -156,15 +188,36 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
 		font: SuperQuickFormula
+		fontColor: white
+		background: Screen10
+	}
+  scores: {
+    font: SuperQuickFormula
+    fontColor: black
+    background: Screen10
+  }
+}
+com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
+	default: {
+		font: ArialBlack
+		fontColorSelected: black
+		fontColorUnselected: white
+		selection: Screen11
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
 	default: {
-		background: Screen9
-		hScroll: Slider_vertical
 		hScrollKnob: Slider_knob_horizontal
-		vScroll: Slider_horizontal
 		vScrollKnob: Slider_knob_vertical
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
+	default: {
+		font: ArialBlack
+		fontColor: black
+		background: Screen10
+		scrollStyle: default
+		listStyle: default
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
@@ -177,10 +230,16 @@ com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
 		knob: Slider_knob_vertical
 	}
 }
+com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
+	default: {
+		font: ArialBlack
+		fontColor: black
+		cursor: Cursor
+	}
+}
 com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
 	default: {
 		label: default
-		background: Screen9
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Touchpad$TouchpadStyle: {
@@ -191,7 +250,6 @@ com.badlogic.gdx.scenes.scene2d.ui.Touchpad$TouchpadStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 	default: {
-		background: Screen1
 		titleFont: Abduction2002
 	}
 }

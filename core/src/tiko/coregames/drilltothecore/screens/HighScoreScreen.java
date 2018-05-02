@@ -25,7 +25,7 @@ public class HighScoreScreen extends BaseScreen {
         scoreList = new Table();
 
         for (int i = 0; i < 10; i++) {
-            String text = "-- No results --";
+            String text = "-- NO RESULTS --";
             SettingsManager profile = SettingsManager.getUserProfile(i, false);
 
             if (profile != null) {
@@ -41,7 +41,7 @@ public class HighScoreScreen extends BaseScreen {
                 }
             }
 
-            scoreList.add(new Label(text, skin)).padBottom(5).row();
+            scoreList.add(new Label(text, skin, "scores")).padBottom(5).row();
         }
 
         addActor(scoreList);

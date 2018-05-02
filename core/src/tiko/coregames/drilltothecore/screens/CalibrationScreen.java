@@ -28,7 +28,7 @@ public class CalibrationScreen extends BaseScreen {
         sensitivityLeft.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                sensitivityLabelLeft.setText(String.format("Sensitivity (Left): %.0f", sensitivityLeft.getValue()));
+                sensitivityLabelLeft.setText(String.format("SENSITIVITY (LEFT): %.0f", sensitivityLeft.getValue()));
                 settings.setIntegerValue("sensitivityLeft", Math.round(sensitivityLeft.getValue()));
                 settings.saveSettings();
             }
@@ -41,7 +41,7 @@ public class CalibrationScreen extends BaseScreen {
         sensitivityRight.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                sensitivityLabelRight.setText(String.format("Sensitivity (Right): %.0f", sensitivityRight.getValue()));
+                sensitivityLabelRight.setText(String.format("SENSITIVITY (RIGHT): %.0f", sensitivityRight.getValue()));
                 settings.setIntegerValue("sensitivityRight", Math.round(sensitivityRight.getValue()));
                 settings.saveSettings();
             }
@@ -54,7 +54,7 @@ public class CalibrationScreen extends BaseScreen {
         sensitivityUp.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                sensitivityLabelUp.setText(String.format("Sensitivity (Up): %.0f", sensitivityUp.getValue()));
+                sensitivityLabelUp.setText(String.format("SENSITIVITY (UP): %.0f", sensitivityUp.getValue()));
                 settings.setIntegerValue("sensitivityUp", Math.round(sensitivityUp.getValue()));
                 settings.saveSettings();
             }
@@ -67,14 +67,14 @@ public class CalibrationScreen extends BaseScreen {
         sensitivityDown.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                sensitivityLabelDown.setText(String.format("Sensitivity (Down): %.0f", sensitivityDown.getValue()));
+                sensitivityLabelDown.setText(String.format("SENSITIVITY (DOWN): %.0f", sensitivityDown.getValue()));
                 settings.setIntegerValue("sensitivityDown", Math.round(sensitivityDown.getValue()));
                 settings.saveSettings();
             }
         });
         sensitivityDown.fire(new ChangeListener.ChangeEvent());
 
-        final CheckBox invertedX = new CheckBox(" Invert X-axis", skin, "checkbox5");
+        final CheckBox invertedX = new CheckBox(" Invert X-axis", skin);
         invertedX.setChecked(settings.getBooleanIfExists("invertedX", false));
         invertedX.addListener(new ClickListener() {
             @Override
@@ -84,7 +84,7 @@ public class CalibrationScreen extends BaseScreen {
             }
         });
 
-        final CheckBox invertedY = new CheckBox(" Invert Y-axis", skin, "checkbox5");
+        final CheckBox invertedY = new CheckBox(" Invert Y-axis", skin);
         invertedY.setChecked(settings.getBooleanIfExists("invertedY", false));
         invertedY.addListener(new ClickListener() {
             @Override

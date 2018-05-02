@@ -16,7 +16,7 @@ public class LocalizationManager {
         SettingsManager profile = SettingsManager.getActiveProfile(true);
 
         if (profile != null && profile.hasValue("locale")) {
-            return new Locale(profile.getString("locale"), "");
+            return profile.getLocaleById(profile.getLocaleString());
         }
 
         return Locale.getDefault();

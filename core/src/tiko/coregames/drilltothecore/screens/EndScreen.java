@@ -53,8 +53,8 @@ public class EndScreen extends BaseScreen {
         totalScore = highScore;
 
         Label title = new Label(message + ": ", skin);
-        Label baseScore = new Label("Basescore: " + Math.round(basescore), skin);
-        Label Depth = new Label("Maximum Depth achieved: " + Math.round(drillDepth),skin );
+        Label baseScore = new Label("BASESCORE: " + Math.round(basescore), skin);
+        Label Depth = new Label("MAXIMUM DEPTH: " + Math.round(drillDepth),skin );
         totalScoreLabel = new Label("", skin);
 
         ImageButton continueButton = new ImageButton(skin, coreLocalization.getValue("next_small"));
@@ -91,7 +91,7 @@ public class EndScreen extends BaseScreen {
     @Override
     public void render(float delta) {
         super.render(delta);
-        totalScoreLabel.setText("Total Score: " + gradualHighScore);
+        totalScoreLabel.setText("TOTAL SCORE: " + gradualHighScore);
         gradualHighScore = Math.min(totalScore, Math.round(gradualHighScore + scorePerSecond * delta));
     }
 
