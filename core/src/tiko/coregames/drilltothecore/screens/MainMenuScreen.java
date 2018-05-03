@@ -148,7 +148,6 @@ public class MainMenuScreen extends BaseScreen {
         quickMenu.add(languageSelection).expandX().center().padLeft(profiles.getPrefWidth() - addProfile.getPrefWidth());
         quickMenu.add(profiles).right();
         quickMenu.add(addProfile).right().padRight(SAFE_ZONE_SIZE);
-        quickMenu.debug();
 
         addActor(quickMenu);
     }

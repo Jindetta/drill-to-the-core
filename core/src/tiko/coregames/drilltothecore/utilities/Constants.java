@@ -32,7 +32,7 @@ public class Constants {
 
     public static final float SCORE_TILE_REVEALED = .005f;
     public static final float SCORE_POWER_UP_PICKUP = 1.25f;
-    public static final float SCORE_GROUND_TILE_OPENED = .125f;
+    public static final float SCORE_GROUND_TILE_OPENED = 1;
 
     public static final float SINGLE_SPLASH_DURATION = 3;
 

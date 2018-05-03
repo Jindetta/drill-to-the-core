@@ -38,7 +38,7 @@ public class GameScreen extends BaseScreen {
     private float totalGameTime;
     private Label gameTimer;
 
-    private TiledDrawable playerFuel, fuelColor;
+    private ImageButton score;
 
     private SoundManager sounds;
 
@@ -88,6 +88,10 @@ public class GameScreen extends BaseScreen {
         gameTimer.setAlignment(Align.center);
 
         addActor(gameTimer);
+
+        score = new ImageButton(skin, "gather");
+
+        addActor(score);
     }
 
     private void setNotificationActive() {
@@ -235,6 +239,11 @@ public class GameScreen extends BaseScreen {
         gameTimer.setPosition(
             camera.position.x - collectedItem.getWidth() / 2,
             viewportY - gameTimer.getPrefHeight() / 2 - SAFE_ZONE_SIZE
+        );
+
+        score.setPosition(
+            camera.position.x - camera.viewportWidth / 2 + SAFE_ZONE_SIZE,
+            viewportY - score.getPrefHeight() - SAFE_ZONE_SIZE
         );
 
         updateFuelColor();

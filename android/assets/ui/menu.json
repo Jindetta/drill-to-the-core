@@ -184,6 +184,9 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 		imageUp: Button13_fin
 		imageDown: Button13_pressed_fin
 	}
+	gather: {
+		imageUp: Gatherscreen1
+	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
