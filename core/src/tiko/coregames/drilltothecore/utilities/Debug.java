@@ -10,6 +10,15 @@ import java.util.HashMap;
 
 import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
+
+/**
+ * Debug class will process debug information.
+ *
+ * @author  Joonas Lauhala <joonas.lauhala@cs.tamk.fi>
+ *          Saku Karvinen <saku.karvinen@cs.tamk.fi>
+ * @version 1.0
+ * @since   2018-02-01
+ */
 public class Debug {
     private BitmapFont font;
     private HashMap<String, BaseDebug> debugData;

@@ -10,7 +10,7 @@ import tiko.coregames.drilltothecore.Setup;
 import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
 /**
- * SplashScreen class will display splash screen.
+ * SplashScreen class will display a splash screen.
  *
  * @author  Joonas Lauhala <joonas.lauhala@cs.tamk.fi>
  *          Saku Karvinen <saku.karvinen@cs.tamk.fi>

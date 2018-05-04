@@ -8,6 +8,14 @@ import com.badlogic.gdx.utils.Disposable;
 
 import java.util.HashMap;
 
+/**
+ * SoundManager class will manage all sound related stuff.
+ *
+ * @author  Joonas Lauhala <joonas.lauhala@cs.tamk.fi>
+ *          Saku Karvinen <saku.karvinen@cs.tamk.fi>
+ * @version 1.0
+ * @since   2018-02-01
+ */
 public class SoundManager implements Disposable {
     private HashMap<String, Sound> sounds;
     private Music music;
@@ -25,6 +33,12 @@ public class SoundManager implements Disposable {
         musicMuted = settings.getBooleanIfExists("musicMuted", false);
     }
 
+    /**
+     * Adds a new sound to the list.
+     *
+     * @param identifier    sound identifier
+     * @param fileName      file path
+     */
     public void addSound(String identifier, String fileName) {
         if (!sounds.containsKey(identifier)) {
             FileHandle file = Gdx.files.internal(fileName);
@@ -39,6 +53,11 @@ public class SoundManager implements Disposable {
         return soundMuted ? 0 : soundVolume;
     }
 
+    /**
+     * Plays sound by given identifier.
+     *
+     * @param identifier    sound identifier
+     */
     public void playSound(String identifier) {
         if (sounds.containsKey(identifier)) {
             Sound sound = sounds.get(identifier);
@@ -46,6 +65,11 @@ public class SoundManager implements Disposable {
         }
     }
 
+    /**
+     * Loops sound by given identifier.
+     *
+     * @param identifier    sound identifier
+     */
     public void loopSound(String identifier) {
         if (sounds.containsKey(identifier)) {
             Sound sound = sounds.get(identifier);
@@ -53,12 +77,22 @@ public class SoundManager implements Disposable {
         }
     }
 
+    /**
+     * Deletes sound by given identifier.
+     *
+     * @param identifier    sound identifier
+     */
     public void deleteSound(String identifier) {
         if (sounds.containsKey(identifier)) {
             sounds.remove(identifier).dispose();
         }
     }
 
+    /**
+     * Mutes all sounds.
+     *
+     * @param value     mute state
+     */
     public void muteSounds(boolean value) {
         soundMuted = value;
 
@@ -73,6 +107,11 @@ public class SoundManager implements Disposable {
         return musicMuted ? 0 : musicVolume;
     }
 
+    /**
+     * Plays music.
+     *
+     * @param file  file path
+     */
     public void playMusic(String file) {
         if (music == null) {
             music = Gdx.audio.newMusic(Gdx.files.internal(file));
@@ -83,6 +122,11 @@ public class SoundManager implements Disposable {
         }
     }
 
+    /**
+     * Mutes music.
+     *
+     * @param value     mute state
+     */
     public void muteMusic(boolean value) {
         musicMuted = value;
 

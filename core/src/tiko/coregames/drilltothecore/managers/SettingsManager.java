@@ -8,6 +8,14 @@ import com.badlogic.gdx.utils.Array;
 
 import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
+/**
+ * SettingsManager class will manage all settings and profiles.
+ *
+ * @author  Joonas Lauhala <joonas.lauhala@cs.tamk.fi>
+ *          Saku Karvinen <saku.karvinen@cs.tamk.fi>
+ * @version 1.0
+ * @since   2018-02-01
+ */
 public class SettingsManager {
     private boolean defaultProfile;
     private Preferences preferences;

@@ -1,5 +1,14 @@
 package tiko.coregames.drilltothecore.utilities;
 
+
+/**
+ * Constants class will define all necessary values.
+ *
+ * @author  Joonas Lauhala <joonas.lauhala@cs.tamk.fi>
+ *          Saku Karvinen <saku.karvinen@cs.tamk.fi>
+ * @version 1.0
+ * @since   2018-02-01
+ */
 public class Constants {
     public static final float WORLD_WIDTH = 576;
     public static final float WORLD_HEIGHT = 360;
@@ -17,7 +26,7 @@ public class Constants {
     public static final float GAME_SPEED_MODIFIER = 1;
     public static final boolean DEBUG_MODE = true;
 
-    public static final int LEVEL_COUNT = 3;
+    public static final int LEVEL_COUNT = 4;
 
     public static final float PLAYER_MOVE_SPEED = 85;
     public static final float PLAYER_ROTATION_MULTIPLIER = 2.5f;

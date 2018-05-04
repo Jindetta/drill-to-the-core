@@ -12,6 +12,14 @@ import tiko.coregames.drilltothecore.managers.*;
 
 import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
+/**
+ * Player class will process all player actions.
+ *
+ * @author  Joonas Lauhala <joonas.lauhala@cs.tamk.fi>
+ *          Saku Karvinen <saku.karvinen@cs.tamk.fi>
+ * @version 1.0
+ * @since   2018-02-01
+ */
 public class Player extends BaseObject {
     private SoundManager soundEffects;
     private ControllerManager controller;
@@ -54,6 +62,14 @@ public class Player extends BaseObject {
 
     private ParticleEffect effect;
 
+    /**
+     * Overloads default constructor.
+     *
+     * @param map       instance of LevelManager
+     * @param x         x coordinate for player spawn
+     * @param y         y coordinate for player spawn
+     * @param sounds    instance of SoundManager
+     */
     public Player(LevelManager map, float x, float y, SoundManager sounds) {
         super("images/player_atlas.png");
 
@@ -159,24 +175,44 @@ public class Player extends BaseObject {
         scoreMultiplier = Math.max(1, getDrillDepthMultiplier() * PLAYER_DRILL_DEPTH_MULTIPLIER);
     }
 
+    /**
+     * Gets total score rounded to closest integer.
+     *
+     * @return total score as integer
+     */
     public int getTotalScore() {
         return Math.round(baseScore * scoreMultiplier + bonusScore);
     }
 
-    public float getBaseScore() { return baseScore; }
+    public float getBaseScore() {
+        return baseScore;
+    }
 
     private float getDrillDepthMultiplier() {
         return Math.min(maximumDrillDepth / startingDepth, 1);
     }
 
+    /**
+     * Gets maximum depth reached.
+     *
+     * @return maximum reached depth as integer
+     */
     public float getDrillDepth() {
         return getDrillDepthMultiplier() * map.getVirtualDepth();
     }
 
+    /**
+     * Gets current fuel amount.
+     *
+     * @return current amount of fuel as integer
+     */
     public float getFuel() {
         return Math.max(0, totalFuel);
     }
 
+    /**
+     * Resets calibration values.
+     */
     public void resetCalibration() {
         controller.reset();
     }
@@ -197,6 +233,11 @@ public class Player extends BaseObject {
         currentState = newState;
     }
 
+    /**
+     * Gets recent score value from Player.
+     *
+     * @return formatted score string
+     */
     public String getRecentScoreString() {
         if (recentlyAddedScore > 0) {
             return String.format("+%d", recentlyAddedScore);
@@ -429,8 +470,8 @@ public class Player extends BaseObject {
     /**
      * Processes all collectibles.
      *
-     * @param tile  Collectible tile
-     * @param key   Collectible identifier
+     * @param tile  collectible tile
+     * @param key   collectible identifier
      */
     public void collectItemByName(TiledMapTile tile, String key) {
         if (key == null) {
@@ -493,8 +534,8 @@ public class Player extends BaseObject {
     /**
      * Updates collectible state.
      *
-     * @param x     X index
-     * @param y     Y index
+     * @param x     x index
+     * @param y     y index
      */
     private void updateCollectibleStatus(float x, float y) {
         x -= BIG_TILE_SIZE / 2 - SMALL_TILE_SIZE;
@@ -652,6 +693,11 @@ public class Player extends BaseObject {
         }
     }
 
+    /**
+     * Checks if player has reached the depth goal.
+     *
+     * @return true if goal is reached, otherwise false
+     */
     public boolean isDepthGoalAchieved() {
         return currentState == STATES.DONE;
     }

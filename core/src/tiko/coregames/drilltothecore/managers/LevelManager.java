@@ -18,7 +18,12 @@ import tiko.coregames.drilltothecore.Setup;
 import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
 /**
- * Handles everything related to levels.
+ * SoundManager class will manage all level related stuff.
+ *
+ * @author  Joonas Lauhala <joonas.lauhala@cs.tamk.fi>
+ *          Saku Karvinen <saku.karvinen@cs.tamk.fi>
+ * @version 1.0
+ * @since   2018-02-01
  */
 public class LevelManager implements Disposable {
     /**

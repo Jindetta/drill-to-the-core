@@ -21,15 +21,15 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
  * @since   2018-02-01
  */
 public abstract class BaseScreen extends Stage implements Screen {
-    LocalizationManager coreLocalization;
+    LocalizationManager localization;
     SettingsManager settings;
     Skin skin;
 
     BaseScreen() {
         super(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT));
         skin = new Skin(Gdx.files.internal("ui/menu.json"));
-        coreLocalization = new LocalizationManager();
         settings = SettingsManager.getActiveProfile(true);
+        localization = new LocalizationManager();
     }
 
     @Override

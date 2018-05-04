@@ -61,19 +61,19 @@ public class MainMenuScreen extends BaseScreen {
             }
         };
 
-        ImageButton playButton = new ImageButton(skin, coreLocalization.getValue("play"));
+        ImageButton playButton = new ImageButton(skin, localization.getValue("play"));
         playButton.addListener(clickListener);
         playButton.setName("play");
 
-        final ImageButton settingsButton = new ImageButton(skin, coreLocalization.getValue("settings"));
+        final ImageButton settingsButton = new ImageButton(skin, localization.getValue("settings"));
         settingsButton.addListener(clickListener);
         settingsButton.setName("settings");
 
-        ImageButton highScore = new ImageButton(skin, coreLocalization.getValue("scores"));
+        ImageButton highScore = new ImageButton(skin, localization.getValue("scores"));
         highScore.addListener(clickListener);
         highScore.setName("highScore");
 
-        ImageButton exit = new ImageButton(skin, coreLocalization.getValue("quit"));
+        ImageButton exit = new ImageButton(skin, localization.getValue("quit"));
         exit.addListener(clickListener);
 
         background = new Image(backgroundTexture);
@@ -110,11 +110,11 @@ public class MainMenuScreen extends BaseScreen {
                 settings.saveSettings();
             }
         });
-        final Button languageSelection = new Button(skin, coreLocalization.getValue("language"));
+        final Button languageSelection = new Button(skin, localization.getValue("language"));
         languageSelection.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                settings.setCurrentLocale(coreLocalization.getValue("swappedLocale"));
+                settings.setCurrentLocale(localization.getValue("swappedLocale"));
                 settings.saveSettings();
 
                 Setup.nextScreen(new MainMenuScreen());

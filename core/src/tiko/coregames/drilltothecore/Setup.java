@@ -20,17 +20,24 @@ public class Setup extends Game {
 	private static Setup instance;
     private SpriteBatch batch;
 
+	/**
+	 * Gets default SpriteBatch
+	 *
+	 * @return batch of current game instancr
+	 */
 	public static SpriteBatch getBatch() {
 		return instance.batch;
 	}
 
+	/**
+	 * Displays next screen.
+	 *
+	 * @param screen    instance of Screen
+	 */
 	public static void nextScreen(Screen screen) {
 		instance.setScreen(screen);
 	}
 
-    /**
-     * Initializes game.
-     */
 	@Override
 	public void create () {
         Debug.initialize();
@@ -48,9 +55,6 @@ public class Setup extends Game {
         Debug.resize(width, height);
     }
 
-    /**
-     * Renders game.
-     */
     @Override
 	public void render () {
 	    super.render();
@@ -60,9 +64,6 @@ public class Setup extends Game {
 		batch.end();
 	}
 
-    /**
-     * Disposes all allocated resources.
-     */
 	@Override
 	public void dispose () {
 		setScreen(null);

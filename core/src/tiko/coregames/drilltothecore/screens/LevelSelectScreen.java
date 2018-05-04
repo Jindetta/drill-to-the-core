@@ -8,10 +8,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import tiko.coregames.drilltothecore.Setup;
-import tiko.coregames.drilltothecore.managers.SoundManager;
 
 import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
+
+/**
+ * LevelSelectScreen class will display level selection screen.
+ *
+ * @author  Joonas Lauhala <joonas.lauhala@cs.tamk.fi>
+ *          Saku Karvinen <saku.karvinen@cs.tamk.fi>
+ * @version 1.0
+ * @since   2018-02-01
+ */
 public class LevelSelectScreen extends BaseScreen {
     private Texture backgroundTexture;
     private Image background;
@@ -36,11 +44,11 @@ public class LevelSelectScreen extends BaseScreen {
             }
         };
 
-        ImageButton playButton = new ImageButton(skin, coreLocalization.getValue("play"));
+        ImageButton playButton = new ImageButton(skin, localization.getValue("play"));
         playButton.addListener(clickListener);
         playButton.setName("play");
 
-        ImageButton exit = new ImageButton(skin, coreLocalization.getValue("return_small"));
+        ImageButton exit = new ImageButton(skin, localization.getValue("return_small"));
         exit.addListener(clickListener);
 
         background = new Image(backgroundTexture);

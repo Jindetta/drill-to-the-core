@@ -66,4 +66,21 @@ public class HighScoreScreen extends BaseScreen {
 
         return true;
     }
+
+    private class HighScore {
+        private String name;
+        private long totalScore;
+        private int time;
+
+        public HighScore(String name, SettingsManager profile) {
+            this.name = name;
+            totalScore = 0;
+            time = 0;
+
+            for (int i = 1; i < LEVEL_COUNT; i++) {
+                totalScore += profile.getIntegerIfExists("level_" + i, 0);
+                time += profile.getIntegerIfExists("time_" + i, 0);
+            }
+        }
+    }
 }

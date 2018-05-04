@@ -10,6 +10,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import tiko.coregames.drilltothecore.Setup;
 
+/**
+ * EndScreen class will display end screen.
+ *
+ * @author  Joonas Lauhala <joonas.lauhala@cs.tamk.fi>
+ *          Saku Karvinen <saku.karvinen@cs.tamk.fi>
+ * @version 1.0
+ * @since   2018-02-01
+ */
 public class EndScreen extends BaseScreen {
     private Table layout;
     private Image background;
@@ -57,15 +65,15 @@ public class EndScreen extends BaseScreen {
         Label Depth = new Label("MAXIMUM DEPTH: " + Math.round(drillDepth),skin );
         totalScoreLabel = new Label("", skin);
 
-        ImageButton continueButton = new ImageButton(skin, coreLocalization.getValue("next_small"));
+        ImageButton continueButton = new ImageButton(skin, localization.getValue("next_small"));
         continueButton.addListener(clickListener);
         continueButton.setName("continue_small");
 
-        ImageButton restartButton = new ImageButton(skin, coreLocalization.getValue("restart_small"));
+        ImageButton restartButton = new ImageButton(skin, localization.getValue("restart_small"));
         restartButton.addListener(clickListener);
         restartButton.setName("restart");
 
-        ImageButton exitButton = new ImageButton(skin, coreLocalization.getValue("return_small"));
+        ImageButton exitButton = new ImageButton(skin, localization.getValue("return_small"));
         exitButton.addListener(clickListener);
 
         layout.add(title).row();
@@ -82,10 +90,6 @@ public class EndScreen extends BaseScreen {
             settings.setIntegerValue("level_" + levelIndex, highScore);
             settings.saveSettings();
         }
-    }
-
-    public void setTitle(String title) {
-        //Not implemented
     }
 
     @Override

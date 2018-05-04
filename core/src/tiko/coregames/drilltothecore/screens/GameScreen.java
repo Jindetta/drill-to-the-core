@@ -14,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 import com.badlogic.gdx.utils.Align;
 
 import tiko.coregames.drilltothecore.Setup;
@@ -27,6 +26,14 @@ import java.util.Locale;
 
 import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
+/**
+ * GameScreen class will display game screen.
+ *
+ * @author  Joonas Lauhala <joonas.lauhala@cs.tamk.fi>
+ *          Saku Karvinen <saku.karvinen@cs.tamk.fi>
+ * @version 1.0
+ * @since   2018-02-01
+ */
 public class GameScreen extends BaseScreen {
     private LevelManager map;
     private int levelIndex;
@@ -144,18 +151,18 @@ public class GameScreen extends BaseScreen {
             }
         };
 
-        ImageButton continueButton = new ImageButton(skin, coreLocalization.getValue("continue_small"));
+        ImageButton continueButton = new ImageButton(skin, localization.getValue("continue_small"));
         continueButton.addListener(clickListener);
 
-        ImageButton restartButton = new ImageButton(skin, coreLocalization.getValue("restart_small"));
+        ImageButton restartButton = new ImageButton(skin, localization.getValue("restart_small"));
         restartButton.addListener(clickListener);
         restartButton.setName("restart");
 
-        ImageButton settingsButton = new ImageButton(skin, coreLocalization.getValue("settings_small"));
+        ImageButton settingsButton = new ImageButton(skin, localization.getValue("settings_small"));
         settingsButton.addListener(clickListener);
         settingsButton.setName("settings");
 
-        ImageButton menuButton = new ImageButton(skin, coreLocalization.getValue("return_small"));
+        ImageButton menuButton = new ImageButton(skin, localization.getValue("return_small"));
         menuButton.addListener(clickListener);
         menuButton.setName("menu");
 

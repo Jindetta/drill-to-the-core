@@ -8,7 +8,6 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
 /**
  * ControllerManager will process all accelerometer input.
- * Calibration and sensitivity processing is done by this class.
  *
  * @author  Joonas Lauhala <joonas.lauhala@cs.tamk.fi>
  *          Saku Karvinen <saku.karvinen@cs.tamk.fi>
