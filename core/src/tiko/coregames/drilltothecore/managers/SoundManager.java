@@ -26,10 +26,10 @@ public class SoundManager implements Disposable {
     public SoundManager(SettingsManager settings) {
         sounds = new HashMap<>();
 
-        soundVolume = settings.getFloatIfExists("soundVolume", 0.5f);
+        soundVolume = settings.getFloatIfExists("soundVolume", 50) / 100;
         soundMuted = settings.getBooleanIfExists("soundMuted", false);
 
-        musicVolume = settings.getFloatIfExists("musicVolume", 0.5f);
+        musicVolume = settings.getFloatIfExists("musicVolume", 50) / 100;
         musicMuted = settings.getBooleanIfExists("musicMuted", false);
     }
 

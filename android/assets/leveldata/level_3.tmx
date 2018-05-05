@@ -1,47 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="128" height="256" tilewidth="8" tileheight="8" infinite="0" nextobjectid="2">
+<map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="128" height="460" tilewidth="8" tileheight="8" infinite="0" nextobjectid="2">
  <properties>
-  <property name="background" value="leveldata/tutorial.jpg"/>
-  <property name="depth" type="int" value="1500"/>
+  <property name="background" value="leveldata/level_3.png"/>
+  <property name="depth" type="int" value="2900"/>
  </properties>
- <tileset firstgid="1" name="foreground-tiles" tilewidth="8" tileheight="8" tilecount="960" columns="24">
-  <image source="../images/foreground-tiles.png" width="192" height="320"/>
-  <tile id="96">
+ <tileset firstgid="1" name="foreground-tiles" tilewidth="8" tileheight="8" tilecount="1440" columns="24">
+  <image source="../images/foreground-tiles.png" width="192" height="480"/>
+  <tile id="84">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="97">
+  <tile id="85">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="98">
+  <tile id="86">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="99">
+  <tile id="87">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="100">
+  <tile id="88">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="101">
+  <tile id="89">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="102">
+  <tile id="90">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="103">
+  <tile id="91">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="92">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="93">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="94">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="95">
    <properties>
     <property name="id" value="rock"/>
    </properties>
@@ -66,22 +86,42 @@
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="120">
+  <tile id="108">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="121">
+  <tile id="109">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="122">
+  <tile id="110">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="123">
+  <tile id="111">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="112">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="113">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="114">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="115">
    <properties>
     <property name="id" value="rock"/>
    </properties>
@@ -122,6 +162,26 @@
    </properties>
   </tile>
   <tile id="131">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="132">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="133">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="134">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="135">
    <properties>
     <property name="id" value="rock"/>
    </properties>
@@ -226,22 +286,22 @@
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="176">
+  <tile id="188">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="177">
+  <tile id="189">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="178">
+  <tile id="190">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="179">
+  <tile id="191">
    <properties>
     <property name="id" value="rock"/>
    </properties>
@@ -266,142 +326,102 @@
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="196">
+  <tile id="208">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="197">
+  <tile id="209">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="198">
+  <tile id="210">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="199">
+  <tile id="211">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="200">
+  <tile id="212">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="201">
+  <tile id="213">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="202">
+  <tile id="214">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="203">
+  <tile id="215">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="216">
+  <tile id="228">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="217">
+  <tile id="229">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="218">
+  <tile id="230">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="219">
+  <tile id="231">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="220">
+  <tile id="232">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="221">
+  <tile id="233">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="222">
+  <tile id="234">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="223">
+  <tile id="235">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="224">
+  <tile id="236">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="225">
+  <tile id="237">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="226">
+  <tile id="238">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="227">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="240">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="241">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="242">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="243">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="244">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="245">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="246">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="247">
+  <tile id="239">
    <properties>
     <property name="id" value="rock"/>
    </properties>
@@ -426,22 +446,42 @@
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="264">
+  <tile id="252">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="265">
+  <tile id="253">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="266">
+  <tile id="254">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="267">
+  <tile id="255">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="256">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="257">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="258">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="259">
    <properties>
     <property name="id" value="rock"/>
    </properties>
@@ -482,6 +522,26 @@
    </properties>
   </tile>
   <tile id="275">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="276">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="277">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="278">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="279">
    <properties>
     <property name="id" value="rock"/>
    </properties>
@@ -586,22 +646,22 @@
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="320">
+  <tile id="332">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="321">
+  <tile id="333">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="322">
+  <tile id="334">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="323">
+  <tile id="335">
    <properties>
     <property name="id" value="rock"/>
    </properties>
@@ -626,142 +686,102 @@
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="340">
+  <tile id="352">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="341">
+  <tile id="353">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="342">
+  <tile id="354">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="343">
+  <tile id="355">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="344">
+  <tile id="356">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="345">
+  <tile id="357">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="346">
+  <tile id="358">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="347">
+  <tile id="359">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="360">
+  <tile id="372">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="361">
+  <tile id="373">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="362">
+  <tile id="374">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="363">
+  <tile id="375">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="364">
+  <tile id="376">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="365">
+  <tile id="377">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="366">
+  <tile id="378">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="367">
+  <tile id="379">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="368">
+  <tile id="380">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="369">
+  <tile id="381">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="370">
+  <tile id="382">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="371">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="384">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="385">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="386">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="387">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="388">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="389">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="390">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="391">
+  <tile id="383">
    <properties>
     <property name="id" value="rock"/>
    </properties>
@@ -786,22 +806,42 @@
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="408">
+  <tile id="396">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="409">
+  <tile id="397">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="410">
+  <tile id="398">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="411">
+  <tile id="399">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="400">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="401">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="402">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="403">
    <properties>
     <property name="id" value="rock"/>
    </properties>
@@ -842,6 +882,26 @@
    </properties>
   </tile>
   <tile id="419">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="420">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="421">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="422">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="423">
    <properties>
     <property name="id" value="rock"/>
    </properties>
@@ -946,22 +1006,22 @@
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="464">
+  <tile id="476">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="465">
+  <tile id="477">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="466">
+  <tile id="478">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="467">
+  <tile id="479">
    <properties>
     <property name="id" value="rock"/>
    </properties>
@@ -986,144 +1046,144 @@
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="484">
+  <tile id="496">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="485">
+  <tile id="497">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="486">
+  <tile id="498">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="487">
+  <tile id="499">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="488">
+  <tile id="500">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="489">
+  <tile id="501">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="490">
+  <tile id="502">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="491">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="504">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="505">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="506">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="507">
+  <tile id="503">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
   <tile id="508">
    <properties>
-    <property name="id" value="rock"/>
+    <property name="id" value="lava"/>
    </properties>
   </tile>
   <tile id="509">
    <properties>
-    <property name="id" value="rock"/>
+    <property name="id" value="lava"/>
    </properties>
   </tile>
   <tile id="510">
    <properties>
-    <property name="id" value="rock"/>
+    <property name="id" value="lava"/>
    </properties>
   </tile>
   <tile id="511">
    <properties>
-    <property name="id" value="rock"/>
+    <property name="id" value="lava"/>
    </properties>
   </tile>
-  <tile id="512">
+  <tile id="516">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="513">
+  <tile id="517">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="514">
+  <tile id="518">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="515">
+  <tile id="519">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="520">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="521">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="522">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="523">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="524">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="525">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="526">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="527">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
   <tile id="528">
    <properties>
-    <property name="id" value="rock"/>
+    <property name="id" value="lava"/>
    </properties>
   </tile>
   <tile id="529">
    <properties>
-    <property name="id" value="rock"/>
+    <property name="id" value="lava"/>
    </properties>
   </tile>
   <tile id="530">
    <properties>
-    <property name="id" value="rock"/>
+    <property name="id" value="lava"/>
    </properties>
   </tile>
   <tile id="531">
    <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="532">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="533">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="534">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="535">
-   <properties>
-    <property name="id" value="rock"/>
+    <property name="id" value="lava"/>
    </properties>
   </tile>
   <tile id="536">
@@ -1146,22 +1206,42 @@
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="552">
+  <tile id="540">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="553">
+  <tile id="541">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="554">
+  <tile id="542">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="555">
+  <tile id="543">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="544">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="545">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="546">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="547">
    <properties>
     <property name="id" value="rock"/>
    </properties>
@@ -1204,6 +1284,46 @@
   <tile id="563">
    <properties>
     <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="564">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="565">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="566">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="567">
+   <properties>
+    <property name="id" value="rock"/>
+   </properties>
+  </tile>
+  <tile id="572">
+   <properties>
+    <property name="id" value="lava"/>
+   </properties>
+  </tile>
+  <tile id="573">
+   <properties>
+    <property name="id" value="lava"/>
+   </properties>
+  </tile>
+  <tile id="574">
+   <properties>
+    <property name="id" value="lava"/>
+   </properties>
+  </tile>
+  <tile id="575">
+   <properties>
+    <property name="id" value="lava"/>
    </properties>
   </tile>
   <tile id="576">
@@ -1266,26 +1386,6 @@
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="592">
-   <properties>
-    <property name="id" value="lava"/>
-   </properties>
-  </tile>
-  <tile id="593">
-   <properties>
-    <property name="id" value="lava"/>
-   </properties>
-  </tile>
-  <tile id="594">
-   <properties>
-    <property name="id" value="lava"/>
-   </properties>
-  </tile>
-  <tile id="595">
-   <properties>
-    <property name="id" value="lava"/>
-   </properties>
-  </tile>
   <tile id="600">
    <properties>
     <property name="id" value="rock"/>
@@ -1326,44 +1426,24 @@
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="608">
+  <tile id="620">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="609">
+  <tile id="621">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="610">
+  <tile id="622">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="611">
+  <tile id="623">
    <properties>
     <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="616">
-   <properties>
-    <property name="id" value="lava"/>
-   </properties>
-  </tile>
-  <tile id="617">
-   <properties>
-    <property name="id" value="lava"/>
-   </properties>
-  </tile>
-  <tile id="618">
-   <properties>
-    <property name="id" value="lava"/>
-   </properties>
-  </tile>
-  <tile id="619">
-   <properties>
-    <property name="id" value="lava"/>
    </properties>
   </tile>
   <tile id="624">
@@ -1386,182 +1466,82 @@
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="628">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="629">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="630">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="631">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="632">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="633">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="634">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="635">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
   <tile id="640">
    <properties>
-    <property name="id" value="lava"/>
+    <property name="id" value="rock"/>
    </properties>
   </tile>
   <tile id="641">
    <properties>
-    <property name="id" value="lava"/>
+    <property name="id" value="rock"/>
    </properties>
   </tile>
   <tile id="642">
    <properties>
-    <property name="id" value="lava"/>
+    <property name="id" value="rock"/>
    </properties>
   </tile>
   <tile id="643">
    <properties>
-    <property name="id" value="lava"/>
+    <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="648">
+  <tile id="644">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="649">
+  <tile id="645">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="650">
+  <tile id="646">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="651">
+  <tile id="647">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="652">
+  <tile id="660">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="653">
+  <tile id="661">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="654">
+  <tile id="662">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="655">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="656">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="657">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="658">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="659">
+  <tile id="663">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
   <tile id="664">
    <properties>
-    <property name="id" value="lava"/>
+    <property name="id" value="rock"/>
    </properties>
   </tile>
   <tile id="665">
    <properties>
-    <property name="id" value="lava"/>
+    <property name="id" value="rock"/>
    </properties>
   </tile>
   <tile id="666">
    <properties>
-    <property name="id" value="lava"/>
+    <property name="id" value="rock"/>
    </properties>
   </tile>
   <tile id="667">
-   <properties>
-    <property name="id" value="lava"/>
-   </properties>
-  </tile>
-  <tile id="672">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="673">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="674">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="675">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="676">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="677">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="678">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="679">
    <properties>
     <property name="id" value="rock"/>
    </properties>
@@ -1586,22 +1566,22 @@
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="696">
+  <tile id="684">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="697">
+  <tile id="685">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="698">
+  <tile id="686">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="699">
+  <tile id="687">
    <properties>
     <property name="id" value="rock"/>
    </properties>
@@ -1686,331 +1666,71 @@
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="728">
+  <tile id="764">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="729">
+  <tile id="765">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="730">
+  <tile id="766">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="731">
+  <tile id="767">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="744">
+  <tile id="784">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="745">
+  <tile id="785">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="746">
+  <tile id="786">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="747">
+  <tile id="787">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="748">
+  <tile id="804">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="749">
+  <tile id="805">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="750">
+  <tile id="806">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
-  <tile id="751">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="752">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="753">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="754">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="755">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="768">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="769">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="770">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="771">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="772">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="773">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="774">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="775">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="792">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="793">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="794">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="795">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="796">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="797">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="798">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="799">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="816">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="817">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="818">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="819">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="820">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="821">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="822">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="823">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="840">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="841">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="842">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="843">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="844">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="845">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="846">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="847">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="864">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="865">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="866">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="867">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="888">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="889">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="890">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="891">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="912">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="913">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="914">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="915">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="936">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="937">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="938">
-   <properties>
-    <property name="id" value="rock"/>
-   </properties>
-  </tile>
-  <tile id="939">
+  <tile id="807">
    <properties>
     <property name="id" value="rock"/>
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="961" name="shroud" tilewidth="8" tileheight="8" tilecount="8" columns="8">
+ <tileset firstgid="1441" name="shroud" tilewidth="8" tileheight="8" tilecount="8" columns="8">
   <image source="../images/shroud.png" width="64" height="8"/>
  </tileset>
- <tileset firstgid="969" name="collectibles" tilewidth="32" tileheight="32" tilecount="52" columns="13">
+ <tileset firstgid="1449" name="collectibles" tilewidth="32" tileheight="32" tilecount="52" columns="13">
   <image source="../images/collectibles.png" width="416" height="128"/>
   <tile id="0">
    <properties>
@@ -2368,24 +2088,35 @@
    </properties>
   </tile>
  </tileset>
- <layer name="ground" width="128" height="256" locked="1">
+ <tileset firstgid="1501" name="guide-arrows" tilewidth="32" tileheight="32" tilecount="4" columns="1">
+  <image source="../images/guide-arrows.png" width="32" height="128"/>
+  <tile id="0">
+   <animation>
+    <frame tileid="0" duration="100"/>
+    <frame tileid="1" duration="100"/>
+    <frame tileid="2" duration="100"/>
+    <frame tileid="3" duration="100"/>
+   </animation>
+  </tile>
+ </tileset>
+ <layer name="ground" width="128" height="460" locked="1">
   <data encoding="base64" compression="zlib">
-   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
+   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z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6zw/fH17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z8fvj+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/P3x/eP3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf374/vD6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r//88P3h9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/+eH7w+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vPj+/8BoIjkCg==
   </data>
  </layer>
- <layer name="obstacles" width="128" height="256" locked="1">
+ <layer name="obstacles" width="128" height="460" visible="0" locked="1">
   <data encoding="base64" compression="zlib">
-   eJztwTEBAAAAwqD1T+1hDaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbgAeAAE=
+   eJztwQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMC3AZgtAAE=
   </data>
  </layer>
- <layer name="collectibles" width="128" height="256" locked="1">
+ <layer name="collectibles" width="128" height="460" locked="1">
   <data encoding="base64" compression="zlib">
-   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
+   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
   </data>
  </layer>
- <layer name="shroud" width="128" height="256" locked="1">
+ <layer name="shroud" width="128" height="460" locked="1">
   <data encoding="base64" compression="zlib">
-   eJztwwEJACAQBLAH+4dSRIz1LQS5DVYFAAAAAAAAAAAAAPziDpMfo2+jL6NPVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVXVxxs43aE4
+   eJztw8EJACAMBLB+3H8GRcQxu4QfuQRSBQAAAAAAAAAAAAD84g6TH6Nvoy+jT1VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVn2xj8BJT
   </data>
  </layer>
  <objectgroup name="spawns" locked="1">

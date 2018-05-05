@@ -3,8 +3,10 @@ package tiko.coregames.drilltothecore.screens;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -45,7 +47,39 @@ public class SettingsScreen extends BaseScreen {
                 Setup.nextScreen(new CalibrationScreen());
             }
         });
-        settingsTable.add(calibration).colspan(10).row();
+
+        final Label soundVolumeLabel = new Label("", skin);
+        final Slider soundVolume = new Slider(0, 100, 5, false, skin);
+        soundVolume.setValue(settings.getIntegerIfExists("soundVolume", 1));
+        soundVolume.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                soundVolumeLabel.setText(String.format("SOUND VOLUME: %.0f", soundVolume.getValue()));
+                settings.setIntegerValue("soundVolume", Math.round(soundVolume.getValue()));
+                settings.saveSettings();
+            }
+        });
+        soundVolume.fire(new ChangeListener.ChangeEvent());
+
+        final Label musicVolumeLabel = new Label("", skin);
+        final Slider musicVolume = new Slider(0, 100, 5, false, skin);
+        musicVolume.setValue(settings.getIntegerIfExists("musicVolume", 1));
+        musicVolume.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                musicVolumeLabel.setText(String.format("MUSIC VOLUME: %.0f", musicVolume.getValue()));
+                settings.setIntegerValue("musicVolume", Math.round(musicVolume.getValue()));
+                settings.saveSettings();
+            }
+        });
+        musicVolume.fire(new ChangeListener.ChangeEvent());
+
+        settingsTable.add(soundVolumeLabel).row();
+        settingsTable.add(soundVolume).row();
+        settingsTable.add(musicVolumeLabel).row();
+        settingsTable.add(musicVolume).row();
+
+        settingsTable.add(calibration).center().colspan(10).row();
         buttons = new ImageButton[playerImage.getHeight() / BIG_TILE_SIZE];
 
         for (int i = 0; i < buttons.length; i++) {
@@ -61,7 +95,6 @@ public class SettingsScreen extends BaseScreen {
             });
             settingsTable.add(buttons[i]).center().pad(15);
         }
-
         addActor(settingsTable);
     }
 

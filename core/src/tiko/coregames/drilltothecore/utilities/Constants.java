@@ -1,6 +1,5 @@
 package tiko.coregames.drilltothecore.utilities;
 
-
 /**
  * Constants class will define all necessary values.
  *
