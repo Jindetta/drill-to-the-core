@@ -12,28 +12,52 @@ com.badlogic.gdx.graphics.g2d.BitmapFont: {
 }
 com.badlogic.gdx.graphics.Color: {
 	red: {
-		r: 0.45666668
-		g: 0.123299986
-		b: 0.12885617
+		r: 1
+		g: 0
+		b: 0
 		a: 1
 	}
 	white: {
-		r: 0.98
-		g: 0.98
-		b: 0.98
+		r: 1
+		g: 1
+		b: 1
 		a: 1
 	}
+	yellow: {
+		r: 1
+		g: 1
+		b: 0.25
+		a: 1
+	}
+	blue: {
+		r: 0.15
+		g: 0.15
+		b: 0.5
+		a: 1
+	}
+    green: {
+        r: 0
+        g: 1
+        b: 0
+        a: 1
+    }
 	black: {
-		r: 0.023333283
-		g: 0.022399953
-		b: 0.022399953
+		r: 0
+		g: 0
+		b: 0
+		a: 1
+	}
+	darkRed: {
+		r: 0.25
+		g: 0
+		b: 0
 		a: 1
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 	default: {
-		up: Questionbox
-		down: Questionbox_pressed
+		up: Button
+		down: Button_pressed
 	}
 	icon1: {
 		up: IconPlus
@@ -43,11 +67,15 @@ com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 		up: IconMinus
 		down: IconMinus_pressed
 	}
-	lang_fin: {
-		up: Language_finnish
+	helptip: {
+		up: Questionbutton
+		down: Questionbutton_pressed
 	}
 	lang_eng: {
 		up: Language_english
+	}
+	lang_fin: {
+		up: Language_finnish
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
@@ -56,160 +84,190 @@ com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 		checkboxOff: Checkbox_marked
 		font: ArialBlack
 	}
-	checkbox2: {
-		checkboxOn: Music1_on
-		checkboxOff: Music1_off
+	checkbox_music1: {
+		checkboxOn: MusicOn
+		checkboxOff: MusicOff
 		font: ArialBlack
 	}
-	checkbox3: {
-		checkboxOn: Music2_on
-		checkboxOff: Music2_off
+	checkbox_music2: {
+		checkboxOn: MusicOn2
+		checkboxOff: MusicOff2
 		font: ArialBlack
 	}
-	checkbox4: {
-		checkboxOn: Sound1_on
-		checkboxOff: Sound1_off
+	checkbox_sound1: {
+		checkboxOn: SoundOn
+		checkboxOff: SoundOff
 		font: ArialBlack
 	}
-	checkbox5: {
-		checkboxOn: Sound2_on
-		checkboxOff: Sound2_off
+	checkbox_sound2: {
+		checkboxOn: SoundOn2
+		checkboxOff: SoundOff2
 		font: ArialBlack
 	}
-	checkbox6: {
-		checkboxOn: GameXRbox
-		checkboxOff: GameXRbox_Off
+	checkbox_GameXR: {
+		checkboxOn: XRbutton
+		checkboxOff: XRbutton_Off
 		font: ArialBlack
 	}
-	checkbox7: {
-		checkboxOn: Questionbox
-		checkboxOff: Questionbox_pressed
+	checkbox_language: {
+		checkboxOn: Language_finnish
+		checkboxOff: Language_english
 		font: ArialBlack
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
-	button1_eng: {
-		imageUp: Button1_eng
-		imageDown: Button1_pressed_eng
+	default: {
+		imageUp: Button
+		imageDown: Button_pressed
 	}
-	button1_fin: {
-		imageUp: Button1_fin
-		imageDown: Button1_pressed_fin
+	playbutton_fin: {
+		imageUp: MainMenu_PlayButton_fin
+		imageDown: MainMenu_PlayButton_pressed_fin
 	}
-	button2_eng: {
-		imageUp: Button2_eng
-		imageDown: Button2_pressed_eng
+	playbutton_eng: {
+		imageUp: MainMenu_PlayButton_eng
+		imageDown: MainMenu_PlayButton_pressed_eng
 	}
-	button2_fin: {
-		imageUp: Button2_fin
-		imageDown: Button2_pressed_fin
+	highscorebutton_fin: {
+		imageUp: MainMenu_HighScoresButton_fin
+		imageDown: MainMenu_HighScoresButton_pressed_fin
 	}
-	button3_eng: {
-		imageUp: Button3_eng
-		imageDown: Button3_pressed_eng
+	highscorebutton_eng: {
+		imageUp: MainMenu_HighScoresButton_eng
+		imageDown: MainMenu_HighScoresButton_pressed_eng
 	}
-	button3_fin: {
-		imageUp: Button3_fin
-		imageDown: Button3_pressed_fin
+	settingsbutton_fin: {
+		imageUp: MainMenu_SettingsButton_fin
+		imageDown: MainMenu_SettingsButton_pressed_fin
 	}
-	button4_eng: {
-		imageUp: Button4_eng
-		imageDown: Button4_pressed_eng
+	settingsbutton_eng: {
+		imageUp: MainMenu_SettingsButton_eng
+		imageDown: MainMenu_SettingsButton_pressed_eng
 	}
-	button4_fin: {
-		imageUp: Button4_fin
-		imageDown: Button4_pressed_fin
+	quitbutton_fin: {
+		imageUp: MainMenu_QuitButton_fin
+		imageDown: MainMenu_QuitButton_pressed_fin
 	}
-	button5_eng: {
-		imageUp: Button5_eng
-		imageDown: Button5_pressed_eng
+	quitbutton_eng: {
+		imageUp: MainMenu_QuitButton_eng
+		imageDown: MainMenu_QuitButton_pressed_eng
 	}
-	button5_fin: {
-		imageUp: Button5_fin
-		imageDown: Button5_pressed_fin
+	backbutton_fin: {
+		imageUp: SettingsBackButton_fin
+		imageDown: SettingsBackButton_pressed_fin
 	}
-	button6_eng: {
-		imageUp: Button6_eng
-		imageDown: Button6_pressed_eng
+	backbutton_eng: {
+		imageUp: SettingsBackButton_eng
+		imageDown: SettingsBackButton_pressed_eng
 	}
-	button6_fin: {
-		imageUp: Button6_fin
-		imageDown: Button6_pressed_fin
+	continuegamebutton_fin: {
+		imageUp: PauseMenu_ContinueGameButton_fin
+		imageDown: PauseMenu_ContinueGameButton_pressed_fin
 	}
-	button7_eng: {
-		imageUp: Button7_eng
-		imageDown: Button7_pressed_eng
+	continuegamebutton_eng: {
+		imageUp: PauseMenu_ContinueGameButton_eng
+		imageDown: PauseMenu_ContinueGameButton_pressed_eng
 	}
-	button7_fin: {
-		imageUp: Button7_fin
-		imageDown: Button7_pressed_fin
+	settingsbutton_pausemenu_fin: {
+		imageUp: PauseMenu_SettingsButton_fin
+		imageDown: PauseMenu_SettingsButton_pressed_fin
 	}
-	button8_eng: {
-		imageUp: Button8_eng
-		imageDown: Button8_pressed_eng
+	settingsbutton_pausemenu_eng: {
+		imageUp: PauseMenu_SettingsButton_eng
+		imageDown: PauseMenu_SettingsButton_pressed_eng
 	}
-	button8_fin: {
-		imageUp: Button8_fin
-		imageDown: Button8_pressed_fin
+	backtomenubutton_pausemenu_fin: {
+		imageUp: PauseMenu_ReturntoMenueButton1_fin
+		imageDown: PauseMenu_ReturnToMenueButton_pressed_fin
 	}
-	button9_eng: {
-		imageUp: Button9_eng
-		imageDown: Button9_pressed_eng
+	backtomenubutton_pausemenu_eng: {
+		imageUp: PauseMenu_ReturntoMenueButton1_eng
+		imageDown: PauseMenu_ReturntoMenueButton_pressed_eng
 	}
-	button9_fin: {
-		imageUp: Button9_fin
-		imageDown: Button9_pressed_fin
+	nextlevelbutton_levelcompletescreen_fin: {
+		imageUp: LevelCompleteScreen_NextLevelButton_fin
+		imageDown: LevelCompleteScreen_NextLevelButton_pressed_fin
 	}
-	button10and11_eng: {
-		imageUp: Button11_eng
-		imageDown: Button10_eng
+	nextlevelbutton_levelcompletescreen_eng: {
+		imageUp: LevelCompleteScreen_NextLevelButton_eng
+		imageDown: LevelCompleteScreen_NextLevelButton_pressed_eng
 	}
-	button10and11_fin: {
-		imageUp: Button11_fin
-		imageDown: Button10_fin
+	restartbutton_levelcompletescreen_fin: {
+		imageUp: LevelCompleteScreen_RestartLevelButton_fin
+		imageDown: LevelCompleteScreen_RestartLevelButton_pressed_fin
 	}
-	button12_eng: {
-		imageUp: Button12_eng
-		imageDown: Button12_pressed_eng
+	restartbutton_levelcompletescreen_eng: {
+		imageUp: LevelCompleteScreen_RestartLevelButton_eng
+		imageDown: LevelCompleteScreen_RestartLevelButton_pressed_eng
 	}
-	button12_fin: {
-		imageUp: Button12_fin
-		imageDown: Button12_pressed_fin
+	restartlevel_pausemenu_fin: {
+		imageUp: PauseMenu_ResetLevelButton_fin
+		imageDown: PauseMenu_ResetLevelButton_pressed_fin
 	}
-	button13_eng: {
-		imageUp: Button13_eng
-		imageDown: Button13_pressed_eng
+	restartlevel_pausemenu_eng: {
+		imageUp: PauseMenu_ResetLevelButton_eng
+		imageDown: PauseMenu_ResetLevelButton_pressed_eng
 	}
-	button13_fin: {
-		imageUp: Button13_fin
-		imageDown: Button13_pressed_fin
+	calibrationbutton_eng: {
+		imageUp: CalibrationMenu_Calibrate_eng
 	}
-	gather: {
-		imageUp: Gatherscreen1
+	calibrationbutton_fin: {
+		imageUp: CalibrationMenu_Calibrate_fin
 	}
+    score: {
+        imageUp: GatherScreen_Mineral
+    }
+    clean: {
+      imageUp: Gatherscreen_Gas
+    }
+    depth: {
+        imageUp: Gatherscreen_Booster
+    }
+    fuel: {
+        imageUp: GasSign
+    }
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
 		font: SuperQuickFormula
-		fontColor: white
-		background: Screen10
+		fontColor: black
+		background: ListScreen
 	}
-  scores: {
-    font: SuperQuickFormula
-    fontColor: black
-    background: Screen10
-  }
+	scoresMenu: {
+		font: SuperQuickFormula
+		fontColor: white
+		background: ListScreen
+	}
+    collected: {
+        font: SuperQuickFormula
+        fontColor: green
+    }
+    gametime: {
+        font: SuperQuickFormula
+        fontColor: white
+    }
+    clear: {
+        font: SuperQuickFormula
+        fontColor: black
+    }
 }
 com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 	default: {
 		font: ArialBlack
 		fontColorSelected: black
 		fontColorUnselected: white
-		selection: Screen11
+		selection: ListScreen
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
+	default-horizontal: {
+		background: Gas_Full
+		knobAfter: EmptyBar
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
 	default: {
+		background: HelpScreen2
 		hScrollKnob: Slider_knob_horizontal
 		vScrollKnob: Slider_knob_vertical
 	}
@@ -218,7 +276,7 @@ com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
 	default: {
 		font: ArialBlack
 		fontColor: black
-		background: Screen10
+		background: SelectBox
 		scrollStyle: default
 		listStyle: default
 	}
@@ -243,16 +301,20 @@ com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
 	default: {
 		label: default
+		background: HelpScreen1
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Touchpad$TouchpadStyle: {
 	default: {
-		background: Screen6
-		knob: Screen6_mark
+		background: CalibrationTouchScreen
+		knob: CalibrationTouchKnob
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 	default: {
+		titleFont: SuperQuickFormula
+	}
+	pauseWindow: {
 		titleFont: Abduction2002
 	}
 }

@@ -330,11 +330,11 @@ public class Player extends BaseObject {
         effect.draw(batch, delta);
     }
 
-    private float getCenterX() {
+    public float getCenterX() {
         return getX() + BIG_TILE_SIZE / 2;
     }
 
-    private float getCenterY() {
+    public float getCenterY() {
         return getY() + BIG_TILE_SIZE / 2;
     }
 

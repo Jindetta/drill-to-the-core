@@ -41,7 +41,7 @@ public class HighScoreScreen extends BaseScreen {
                 }
             }
 
-            scoreList.add(new Label(text, skin, "scores")).padBottom(5).row();
+            scoreList.add(new Label(text, skin, "scoresMenu")).padBottom(5).row();
         }
 
         addActor(scoreList);

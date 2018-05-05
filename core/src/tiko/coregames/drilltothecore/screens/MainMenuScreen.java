@@ -43,10 +43,10 @@ public class MainMenuScreen extends BaseScreen {
                 String name = event.getListenerActor().getName();
 
                 switch (name == null ? "" : name) {
-                    case "play":
+                    case "playMenu":
                         Setup.nextScreen(new LevelSelectScreen());
                         break;
-                    case "settings":
+                    case "settingsMenu":
                         Setup.nextScreen(new SettingsScreen());
                         break;
                     case "highScore":
@@ -61,19 +61,19 @@ public class MainMenuScreen extends BaseScreen {
             }
         };
 
-        ImageButton playButton = new ImageButton(skin, localization.getValue("play"));
+        ImageButton playButton = new ImageButton(skin, localization.getValue("playMenu"));
         playButton.addListener(clickListener);
-        playButton.setName("play");
+        playButton.setName("playMenu");
 
-        final ImageButton settingsButton = new ImageButton(skin, localization.getValue("settings"));
+        final ImageButton settingsButton = new ImageButton(skin, localization.getValue("settingsMenu"));
         settingsButton.addListener(clickListener);
-        settingsButton.setName("settings");
+        settingsButton.setName("settingsMenu");
 
-        ImageButton highScore = new ImageButton(skin, localization.getValue("scores"));
+        ImageButton highScore = new ImageButton(skin, localization.getValue("scoresMenu"));
         highScore.addListener(clickListener);
         highScore.setName("highScore");
 
-        ImageButton exit = new ImageButton(skin, localization.getValue("quit"));
+        ImageButton exit = new ImageButton(skin, localization.getValue("quitMenu"));
         exit.addListener(clickListener);
 
         background = new Image(backgroundTexture);
@@ -81,15 +81,15 @@ public class MainMenuScreen extends BaseScreen {
 
         gameMenu = new Table();
         gameMenu.add(playButton).row();
-        gameMenu.add(settingsButton).padTop(MENU_PADDING_TOP).row();
-        gameMenu.add(highScore).padTop(MENU_PADDING_TOP).row();
-        gameMenu.add(exit).padTop(MENU_PADDING_TOP);
+        gameMenu.add(settingsButton).padTop(MENU_DEFAULT_PADDING).row();
+        gameMenu.add(highScore).padTop(MENU_DEFAULT_PADDING).row();
+        gameMenu.add(exit).padTop(MENU_DEFAULT_PADDING);
 
         addActor(gameMenu);
 
         quickMenu = new Table();
 
-        final CheckBox muteSounds = new CheckBox("", skin, "checkbox5");
+        final CheckBox muteSounds = new CheckBox("", skin, "checkbox_sound2");
         muteSounds.setChecked(settings.getBooleanIfExists("soundMuted", false));
         muteSounds.addListener(new ChangeListener() {
             @Override
@@ -100,7 +100,7 @@ public class MainMenuScreen extends BaseScreen {
             }
         });
 
-        final CheckBox muteMusic = new CheckBox("", skin, "checkbox3");
+        final CheckBox muteMusic = new CheckBox("", skin, "checkbox_music2");
         muteMusic.setChecked(settings.getBooleanIfExists("musicMuted", false));
         muteMusic.addListener(new ChangeListener() {
             @Override

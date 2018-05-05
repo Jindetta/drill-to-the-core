@@ -42,7 +42,7 @@ public class EndScreen extends BaseScreen {
                 String name = event.getListenerActor().getName();
 
                 switch (name == null ? "" : name) {
-                    case "continue_small":
+                    case "continueGame":
                         // Next level
                         Setup.nextScreen(new GameScreen(levelIndex + 1, false));
                         break;
@@ -65,15 +65,15 @@ public class EndScreen extends BaseScreen {
         Label Depth = new Label("MAXIMUM DEPTH: " + Math.round(drillDepth),skin );
         totalScoreLabel = new Label("", skin);
 
-        ImageButton continueButton = new ImageButton(skin, localization.getValue("next_small"));
+        ImageButton continueButton = new ImageButton(skin, localization.getValue("nextMenu"));
         continueButton.addListener(clickListener);
-        continueButton.setName("continue_small");
+        continueButton.setName("continueGame");
 
-        ImageButton restartButton = new ImageButton(skin, localization.getValue("restart_small"));
+        ImageButton restartButton = new ImageButton(skin, localization.getValue("restartGame"));
         restartButton.addListener(clickListener);
         restartButton.setName("restart");
 
-        ImageButton exitButton = new ImageButton(skin, localization.getValue("return_small"));
+        ImageButton exitButton = new ImageButton(skin, localization.getValue("backButtonGame"));
         exitButton.addListener(clickListener);
 
         layout.add(title).row();

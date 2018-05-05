@@ -3,10 +3,10 @@ package tiko.coregames.drilltothecore.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -39,13 +39,19 @@ public class GameScreen extends BaseScreen {
     private int levelIndex;
 
     private Window pauseWindow;
-    private Label collectedItem;
     private Player player;
 
     private float totalGameTime;
-    private Label gameTimer;
 
-    private ImageButton score;
+    private Table screenLayout;
+    private Table powerupLayout;
+
+    private Label displayScoreValue;
+    private Label displayGameTime;
+
+    private Label scoreValue, depthValue;
+
+    private ProgressBar fuelValue;
 
     private SoundManager sounds;
 
@@ -73,53 +79,87 @@ public class GameScreen extends BaseScreen {
 
         if (playerSpawn != null) {
             player = new Player(map, playerSpawn.x, playerSpawn.y, sounds);
-            createFuelMeter();
         }
-
-        createPauseWindow();
-        createDisplayElements();
         totalGameTime = 0;
+
+        createScreenLayout();
+        createPauseWindow();
     }
 
-    private void createDisplayElements() {
-        // Notification popup for collected items
-        collectedItem = new Label("", skin);
-        collectedItem.setAlignment(Align.center);
-        collectedItem.setColor(Color.GREEN);
-        collectedItem.setVisible(false);
+    private void createScreenLayout() {
+        screenLayout = new Table();
+        screenLayout.columnDefaults(3);
+        screenLayout.defaults().expand().uniform();
+        screenLayout.add(createInformationLayer()).align(Align.topLeft).top();
+        screenLayout.add(createDisplayLayer()).top();
+        screenLayout.add(createFuelLayer()).align(Align.topRight).row();
 
-        addActor(collectedItem);
-
-        // Game time
-        gameTimer = new Label("", skin);
-        gameTimer.setAlignment(Align.center);
-
-        addActor(gameTimer);
-
-        score = new ImageButton(skin, "gather");
-
-        addActor(score);
+        addActor(screenLayout);
     }
 
-    private void setNotificationActive() {
+    private Table createDisplayLayer() {
+        Table displayLayer = new Table();
+
+        displayGameTime = new Label("", skin, "gametime");
+        displayGameTime.setAlignment(Align.center);
+
+        displayScoreValue = new Label("", skin, "collected");
+        displayScoreValue.setAlignment(Align.center);
+        displayScoreValue.setVisible(false);
+
+        displayLayer.add(displayGameTime).padBottom(MENU_DEFAULT_PADDING).row();
+        displayLayer.add(displayScoreValue);
+        displayLayer.pack();
+
+        return displayLayer;
+    }
+
+    private Table createInformationLayer() {
+        Table infoLayer = new Table();
+
+        Stack scoreLayer = new Stack(
+            new ImageButton(skin, "score"),
+            scoreValue = new Label("", skin, "clear")
+        );
+
+        scoreValue.setAlignment(Align.right);
+
+        Stack depthLayer = new Stack(
+            new ImageButton(skin, "depth"),
+            depthValue = new Label("", skin, "clear")
+        );
+
+        depthValue.setAlignment(Align.right);
+
+        powerupLayout = new Table();
+        powerupLayout.defaults().left().size(125, 25);
+
+        infoLayer.add(scoreLayer).size(125, 25).left().row();
+        infoLayer.add(depthLayer).size(125, 25).left().row();
+        infoLayer.add(powerupLayout);
+
+        return infoLayer;
+    }
+
+    private void updateInformationStatus() {
         if (player.getRecentScoreString() != null) {
             SequenceAction sequence = Actions.sequence();
             sequence.addAction(Actions.alpha(1));
             sequence.addAction(Actions.fadeOut(2));
             sequence.addAction(Actions.visible(false));
 
-            collectedItem.setText(player.getRecentScoreString());
-            collectedItem.getActions().clear();
-            collectedItem.addAction(sequence);
-            collectedItem.setVisible(true);
+            displayScoreValue.setText(player.getRecentScoreString());
+            displayScoreValue.getActions().clear();
+            displayScoreValue.addAction(sequence);
+            displayScoreValue.setVisible(true);
         }
     }
 
     /**
      * Creates pause menu window.
      */
-    private void createPauseWindow() {
-        pauseWindow = new Window("", skin);
+    private Window createPauseWindow() {
+        pauseWindow = new Window("", skin, "pauseWindow");
         pauseWindow.setResizable(false);
         pauseWindow.setMovable(false);
         pauseWindow.setVisible(false);
@@ -130,7 +170,7 @@ public class GameScreen extends BaseScreen {
                 String name = event.getListenerActor().getName();
 
                 switch (name == null ? "" : name) {
-                    case "settings":
+                    case "settingsMenu":
                         Setup.nextScreen(new SettingsScreen());
                         return;
                     case "menu":
@@ -151,50 +191,45 @@ public class GameScreen extends BaseScreen {
             }
         };
 
-        ImageButton continueButton = new ImageButton(skin, localization.getValue("continue_small"));
+        ImageButton continueButton = new ImageButton(skin, localization.getValue("continueGame"));
         continueButton.addListener(clickListener);
 
-        ImageButton restartButton = new ImageButton(skin, localization.getValue("restart_small"));
+        ImageButton restartButton = new ImageButton(skin, localization.getValue("restartGame"));
         restartButton.addListener(clickListener);
         restartButton.setName("restart");
 
-        ImageButton settingsButton = new ImageButton(skin, localization.getValue("settings_small"));
+        ImageButton settingsButton = new ImageButton(skin, localization.getValue("settingsGame"));
         settingsButton.addListener(clickListener);
-        settingsButton.setName("settings");
+        settingsButton.setName("settingsMenu");
 
-        ImageButton menuButton = new ImageButton(skin, localization.getValue("return_small"));
+        ImageButton menuButton = new ImageButton(skin, localization.getValue("backButtonGame"));
         menuButton.addListener(clickListener);
         menuButton.setName("menu");
 
         pauseWindow.add(continueButton).row();
-        pauseWindow.add(restartButton).padTop(MENU_PADDING_TOP).row();
-        pauseWindow.add(settingsButton).padTop(MENU_PADDING_TOP).row();
-        pauseWindow.add(menuButton).padTop(MENU_PADDING_TOP).row();
+        pauseWindow.add(restartButton).padTop(MENU_DEFAULT_PADDING).row();
+        pauseWindow.add(settingsButton).padTop(MENU_DEFAULT_PADDING).row();
+        pauseWindow.add(menuButton).padTop(MENU_DEFAULT_PADDING).row();
         pauseWindow.setSize(250, 300);
 
-        addActor(pauseWindow);
+        return pauseWindow;
     }
 
     /**
-     * Creates fuel gauge.
+     * Creates fuel layer, which contains fuel meter and icon.
      */
-    private void createFuelMeter() {
-        /*playerFuel = skin.getTiledDrawable("Gasmeter");
-        updateFuelColor();*/
-    }
+    private Table createFuelLayer() {
+        Table fuelLayer = new Table();
 
-    private void updateFuelColor() {
-       /*float fuelAmount = player.getFuel() / PLAYER_FUEL_TANK_SIZE;
+        ImageButton fuelImage = new ImageButton(skin, "fuel");
+        fuelValue = new ProgressBar(0, PLAYER_FUEL_TANK_SIZE, 1, false, skin);
+        fuelValue.setDisabled(true);
 
-        if (fuelAmount >= .75f) {
-            fuelColor = skin.getTiledDrawable("Gas_100");
-        } else if (fuelAmount >= .50f) {
-            fuelColor = skin.getTiledDrawable("Gas_75");
-        } else if (fuelAmount >= .25f) {
-            fuelColor = skin.getTiledDrawable("Gas_50");
-        } else {
-            fuelColor = skin.getTiledDrawable("Gas_25");
-        }*/
+        fuelLayer.add(fuelImage).padRight(MENU_DEFAULT_PADDING).height(25);
+        fuelLayer.add(fuelValue).height(25);
+        fuelLayer.pack();
+
+        return fuelLayer;
     }
 
     /**
@@ -205,11 +240,9 @@ public class GameScreen extends BaseScreen {
 
         float viewportWidth = camera.viewportWidth * camera.zoom / 2;
         float viewportHeight = camera.viewportHeight * camera.zoom / 2;
-        int originX = (int) player.getX() + BIG_TILE_SIZE / 2;
-        int originY = (int) player.getY();
 
-        camera.position.x = MathUtils.clamp(originX, viewportWidth, map.getMapWidth() - viewportWidth);
-        camera.position.y = MathUtils.clamp(originY, viewportHeight, map.getMapHeight() - viewportHeight);
+        camera.position.x = MathUtils.clamp((int) player.getCenterX(), viewportWidth, map.getMapWidth() - viewportWidth);
+        camera.position.y = MathUtils.clamp((int) player.getY(), viewportHeight, map.getMapHeight() - viewportHeight);
 
         camera.update();
     }
@@ -220,20 +253,12 @@ public class GameScreen extends BaseScreen {
     private void updateDisplayInfo() {
         Camera camera = getCamera();
 
-        float viewportX = camera.position.x + camera.viewportWidth / 2;
-        float viewportY = camera.position.y + camera.viewportHeight / 2;
-
         pauseWindow.setPosition(
             camera.position.x - pauseWindow.getWidth() / 2,
             camera.position.y - pauseWindow.getHeight() / 2
         );
 
-        collectedItem.setPosition(
-            camera.position.x - collectedItem.getWidth() / 2,
-            viewportY - collectedItem.getPrefHeight() * 4
-        );
-
-        gameTimer.setText(
+        displayGameTime.setText(
             String.format(
                 Locale.ENGLISH,
                 "%02d:%02d:%02d",
@@ -243,17 +268,18 @@ public class GameScreen extends BaseScreen {
             )
         );
 
-        gameTimer.setPosition(
-            camera.position.x - collectedItem.getWidth() / 2,
-            viewportY - gameTimer.getPrefHeight() / 2 - SAFE_ZONE_SIZE
+        fuelValue.setValue(player.getFuel());
+        scoreValue.setText(String.valueOf(player.getTotalScore()));
+        depthValue.setText(String.format("%.0f", player.getDrillDepth()));
+
+        screenLayout.setPosition(
+            (camera.position.x - camera.viewportWidth / 2) + SAFE_ZONE_SIZE,
+            (camera.position.y - camera.viewportHeight / 2) + SAFE_ZONE_SIZE
         );
 
-        score.setPosition(
-            camera.position.x - camera.viewportWidth / 2 + SAFE_ZONE_SIZE,
-            viewportY - score.getPrefHeight() - SAFE_ZONE_SIZE
+        screenLayout.setSize(
+            camera.viewportWidth - SAFE_ZONE_SIZE * 2, camera.viewportHeight - SAFE_ZONE_SIZE * 2
         );
-
-        updateFuelColor();
     }
 
     @Override
@@ -285,7 +311,7 @@ public class GameScreen extends BaseScreen {
         batch.end();
 
         followPlayerObject();
-        setNotificationActive();
+        updateInformationStatus();
         updateDisplayInfo();
 
         act(delta);
@@ -294,7 +320,7 @@ public class GameScreen extends BaseScreen {
         Debug.setCustomDebugString(player.toString());
 
         if (player.isDepthGoalAchieved() || player.getFuel() <= 0) {
-            Setup.nextScreen(new EndScreen("Game ended", player.getTotalScore(),
+            Setup.nextScreen(new EndScreen("GAME ENDED", player.getTotalScore(),
                     0, player.getDrillDepth(), levelIndex));
         }
     }

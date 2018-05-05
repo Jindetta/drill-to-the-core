@@ -34,7 +34,7 @@ public class LevelSelectScreen extends BaseScreen {
                 String name = event.getListenerActor().getName();
 
                 switch (name == null ? "" : name) {
-                    case "play":
+                    case "playMenu":
                         Setup.nextScreen(new GameScreen());
                         break;
                     default:
@@ -44,11 +44,11 @@ public class LevelSelectScreen extends BaseScreen {
             }
         };
 
-        ImageButton playButton = new ImageButton(skin, localization.getValue("play"));
+        ImageButton playButton = new ImageButton(skin, localization.getValue("playMenu"));
         playButton.addListener(clickListener);
-        playButton.setName("play");
+        playButton.setName("playMenu");
 
-        ImageButton exit = new ImageButton(skin, localization.getValue("return_small"));
+        ImageButton exit = new ImageButton(skin, localization.getValue("backButtonGame"));
         exit.addListener(clickListener);
 
         background = new Image(backgroundTexture);
@@ -56,7 +56,7 @@ public class LevelSelectScreen extends BaseScreen {
 
         gameMenu = new Table();
         gameMenu.add(playButton).row();
-        gameMenu.add(exit).padTop(MENU_PADDING_TOP);
+        gameMenu.add(exit).padTop(MENU_DEFAULT_PADDING);
 
         addActor(gameMenu);
     }
