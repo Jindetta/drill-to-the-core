@@ -143,11 +143,18 @@ public class MainMenuScreen extends BaseScreen {
             }
         });
 
-        quickMenu.add(muteSounds).left().padLeft(SAFE_ZONE_SIZE);
-        quickMenu.add(muteMusic).left();
-        quickMenu.add(languageSelection).expandX().center().padLeft(profiles.getPrefWidth() - addProfile.getPrefWidth());
-        quickMenu.add(profiles).right();
-        quickMenu.add(addProfile).right().padRight(SAFE_ZONE_SIZE);
+        Table soundButtons = new Table();
+        soundButtons.add(muteSounds);
+        soundButtons.add(muteMusic);
+
+        Table profileButtons = new Table();
+        profileButtons.add(profiles);
+        profileButtons.add(addProfile);
+
+        quickMenu.defaults().uniform();
+        quickMenu.add(soundButtons).left().padLeft(SAFE_ZONE_SIZE);
+        quickMenu.add(languageSelection).expandX().center();
+        quickMenu.add(profileButtons).right().padRight(SAFE_ZONE_SIZE);
 
         addActor(quickMenu);
     }

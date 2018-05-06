@@ -38,6 +38,8 @@ public class SettingsScreen extends BaseScreen {
         addActor(background);
 
         settingsTable = new Table();
+        settingsTable.defaults().expand().uniform();
+
         playerImage = new Texture("images/player_atlas.png");
 
         ImageButton calibration = new ImageButton(skin, localization.getValue("calibrate"));
@@ -48,13 +50,16 @@ public class SettingsScreen extends BaseScreen {
             }
         });
 
+        Table volumeControls = new Table();
+        volumeControls.columnDefaults(2);
+
         final Label soundVolumeLabel = new Label("", skin);
         final Slider soundVolume = new Slider(0, 100, 5, false, skin);
         soundVolume.setValue(settings.getIntegerIfExists("soundVolume", 1));
         soundVolume.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                soundVolumeLabel.setText(String.format("SOUND VOLUME: %.0f", soundVolume.getValue()));
+                soundVolumeLabel.setText(String.format(localization.getValue("soundVolumeTitle"), soundVolume.getValue()));
                 settings.setIntegerValue("soundVolume", Math.round(soundVolume.getValue()));
                 settings.saveSettings();
             }
@@ -67,19 +72,41 @@ public class SettingsScreen extends BaseScreen {
         musicVolume.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                musicVolumeLabel.setText(String.format("MUSIC VOLUME: %.0f", musicVolume.getValue()));
+                musicVolumeLabel.setText(String.format(localization.getValue("musicVolumeTitle"), musicVolume.getValue()));
                 settings.setIntegerValue("musicVolume", Math.round(musicVolume.getValue()));
                 settings.saveSettings();
             }
         });
         musicVolume.fire(new ChangeListener.ChangeEvent());
 
-        settingsTable.add(soundVolumeLabel).row();
-        settingsTable.add(soundVolume).row();
-        settingsTable.add(musicVolumeLabel).row();
-        settingsTable.add(musicVolume).row();
+        final CheckBox muteSounds = new CheckBox("", skin, "checkbox_sound2");
+        muteSounds.setChecked(settings.getBooleanIfExists("soundMuted", false));
+        muteSounds.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                settings.setBooleanValue("soundMuted", muteSounds.isChecked());
+                settings.saveSettings();
+            }
+        });
 
-        settingsTable.add(calibration).center().colspan(10).row();
+        final CheckBox muteMusic = new CheckBox("", skin, "checkbox_music2");
+        muteMusic.setChecked(settings.getBooleanIfExists("musicMuted", false));
+        muteMusic.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                settings.setBooleanValue("musicMuted", muteMusic.isChecked());
+                settings.saveSettings();
+            }
+        });
+
+        volumeControls.add(soundVolumeLabel).pad(MENU_DEFAULT_PADDING).colspan(2).row();
+        volumeControls.add(soundVolume).pad(MENU_DEFAULT_PADDING).right();
+        volumeControls.add(muteSounds).pad(MENU_DEFAULT_PADDING).left().row();
+        volumeControls.add(musicVolumeLabel).pad(MENU_DEFAULT_PADDING).colspan(2).row();
+        volumeControls.add(musicVolume).pad(MENU_DEFAULT_PADDING).right();
+        volumeControls.add(muteMusic).pad(MENU_DEFAULT_PADDING).left();
+
+        Table playerColor = new Table();
         buttons = new ImageButton[playerImage.getHeight() / BIG_TILE_SIZE];
 
         for (int i = 0; i < buttons.length; i++) {
@@ -93,8 +120,15 @@ public class SettingsScreen extends BaseScreen {
                     settings.saveSettings();
                 }
             });
-            settingsTable.add(buttons[i]).center().pad(15);
+            playerColor.add(buttons[i]).pad(MENU_DEFAULT_PADDING);
         }
+
+        settingsTable.add(new ImageButton(skin, localization.getValue("settingsTitle"))).colspan(2).row();
+        settingsTable.add(volumeControls);
+        settingsTable.add(calibration).row();
+        settingsTable.add(playerColor).colspan(2);
+        settingsTable.debug();
+
         addActor(settingsTable);
     }
 
@@ -112,11 +146,9 @@ public class SettingsScreen extends BaseScreen {
         Viewport viewport = getViewport();
         viewport.update(width, height, true);
 
-        float centerX = (viewport.getWorldWidth() - settingsTable.getWidth()) / 2;
-        float centerY = (viewport.getWorldHeight() - settingsTable.getHeight()) / 2;
-
         background.setSize(viewport.getWorldWidth(), viewport.getWorldHeight());
-        settingsTable.setPosition(centerX, centerY);
+        settingsTable.setSize(viewport.getWorldWidth(), viewport.getWorldHeight());
+        settingsTable.setPosition(0, 0);
     }
 
     @Override

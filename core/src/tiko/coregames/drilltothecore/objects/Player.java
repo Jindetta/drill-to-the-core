@@ -77,7 +77,7 @@ public class Player extends BaseObject {
         soundEffects = sounds;
 
         soundEffects.addSound("collect", "sounds/item-pickup.mp3");
-        soundEffects.addSound("engine", "sounds/engine.mp3");
+        soundEffects.addLongSound("engine", "sounds/engine.mp3");
 
         defaultRocketColor = new float[] {
             0.7529412f, 0.3529412f, 0.007843138f,
@@ -308,9 +308,12 @@ public class Player extends BaseObject {
                     setCurrentState(STATES.ACTIVE, STATES.DONE);
                     keyFrameState += delta;
 
+                    soundEffects.playLongSound("engine");
                     rotateToPoint(valueX, valueY, delta);
                     increaseMaximumDepth();
                     updateTileStatus();
+                } else {
+                    soundEffects.pauseLongSound("engine");
                 }
             }
 

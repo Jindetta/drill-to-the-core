@@ -89,8 +89,8 @@ Gas_Full
 Gas_empty
   rotate: false
   xy: 817, 516
-  size: 159, 18
-  orig: 159, 18
+  size: 161, 20
+  orig: 161, 20
   offset: 0, 0
   index: -1
 GatherScreen_Mineral

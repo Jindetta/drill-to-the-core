@@ -208,6 +208,18 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 		imageUp: PauseMenu_ResetLevelButton_eng
 		imageDown: PauseMenu_ResetLevelButton_pressed_eng
 	}
+    settingstitle_eng: {
+        imageUp: SettingsTitle_eng
+    }
+    settingstitle_fin: {
+        imageUp: SettingsTitle_fin
+    }
+    highscoretitle_eng: {
+        imageUp: HighScoresTitle_eng
+    }
+    highscoretitle_fin: {
+        imageUp: HighScoresTitle_fin
+    }
 	calibrationbutton_eng: {
 		imageUp: CalibrationMenu_Calibrate_eng
 	}
@@ -328,6 +340,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 	}
 	pauseWindow: {
 		titleFont: Abduction2002
+        background: LevelCompleteScreen
 	}
 }
 }

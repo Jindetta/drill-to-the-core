@@ -47,7 +47,7 @@ public class SettingsManager {
         return profiles.hasValue(getProfileKey(index));
     }
 
-    private static String getProfileName(int index) {
+    public static String getProfileName(int index) {
         if (hasProfile(index)) {
             SettingsManager profiles = new SettingsManager();
 

@@ -18,6 +18,7 @@ import java.util.HashMap;
  */
 public class SoundManager implements Disposable {
     private HashMap<String, Sound> sounds;
+    private HashMap<String, Music> longSounds;
     private Music music;
 
     private boolean soundMuted, musicMuted;
@@ -25,6 +26,7 @@ public class SoundManager implements Disposable {
 
     public SoundManager(SettingsManager settings) {
         sounds = new HashMap<>();
+        longSounds = new HashMap<>();
 
         soundVolume = settings.getFloatIfExists("soundVolume", 50) / 100;
         soundMuted = settings.getBooleanIfExists("soundMuted", false);
@@ -49,6 +51,16 @@ public class SoundManager implements Disposable {
         }
     }
 
+    public void addLongSound(String identifier, String fileName) {
+        if (!longSounds.containsKey(identifier)) {
+            FileHandle file = Gdx.files.internal(fileName);
+
+            if (file != null && file.exists()) {
+                longSounds.put(identifier, Gdx.audio.newMusic(file));
+            }
+        }
+    }
+
     private float getSoundVolume() {
         return soundMuted ? 0 : soundVolume;
     }
@@ -66,25 +78,34 @@ public class SoundManager implements Disposable {
     }
 
     /**
-     * Loops sound by given identifier.
+     * Plays long sound by given identifier.
      *
      * @param identifier    sound identifier
      */
-    public void loopSound(String identifier) {
-        if (sounds.containsKey(identifier)) {
-            Sound sound = sounds.get(identifier);
-            sound.loop(getSoundVolume());
+    public void playLongSound(String identifier) {
+        if (longSounds.containsKey(identifier)) {
+            Music longSound = longSounds.get(identifier);
+            longSound.setVolume(getSoundVolume());
+            longSound.setLooping(true);
+
+            if (!longSound.isPlaying()) {
+                longSound.play();
+            }
         }
     }
 
     /**
-     * Deletes sound by given identifier.
+     * Pauses long sound by given identifier.
      *
      * @param identifier    sound identifier
      */
-    public void deleteSound(String identifier) {
-        if (sounds.containsKey(identifier)) {
-            sounds.remove(identifier).dispose();
+    public void pauseLongSound(String identifier) {
+        if (longSounds.containsKey(identifier)) {
+            Music longSound = longSounds.get(identifier);
+
+            if (longSound.isPlaying()) {
+                longSound.pause();
+            }
         }
     }
 
@@ -98,7 +119,7 @@ public class SoundManager implements Disposable {
 
         if (sounds != null && !sounds.isEmpty()) {
             for (Sound sound : sounds.values()) {
-                sound.setVolume(-1, getSoundVolume());
+                sound.setVolume(0, getSoundVolume());
             }
         }
     }
