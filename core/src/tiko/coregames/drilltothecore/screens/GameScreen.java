@@ -360,8 +360,7 @@ public class GameScreen extends BaseScreen {
         draw();
 
         if (player.isDepthGoalAchieved() || player.getFuel() <= 0) {
-            Setup.nextScreen(new EndScreen("GAME ENDED", player.getTotalScore(),
-                    0, player.getDrillDepth(), levelIndex));
+            Setup.nextScreen(new EndScreen("GAME ENDED", player, totalGameTime, levelIndex));
         }
     }
 

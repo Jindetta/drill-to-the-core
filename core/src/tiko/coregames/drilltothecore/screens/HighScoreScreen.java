@@ -84,12 +84,14 @@ public class HighScoreScreen extends BaseScreen {
                 break;
             }
 
-            long maxValue = highScores.get(0).totalScore;
+            double maxValue = 0;
 
             for (int j = 0; j < highScores.size(); j++) {
-                if (maxValue <= highScores.get(j).totalScore) {
-                    maxValue = highScores.get(j).totalScore;
+                double value = highScores.get(j).totalScore / highScores.get(j).time;
+
+                if (maxValue <= value) {
                     sortedHighScores.add(highScores.remove(j));
+                    maxValue = value;
                 }
             }
         }

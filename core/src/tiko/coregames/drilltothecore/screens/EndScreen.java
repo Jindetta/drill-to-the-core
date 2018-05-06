@@ -8,7 +8,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
 import tiko.coregames.drilltothecore.Setup;
+import tiko.coregames.drilltothecore.objects.Player;
+
+import java.util.Locale;
 
 /**
  * EndScreen class will display end screen.
@@ -28,7 +32,7 @@ public class EndScreen extends BaseScreen {
 
     private Label totalScoreLabel;
 
-    public EndScreen(String message, int highScore, float basescore, float drillDepth, final int levelIndex) {
+    public EndScreen(String message, Player player, float time, final int levelIndex) {
         backgroundTexture = new Texture("images/endscreen-background.png");
 
         background = new Image(backgroundTexture);
@@ -57,12 +61,21 @@ public class EndScreen extends BaseScreen {
         };
 
         gradualHighScore = 0;
-        scorePerSecond = highScore / 3;
-        totalScore = highScore;
+        totalScore = player.getTotalScore();
+        scorePerSecond = totalScore / 3;
 
         Label title = new Label(message + ": ", skin);
-        Label baseScore = new Label("BASESCORE: " + Math.round(basescore), skin);
-        Label Depth = new Label("MAXIMUM DEPTH: " + Math.round(drillDepth),skin );
+        Label baseScore = new Label(
+            String.format(
+                Locale.ENGLISH,
+                "TIME: %02d:%02d:%02d",
+                (int) time / (60 * 60),
+                (int) time / 60 % 60,
+                (int) time % 60
+            ),
+            skin
+        );
+        Label Depth = new Label("MAXIMUM DEPTH: " + Math.round(player.getDrillDepth()),skin );
         totalScoreLabel = new Label("", skin);
 
         ImageButton continueButton = new ImageButton(skin, localization.getValue("nextMenu"));
@@ -86,8 +99,9 @@ public class EndScreen extends BaseScreen {
 
         addActor(layout);
 
-        if (!settings.hasValue("level_" + levelIndex) || settings.getInteger("level_" + levelIndex) < highScore) {
-            settings.setIntegerValue("level_" + levelIndex, highScore);
+        if (!settings.hasValue("level_" + levelIndex) || settings.getInteger("level_" + levelIndex) < totalScore) {
+            settings.setIntegerValue("level_" + levelIndex, totalScore);
+            settings.setFloatValue("time_" + levelIndex, time);
             settings.saveSettings();
         }
     }
