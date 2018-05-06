@@ -359,7 +359,7 @@ public class GameScreen extends BaseScreen {
         draw();
 
         if (player.isDepthGoalAchieved() || player.getFuel() <= 0) {
-            Setup.nextScreen(new EndScreen("GAME ENDED", player, totalGameTime, levelIndex));
+            Setup.nextScreen(new EndScreen(player, totalGameTime, levelIndex));
         }
     }
 
