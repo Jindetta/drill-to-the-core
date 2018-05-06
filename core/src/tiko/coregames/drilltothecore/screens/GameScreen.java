@@ -19,7 +19,6 @@ import tiko.coregames.drilltothecore.Setup;
 import tiko.coregames.drilltothecore.managers.LevelManager;
 import tiko.coregames.drilltothecore.managers.SoundManager;
 import tiko.coregames.drilltothecore.objects.Player;
-import tiko.coregames.drilltothecore.utilities.Debug;
 
 import java.util.Locale;
 
@@ -43,7 +42,7 @@ public class GameScreen extends BaseScreen {
     private float totalGameTime;
 
     private Table screenLayout;
-    private Table powerupLayout;
+    private Table powerUpLayout;
 
     private Label displayScoreValue;
     private Label displayGameTime;
@@ -87,8 +86,8 @@ public class GameScreen extends BaseScreen {
     }
 
     private void createScreenLayout() {
-        powerupLayout = new Table();
-        powerupLayout.defaults().size(125, 25);
+        powerUpLayout = new Table();
+        powerUpLayout.defaults().size(125, 25);
 
         screenLayout = new Table();
         screenLayout.columnDefaults(3);
@@ -96,7 +95,7 @@ public class GameScreen extends BaseScreen {
         screenLayout.add(createInformationLayer()).align(Align.topLeft).top();
         screenLayout.add(createDisplayLayer()).top();
         screenLayout.add(createFuelLayer()).align(Align.topRight).row();
-        screenLayout.add(powerupLayout).align(Align.bottomLeft);
+        screenLayout.add(powerUpLayout).align(Align.bottomLeft);
 
         addActor(screenLayout);
     }
@@ -155,7 +154,7 @@ public class GameScreen extends BaseScreen {
             displayScoreValue.setVisible(true);
         }
 
-        powerupLayout.clear();
+        powerUpLayout.clear();
 
         if (player.getRadarViewTimer() != null) {
             if (radarBoostValue == null) {
@@ -164,7 +163,7 @@ public class GameScreen extends BaseScreen {
             }
 
             radarBoostValue.setText(player.getRadarViewTimer());
-            powerupLayout.add(new Stack(new ImageButton(skin, "radar"), radarBoostValue)).row();
+            powerUpLayout.add(new Stack(new ImageButton(skin, "radar"), radarBoostValue)).row();
         }
 
         if (player.getSpeedTimer() != null) {
@@ -174,7 +173,7 @@ public class GameScreen extends BaseScreen {
             }
 
             speedBoostValue.setText(player.getSpeedTimer());
-            powerupLayout.add(new Stack(new ImageButton(skin, "speed"), speedBoostValue)).row();
+            powerUpLayout.add(new Stack(new ImageButton(skin, "speed"), speedBoostValue)).row();
         }
 
         if (player.getDrillTimer() != null) {
@@ -184,7 +183,7 @@ public class GameScreen extends BaseScreen {
             }
 
             drillBoostValue.setText(player.getDrillTimer());
-            powerupLayout.add(new Stack(new ImageButton(skin, "drill"), drillBoostValue)).row();
+            powerUpLayout.add(new Stack(new ImageButton(skin, "drill"), drillBoostValue)).row();
         }
 
         if (player.getPointsTimer() != null) {
@@ -194,7 +193,7 @@ public class GameScreen extends BaseScreen {
             }
 
             pointBoostValue.setText(player.getPointsTimer());
-            powerupLayout.add(new Stack(new ImageButton(skin, "points"), pointBoostValue)).row();
+            powerUpLayout.add(new Stack(new ImageButton(skin, "points"), pointBoostValue)).row();
         }
 
         if (player.getFuelTimer() != null) {
@@ -204,7 +203,7 @@ public class GameScreen extends BaseScreen {
             }
 
             fuelBoostValue.setText(player.getFuelTimer());
-            powerupLayout.add(new Stack(new ImageButton(skin, "fuelBoost"), fuelBoostValue));
+            powerUpLayout.add(new Stack(new ImageButton(skin, "fuelBoost"), fuelBoostValue));
         }
     }
 

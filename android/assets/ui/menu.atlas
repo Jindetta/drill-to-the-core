@@ -484,6 +484,13 @@ CalibrationNumber7
   orig: 39, 40
   offset: 0, 0
   index: -1
+CalibrationNumber8
+  rotate: false
+  xy: 232, 226
+  size: 39, 40
+  orig: 39, 40
+  offset: 0, 0
+  index: -1
 CalibrationNumber9
   rotate: false
   xy: 232, 184

@@ -14,6 +14,8 @@ import tiko.coregames.drilltothecore.objects.Player;
 
 import java.util.Locale;
 
+import static tiko.coregames.drilltothecore.utilities.Constants.*;
+
 /**
  * EndScreen class will display end screen.
  *
@@ -32,7 +34,7 @@ public class EndScreen extends BaseScreen {
 
     private Label totalScoreLabel;
 
-    public EndScreen(String message, Player player, float time, final int levelIndex) {
+    public EndScreen(Player player, float time, final int levelIndex) {
         backgroundTexture = new Texture("images/endscreen-background.png");
 
         background = new Image(backgroundTexture);
@@ -64,8 +66,7 @@ public class EndScreen extends BaseScreen {
         totalScore = player.getTotalScore();
         scorePerSecond = totalScore / 3;
 
-        Label title = new Label(message + ": ", skin);
-        Label baseScore = new Label(
+        Label timeValue = new Label(
             String.format(
                 Locale.ENGLISH,
                 "TIME: %02d:%02d:%02d",
@@ -75,27 +76,36 @@ public class EndScreen extends BaseScreen {
             ),
             skin
         );
-        Label Depth = new Label("MAXIMUM DEPTH: " + Math.round(player.getDrillDepth()),skin );
+
+        Label depthValue = new Label("MAXIMUM DEPTH: " + Math.round(player.getDrillDepth()),skin );
         totalScoreLabel = new Label("", skin);
 
         ImageButton continueButton = new ImageButton(skin, localization.getValue("nextMenu"));
         continueButton.addListener(clickListener);
         continueButton.setName("continueGame");
 
-        ImageButton restartButton = new ImageButton(skin, localization.getValue("restartGame"));
+        ImageButton restartButton = new ImageButton(skin, localization.getValue("restartLevel"));
         restartButton.addListener(clickListener);
         restartButton.setName("restart");
 
         ImageButton exitButton = new ImageButton(skin, localization.getValue("backButtonGame"));
         exitButton.addListener(clickListener);
 
-        layout.add(title).row();
-        layout.add(baseScore).row();
-        layout.add(Depth).row();
+        layout.add(timeValue).row();
+        layout.add(depthValue).row();
         layout.add(totalScoreLabel).row();
-        layout.add(continueButton).row();
-        layout.add(restartButton).padTop(15).row();
-        layout.add(exitButton).padTop(15);
+
+        if (levelIndex < LEVEL_COUNT - 1) {
+            layout.add(continueButton).row();
+            settings.setIntegerValue("currentLevel", levelIndex + 1);
+        } else {
+            settings.removeKey("currentLevel");
+        }
+
+        settings.saveSettings();
+
+        layout.add(restartButton).pad(MENU_DEFAULT_PADDING).row();
+        layout.add(exitButton).pad(MENU_DEFAULT_PADDING);
 
         addActor(layout);
 

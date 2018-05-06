@@ -220,12 +220,48 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
     highscoretitle_fin: {
         imageUp: HighScoresTitle_fin
     }
+	levelselecttitle_eng: {
+        imageUp: SelectLevelTitle_eng
+	}
+	levelselecttitle_fin: {
+		imageUp: SelectLevelTitle_fin
+	}
 	calibrationbutton_eng: {
 		imageUp: CalibrationMenu_Calibrate_eng
 	}
 	calibrationbutton_fin: {
 		imageUp: CalibrationMenu_Calibrate_fin
 	}
+    number_1: {
+        imageUp: CalibrationNumber1
+    }
+    number_2: {
+        imageUp: CalibrationNumber2
+    }
+    number_3: {
+        imageUp: CalibrationNumber3
+    }
+    number_4: {
+        imageUp: CalibrationNumber4
+    }
+    number_5: {
+        imageUp: CalibrationNumber5
+    }
+    number_6: {
+        imageUp: CalibrationNumber6
+    }
+    number_7: {
+        imageUp: CalibrationNumber7
+    }
+    number_8: {
+        imageUp: CalibrationNumber8
+    }
+    number_9: {
+        imageUp: CalibrationNumber9
+    }
+    number_10: {
+        imageUp: CalibrationNumber10
+    }
     score: {
         imageUp: GatherScreen_Mineral
     }
