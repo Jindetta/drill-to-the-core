@@ -1,5 +1,6 @@
 package tiko.coregames.drilltothecore.screens;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -21,13 +22,16 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
  * @since   2018-02-01
  */
 public class LevelSelectScreen extends BaseScreen {
-    private Texture backgroundTexture;
     private Image background;
 
     private Table screenLayout;
 
     public LevelSelectScreen() {
-        backgroundTexture = new Texture("images/endscreen-background.png");
+        assets.load("images/endscreen-background.png", Texture.class);
+        assets.finishLoadingAsset("images/endscreen-background.png");
+
+        background = new Image(assets.get("images/endscreen-background.png", Texture.class));
+        addActor(background);
 
         ClickListener clickListener = new ClickListener() {
             @Override
@@ -57,14 +61,11 @@ public class LevelSelectScreen extends BaseScreen {
                         Setup.nextScreen(new GameScreen(0, true));
                         break;
                     default:
-                        Setup.nextScreen(new MainMenuScreen());
+                        LevelSelectScreen.this.keyDown(Input.Keys.BACK);
                         break;
                 }
             }
         };
-
-        background = new Image(backgroundTexture);
-        addActor(background);
 
         screenLayout = new Table();
         screenLayout.defaults().expand().uniform();
@@ -116,8 +117,11 @@ public class LevelSelectScreen extends BaseScreen {
     }
 
     @Override
-    public void dispose() {
-        backgroundTexture.dispose();
-        super.dispose();
+    public boolean keyDown(int key) {
+        if (key == Input.Keys.ESCAPE || key == Input.Keys.BACK) {
+            Setup.nextScreen(new MainMenuScreen());
+        }
+
+        return true;
     }
 }

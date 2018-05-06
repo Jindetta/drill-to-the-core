@@ -72,11 +72,7 @@ public class SettingsManager {
     public static SettingsManager getActiveProfile(boolean defaultProfile) {
         SettingsManager profile = getDefaultProfile();
 
-        if (profile.defaultProfile && profile.hasValue("activeProfile")) {
-            return getUserProfile(profile.getInteger("activeProfile"), false);
-        }
-
-        return defaultProfile ? profile : null;
+        return getUserProfile(profile.getIntegerIfExists("activeProfile", -1), defaultProfile);
     }
 
     public static void setActiveProfile(int index) {

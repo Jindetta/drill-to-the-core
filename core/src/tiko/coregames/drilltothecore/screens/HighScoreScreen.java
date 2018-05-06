@@ -3,10 +3,13 @@ package tiko.coregames.drilltothecore.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -29,15 +32,14 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
  * @since   2018-02-01
  */
 public class HighScoreScreen extends BaseScreen {
-    private Texture backgroundTexture;
-
-    private Table windowLayout;
     private Image background;
+    private Table windowLayout;
 
     public HighScoreScreen() {
-        backgroundTexture = new Texture("images/endscreen-background.png");
+        assets.load("images/endscreen-background.png", Texture.class);
+        assets.finishLoadingAsset("images/endscreen-background.png");
 
-        background = new Image(backgroundTexture);
+        background = new Image(assets.get("images/endscreen-background.png", Texture.class));
         addActor(background);
 
         windowLayout = new Table();
@@ -52,9 +54,9 @@ public class HighScoreScreen extends BaseScreen {
         for (int i = 0; i < scores.size(); i++) {
             HighScore scorer = scores.get(i);
 
-            Label name = new Label(scorer.getName(), skin, "scoresMenu");
-            Label score = new Label(scorer.getScore(), skin, "scoresMenu");
-            Label time = new Label(scorer.getTime(), skin, "scoresMenu");
+            Label name = new Label(scorer.getName(), skin, "menu");
+            Label score = new Label(scorer.getScore(), skin, "menu");
+            Label time = new Label(scorer.getTime(), skin, "menu");
 
             scoreList.add(name);
             scoreList.add(time);
@@ -62,7 +64,17 @@ public class HighScoreScreen extends BaseScreen {
         }
 
         windowLayout.add(new ImageButton(skin, "highscoretitle_eng")).row();
-        windowLayout.add(scoreList).top();
+        windowLayout.add(scoreList).top().row();
+
+        ImageButton backButton = new ImageButton(skin, localization.getValue("backButton"));
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                HighScoreScreen.this.keyDown(Input.Keys.BACK);
+            }
+        });
+
+        windowLayout.add(backButton).align(Align.bottomLeft).pad(MENU_DEFAULT_PADDING);
 
         addActor(windowLayout);
     }
@@ -116,12 +128,6 @@ public class HighScoreScreen extends BaseScreen {
         }
 
         return true;
-    }
-
-    @Override
-    public void dispose() {
-        backgroundTexture.dispose();
-        super.dispose();
     }
 
     private class HighScore {

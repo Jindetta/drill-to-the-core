@@ -18,15 +18,15 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
  * @since   2018-02-01
  */
 public class SplashScreen extends BaseScreen {
-    private Texture texture;
     private float timeLeft;
     private Image splash;
 
     public SplashScreen() {
         timeLeft = SINGLE_SPLASH_DURATION;
-        texture = new Texture("images/splash.png");
+        assets.load("images/splash.png", Texture.class);
+        assets.finishLoadingAsset("images/splash.png");
 
-        splash = new Image(texture);
+        splash = new Image(assets.get("images/splash.png", Texture.class));
         splash.setSize(getWidth(), getHeight());
         addActor(splash);
     }
@@ -57,12 +57,6 @@ public class SplashScreen extends BaseScreen {
     public void show() {
         super.show();
         Gdx.input.setCatchBackKey(false);
-    }
-
-    @Override
-    public void dispose() {
-        texture.dispose();
-        super.dispose();
     }
 
     @Override

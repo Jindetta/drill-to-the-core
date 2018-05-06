@@ -64,7 +64,7 @@ public class GameScreen extends BaseScreen {
             level = settings.getIntegerIfExists("currentLevel", 0);
         }
 
-        sounds = new SoundManager(settings);
+        sounds = new SoundManager(settings, assets);
 
         levelIndex = level;
         resetLevel();
@@ -77,7 +77,7 @@ public class GameScreen extends BaseScreen {
         clear();
 
         if (playerSpawn != null) {
-            player = new Player(map, playerSpawn.x, playerSpawn.y, sounds);
+            player = new Player(map, playerSpawn.x, playerSpawn.y, sounds, assets);
         }
         totalGameTime = 0;
 
@@ -103,7 +103,7 @@ public class GameScreen extends BaseScreen {
     private Table createDisplayLayer() {
         Table displayLayer = new Table();
 
-        displayGameTime = new Label("", skin, "gametime");
+        displayGameTime = new Label("", skin, "menu");
         displayGameTime.setAlignment(Align.center);
 
         displayScoreValue = new Label("", skin, "collected");
@@ -308,7 +308,7 @@ public class GameScreen extends BaseScreen {
         displayGameTime.setText(
             String.format(
                 Locale.ENGLISH,
-                "%02d:%02d:%02d",
+                " %02d:%02d:%02d ",
                 (int) totalGameTime / (60 * 60),
                 (int) totalGameTime / 60 % 60,
                 (int) totalGameTime % 60
@@ -317,7 +317,7 @@ public class GameScreen extends BaseScreen {
 
         fuelValue.setValue(player.getFuel());
         scoreValue.setText(String.valueOf(player.getTotalScore()));
-        depthValue.setText(String.format("%.0f", player.getDrillDepth()));
+        depthValue.setText(String.format(Locale.ENGLISH, "%.0f", player.getDrillDepth()));
 
         screenLayout.setPosition(
             camera.position.x - camera.viewportWidth / 2 + SAFE_ZONE_SIZE,
@@ -389,8 +389,6 @@ public class GameScreen extends BaseScreen {
     @Override
     public void dispose() {
         super.dispose();
-        sounds.dispose();
-        player.dispose();
         map.dispose();
     }
 }

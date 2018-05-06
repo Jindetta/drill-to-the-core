@@ -25,9 +25,9 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
  * @since   2018-02-01
  */
 public class EndScreen extends BaseScreen {
-    private Table layout;
     private Image background;
-    private Texture backgroundTexture;
+    private Table screenLayout;
+
     private int gradualHighScore;
     private int scorePerSecond;
     private int totalScore;
@@ -35,12 +35,13 @@ public class EndScreen extends BaseScreen {
     private Label totalScoreLabel;
 
     public EndScreen(Player player, float time, final int levelIndex) {
-        backgroundTexture = new Texture("images/endscreen-background.png");
+        assets.load("images/endscreen-background.png", Texture.class);
+        assets.finishLoadingAsset("images/endscreen-background.png");
 
-        background = new Image(backgroundTexture);
+        background = new Image(assets.get("images/endscreen-background.png", Texture.class));
         addActor(background);
 
-        layout = new Table();
+        screenLayout = new Table();
 
         ClickListener clickListener = new ClickListener() {
             @Override
@@ -91,12 +92,12 @@ public class EndScreen extends BaseScreen {
         ImageButton exitButton = new ImageButton(skin, localization.getValue("backButtonGame"));
         exitButton.addListener(clickListener);
 
-        layout.add(timeValue).row();
-        layout.add(depthValue).row();
-        layout.add(totalScoreLabel).row();
+        screenLayout.add(timeValue).row();
+        screenLayout.add(depthValue).row();
+        screenLayout.add(totalScoreLabel).row();
 
         if (levelIndex < LEVEL_COUNT - 1) {
-            layout.add(continueButton).row();
+            screenLayout.add(continueButton).row();
             settings.setIntegerValue("currentLevel", levelIndex + 1);
         } else {
             settings.removeKey("currentLevel");
@@ -104,10 +105,10 @@ public class EndScreen extends BaseScreen {
 
         settings.saveSettings();
 
-        layout.add(restartButton).pad(MENU_DEFAULT_PADDING).row();
-        layout.add(exitButton).pad(MENU_DEFAULT_PADDING);
+        screenLayout.add(restartButton).pad(MENU_DEFAULT_PADDING).row();
+        screenLayout.add(exitButton).pad(MENU_DEFAULT_PADDING);
 
-        addActor(layout);
+        addActor(screenLayout);
 
         if (!settings.hasValue("level_" + levelIndex) || settings.getInteger("level_" + levelIndex) < totalScore) {
             settings.setIntegerValue("level_" + levelIndex, totalScore);
@@ -128,17 +129,11 @@ public class EndScreen extends BaseScreen {
         Viewport viewport = getViewport();
         viewport.update(width, height, true);
 
-        layout.setPosition(
-            (viewport.getWorldWidth() - layout.getWidth()) / 2,
-            (viewport.getWorldHeight() - layout.getHeight()) / 2
+        screenLayout.setPosition(
+            (viewport.getWorldWidth() - screenLayout.getWidth()) / 2,
+            (viewport.getWorldHeight() - screenLayout.getHeight()) / 2
         );
 
         background.setSize(viewport.getWorldWidth(), viewport.getWorldHeight());
-    }
-
-    @Override
-    public void dispose() {
-        backgroundTexture.dispose();
-        super.dispose();
     }
 }

@@ -1,6 +1,6 @@
 package tiko.coregames.drilltothecore.objects;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
@@ -70,14 +70,13 @@ public class Player extends BaseObject {
      * @param y         y coordinate for player spawn
      * @param sounds    instance of SoundManager
      */
-    public Player(LevelManager map, float x, float y, SoundManager sounds) {
-        super("images/player_atlas.png");
+    public Player(LevelManager map, float x, float y, SoundManager sounds, AssetManager assets) {
+        super("images/player_atlas.png", assets);
 
-        this.map = map;
+        sounds.addSound("collect", "sounds/item-pickup.mp3", false);
+        sounds.addSound("engine", "sounds/engine.mp3", true);
         soundEffects = sounds;
-
-        soundEffects.addSound("collect", "sounds/item-pickup.mp3");
-        soundEffects.addLongSound("engine", "sounds/engine.mp3");
+        this.map = map;
 
         defaultRocketColor = new float[] {
             0.7529412f, 0.3529412f, 0.007843138f,
@@ -103,9 +102,15 @@ public class Player extends BaseObject {
         fuelConsumptionRate = PLAYER_FUEL_IDLE_MULTIPLIER;
         currentIdleTime = PLAYER_IDLE_STATE_DELAY;
 
-        effect = new ParticleEffect();
-        effect.load(Gdx.files.internal("images/fx/player.fx"), Gdx.files.internal("images/fx"));
+        assets.load("images/fx/player.fx", ParticleEffect.class);
+        assets.finishLoadingAsset("images/fx/player.fx");
+
+        effect = assets.get("images/fx/player.fx", ParticleEffect.class);
         effect.start();
+
+        /*effect = new ParticleEffect();
+        effect.load(Gdx.files.internal("images/fx/player.fx"), Gdx.files.internal("images/fx"));
+        effect.start();*/
 
         createPlayerUnit(x, y);
         setInitialScoreValues();
@@ -721,11 +726,5 @@ public class Player extends BaseObject {
      */
     public boolean isDepthGoalAchieved() {
         return currentState == STATES.DONE;
-    }
-
-    @Override
-    public void dispose() {
-        effect.dispose();
-        super.dispose();
     }
 }

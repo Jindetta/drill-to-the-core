@@ -293,7 +293,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 		fontColor: black
 		background: ListScreen
 	}
-	scoresMenu: {
+	menu: {
 		font: SuperQuickFormula
 		fontColor: white
 		background: ListScreen
@@ -301,10 +301,6 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
     collected: {
         font: SuperQuickFormula
         fontColor: green
-    }
-    gametime: {
-        font: SuperQuickFormula
-        fontColor: white
     }
     clear: {
         font: SuperQuickFormula

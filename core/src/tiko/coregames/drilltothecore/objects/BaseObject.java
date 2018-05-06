@@ -1,9 +1,9 @@
 package tiko.coregames.drilltothecore.objects;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Disposable;
 
 /**
  * BaseObject class will act as base of all game objects.
@@ -13,14 +13,21 @@ import com.badlogic.gdx.utils.Disposable;
  * @version 1.0
  * @since   2018-02-01
  */
-public abstract class BaseObject extends Sprite implements Disposable {
+public abstract class BaseObject extends Sprite {
     private boolean visible;
 
-    BaseObject(String texture) {
-        super(new Texture(texture));
+    BaseObject(String file, AssetManager assets) {
+        super(loadTextureAsset(file, assets));
 
         setOriginCenter();
         setVisible(true);
+    }
+
+    private static Texture loadTextureAsset(String file, AssetManager assets) {
+        assets.load(file, Texture.class);
+        assets.finishLoadingAsset(file);
+
+        return assets.get(file, Texture.class);
     }
 
     /**
@@ -51,11 +58,6 @@ public abstract class BaseObject extends Sprite implements Disposable {
         if (isVisible()) {
             super.draw(batch);
         }
-    }
-
-    @Override
-    public void dispose() {
-        getTexture().dispose();
     }
 
     @Override

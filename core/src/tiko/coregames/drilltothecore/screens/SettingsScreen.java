@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import tiko.coregames.drilltothecore.Setup;
@@ -25,22 +26,20 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
  */
 public class SettingsScreen extends BaseScreen {
     private Image background;
-    private Texture backgroundTexture;
     private Table settingsTable;
-    private Texture playerImage;
 
     private ImageButton[] buttons;
 
     public SettingsScreen() {
-        backgroundTexture = new Texture("images/settings-background.png");
+        assets.load("images/settings-background.png", Texture.class);
+        assets.load("images/player_atlas.png", Texture.class);
+        assets.finishLoading();
 
-        background = new Image(backgroundTexture);
+        background = new Image(assets.get("images/settings-background.png", Texture.class));
         addActor(background);
 
         settingsTable = new Table();
         settingsTable.defaults().expand().uniform();
-
-        playerImage = new Texture("images/player_atlas.png");
 
         ImageButton calibration = new ImageButton(skin, localization.getValue("calibrate"));
         calibration.addListener(new ClickListener() {
@@ -107,6 +106,7 @@ public class SettingsScreen extends BaseScreen {
         volumeControls.add(muteMusic).pad(MENU_DEFAULT_PADDING).left();
 
         Table playerColor = new Table();
+        Texture playerImage = assets.get("images/player_atlas.png");
         buttons = new ImageButton[playerImage.getHeight() / BIG_TILE_SIZE];
 
         for (int i = 0; i < buttons.length; i++) {
@@ -126,8 +126,17 @@ public class SettingsScreen extends BaseScreen {
         settingsTable.add(new ImageButton(skin, localization.getValue("settingsTitle"))).colspan(2).row();
         settingsTable.add(volumeControls);
         settingsTable.add(calibration).row();
-        settingsTable.add(playerColor).colspan(2);
-        settingsTable.debug();
+        settingsTable.add(playerColor).colspan(2).row();
+
+        ImageButton backButton = new ImageButton(skin, localization.getValue("backButton"));
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                SettingsScreen.this.keyDown(Input.Keys.BACK);
+            }
+        });
+
+        settingsTable.add(backButton).align(Align.bottomLeft).pad(MENU_DEFAULT_PADDING).colspan(2);
 
         addActor(settingsTable);
     }
@@ -162,12 +171,5 @@ public class SettingsScreen extends BaseScreen {
         }
 
         super.render(delta);
-    }
-
-    @Override
-    public void dispose() {
-        backgroundTexture.dispose();
-        playerImage.dispose();
-        super.dispose();
     }
 }

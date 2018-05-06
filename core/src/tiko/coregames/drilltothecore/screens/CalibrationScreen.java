@@ -1,6 +1,7 @@
 package tiko.coregames.drilltothecore.screens;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -19,9 +20,16 @@ import tiko.coregames.drilltothecore.Setup;
  * @since   2018-02-01
  */
 public class CalibrationScreen extends BaseScreen {
+    private Image background;
     private Table settingsTable;
 
     public CalibrationScreen() {
+        assets.load("images/settings-background.png", Texture.class);
+        assets.finishLoadingAsset("images/settings-background.png");
+
+        background = new Image(assets.get("images/settings-background.png", Texture.class));
+        addActor(background);
+
         final Label sensitivityLabelLeft = new Label("", skin);
         final Slider sensitivityLeft = new Slider(1, 10, 1, false, skin);
         sensitivityLeft.setValue(settings.getIntegerIfExists("sensitivityLeft", 1));
@@ -128,6 +136,7 @@ public class CalibrationScreen extends BaseScreen {
         float centerX = (viewport.getWorldWidth() - settingsTable.getWidth()) / 2;
         float centerY = (viewport.getWorldHeight() - settingsTable.getHeight()) / 2;
 
+        background.setSize(viewport.getWorldWidth(), viewport.getWorldHeight());
         settingsTable.setPosition(centerX, centerY);
     }
 }

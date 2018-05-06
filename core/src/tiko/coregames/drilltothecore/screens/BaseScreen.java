@@ -2,6 +2,7 @@ package tiko.coregames.drilltothecore.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -23,11 +24,18 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
 public abstract class BaseScreen extends Stage implements Screen {
     LocalizationManager localization;
     SettingsManager settings;
+
+    AssetManager assets;
     Skin skin;
 
     BaseScreen() {
         super(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT));
-        skin = new Skin(Gdx.files.internal("ui/menu.json"));
+
+        assets = new AssetManager();
+        assets.load("ui/menu.json", Skin.class);
+        assets.finishLoadingAsset("ui/menu.json");
+
+        skin = assets.get("ui/menu.json");
         settings = SettingsManager.getActiveProfile(true);
         localization = new LocalizationManager();
     }
@@ -69,7 +77,7 @@ public abstract class BaseScreen extends Stage implements Screen {
 
     @Override
     public void dispose() {
+        assets.dispose();
         super.dispose();
-        skin.dispose();
     }
 }

@@ -1,10 +1,10 @@
 package tiko.coregames.drilltothecore.managers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.Disposable;
 
 import java.util.HashMap;
 
@@ -16,17 +16,17 @@ import java.util.HashMap;
  * @version 1.0
  * @since   2018-02-01
  */
-public class SoundManager implements Disposable {
-    private HashMap<String, Sound> sounds;
-    private HashMap<String, Music> longSounds;
-    private Music music;
+public class SoundManager {
+    private HashMap<String, String> sounds;
+    private String musicFile;
+    private AssetManager assets;
 
     private boolean soundMuted, musicMuted;
     private float soundVolume, musicVolume;
 
-    public SoundManager(SettingsManager settings) {
+    public SoundManager(SettingsManager settings, AssetManager assets) {
         sounds = new HashMap<>();
-        longSounds = new HashMap<>();
+        this.assets = assets;
 
         soundVolume = settings.getFloatIfExists("soundVolume", 50) / 100;
         soundMuted = settings.getBooleanIfExists("soundMuted", false);
@@ -41,22 +41,19 @@ public class SoundManager implements Disposable {
      * @param identifier    sound identifier
      * @param fileName      file path
      */
-    public void addSound(String identifier, String fileName) {
+    public void addSound(String identifier, String fileName, boolean longSound) {
+        addSound(identifier, fileName, longSound ? Music.class : Sound.class);
+    }
+
+    private <T> void addSound(String identifier, String fileName, Class<T> type) {
         if (!sounds.containsKey(identifier)) {
             FileHandle file = Gdx.files.internal(fileName);
 
             if (file != null && file.exists()) {
-                sounds.put(identifier, Gdx.audio.newSound(file));
-            }
-        }
-    }
+                sounds.put(identifier, fileName);
 
-    public void addLongSound(String identifier, String fileName) {
-        if (!longSounds.containsKey(identifier)) {
-            FileHandle file = Gdx.files.internal(fileName);
-
-            if (file != null && file.exists()) {
-                longSounds.put(identifier, Gdx.audio.newMusic(file));
+                assets.load(fileName, type);
+                assets.finishLoadingAsset(fileName);
             }
         }
     }
@@ -72,7 +69,7 @@ public class SoundManager implements Disposable {
      */
     public void playSound(String identifier) {
         if (sounds.containsKey(identifier)) {
-            Sound sound = sounds.get(identifier);
+            Sound sound = assets.get(sounds.get(identifier));
             sound.play(getSoundVolume());
         }
     }
@@ -83,8 +80,8 @@ public class SoundManager implements Disposable {
      * @param identifier    sound identifier
      */
     public void playLongSound(String identifier) {
-        if (longSounds.containsKey(identifier)) {
-            Music longSound = longSounds.get(identifier);
+        if (sounds.containsKey(identifier)) {
+            Music longSound = assets.get(sounds.get(identifier));
             longSound.setVolume(getSoundVolume());
             longSound.setLooping(true);
 
@@ -100,8 +97,8 @@ public class SoundManager implements Disposable {
      * @param identifier    sound identifier
      */
     public void pauseLongSound(String identifier) {
-        if (longSounds.containsKey(identifier)) {
-            Music longSound = longSounds.get(identifier);
+        if (sounds.containsKey(identifier)) {
+            Music longSound = assets.get(sounds.get(identifier));
 
             if (longSound.isPlaying()) {
                 longSound.pause();
@@ -118,7 +115,8 @@ public class SoundManager implements Disposable {
         soundMuted = value;
 
         if (sounds != null && !sounds.isEmpty()) {
-            for (Sound sound : sounds.values()) {
+            for (String id : sounds.values()) {
+                Sound sound = assets.get(id);
                 sound.setVolume(0, getSoundVolume());
             }
         }
@@ -134,8 +132,11 @@ public class SoundManager implements Disposable {
      * @param file  file path
      */
     public void playMusic(String file) {
-        if (music == null) {
-            music = Gdx.audio.newMusic(Gdx.files.internal(file));
+        if (musicFile == null) {
+            assets.load(file, Music.class);
+            assets.finishLoadingAsset(file);
+            Music music = assets.get(file);
+            musicFile = file;
 
             music.setLooping(true);
             music.setVolume(getMusicVolume());
@@ -151,23 +152,9 @@ public class SoundManager implements Disposable {
     public void muteMusic(boolean value) {
         musicMuted = value;
 
-        if (music != null && music.isPlaying()) {
+        if (musicFile != null) {
+            Music music = assets.get(musicFile);
             music.setVolume(getMusicVolume());
-        }
-    }
-
-    @Override
-    public void dispose() {
-        if (music != null) {
-            music.dispose();
-        }
-
-        for (Sound sound : sounds.values()) {
-            sound.dispose();
-        }
-
-        for (Music longSound : longSounds.values()) {
-            longSound.dispose();
         }
     }
 }

@@ -25,15 +25,18 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
  * @since   2018-02-01
  */
 public class MainMenuScreen extends BaseScreen {
-    private Texture backgroundTexture;
     private Image background;
     private Table gameMenu, quickMenu;
 
     private SoundManager sounds;
 
     public MainMenuScreen() {
-        sounds = new SoundManager(settings);
-        backgroundTexture = new Texture("images/menu-background.png");
+        sounds = new SoundManager(settings, assets);
+        assets.load("images/menu-background.png", Texture.class);
+        assets.finishLoadingAsset("images/menu-background.png");
+
+        background = new Image(assets.get("images/menu-background.png", Texture.class));
+        addActor(background);
 
         sounds.playMusic("sounds/background-music.mp3");
 
@@ -75,9 +78,6 @@ public class MainMenuScreen extends BaseScreen {
 
         ImageButton exit = new ImageButton(skin, localization.getValue("quitMenu"));
         exit.addListener(clickListener);
-
-        background = new Image(backgroundTexture);
-        addActor(background);
 
         gameMenu = new Table();
         gameMenu.add(playButton).row();
@@ -178,12 +178,5 @@ public class MainMenuScreen extends BaseScreen {
     public void show() {
         super.show();
         Gdx.input.setCatchBackKey(false);
-    }
-
-    @Override
-    public void dispose() {
-        backgroundTexture.dispose();
-        sounds.dispose();
-        super.dispose();
     }
 }
