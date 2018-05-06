@@ -23,11 +23,9 @@ public class Debug {
     private BitmapFont font;
     private HashMap<String, BaseDebug> debugData;
     private OrthographicCamera screen;
-    private String customDebugString;
     private static Debug instance;
 
     private Debug() {
-        customDebugString = "";
         screen = new OrthographicCamera();
         font = new BitmapFont(Gdx.files.internal("ui/debug.fnt"));
     }
@@ -64,12 +62,6 @@ public class Debug {
         }
     }
 
-    public static void setCustomDebugString(String value) {
-        if (instance != null && value != null) {
-            instance.customDebugString = value;
-        }
-    }
-
     public static void dispose() {
         if (instance != null) {
             instance.font.dispose();
@@ -85,7 +77,7 @@ public class Debug {
 
         BaseDebug() {
             timeElapsed = 0;
-            debugString = "FPS: %d (%d)\n%d:%02d:%02d -> %.1f +%.3f\nX: %.04f\nY: %.04f\nZ: %.04f\n\n%s";
+            debugString = "FPS: %d (%d)\n%d:%02d:%02d -> %.1f +%.3f\nX: %.04f\nY: %.04f\nZ: %.04f";
             layout = new GlyphLayout(instance.font, debugString);
         }
 
@@ -105,12 +97,16 @@ public class Debug {
                     delta,
                     Gdx.input.getAccelerometerX(),
                     Gdx.input.getAccelerometerY(),
-                    Gdx.input.getAccelerometerZ(),
-                    instance.customDebugString
+                    Gdx.input.getAccelerometerZ()
                 )
             );
 
-            instance.font.draw(batch, layout, SAFE_ZONE_SIZE, instance.screen.viewportHeight - SAFE_ZONE_SIZE);
+            instance.font.draw(
+                batch,
+                layout,
+                instance.screen.viewportWidth - layout.width - SAFE_ZONE_SIZE,
+                layout.height + SAFE_ZONE_SIZE
+            );
         }
     }
 }

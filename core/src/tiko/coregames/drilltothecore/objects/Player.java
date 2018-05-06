@@ -241,11 +241,29 @@ public class Player extends BaseObject {
     public String getRecentScoreString() {
         if (recentlyAddedScore > 0) {
             return String.format("+%d", recentlyAddedScore);
-        } else if (recentlyAddedScore < 0) {
-            return String.format("%d", recentlyAddedScore);
         }
 
         return null;
+    }
+
+    public String getRadarViewTimer() {
+        return viewTimer > 0 ? String.format("%.1f", viewTimer) : null;
+    }
+
+    public String getSpeedTimer() {
+        return speedTimer > 0 ? String.format("%.1f", speedTimer) : null;
+    }
+
+    public String getDrillTimer() {
+        return drillTimer > 0 ? String.format("%.1f", drillTimer) : null;
+    }
+
+    public String getPointsTimer() {
+        return collectibleTimer > 0 ? String.format("%.1f", collectibleTimer) : null;
+    }
+
+    public String getFuelTimer() {
+        return fuelTimer > 0 ? String.format("%.1f", fuelTimer) : null;
     }
 
     @Override
@@ -700,25 +718,6 @@ public class Player extends BaseObject {
      */
     public boolean isDepthGoalAchieved() {
         return currentState == STATES.DONE;
-    }
-
-    @Override
-    // TODO: Remove before release
-    public String toString() {
-        return String.format(
-            "Current points: %d\nDepth reached: %.0f m\nTotal fuel: %.2f\n" +
-            "Radar power-up: %.1f\nSpeed power-up: %.1f\nDrill speed power-up: %.1f\n" +
-            "Point power-up: %.1f\nFuel power-up: %.1f\n%s",
-            getTotalScore(),
-            getDrillDepth(),
-            getFuel(),
-            viewTimer,
-            speedTimer,
-            drillTimer,
-            collectibleTimer,
-            fuelTimer,
-            controller.toString()
-        );
     }
 
     @Override

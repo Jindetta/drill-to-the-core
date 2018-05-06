@@ -61,6 +61,9 @@ public class LevelManager implements Disposable {
             case 3:
                 path.append("level_3.tmx");
                 break;
+            case 4:
+                path.append("level_4.tmx");
+                break;
             default:
                 path.append("tutorial.tmx");
                 break;

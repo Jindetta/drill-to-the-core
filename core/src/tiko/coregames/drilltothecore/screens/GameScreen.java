@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -50,6 +49,7 @@ public class GameScreen extends BaseScreen {
     private Label displayGameTime;
 
     private Label scoreValue, depthValue;
+    private Label radarBoostValue, speedBoostValue, drillBoostValue, pointBoostValue, fuelBoostValue;
 
     private ProgressBar fuelValue;
 
@@ -87,12 +87,16 @@ public class GameScreen extends BaseScreen {
     }
 
     private void createScreenLayout() {
+        powerupLayout = new Table();
+        powerupLayout.defaults().size(125, 25);
+
         screenLayout = new Table();
         screenLayout.columnDefaults(3);
         screenLayout.defaults().expand().uniform();
         screenLayout.add(createInformationLayer()).align(Align.topLeft).top();
         screenLayout.add(createDisplayLayer()).top();
         screenLayout.add(createFuelLayer()).align(Align.topRight).row();
+        screenLayout.add(powerupLayout).align(Align.bottomLeft);
 
         addActor(screenLayout);
     }
@@ -131,12 +135,9 @@ public class GameScreen extends BaseScreen {
 
         depthValue.setAlignment(Align.right);
 
-        powerupLayout = new Table();
-        powerupLayout.defaults().left().size(125, 25);
-
-        infoLayer.add(scoreLayer).size(125, 25).left().row();
-        infoLayer.add(depthLayer).size(125, 25).left().row();
-        infoLayer.add(powerupLayout);
+        infoLayer.defaults().left().size(125, 25);
+        infoLayer.add(scoreLayer).row();
+        infoLayer.add(depthLayer);
 
         return infoLayer;
     }
@@ -153,12 +154,64 @@ public class GameScreen extends BaseScreen {
             displayScoreValue.addAction(sequence);
             displayScoreValue.setVisible(true);
         }
+
+        powerupLayout.clear();
+
+        if (player.getRadarViewTimer() != null) {
+            if (radarBoostValue == null) {
+                radarBoostValue = new Label("", skin, "clear");
+                radarBoostValue.setAlignment(Align.right);
+            }
+
+            radarBoostValue.setText(player.getRadarViewTimer());
+            powerupLayout.add(new Stack(new ImageButton(skin, "radar"), radarBoostValue)).row();
+        }
+
+        if (player.getSpeedTimer() != null) {
+            if (speedBoostValue == null) {
+                speedBoostValue = new Label("", skin, "clear");
+                speedBoostValue.setAlignment(Align.right);
+            }
+
+            speedBoostValue.setText(player.getSpeedTimer());
+            powerupLayout.add(new Stack(new ImageButton(skin, "speed"), speedBoostValue)).row();
+        }
+
+        if (player.getDrillTimer() != null) {
+            if (drillBoostValue == null) {
+                drillBoostValue = new Label("", skin, "clear");
+                drillBoostValue.setAlignment(Align.right);
+            }
+
+            drillBoostValue.setText(player.getDrillTimer());
+            powerupLayout.add(new Stack(new ImageButton(skin, "drill"), drillBoostValue)).row();
+        }
+
+        if (player.getPointsTimer() != null) {
+            if (pointBoostValue == null) {
+                pointBoostValue = new Label("", skin, "clear");
+                pointBoostValue.setAlignment(Align.right);
+            }
+
+            pointBoostValue.setText(player.getPointsTimer());
+            powerupLayout.add(new Stack(new ImageButton(skin, "points"), pointBoostValue)).row();
+        }
+
+        if (player.getFuelTimer() != null) {
+            if (fuelBoostValue == null) {
+                fuelBoostValue = new Label("", skin, "clear");
+                fuelBoostValue.setAlignment(Align.right);
+            }
+
+            fuelBoostValue.setText(player.getFuelTimer());
+            powerupLayout.add(new Stack(new ImageButton(skin, "fuelBoost"), fuelBoostValue));
+        }
     }
 
     /**
      * Creates pause menu window.
      */
-    private Window createPauseWindow() {
+    private void createPauseWindow() {
         pauseWindow = new Window("", skin, "pauseWindow");
         pauseWindow.setResizable(false);
         pauseWindow.setMovable(false);
@@ -178,11 +231,6 @@ public class GameScreen extends BaseScreen {
                         break;
                     case "restart":
                         resetLevel();
-                        break;
-                    default:
-                        if (DEBUG_MODE) {
-                            player.setMaxFuel();
-                        }
                         break;
                 }
 
@@ -212,7 +260,7 @@ public class GameScreen extends BaseScreen {
         pauseWindow.add(menuButton).padTop(MENU_DEFAULT_PADDING).row();
         pauseWindow.setSize(250, 300);
 
-        return pauseWindow;
+        addActor(pauseWindow);
     }
 
     /**
@@ -273,19 +321,13 @@ public class GameScreen extends BaseScreen {
         depthValue.setText(String.format("%.0f", player.getDrillDepth()));
 
         screenLayout.setPosition(
-            (camera.position.x - camera.viewportWidth / 2) + SAFE_ZONE_SIZE,
-            (camera.position.y - camera.viewportHeight / 2) + SAFE_ZONE_SIZE
+            camera.position.x - camera.viewportWidth / 2 + SAFE_ZONE_SIZE,
+            camera.position.y - camera.viewportHeight / 2 + SAFE_ZONE_SIZE
         );
 
         screenLayout.setSize(
             camera.viewportWidth - SAFE_ZONE_SIZE * 2, camera.viewportHeight - SAFE_ZONE_SIZE * 2
         );
-    }
-
-    @Override
-    public void hide() {
-        Debug.setCustomDebugString("");
-        super.hide();
     }
 
     @Override
@@ -317,8 +359,6 @@ public class GameScreen extends BaseScreen {
         act(delta);
         draw();
 
-        Debug.setCustomDebugString(player.toString());
-
         if (player.isDepthGoalAchieved() || player.getFuel() <= 0) {
             Setup.nextScreen(new EndScreen("GAME ENDED", player.getTotalScore(),
                     0, player.getDrillDepth(), levelIndex));
@@ -328,24 +368,6 @@ public class GameScreen extends BaseScreen {
     @Override
     public boolean keyDown(int key) {
         switch (key) {
-            case Input.Keys.S:
-                player.collectItemByName(null, POWER_UP_SPEED_MULTIPLIER);
-                break;
-            case Input.Keys.D:
-                player.collectItemByName(null, POWER_UP_DRILL_MULTIPLIER);
-                break;
-            case Input.Keys.R:
-                player.collectItemByName(null, POWER_UP_RADAR_EXTENDER);
-                break;
-            case Input.Keys.C:
-                player.collectItemByName(null, POWER_UP_POINT_MULTIPLIER);
-                break;
-            case Input.Keys.F:
-                player.collectItemByName(null, POWER_UP_UNLIMITED_FUEL);
-                break;
-            case Input.Keys.PLUS:
-                player.collectItemByName(null, POWER_UP_RANDOMIZED);
-                break;
             case Input.Keys.MINUS:
                 for (String id : RANDOM_POWER_UPS) {
                     player.collectItemByName(null, id);

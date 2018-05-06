@@ -67,7 +67,7 @@ public class Constants {
     /**
      * Defines level count
      */
-    public static final int LEVEL_COUNT = 4;
+    public static final int LEVEL_COUNT = 5;
 
     /**
      * Defines player move speed
@@ -87,7 +87,7 @@ public class Constants {
     /**
      * Defines minimum player fuel consumption rate
      */
-    public static final float PLAYER_FUEL_MIN_CONSUMPTION = 1f;
+    public static final float PLAYER_FUEL_MIN_CONSUMPTION = 1.15f;
 
     /**
      * Defines player idle multiplier

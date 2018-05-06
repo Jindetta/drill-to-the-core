@@ -217,8 +217,20 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
     score: {
         imageUp: GatherScreen_Mineral
     }
-    clean: {
-      imageUp: Gatherscreen_Gas
+    radar: {
+        imageUp: Gatherscreen_Radar
+    }
+    speed: {
+        imageUp: Gatherscreen_Speed
+    }
+    drill: {
+        imageUp: Gatherscreen_Drill
+    }
+    points: {
+        imageUp: Gatherscreen_Points
+    }
+    fuelBoost: {
+        imageUp: Gatherscreen_Fuel
     }
     depth: {
         imageUp: Gatherscreen_Booster

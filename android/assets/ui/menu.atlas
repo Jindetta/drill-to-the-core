@@ -107,7 +107,35 @@ Gatherscreen_Booster
   orig: 300, 49
   offset: 0, 0
   index: -1
-Gatherscreen_Gas
+Gatherscreen_Fuel
+  rotate: false
+  xy: 0, 830
+  size: 300, 49
+  orig: 300, 49
+  offset: 0, 0
+  index: -1
+Gatherscreen_Points
+  rotate: false
+  xy: 0, 878
+  size: 300, 49
+  orig: 300, 49
+  offset: 0, 0
+  index: -1
+Gatherscreen_Drill
+  rotate: false
+  xy: 0, 926
+  size: 300, 49
+  orig: 300, 49
+  offset: 0, 0
+  index: -1
+Gatherscreen_Speed
+  rotate: false
+  xy: 0, 974
+  size: 300, 49
+  orig: 300, 49
+  offset: 0, 0
+  index: -1
+Gatherscreen_Radar
   rotate: false
   xy: 1, 124
   size: 300, 49

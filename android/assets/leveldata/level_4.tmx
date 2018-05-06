@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="128" height="600" tilewidth="8" tileheight="8" infinite="0" nextobjectid="2">
  <properties>
-  <property name="background" value="leveldata/tutorial.jpg"/>
+  <property name="background" value="leveldata/level_4.jpg"/>
   <property name="depth" type="int" value="4500"/>
  </properties>
  <tileset firstgid="1" name="foreground-tiles" tilewidth="8" tileheight="8" tilecount="1440" columns="24">
