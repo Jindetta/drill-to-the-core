@@ -165,5 +165,9 @@ public class SoundManager implements Disposable {
         for (Sound sound : sounds.values()) {
             sound.dispose();
         }
+
+        for (Music longSound : longSounds.values()) {
+            longSound.dispose();
+        }
     }
 }
