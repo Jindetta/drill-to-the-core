@@ -2,6 +2,8 @@ package tiko.coregames.drilltothecore.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -27,13 +29,21 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
  * @since   2018-02-01
  */
 public class HighScoreScreen extends BaseScreen {
-    private Table windowLayout, scoreList;
+    private Texture backgroundTexture;
+
+    private Table windowLayout;
+    private Image background;
 
     public HighScoreScreen() {
+        backgroundTexture = new Texture("images/endscreen-background.png");
+
+        background = new Image(backgroundTexture);
+        addActor(background);
+
         windowLayout = new Table();
         windowLayout.defaults().expand().uniform();
 
-        scoreList = new Table();
+        Table scoreList = new Table();
         scoreList.columnDefaults(3);
         scoreList.defaults().expandX().uniform();
 
@@ -92,6 +102,7 @@ public class HighScoreScreen extends BaseScreen {
         Viewport viewport = getViewport();
         viewport.update(width, height, true);
 
+        background.setSize(viewport.getWorldWidth(), viewport.getWorldHeight());
         windowLayout.setSize(viewport.getWorldWidth(), viewport.getWorldHeight());
         windowLayout.setPosition(0, 0);
     }
@@ -103,6 +114,12 @@ public class HighScoreScreen extends BaseScreen {
         }
 
         return true;
+    }
+
+    @Override
+    public void dispose() {
+        backgroundTexture.dispose();
+        super.dispose();
     }
 
     private class HighScore {
