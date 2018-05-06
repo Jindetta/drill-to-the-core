@@ -101,7 +101,7 @@ public class EndScreen extends BaseScreen {
 
         if (!settings.hasValue("level_" + levelIndex) || settings.getInteger("level_" + levelIndex) < totalScore) {
             settings.setIntegerValue("level_" + levelIndex, totalScore);
-            settings.setFloatValue("time_" + levelIndex, time);
+            settings.setIntegerValue("time_" + levelIndex, Math.round(time));
             settings.saveSettings();
         }
     }
