@@ -10,12 +10,11 @@ import tiko.coregames.drilltothecore.utilities.Debug;
 
 /*
 	TODO: Documentation (javadoc)
-	TODO: Apply localization to every string
 	TODO: Fix profiles at MainMenuScreen (and possibly elsewhere)
 	TODO: Fix language button to work on any platform
 	TODO: Fix CalibrationScreen (add title and proper layout)
 	TODO: Fix SettingsScreen layout
-	TODO: Delete debug information
+	TODO: Delete/disable debug information
 	TODO: Fix frame drops (?)
 */
 
