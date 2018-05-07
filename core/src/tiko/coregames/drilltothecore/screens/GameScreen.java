@@ -398,6 +398,7 @@ public class GameScreen extends BaseScreen {
     @Override
     public void pause() {
         pauseWindow.setVisible(true);
+        sounds.pauseLongSound("engine");
     }
 
     @Override
