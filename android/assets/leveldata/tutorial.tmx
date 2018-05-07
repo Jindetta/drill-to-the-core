@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="128" height="200" tilewidth="8" tileheight="8" infinite="0" nextobjectid="2">
  <properties>
-  <property name="background" value="leveldata/tutorial.jpg"/>
+  <property name="background" value="leveldata/level_0.png"/>
   <property name="depth" type="int" value="1500"/>
  </properties>
  <tileset firstgid="1" name="foreground-tiles" tilewidth="8" tileheight="8" tilecount="1440" columns="24">
@@ -2099,14 +2099,20 @@
    </animation>
   </tile>
  </tileset>
+ <tileset firstgid="1505" name="background" tilewidth="192" tileheight="160" tilecount="1" columns="1">
+  <image source="forest.png" width="192" height="160"/>
+ </tileset>
+ <tileset firstgid="1506" name="background" tilewidth="192" tileheight="160" tilecount="1" columns="1">
+  <image source="volcanic.png" width="192" height="160"/>
+ </tileset>
+ <layer name="sky" width="128" height="200" locked="1">
+  <data encoding="base64" compression="zlib">
+   eJztzDENAAAIA7A9+NeIk2ngJGkFNAEAAAAAAAAAAOCjHb8fAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICrAlxGBWU=
+  </data>
+ </layer>
  <layer name="ground" width="128" height="200" locked="1">
   <data encoding="base64" compression="zlib">
    eJzt1TePU1EUhVFTMjl5hpqcBnpyGujJaeC3DjlDS86hJeewCxeWu3uxZD1pHWlLfsW6cve1Ws4555xzzjnnnHPOOeecc84555xr+g1lw9lINpqNZePZRDaZTWXT2UzWzmY7q3Hdv+cq32hXut7vmjdKTOn7/fw/JW+tzFZlq7M12dpsXbY+25BtzDZlm7P5bEtnNa7799bKN+YrXe93zRslpvT9fv6fkre2ZduzHdnObFe2O9uT7c32ZfuzA9lCdrCzGtf9+1DlGwuVrve75o0SU/p+P/9PyVuHsyPZ0exYdjw7kZ3MTmWnszPZ2WwxO9dZjev+fb7yjcVK1/td80aJKX2/n/+n5K2l7EJ2MbuUXc6uZFeza9n17EZ2M7uV3c7uZHeze3zj/f3sQfYwe5Q9zp5kT7Nn2fPsRfYye5W9zt5kb7N3fOP9++xD9jH7lH3OvmRfs2/Z9+xH9jP7lf3O/mR/s9Yyvul+eTaUDWcj2Wg2lo1nE9lkNpVNZzNZO5vN5rIVfOP9UqvZ/eL1n9d/Xv95/ef1n9d/Xv95/ef1n9d/Xv95/ef1n9d/vqX//MD7w+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/98f/yg+8PrP6//vP7z+s/rP6//vP7z+s/rP6//vP7z+s/rP6//vP7z+s/rP6//vP7z+s/rP6//vP7z+s/rP6//vP7z+s/rP6//vP7zg+8Pr/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6zw++P7z+8/rP6z+v/7z+8/rP6z+v/7z+8/rP6z+v/7z+8/rP6z+v/7z+8/rP6z+v/7z+8/rP6z+v/7z+8/rP6z+v/7z+8/rP6z8/+P7w+s/rP6//vP7z+s/rP6//vP7z+s/rP6//vP7z+s/rP6//vP7z+s/rP6//vP7z+s/rP6//vP7z+s/rP6//vP7z+s/rP6///OD7w+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z/+f/wd8BMBm
-  </data>
- </layer>
- <layer name="obstacles" width="128" height="200" visible="0" locked="1">
-  <data encoding="base64" compression="zlib">
-   eJztwQEBAAAAgiD/r25IQAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHwYkA8AAQ==
   </data>
  </layer>
  <layer name="collectibles" width="128" height="200" locked="1">

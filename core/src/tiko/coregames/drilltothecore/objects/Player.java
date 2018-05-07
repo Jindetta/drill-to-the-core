@@ -57,7 +57,7 @@ public class Player extends BaseObject {
     private float[] defaultRocketColor, boostedRocketColor;
 
     private enum STATES {
-        IDLE, ACTIVE, JAMMED, IMMOBILIZED, DONE
+        IDLE, ACTIVE, DONE
     }
 
     private ParticleEffect effect;
@@ -88,7 +88,6 @@ public class Player extends BaseObject {
             0.043137256f, 0.28627452f, 1f
         };
 
-        // TODO: Cleanup initialization
         drillSpeedReduction = 0;
         speedMultiplier = 1;
         collisionInterval = 0;
@@ -108,19 +107,14 @@ public class Player extends BaseObject {
         effect = assets.get("images/fx/player.fx", ParticleEffect.class);
         effect.start();
 
-        /*effect = new ParticleEffect();
-        effect.load(Gdx.files.internal("images/fx/player.fx"), Gdx.files.internal("images/fx"));
-        effect.start();*/
-
         createPlayerUnit(x, y);
         setInitialScoreValues();
         setMaxFuel();
     }
 
-    // TODO: Dirty AF - improve
     private void createPlayerUnit(float x, float y) {
         SettingsManager settings = SettingsManager.getActiveProfile(true);
-        int index = settings.getInteger("playerColor");
+        int index = settings.getIntegerIfExists("playerColor", 0);
 
         TextureRegion bladeRegion = new TextureRegion(getTexture(), 0, BIG_TILE_SIZE * 2,BIG_TILE_SIZE * 3, BIG_TILE_SIZE  );
         playerTracks = new TextureRegion(getTexture(), BIG_TILE_SIZE * 1, BIG_TILE_SIZE , BIG_TILE_SIZE, BIG_TILE_SIZE);
@@ -175,8 +169,6 @@ public class Player extends BaseObject {
 
     private void increaseMaximumDepth() {
         maximumDrillDepth = Math.max(maximumDrillDepth, startingDepth - getY());
-
-        //TODO: Remove this when score is shown at the end of the game
         scoreMultiplier = Math.max(1, getDrillDepthMultiplier() * PLAYER_DRILL_DEPTH_MULTIPLIER);
     }
 
@@ -187,10 +179,6 @@ public class Player extends BaseObject {
      */
     public int getTotalScore() {
         return Math.round(baseScore * scoreMultiplier + bonusScore);
-    }
-
-    public float getBaseScore() {
-        return baseScore;
     }
 
     private float getDrillDepthMultiplier() {
@@ -278,11 +266,11 @@ public class Player extends BaseObject {
 
         if (!controller.isCalibrating()) {
             // Set state to idle by default
-            setCurrentState(STATES.IDLE, STATES.JAMMED, STATES.IMMOBILIZED, STATES.DONE);
+            setCurrentState(STATES.IDLE, STATES.DONE);
 
             recentlyAddedScore = 0;
 
-            if (consumeFuel(delta) && currentState != STATES.IMMOBILIZED) {
+            if (consumeFuel(delta)) {
                 float valueX = 0;
                 float valueY = 0;
 
@@ -330,7 +318,6 @@ public class Player extends BaseObject {
     }
 
     private void drawEffect(SpriteBatch batch, float delta) {
-        // TODO: Improve effect and tie to engine activity
         ParticleEmitter smoke = effect.findEmitter("engine");
         smoke.getAngle().setHighMax(getRotation() + 50);
         smoke.getAngle().setHighMin(getRotation() - 50);
@@ -402,7 +389,6 @@ public class Player extends BaseObject {
         if (MathUtils.isEqual(Math.abs(difference), 180, 5)) {
             setRotation(angle);
         } else {
-            // TODO: Fix rotation speed irregularities
             float speed = -getMovementSpeed() * delta;
             rotation += difference * PLAYER_ROTATION_MULTIPLIER * delta;
             setRotation(rotation % 360);
@@ -417,7 +403,6 @@ public class Player extends BaseObject {
     @Override
     public void draw(Batch batch) {
         if (isVisible()) {
-            // TODO: Do code cleanup - this is messy AF
             TextureRegion frame = animation.getKeyFrame(keyFrameState, true);
 
             batch.draw(
@@ -504,7 +489,6 @@ public class Player extends BaseObject {
             key = map.getString(tile, "id", POWER_UP_NOTHING);
         }
 
-        // TODO: Too dirty - make code cleanup
         switch (key) {
             case POWER_UP_RANDOMIZED:
                 collectItemByName(tile, RANDOM_POWER_UPS[MathUtils.random(0, RANDOM_POWER_UPS.length - 1)]);
@@ -569,7 +553,6 @@ public class Player extends BaseObject {
 
         TiledMapTileLayer.Cell cell = map.getCellFromPosition(x, y, "collectibles");
 
-        // TODO: Make sure collectibles are picked up at the right time
         if (cell != null && cell.getTile() != null) {
             collectItemByName(cell.getTile(), null);
             cell.setTile(null);
@@ -580,31 +563,6 @@ public class Player extends BaseObject {
         TiledMapTileLayer.Cell groundCell = map.getCellFromPosition(x, y, "ground");
 
         if (groundCell != null && groundCell.getTile() != null) {
-            TiledMapTileLayer.Cell obstacleCell = map.getCellFromPosition(x, y, "obstacles");
-
-            if (obstacleCell != null && obstacleCell.getTile() != null) {
-                switch (map.getString(obstacleCell.getTile(), "id", "")) {
-                    // TODO: Update to work with hard "rock" properly - and make constant for this type
-                    case "rock":
-                        //setCurrentState(STATES.JAMMED);
-                        controller.setSpecialMovement(true);
-                        break;
-                    // TODO: Update to work with this type - and make constant for this type
-                    case "lava":
-                        break;
-                    // TODO: Update to work with this type - and make constant for this type
-                    case "water":
-                        break;
-                    default:
-                        obstacleCell.setTile(null);
-                        updateGroundStatus(x, y);
-                        return;
-                }
-
-                collisionInterval = .25f;
-                return;
-            }
-
             collisionInterval = .15f;
             addBaseScore(SCORE_GROUND_TILE_OPENED);
             groundCell.setTile(null);
@@ -617,7 +575,6 @@ public class Player extends BaseObject {
     private void updateTileStatus() {
         updatePlayerView();
 
-        // TODO: Change "ground" destruction based on current heading
         for (float y = getY() + SMALL_TILE_SIZE; y < getY() + BIG_TILE_SIZE - SMALL_TILE_SIZE; y++) {
             for (float x = getX() + SMALL_TILE_SIZE; x < getX() + BIG_TILE_SIZE - SMALL_TILE_SIZE; x++) {
                 updateCollectibleStatus(x, y);
@@ -686,7 +643,6 @@ public class Player extends BaseObject {
         collisionInterval = Math.max(collisionInterval - delta, 0);
     }
 
-    // TODO: Change to disallow rotation to awkward directions and movement over border
     private void checkMovementConditions(float delta) {
         final float GROUND_LEVEL = map.getMapHeight() - BIG_TILE_SIZE * 4;
 
@@ -697,7 +653,6 @@ public class Player extends BaseObject {
 
         // Ground
         if (getY() + BIG_TILE_SIZE >= GROUND_LEVEL) {
-            // Block going through the sky
             isAllowedToMoveUp = false;
             isAllowedToMoveLeft = false;
             isAllowedToMoveRight = false;

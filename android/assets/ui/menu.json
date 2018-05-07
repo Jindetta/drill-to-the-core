@@ -226,6 +226,12 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 	levelselecttitle_fin: {
 		imageUp: SelectLevelTitle_fin
 	}
+    pausetitle_eng: {
+        imageUp: PausedTitle_eng
+    }
+    pausetitle_fin: {
+        imageUp: PausedTitle_fin
+    }
 	calibrationbutton_eng: {
 		imageUp: CalibrationMenu_Calibrate_eng
 	}
@@ -310,8 +316,8 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 	default: {
 		font: ArialBlack
-		fontColorSelected: black
-		fontColorUnselected: white
+		fontColorSelected: blue
+		fontColorUnselected: black
 		selection: ListScreen
 	}
 }

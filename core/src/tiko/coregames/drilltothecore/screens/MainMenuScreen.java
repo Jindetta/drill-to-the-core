@@ -122,24 +122,38 @@ public class MainMenuScreen extends BaseScreen {
         });
 
         final SelectBox<String> profiles = new SelectBox<>(skin);
-        profiles.setItems("<unused profile>");
+        profiles.setItems(SettingsManager.getProfileNames());
+        profiles.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                SettingsManager.setActiveProfile(profiles.getSelectedIndex() - 1);
+                Setup.nextScreen(new MainMenuScreen());
+            }
+        });
+
+        final Input.TextInputListener listener = new Input.TextInputListener() {
+            @Override
+            public void input(String text) {
+                if (text != null && !text.trim().equals("")) {
+                    SettingsManager.createUserProfile(text, true);
+                    profiles.setItems(SettingsManager.getProfileNames());
+
+                    Setup.nextScreen(new MainMenuScreen());
+                }
+            }
+
+            @Override
+            public void canceled() {
+
+            }
+        };
+
         Button addProfile = new Button(skin, "icon1");
         addProfile.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.input.setOnscreenKeyboardVisible(true);
-                Gdx.input.getTextInput(new Input.TextInputListener() {
-                    @Override
-                    public void input(String text) {
-                        SettingsManager.createUserProfile(text, true);
-                        profiles.setItems(SettingsManager.getProfileNames());
-                    }
-
-                    @Override
-                    public void canceled() {
-
-                    }
-                }, "New profile", "", "Profile name");
+                Gdx.input.getTextInput(listener, "New profile", "", "Profile name");
             }
         });
 

@@ -28,10 +28,10 @@ public class SoundManager {
         sounds = new HashMap<>();
         this.assets = assets;
 
-        soundVolume = settings.getFloatIfExists("soundVolume", 50) / 100;
+        soundVolume = settings.getIntegerIfExists("soundVolume", 50) / 100;
         soundMuted = settings.getBooleanIfExists("soundMuted", false);
 
-        musicVolume = settings.getFloatIfExists("musicVolume", 50) / 100;
+        musicVolume = settings.getIntegerIfExists("musicVolume", 50) / 100;
         musicMuted = settings.getBooleanIfExists("musicMuted", false);
     }
 

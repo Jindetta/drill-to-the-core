@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="128" height="425" tilewidth="8" tileheight="8" infinite="0" nextobjectid="2">
  <properties>
-  <property name="background" value="leveldata/level_2.jpg"/>
+  <property name="background" value="leveldata/level_2.png"/>
   <property name="depth" type="int" value="2500"/>
  </properties>
  <tileset firstgid="1" name="foreground-tiles" tilewidth="8" tileheight="8" tilecount="1440" columns="24">
@@ -2099,14 +2099,17 @@
    </animation>
   </tile>
  </tileset>
+ <tileset firstgid="1505" name="background" tilewidth="192" tileheight="160" tilecount="1" columns="1">
+  <image source="desert.png" width="192" height="160"/>
+ </tileset>
+ <layer name="sky" width="128" height="425" locked="1">
+  <data encoding="base64" compression="zlib">
+   eJztzDENAAAMA6A+869xTqqjCQggAQAAAAAAAAAAYNGf3w8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwqdIoFZQ==
+  </data>
+ </layer>
  <layer name="ground" width="128" height="425" locked="1">
   <data encoding="base64" compression="zlib">
    eJzt1deOVmUYhuF/Rk5ARVBhB1SQ3m0oiIKiIkiVam/YAGlSFE5VLCB6AmK9E+IBzEwya5hcb/LsXfmydlbu0cg555xzzjnnnHPOOeecc84555xz9/otGhuNFrfH2uPtibakLW1PtmVteVvRVrZVbXVb09a2dW1929A2tk3tqfZ0e2bM+9P5/mTeerY91za359sLbUvb2l5s29pL7eW2ve1or7RX2872Wnu9vdF2tTfb7ranveX9aX1/Mm/tbfva/nagHWyH2tvtcDvSjrZj7Xg70d5p77b32vvtg/Zh+6h93D5pn7bPvD+t70/mrZPt8/ZF+7J91b5up9rpdqZ90862c+18u9Autm/bpXa5XWlX23ft+3atXff+tL4/mbd+aDfaj+2n9nP7pd1st9qv7Xb7rf3Ozzr/R7vT/mx/tb/bP+3fNhofjcbaeLuvzRnnZ5u/vz3QHmxz20NtXpvfHm6PtEfbgraQn3V+WVveVrSVbVVb3da0tW1dW982tI38rPND94fXf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3nh+8Pr/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6zw/fH17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z8fvj+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/P3x/eP3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf374/vD6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r//88P3h9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/+eH7w+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vP6z+s/r/+8/vPD94fXf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17/ef3n9Z/Xf17///cT/V9m2vfr/9T8RP+Xmfb9+j81P9H/ZaZ9v/5PzU/0f5lp36//vP7z+s/rP6//vP7z+s/rP6//vP7z+s/rP6//vP7z+s/rP6//vP7z+s/rP6//vP7z+s/rPz90f3j95/Wf139e/3n95/Wf139e/3n95/Wf139e/3n95/Wf139e/3n95/Wf139e/3n95/Wf139e/3n95/Wf139e/3n95/Wf139++P7w+s/rP6//vP7z+s/rP6//vP7z+s/rP6//vP7z+s/rP6//vP7z+s/rP6//vP7z+s/rP6//vP7z+s/rP6//vP7z+s/rP6///PD94fWf139e/3n95/Wf139e/3n95/Wf139e/3n95/Wf139e/3n95/Wf139e/3n95/Wf139e/3n95/Wf139e/3n95/Wf13/+rv8PLmxuCQ==
-  </data>
- </layer>
- <layer name="obstacles" width="128" height="425" visible="0" locked="1">
-  <data encoding="base64" compression="zlib">
-   eJztwTEBAAAAwqD1T20LL6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAlwFSLQAB
   </data>
  </layer>
  <layer name="collectibles" width="128" height="425" locked="1">

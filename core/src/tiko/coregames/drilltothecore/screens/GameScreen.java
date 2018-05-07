@@ -36,7 +36,7 @@ public class GameScreen extends BaseScreen {
     private LevelManager map;
     private int levelIndex;
 
-    private Window pauseWindow;
+    private Table pauseWindow;
     private Player player;
 
     private float totalGameTime;
@@ -49,6 +49,7 @@ public class GameScreen extends BaseScreen {
 
     private Label scoreValue, depthValue;
     private Label radarBoostValue, speedBoostValue, drillBoostValue, pointBoostValue, fuelBoostValue;
+    private Stack radarLayer, speedLayer, drillLayer, pointLayer, fuelLayer;
 
     private ProgressBar fuelValue;
 
@@ -71,7 +72,7 @@ public class GameScreen extends BaseScreen {
     }
 
     private void resetLevel() {
-        map = new LevelManager(levelIndex);
+        map = new LevelManager(levelIndex, assets);
         Vector3 playerSpawn = map.getSpawnPoint("player");
 
         clear();
@@ -160,50 +161,60 @@ public class GameScreen extends BaseScreen {
             if (radarBoostValue == null) {
                 radarBoostValue = new Label("", skin, "clear");
                 radarBoostValue.setAlignment(Align.right);
+
+                radarLayer = new Stack(new ImageButton(skin, "points"), radarBoostValue);
             }
 
             radarBoostValue.setText(player.getRadarViewTimer());
-            powerUpLayout.add(new Stack(new ImageButton(skin, "radar"), radarBoostValue)).row();
+            powerUpLayout.add(radarLayer).row();
         }
 
         if (player.getSpeedTimer() != null) {
             if (speedBoostValue == null) {
                 speedBoostValue = new Label("", skin, "clear");
                 speedBoostValue.setAlignment(Align.right);
+
+                speedLayer = new Stack(new ImageButton(skin, "points"), speedBoostValue);
             }
 
             speedBoostValue.setText(player.getSpeedTimer());
-            powerUpLayout.add(new Stack(new ImageButton(skin, "speed"), speedBoostValue)).row();
+            powerUpLayout.add(speedLayer).row();
         }
 
         if (player.getDrillTimer() != null) {
             if (drillBoostValue == null) {
                 drillBoostValue = new Label("", skin, "clear");
                 drillBoostValue.setAlignment(Align.right);
+
+                drillLayer = new Stack(new ImageButton(skin, "points"), drillBoostValue);
             }
 
             drillBoostValue.setText(player.getDrillTimer());
-            powerUpLayout.add(new Stack(new ImageButton(skin, "drill"), drillBoostValue)).row();
+            powerUpLayout.add(drillLayer).row();
         }
 
         if (player.getPointsTimer() != null) {
             if (pointBoostValue == null) {
                 pointBoostValue = new Label("", skin, "clear");
                 pointBoostValue.setAlignment(Align.right);
+
+                pointLayer = new Stack(new ImageButton(skin, "points"), pointBoostValue);
             }
 
             pointBoostValue.setText(player.getPointsTimer());
-            powerUpLayout.add(new Stack(new ImageButton(skin, "points"), pointBoostValue)).row();
+            powerUpLayout.add(pointLayer).row();
         }
 
         if (player.getFuelTimer() != null) {
             if (fuelBoostValue == null) {
                 fuelBoostValue = new Label("", skin, "clear");
                 fuelBoostValue.setAlignment(Align.right);
+
+                fuelLayer = new Stack(new ImageButton(skin, "points"), fuelBoostValue);
             }
 
             fuelBoostValue.setText(player.getFuelTimer());
-            powerUpLayout.add(new Stack(new ImageButton(skin, "fuelBoost"), fuelBoostValue));
+            powerUpLayout.add(fuelLayer);
         }
     }
 
@@ -211,10 +222,9 @@ public class GameScreen extends BaseScreen {
      * Creates pause menu window.
      */
     private void createPauseWindow() {
-        pauseWindow = new Window("", skin, "pauseWindow");
-        pauseWindow.setResizable(false);
-        pauseWindow.setMovable(false);
+        pauseWindow = new Table(skin);
         pauseWindow.setVisible(false);
+        pauseWindow.defaults().expandY().center();
 
         ClickListener clickListener = new ClickListener() {
             @Override
@@ -238,6 +248,8 @@ public class GameScreen extends BaseScreen {
             }
         };
 
+        ImageButton pausedTitle = new ImageButton(skin, localization.getValue("pausedTitle"));
+
         ImageButton continueButton = new ImageButton(skin, localization.getValue("continueGame"));
         continueButton.addListener(clickListener);
 
@@ -253,10 +265,12 @@ public class GameScreen extends BaseScreen {
         menuButton.addListener(clickListener);
         menuButton.setName("menu");
 
+        pauseWindow.add(pausedTitle).top().row();
         pauseWindow.add(continueButton).row();
-        pauseWindow.add(restartButton).padTop(MENU_DEFAULT_PADDING).row();
-        pauseWindow.add(settingsButton).padTop(MENU_DEFAULT_PADDING).row();
-        pauseWindow.add(menuButton).padTop(MENU_DEFAULT_PADDING).row();
+        pauseWindow.add(restartButton).row();
+        pauseWindow.add(settingsButton).row();
+        pauseWindow.add(menuButton).row();
+        pauseWindow.setBackground("LevelCompleteScreen");
         pauseWindow.setSize(250, 300);
 
         addActor(pauseWindow);

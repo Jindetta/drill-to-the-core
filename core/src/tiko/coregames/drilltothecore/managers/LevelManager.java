@@ -1,6 +1,7 @@
 package tiko.coregames.drilltothecore.managers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -37,7 +38,7 @@ public class LevelManager implements Disposable {
     private int mapWidth, mapHeight, virtualMapDepth;
 
     /**
-     * Stores background color
+     * Stores background image
      */
     private Texture backgroundImage;
 
@@ -46,7 +47,7 @@ public class LevelManager implements Disposable {
      */
     private OrthogonalTiledMapRenderer levelRenderer;
 
-    public LevelManager(int levelValue) {
+    public LevelManager(int levelValue, AssetManager assets) {
         TmxMapLoader loader = new TmxMapLoader();
         StringBuilder path = new StringBuilder("leveldata/");
 
@@ -92,7 +93,12 @@ public class LevelManager implements Disposable {
         mapWidth = width * tileWidth;
 
         try {
-            backgroundImage = new Texture(properties.get("background", String.class));
+            String background = properties.get("background", String.class);
+
+            assets.load(background, Texture.class);
+            assets.finishLoadingAsset(background);
+
+            backgroundImage = assets.get(background);
         } catch (Exception e) {
             backgroundImage = null;
         }
@@ -103,10 +109,6 @@ public class LevelManager implements Disposable {
      */
     private void destroyLevel() {
         if (levelData != null) {
-            if (backgroundImage != null) {
-                backgroundImage.dispose();
-            }
-
             levelData.dispose();
         }
     }
@@ -148,16 +150,20 @@ public class LevelManager implements Disposable {
         if (backgroundImage != null) {
             batch.begin();
             batch.setProjectionMatrix(camera.combined);
-            batch.draw(backgroundImage, 0, 0, mapWidth, mapHeight);
+            batch.draw(
+                backgroundImage,
+                camera.position.x - camera.viewportWidth / 2,
+                camera.position.y - camera.viewportHeight / 2
+            );
             batch.end();
         }
 
         levelRenderer.setView(
             camera.combined,
-            camera.position.x - camera.viewportWidth / 2 - BIG_TILE_SIZE,
-            camera.position.y - camera.viewportHeight / 2 - BIG_TILE_SIZE,
-            camera.position.x + camera.viewportHeight + BIG_TILE_SIZE,
-            camera.position.y + camera.viewportWidth + BIG_TILE_SIZE
+            camera.position.x - camera.viewportWidth / 2 - BIG_TILE_SIZE * 6,
+            camera.position.y - camera.viewportHeight / 2 - BIG_TILE_SIZE * 6,
+            camera.position.x + camera.viewportHeight + BIG_TILE_SIZE * 5,
+            camera.position.y + camera.viewportWidth + BIG_TILE_SIZE * 5
         );
 
         levelRenderer.render();

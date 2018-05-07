@@ -16,7 +16,6 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
  */
 public class ControllerManager {
     private Vector2 currentValue;
-    private Vector2 previousValue;
 
     private Vector2 positiveThreshold;
     private Vector2 negativeThreshold;
@@ -26,8 +25,6 @@ public class ControllerManager {
     private float calibrationTime;
 
     private boolean invertedX, invertedY;
-
-    private boolean requiresSpecialMovement;
 
     /**
      * Instantiates class.
@@ -53,19 +50,12 @@ public class ControllerManager {
                 negativeThreshold.setZero();
             }
 
-            if (previousValue == null) {
-                previousValue = new Vector2();
-            } else {
-                previousValue.setZero();
-            }
-
             if (baseline == null) {
                 baseline = new Vector3();
             } else {
                 baseline.setZero();
             }
 
-            requiresSpecialMovement = false;
             calibrationTime = CONTROLLER_CALIBRATION_TIME;
             calibrationIterations = 0;
 
@@ -82,7 +72,7 @@ public class ControllerManager {
     /**
      * Applies user settings.
      */
-    protected void applySettings() {
+    private void applySettings() {
         SettingsManager settings = SettingsManager.getActiveProfile(true);
 
         int sensitivityUp = MathUtils.clamp(settings.getInteger("sensitivityUp"), 1, 10);
@@ -137,10 +127,6 @@ public class ControllerManager {
         return 0;
     }
 
-    private float normalized(float value, float min, float max) {
-        return (value - min) / (max - min);
-    }
-
     /**
      * Updates all values.
      */
@@ -193,23 +179,5 @@ public class ControllerManager {
 
     public boolean isMovingRight() {
         return currentValue.x > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT);
-    }
-
-    public void setSpecialMovement(boolean value) {
-        requiresSpecialMovement = value;
-    }
-
-    @Override
-    public String toString() {
-        if (baseline != null) {
-            return String.format(
-                "\nBASELINE\nX: %.2f%% Y: %.2f%% Z: %.2f%%",
-                normalized(baseline.x, -MAX_SENSOR_VALUE, MAX_SENSOR_VALUE) * 100,
-                normalized(baseline.y, -MAX_SENSOR_VALUE, MAX_SENSOR_VALUE) * 100,
-                normalized(baseline.z, -MAX_SENSOR_VALUE, MAX_SENSOR_VALUE) * 100
-            );
-        }
-
-        return "";
     }
 }

@@ -39,6 +39,40 @@ public class SettingsManager {
     private SettingsManager(String fileName, boolean defaultProfile) {
         preferences = Gdx.app.getPreferences(fileName);
         this.defaultProfile = defaultProfile;
+
+        if (defaultProfile) {
+            setIntegerValue("sensitivityUp", getIntegerIfExists("sensitivityUp", 1));
+            setIntegerValue("sensitivityDown", getIntegerIfExists("sensitivityDown", 1));
+            setIntegerValue("sensitivityRight", getIntegerIfExists("sensitivityRight", 1));
+            setIntegerValue("sensitivityLeft", getIntegerIfExists("sensitivityLeft", 1));
+            setBooleanValue("invertedX", getBooleanIfExists("invertedX", false));
+            setBooleanValue("invertedY", getBooleanIfExists("invertedY", false));
+
+            setIntegerValue("soundVolume", getIntegerIfExists("soundVolume", 50));
+            setIntegerValue("musicVolume", getIntegerIfExists("musicVolume", 50));
+            setBooleanValue("soundMuted", getBooleanIfExists("soundMuted", false));
+            setBooleanValue("musicMuted", getBooleanIfExists("musicMuted", false));
+
+            setIntegerValue("playerColor", getIntegerIfExists("playerColor", 0));
+        } else {
+            SettingsManager profile = getDefaultProfile();
+
+            setIntegerValue("sensitivityUp", getIntegerIfExists("sensitivityUp", profile.getIntegerIfExists("sensitivityUp", 1)));
+            setIntegerValue("sensitivityDown", getIntegerIfExists("sensitivityDown", profile.getIntegerIfExists("sensitivityDown", 1)));
+            setIntegerValue("sensitivityRight", getIntegerIfExists("sensitivityRight", profile.getIntegerIfExists("sensitivityRight", 1)));
+            setIntegerValue("sensitivityLeft", getIntegerIfExists("sensitivityLeft", profile.getIntegerIfExists("sensitivityLeft", 1)));
+            setBooleanValue("invertedX", getBooleanIfExists("invertedX", profile.getBooleanIfExists("invertedX", false)));
+            setBooleanValue("invertedY", getBooleanIfExists("invertedY", profile.getBooleanIfExists("invertedY", false)));
+
+            setIntegerValue("soundVolume", getIntegerIfExists("soundVolume", profile.getIntegerIfExists("soundVolume", 50)));
+            setIntegerValue("musicVolume", getIntegerIfExists("musicVolume", profile.getIntegerIfExists("musicVolume", 50)));
+            setBooleanValue("soundMuted", getBooleanIfExists("soundMuted", profile.getBooleanIfExists("soundMuted", false)));
+            setBooleanValue("musicMuted", getBooleanIfExists("musicMuted", profile.getBooleanIfExists("musicMuted", false)));
+
+            setIntegerValue("playerColor", getIntegerIfExists("playerColor", profile.getIntegerIfExists("playerColor", 0)));
+        }
+
+        saveSettings();
     }
 
     private static boolean hasProfile(int index) {
@@ -109,13 +143,16 @@ public class SettingsManager {
     }
 
     public static Array<String> getProfileNames() {
-        Array<String> profiles = new Array<>(MAX_SAVED_PROFILES);
+        Array<String> profiles = new Array<>();
+
+        // Default profile
+        profiles.add("");
 
         for (int i = 0; i < MAX_SAVED_PROFILES; i++) {
             String name = getProfileName(i);
 
             if (name != null) {
-                profiles.add(name);
+                profiles.add(name.toUpperCase());
             }
         }
 
@@ -126,20 +163,12 @@ public class SettingsManager {
         return preferences.contains(key);
     }
 
-    public boolean isDefaultProfile() {
-        return defaultProfile;
-    }
-
     public void setStringValue(String key, String value) {
         preferences.putString(key, value);
     }
 
     public void setBooleanValue(String key, boolean value) {
         preferences.putBoolean(key, value);
-    }
-
-    public void setFloatValue(String key, float value) {
-        preferences.putFloat(key, value);
     }
 
     public void setIntegerValue(String key, int value) {
@@ -153,18 +182,6 @@ public class SettingsManager {
     public int getIntegerIfExists(String key, int defaultValue) {
         if (hasValue(key)) {
             return getInteger(key);
-        }
-
-        return defaultValue;
-    }
-
-    public float getFloat(String key) {
-        return preferences.getFloat(key);
-    }
-
-    public float getFloatIfExists(String key, float defaultValue) {
-        if (hasValue(key)) {
-            return getFloat(key);
         }
 
         return defaultValue;
