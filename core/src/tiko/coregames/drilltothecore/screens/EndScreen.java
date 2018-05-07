@@ -68,9 +68,8 @@ public class EndScreen extends BaseScreen {
         scorePerSecond = totalScore / 3;
 
         Label timeValue = new Label(
-            String.format(
-                Locale.ENGLISH,
-                "TIME: %02d:%02d:%02d",
+            localization.getFormatted(
+                "totalTimeTitle",
                 (int) time / (60 * 60),
                 (int) time / 60 % 60,
                 (int) time % 60
@@ -78,7 +77,7 @@ public class EndScreen extends BaseScreen {
             skin
         );
 
-        Label depthValue = new Label("MAXIMUM DEPTH: " + Math.round(player.getDrillDepth()),skin );
+        Label depthValue = new Label(localization.getFormatted("maxDepthTitle", player.getDrillDepth()), skin);
         totalScoreLabel = new Label("", skin);
 
         ImageButton continueButton = new ImageButton(skin, localization.getValue("nextMenu"));
@@ -97,7 +96,7 @@ public class EndScreen extends BaseScreen {
         screenLayout.add(totalScoreLabel).row();
 
         if (levelIndex < LEVEL_COUNT - 1) {
-            screenLayout.add(continueButton).row();
+            screenLayout.add(continueButton).pad(MENU_DEFAULT_PADDING).row();
             settings.setIntegerValue("currentLevel", levelIndex + 1);
         } else {
             settings.removeKey("currentLevel");
@@ -120,7 +119,7 @@ public class EndScreen extends BaseScreen {
     @Override
     public void render(float delta) {
         super.render(delta);
-        totalScoreLabel.setText("TOTAL SCORE: " + gradualHighScore);
+        totalScoreLabel.setText(localization.getFormatted("totalScoreTitle", gradualHighScore));
         gradualHighScore = Math.min(totalScore, Math.round(gradualHighScore + scorePerSecond * delta));
     }
 

@@ -42,4 +42,8 @@ public class LocalizationManager {
     public String getValue(String key) {
         return bundle.get(key);
     }
+
+    public String getFormatted(String key, Object... args) {
+        return String.format(getValue(key), args);
+    }
 }
