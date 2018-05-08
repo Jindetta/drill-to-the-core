@@ -116,7 +116,7 @@ public class SettingsScreen extends BaseScreen {
         volumeControls.add(muteMusic).pad(MENU_DEFAULT_PADDING).left();
 
         Table playerColor = new Table();
-        Texture playerImage = assets.get("images/player_atlas.png");
+        Texture playerImage = assets.get("images/player-atlas.png");
         buttons = new ImageButton[playerImage.getHeight() / BIG_TILE_SIZE];
 
         for (int i = 0; i < buttons.length; i++) {
@@ -133,10 +133,14 @@ public class SettingsScreen extends BaseScreen {
             playerColor.add(buttons[i]).pad(MENU_DEFAULT_PADDING);
         }
 
+        Table extraMenu = new Table();
+
+        extraMenu.add(calibration).row();
+        extraMenu.add(playerColor).pad(MENU_DEFAULT_PADDING * 2);
+
         screenLayout.add(new ImageButton(skin, localization.getValue("settingsTitle"))).colspan(2).row();
         screenLayout.add(volumeControls);
-        screenLayout.add(calibration).row();
-        screenLayout.add(playerColor).colspan(2).row();
+        screenLayout.add(extraMenu).row();
 
         ImageButton backButton = new ImageButton(skin, localization.getValue("backButton"));
         backButton.addListener(new ClickListener() {
@@ -146,7 +150,7 @@ public class SettingsScreen extends BaseScreen {
             }
         });
 
-        screenLayout.add(backButton).align(Align.bottomLeft).pad(MENU_DEFAULT_PADDING).colspan(2);
+        screenLayout.add(backButton).align(Align.bottomLeft).pad(SAFE_ZONE_SIZE).colspan(2);
 
         addActor(screenLayout);
     }

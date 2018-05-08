@@ -1,6 +1,5 @@
 package tiko.coregames.drilltothecore.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -10,15 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import tiko.coregames.drilltothecore.Setup;
 import tiko.coregames.drilltothecore.managers.SettingsManager;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Locale;
 
 import static tiko.coregames.drilltothecore.utilities.Constants.*;
@@ -79,7 +75,7 @@ public class HighScoreScreen extends BaseScreen {
             }
         });
 
-        windowLayout.add(backButton).align(Align.bottomLeft).pad(MENU_DEFAULT_PADDING);
+        windowLayout.add(backButton).align(Align.bottomLeft).pad(SAFE_ZONE_SIZE);
 
         addActor(windowLayout);
     }

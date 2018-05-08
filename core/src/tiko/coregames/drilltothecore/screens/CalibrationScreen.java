@@ -7,9 +7,12 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import tiko.coregames.drilltothecore.Setup;
+
+import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
 /**
  * CalibrationScreen class will display calibration settings.
@@ -110,18 +113,37 @@ public class CalibrationScreen extends BaseScreen {
         });
 
         screenLayout = new Table();
-        screenLayout.add(sensitivityLabelLeft).row();
-        screenLayout.add(sensitivityLeft).padTop(5).row();
-        screenLayout.add(sensitivityLabelRight).padTop(10).row();
-        screenLayout.add(sensitivityRight).padTop(5).row();
+        screenLayout.defaults().expand();
 
-        screenLayout.add(sensitivityLabelUp).padTop(15).row();
-        screenLayout.add(sensitivityUp).padTop(5).row();
-        screenLayout.add(sensitivityLabelDown).padTop(10).row();
-        screenLayout.add(sensitivityDown).padTop(5).row();
+        Table controlButtons = new Table();
+        controlButtons.defaults().expandX().uniform();
 
-        screenLayout.add(invertedX).padTop(15).row();
-        screenLayout.add(invertedY).padTop(5).row();
+        controlButtons.add(sensitivityLabelLeft);
+        controlButtons.add(sensitivityLabelRight).row();
+        controlButtons.add(sensitivityLeft).padTop(MENU_DEFAULT_PADDING);
+        controlButtons.add(sensitivityRight).padTop(MENU_DEFAULT_PADDING).row();
+
+        controlButtons.add(sensitivityLabelUp);
+        controlButtons.add(sensitivityLabelDown).row();
+        controlButtons.add(sensitivityUp).padTop(MENU_DEFAULT_PADDING);
+        controlButtons.add(sensitivityDown).padTop(MENU_DEFAULT_PADDING).row();
+
+        controlButtons.add(invertedX);
+        controlButtons.add(invertedY);
+
+        ImageButton titleButton = new ImageButton(skin, localization.getValue("calibrateTitle"));
+
+        ImageButton backButton = new ImageButton(skin, localization.getValue("backButton"));
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                CalibrationScreen.this.keyDown(Input.Keys.BACK);
+            }
+        });
+
+        screenLayout.add(titleButton).row();
+        screenLayout.add(controlButtons).row();
+        screenLayout.add(backButton).align(Align.bottomLeft).pad(SAFE_ZONE_SIZE);
 
         addActor(screenLayout);
     }
@@ -131,11 +153,9 @@ public class CalibrationScreen extends BaseScreen {
         Viewport viewport = getViewport();
         viewport.update(width, height, true);
 
-        float centerX = (viewport.getWorldWidth() - screenLayout.getWidth()) / 2;
-        float centerY = (viewport.getWorldHeight() - screenLayout.getHeight()) / 2;
-
         background.setSize(viewport.getWorldWidth(), viewport.getWorldHeight());
-        screenLayout.setPosition(centerX, centerY);
+        screenLayout.setSize(viewport.getWorldWidth(), viewport.getWorldHeight());
+        screenLayout.setPosition(0, 0);
     }
 
     @Override

@@ -165,6 +165,17 @@ public class SettingsManager {
     }
 
     /**
+     * Gets currently active profile index.
+     *
+     * @return active profile index
+     */
+    public static int getActiveProfile() {
+        SettingsManager profile = getDefaultProfile();
+
+        return profile.getIntegerIfExists("activeProfile", -1);
+    }
+
+    /**
      * Sets active profile.
      *
      * @param index profile index

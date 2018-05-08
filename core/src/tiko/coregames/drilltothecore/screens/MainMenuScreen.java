@@ -45,7 +45,14 @@ public class MainMenuScreen extends BaseScreen {
      */
     private SoundManager sounds;
 
+    /**
+     * Defines refresh state.
+     */
+    private boolean needsRefreshing;
+
     public MainMenuScreen() {
+        needsRefreshing = false;
+
         sounds = new SoundManager(settings, assets);
         assets.load("images/menu-background.png", Texture.class);
         assets.finishLoadingAsset("images/menu-background.png");
@@ -69,8 +76,6 @@ public class MainMenuScreen extends BaseScreen {
                         break;
                     case "highScore":
                         Setup.nextScreen(new HighScoreScreen());
-                        break;
-                    case "profiles":
                         break;
                     default:
                         Gdx.app.exit();
@@ -131,18 +136,23 @@ public class MainMenuScreen extends BaseScreen {
             public void clicked(InputEvent event, float x, float y) {
                 settings.setCurrentLocale(localization.getValue("swappedLocale"));
                 settings.saveSettings();
-
-                Setup.nextScreen(new MainMenuScreen());
+                needsRefreshing = true;
             }
         });
 
         final SelectBox<String> profiles = new SelectBox<>(skin);
         profiles.setItems(SettingsManager.getProfileNames());
+
+        int profileIndex = SettingsManager.getActiveProfile() + 1;
+        if (profileIndex > 0) {
+            profiles.setSelectedIndex(profileIndex);
+        }
+
         profiles.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 SettingsManager.setActiveProfile(profiles.getSelectedIndex() - 1);
-                Setup.nextScreen(new MainMenuScreen());
+                needsRefreshing = true;
             }
         });
 
@@ -152,8 +162,7 @@ public class MainMenuScreen extends BaseScreen {
                 if (text != null && !text.trim().equals("")) {
                     SettingsManager.createUserProfile(text, true);
                     profiles.setItems(SettingsManager.getProfileNames());
-
-                    Setup.nextScreen(new MainMenuScreen());
+                    needsRefreshing = true;
                 }
             }
 
@@ -168,7 +177,7 @@ public class MainMenuScreen extends BaseScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.input.setOnscreenKeyboardVisible(true);
-                Gdx.input.getTextInput(listener, "New profile", "", "Profile name");
+                Gdx.input.getTextInput(listener, localization.getValue("newProfile"), "", localization.getValue("profileName"));
             }
         });
 
@@ -177,7 +186,7 @@ public class MainMenuScreen extends BaseScreen {
         soundButtons.add(muteMusic);
 
         Table profileButtons = new Table();
-        profileButtons.add(profiles);
+        profileButtons.add(profiles).height(20).padRight(MENU_DEFAULT_PADDING);
         profileButtons.add(addProfile);
 
         quickMenu.defaults().uniform();
@@ -207,5 +216,15 @@ public class MainMenuScreen extends BaseScreen {
     public void show() {
         super.show();
         Gdx.input.setCatchBackKey(false);
+    }
+
+    @Override
+    public void render(float delta) {
+        super.render(delta);
+
+        if (needsRefreshing) {
+            needsRefreshing = false;
+            Setup.nextScreen(new MainMenuScreen());
+        }
     }
 }

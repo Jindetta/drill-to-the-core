@@ -226,6 +226,12 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 	levelselecttitle_fin: {
 		imageUp: SelectLevelTitle_fin
 	}
+	calibrationtitle_eng: {
+		imageUp: CalibrationTitle_eng
+	}
+	calibrationtitle_fin: {
+		imageUp: CalibrationTitle_fin
+	}
     pausetitle_eng: {
         imageUp: PausedTitle_eng
     }
@@ -373,9 +379,6 @@ com.badlogic.gdx.scenes.scene2d.ui.Touchpad$TouchpadStyle: {
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
-	default: {
-		titleFont: SuperQuickFormula
-	}
 	pauseWindow: {
 		titleFont: Abduction2002
         background: LevelCompleteScreen

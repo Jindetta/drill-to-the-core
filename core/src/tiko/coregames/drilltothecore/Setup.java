@@ -8,10 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import tiko.coregames.drilltothecore.screens.SplashScreen;
 
 /*
-	TODO: Fix profiles at MainMenuScreen (and possibly elsewhere)
 	TODO: Fix language button to work on any platform
-	TODO: Fix CalibrationScreen (add title and proper layout)
-	TODO: Fix SettingsScreen layout
 	TODO: Fix frame drops (?)
 */
 
@@ -64,7 +61,7 @@ public class Setup extends Game {
 
 	@Override
 	public void dispose () {
-		setScreen(null);
+		super.dispose();
 		batch.dispose();
     }
 }
