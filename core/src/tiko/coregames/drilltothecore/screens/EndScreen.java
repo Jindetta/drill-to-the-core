@@ -116,7 +116,7 @@ public class EndScreen extends BaseScreen {
         screenLayout.add(depthValue).row();
         screenLayout.add(totalScoreLabel).row();
 
-        if (levelIndex < LEVEL_COUNT - 1) {
+        if (!DEMO_MODE && levelIndex < LEVEL_COUNT - 1) {
             screenLayout.add(continueButton).pad(MENU_DEFAULT_PADDING).row();
             settings.setIntegerValue("currentLevel", levelIndex + 1);
         } else {

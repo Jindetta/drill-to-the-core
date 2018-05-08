@@ -233,7 +233,7 @@ public class GameScreen extends BaseScreen {
                 radarBoostValue = new Label("", skin, "clear");
                 radarBoostValue.setAlignment(Align.right);
 
-                radarLayer = new Stack(new ImageButton(skin, "points"), radarBoostValue);
+                radarLayer = new Stack(new ImageButton(skin, "radar"), radarBoostValue);
             }
 
             radarBoostValue.setText(player.getRadarViewTimer());
@@ -245,7 +245,7 @@ public class GameScreen extends BaseScreen {
                 speedBoostValue = new Label("", skin, "clear");
                 speedBoostValue.setAlignment(Align.right);
 
-                speedLayer = new Stack(new ImageButton(skin, "points"), speedBoostValue);
+                speedLayer = new Stack(new ImageButton(skin, "speed"), speedBoostValue);
             }
 
             speedBoostValue.setText(player.getSpeedTimer());
@@ -257,7 +257,7 @@ public class GameScreen extends BaseScreen {
                 drillBoostValue = new Label("", skin, "clear");
                 drillBoostValue.setAlignment(Align.right);
 
-                drillLayer = new Stack(new ImageButton(skin, "points"), drillBoostValue);
+                drillLayer = new Stack(new ImageButton(skin, "drill"), drillBoostValue);
             }
 
             drillBoostValue.setText(player.getDrillTimer());
@@ -281,7 +281,7 @@ public class GameScreen extends BaseScreen {
                 fuelBoostValue = new Label("", skin, "clear");
                 fuelBoostValue.setAlignment(Align.right);
 
-                fuelLayer = new Stack(new ImageButton(skin, "points"), fuelBoostValue);
+                fuelLayer = new Stack(new ImageButton(skin, "fuelBoost"), fuelBoostValue);
             }
 
             fuelBoostValue.setText(player.getFuelTimer());

@@ -135,7 +135,6 @@ public class MainMenuScreen extends BaseScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 settings.setCurrentLocale(localization.getValue("swappedLocale"));
-                settings.saveSettings();
                 needsRefreshing = true;
             }
         });

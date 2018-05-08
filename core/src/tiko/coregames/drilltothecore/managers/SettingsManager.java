@@ -363,8 +363,8 @@ public class SettingsManager {
      * @param localeKey locale identifier
      */
     public void setCurrentLocale(String localeKey) {
-        Locale locale = getLocaleById(localeKey);
-        setStringValue("locale", locale.getLanguage());
+        setStringValue("locale", localeKey);
+        saveSettings();
     }
 
     /**

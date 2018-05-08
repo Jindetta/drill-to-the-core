@@ -55,6 +55,11 @@ public class Constants {
     public static final float GAME_SPEED_MODIFIER = 1;
 
     /**
+     * Defines demonstration mode.
+     */
+    public static final boolean DEMO_MODE = false;
+
+    /**
      * Defines level count.
      */
     public static final int LEVEL_COUNT = 5;

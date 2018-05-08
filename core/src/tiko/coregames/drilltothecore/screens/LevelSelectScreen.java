@@ -102,7 +102,9 @@ public class LevelSelectScreen extends BaseScreen {
             screenLayout.add(playButton).row();
         }
 
-        screenLayout.add(levelSelection).row();
+        if (!DEMO_MODE) {
+            screenLayout.add(levelSelection).row();
+        }
 
         ImageButton backButton = new ImageButton(skin, localization.getValue("backButton"));
         backButton.addListener(clickListener);

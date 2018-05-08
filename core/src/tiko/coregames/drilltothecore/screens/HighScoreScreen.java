@@ -102,19 +102,36 @@ public class HighScoreScreen extends BaseScreen {
                 break;
             }
 
-            double maxValue = 0;
-
-            for (int j = 0; j < highScores.size(); j++) {
-                double value = highScores.get(j).totalScore / highScores.get(j).time;
-
-                if (maxValue <= value) {
-                    sortedHighScores.add(highScores.remove(j));
-                    maxValue = value;
-                }
-            }
+            sortedHighScores.add(highScores.remove(getHighestPossibleRating(highScores)));
         }
 
         return sortedHighScores;
+    }
+
+    /**
+     * Gets highest score rating in the given list.
+     *
+     * @param scores list of scores
+     * @return highest value
+     */
+    private int getHighestPossibleRating(ArrayList<HighScore> scores) {
+        if (scores != null && !scores.isEmpty()) {
+            int index = 0;
+            double maxValue = scores.get(0).totalScore / scores.get(0).time;
+
+            for (int i = 1; i < scores.size(); i++) {
+                double value = scores.get(i).totalScore / scores.get(i).time;
+
+                if (maxValue < value) {
+                    maxValue = value;
+                    index = i;
+                }
+            }
+
+            return index;
+        }
+
+        return -1;
     }
 
     @Override
@@ -160,9 +177,14 @@ public class HighScoreScreen extends BaseScreen {
             totalScore = 0;
             time = 0;
 
-            for (int i = 1; i < LEVEL_COUNT; i++) {
-                totalScore += profile.getIntegerIfExists("level_" + i, 0);
-                time += profile.getIntegerIfExists("time_" + i, 0);
+            if (DEMO_MODE) {
+                totalScore = profile.getIntegerIfExists("level_0", 0);
+                time = profile.getIntegerIfExists("time_0", 0);
+            } else {
+                for (int i = 1; i < LEVEL_COUNT; i++) {
+                    totalScore += profile.getIntegerIfExists("level_" + i, 0);
+                    time += profile.getIntegerIfExists("time_" + i, 0);
+                }
             }
         }
 
