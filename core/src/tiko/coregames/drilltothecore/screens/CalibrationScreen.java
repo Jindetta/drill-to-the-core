@@ -20,8 +20,15 @@ import tiko.coregames.drilltothecore.Setup;
  * @since   2018-02-01
  */
 public class CalibrationScreen extends BaseScreen {
+    /**
+     * Defines background image.
+     */
     private Image background;
-    private Table settingsTable;
+
+    /**
+     * Defines screen layout.
+     */
+    private Table screenLayout;
 
     public CalibrationScreen() {
         assets.load("images/settings-background.png", Texture.class);
@@ -102,21 +109,33 @@ public class CalibrationScreen extends BaseScreen {
             }
         });
 
-        settingsTable = new Table();
-        settingsTable.add(sensitivityLabelLeft).row();
-        settingsTable.add(sensitivityLeft).padTop(5).row();
-        settingsTable.add(sensitivityLabelRight).padTop(10).row();
-        settingsTable.add(sensitivityRight).padTop(5).row();
+        screenLayout = new Table();
+        screenLayout.add(sensitivityLabelLeft).row();
+        screenLayout.add(sensitivityLeft).padTop(5).row();
+        screenLayout.add(sensitivityLabelRight).padTop(10).row();
+        screenLayout.add(sensitivityRight).padTop(5).row();
 
-        settingsTable.add(sensitivityLabelUp).padTop(15).row();
-        settingsTable.add(sensitivityUp).padTop(5).row();
-        settingsTable.add(sensitivityLabelDown).padTop(10).row();
-        settingsTable.add(sensitivityDown).padTop(5).row();
+        screenLayout.add(sensitivityLabelUp).padTop(15).row();
+        screenLayout.add(sensitivityUp).padTop(5).row();
+        screenLayout.add(sensitivityLabelDown).padTop(10).row();
+        screenLayout.add(sensitivityDown).padTop(5).row();
 
-        settingsTable.add(invertedX).padTop(15).row();
-        settingsTable.add(invertedY).padTop(5).row();
+        screenLayout.add(invertedX).padTop(15).row();
+        screenLayout.add(invertedY).padTop(5).row();
 
-        addActor(settingsTable);
+        addActor(screenLayout);
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        Viewport viewport = getViewport();
+        viewport.update(width, height, true);
+
+        float centerX = (viewport.getWorldWidth() - screenLayout.getWidth()) / 2;
+        float centerY = (viewport.getWorldHeight() - screenLayout.getHeight()) / 2;
+
+        background.setSize(viewport.getWorldWidth(), viewport.getWorldHeight());
+        screenLayout.setPosition(centerX, centerY);
     }
 
     @Override
@@ -126,17 +145,5 @@ public class CalibrationScreen extends BaseScreen {
         }
 
         return super.keyDown(key);
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        Viewport viewport = getViewport();
-        viewport.update(width, height, true);
-
-        float centerX = (viewport.getWorldWidth() - settingsTable.getWidth()) / 2;
-        float centerY = (viewport.getWorldHeight() - settingsTable.getHeight()) / 2;
-
-        background.setSize(viewport.getWorldWidth(), viewport.getWorldHeight());
-        settingsTable.setPosition(centerX, centerY);
     }
 }

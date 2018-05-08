@@ -25,13 +25,34 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
  * @since   2018-02-01
  */
 public class EndScreen extends BaseScreen {
+    /**
+     * Defines background image.
+     */
     private Image background;
+
+    /**
+     * Defines screen layout.
+     */
     private Table screenLayout;
 
+    /**
+     * Stores gradual score value.
+     */
     private int gradualHighScore;
+
+    /**
+     * Stores score increment value.
+     */
     private int scorePerSecond;
+
+    /**
+     * Stores total high score.
+     */
     private int totalScore;
 
+    /**
+     * Defines label for high score.
+     */
     private Label totalScoreLabel;
 
     public EndScreen(Player player, float time, final int levelIndex) {

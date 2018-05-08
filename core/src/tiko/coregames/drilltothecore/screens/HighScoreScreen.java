@@ -32,7 +32,14 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
  * @since   2018-02-01
  */
 public class HighScoreScreen extends BaseScreen {
+    /**
+     * Defines background image.
+     */
     private Image background;
+
+    /**
+     * Defines screen layout.
+     */
     private Table windowLayout;
 
     public HighScoreScreen() {
@@ -51,9 +58,7 @@ public class HighScoreScreen extends BaseScreen {
 
         ArrayList<HighScore> scores = getHighestScores();
 
-        for (int i = 0; i < scores.size(); i++) {
-            HighScore scorer = scores.get(i);
-
+        for (HighScore scorer : scores) {
             Label name = new Label(scorer.getName(), skin, "menu");
             Label score = new Label(scorer.getScore(), skin, "menu");
             Label time = new Label(scorer.getTime(), skin, "menu");
@@ -79,6 +84,11 @@ public class HighScoreScreen extends BaseScreen {
         addActor(windowLayout);
     }
 
+    /**
+     * Gets all high scores in order.
+     *
+     * @return list of scores
+     */
     private ArrayList<HighScore> getHighestScores() {
         ArrayList<HighScore> highScores = new ArrayList<>();
         ArrayList<HighScore> sortedHighScores = new ArrayList<>(10);
@@ -130,9 +140,23 @@ public class HighScoreScreen extends BaseScreen {
         return true;
     }
 
+    /**
+     * Class, which stores all important values.
+     */
     private class HighScore {
+        /**
+         * Defines name.
+         */
         private String name;
+
+        /**
+         * Defines total score.
+         */
         private long totalScore;
+
+        /**
+         * Defines total time.
+         */
         private float time;
 
         public HighScore(String name, SettingsManager profile) {
@@ -146,14 +170,29 @@ public class HighScoreScreen extends BaseScreen {
             }
         }
 
+        /**
+         * Gets name in uppercase format.
+         *
+         * @return player name
+         */
         public String getName() {
             return name.toUpperCase();
         }
 
+        /**
+         * Gets total score.
+         *
+         * @return player total score as string
+         */
         public String getScore() {
             return String.valueOf(totalScore);
         }
 
+        /**
+         * Gets total time.
+         *
+         * @return total time as formatted string
+         */
         public String getTime() {
             return String.format(
                 Locale.ENGLISH,

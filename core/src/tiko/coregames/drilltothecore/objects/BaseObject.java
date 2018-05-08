@@ -14,6 +14,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  * @since   2018-02-01
  */
 public abstract class BaseObject extends Sprite {
+    /**
+     * Stores object visibility state.
+     */
     private boolean visible;
 
     BaseObject(String file, AssetManager assets) {
@@ -23,6 +26,13 @@ public abstract class BaseObject extends Sprite {
         setVisible(true);
     }
 
+    /**
+     * Loads texture using AssetManager.
+     *
+     * @param file      file path
+     * @param assets    AssetManager instance
+     * @return texture object
+     */
     private static Texture loadTextureAsset(String file, AssetManager assets) {
         assets.load(file, Texture.class);
         assets.finishLoadingAsset(file);
@@ -58,10 +68,5 @@ public abstract class BaseObject extends Sprite {
         if (isVisible()) {
             super.draw(batch);
         }
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getSimpleName();
     }
 }

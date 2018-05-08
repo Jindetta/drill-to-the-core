@@ -18,7 +18,14 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
  * @since   2018-02-01
  */
 public class SplashScreen extends BaseScreen {
+    /**
+     * Defines duration of the screen.
+     */
     private float timeLeft;
+
+    /**
+     * Defines splash screen image.
+     */
     private Image splash;
 
     public SplashScreen() {

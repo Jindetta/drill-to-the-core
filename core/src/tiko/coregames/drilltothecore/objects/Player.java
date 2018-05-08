@@ -21,45 +21,141 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
  * @since   2018-02-01
  */
 public class Player extends BaseObject {
+    /**
+     * Defines manager for sound effects.
+     */
     private SoundManager soundEffects;
+
+    /**
+     * Defines manager for controls.
+     */
     private ControllerManager controller;
+
+    /**
+     * Defines manager for level data.
+     */
     private LevelManager map;
 
+    /**
+     * Defines current player state.
+     */
     private STATES currentState;
 
+    /**
+     * Defines current maximum depth.
+     */
     private float maximumDrillDepth;
-    private float totalFuel, fuelConsumptionRate;
+
+    /**
+     * Defines current fuel amount.
+     */
+    private float totalFuel;
+
+    /**
+     * Defines current fuel consumption rate.
+     */
+    private float fuelConsumptionRate;
+
+    /**
+     * Defines current bonus score.
+     */
     private float bonusScore;
+
+    /**
+     * Defines current base score.
+     */
     private long baseScore;
+
+    /**
+     * Defines score multiplier.
+     */
     private float scoreMultiplier;
+
+    /**
+     * Defines current shroud opacity.
+     */
     private float shroudOpacity;
 
+    /**
+     * Defines starting depth.
+     */
     private float startingDepth;
 
+    /**
+     * Defines various multipliers.
+     */
     private float collectibleMultiplier, speedMultiplier, drillSpeedReduction;
+
+    /**
+     * Defines various timers.
+     */
     private float collectibleTimer, speedTimer, viewTimer, currentIdleTime, drillTimer, collisionInterval, fuelTimer;
 
+    /**
+     * Defines player view zone.
+     */
     private Circle playerView;
 
+    /**
+     * Defines current frame time.
+     */
     private float keyFrameState;
+
+    /**
+     * Defines animation info.
+     */
     private Animation<TextureRegion> animation;
 
+    /**
+     * Defines region for player unit.
+     */
     private TextureRegion playerUnit;
+
+    /**
+     * Defines region for player tracks.
+     */
     private TextureRegion playerTracks;
 
+    /**
+     * Defines movement state (down).
+     */
     private boolean isAllowedToMoveDown;
+
+    /**
+     * Defines movement state (up).
+     */
     private boolean isAllowedToMoveUp;
+
+    /**
+     * Defines movement state (right).
+     */
     private boolean isAllowedToMoveRight;
+
+    /**
+     * Defines movement state (left).
+     */
     private boolean isAllowedToMoveLeft;
 
+    /**
+     * Stores recently added score.
+     */
     private int recentlyAddedScore;
 
+    /**
+     * Stores rocket trail colors.
+     */
     private float[] defaultRocketColor, boostedRocketColor;
 
+    /**
+     * Defines all possible states.
+     */
     private enum STATES {
         IDLE, ACTIVE, DONE
     }
 
+    /**
+     * Stores particle effect.
+     */
     private ParticleEffect effect;
 
     /**
@@ -112,6 +208,12 @@ public class Player extends BaseObject {
         setMaxFuel();
     }
 
+    /**
+     * Creates player unit at given coordinates.
+     *
+     * @param x     coordinate x
+     * @param y     coordinate y
+     */
     private void createPlayerUnit(float x, float y) {
         SettingsManager settings = SettingsManager.getActiveProfile(true);
         int index = settings.getIntegerIfExists("playerColor", 0);
@@ -130,6 +232,13 @@ public class Player extends BaseObject {
         setRotation(90);
     }
 
+    /**
+     * Gets valid region for animation.
+     *
+     * @param region        region to convert
+     * @param frameCount    frame count
+     * @return single dimensional array
+     */
     private TextureRegion[] getFrames(TextureRegion region, int frameCount) {
         TextureRegion[] frames = new TextureRegion[frameCount];
 
@@ -141,16 +250,28 @@ public class Player extends BaseObject {
         return frames;
     }
 
+    /**
+     * Sets maximum amount of fuel
+     */
     public void setMaxFuel() {
         totalFuel = PLAYER_FUEL_TANK_SIZE;
     }
 
+    /**
+     * Consumes fuel.
+     *
+     * @param delta delta time
+     * @return true if fuel has not run out, otherwise false
+     */
     private boolean consumeFuel(float delta) {
         totalFuel -= PLAYER_FUEL_MIN_CONSUMPTION * (fuelConsumptionRate * delta);
 
         return totalFuel > 0;
     }
 
+    /**
+     * Sets initial score values.
+     */
     private void setInitialScoreValues() {
         collectibleTimer = 0;
         collectibleMultiplier = 1;
@@ -159,14 +280,27 @@ public class Player extends BaseObject {
         baseScore = 0;
     }
 
+    /**
+     * Adds base score.
+     *
+     * @param value score to add
+     */
     private void addBaseScore(float value) {
         baseScore += value;
     }
 
+    /**
+     * Adds bonus score.
+     *
+     * @param value score to add
+     */
     public void addBonusScore(float value) {
         bonusScore += value;
     }
 
+    /**
+     * Increases maximum depth reached.
+     */
     private void increaseMaximumDepth() {
         maximumDrillDepth = Math.max(maximumDrillDepth, startingDepth - getY());
         scoreMultiplier = Math.max(1, getDrillDepthMultiplier() * PLAYER_DRILL_DEPTH_MULTIPLIER);
@@ -210,10 +344,21 @@ public class Player extends BaseObject {
         controller.reset();
     }
 
+    /**
+     * Gets player movement speed.
+     *
+     * @return current movement speed
+     */
     private float getMovementSpeed() {
         return PLAYER_MOVE_SPEED * (speedMultiplier - drillSpeedReduction);
     }
 
+    /**
+     * Sets player state.
+     *
+     * @param newState      new player states
+     * @param ignoreStates  ignore states
+     */
     private void setCurrentState(STATES newState, STATES... ignoreStates) {
         if (ignoreStates != null && ignoreStates.length > 0) {
             for (STATES state : ignoreStates) {
@@ -239,22 +384,47 @@ public class Player extends BaseObject {
         return null;
     }
 
+    /**
+     * Gets radar view power-up timer.
+     *
+     * @return timer as string
+     */
     public String getRadarViewTimer() {
         return viewTimer > 0 ? String.format("%.1f", viewTimer) : null;
     }
 
+    /**
+     * Gets speed power-up timer.
+     *
+     * @return timer as string
+     */
     public String getSpeedTimer() {
         return speedTimer > 0 ? String.format("%.1f", speedTimer) : null;
     }
 
+    /**
+     * Gets drill power-up timer.
+     *
+     * @return timer as string
+     */
     public String getDrillTimer() {
         return drillTimer > 0 ? String.format("%.1f", drillTimer) : null;
     }
 
+    /**
+     * Gets points power-up timer.
+     *
+     * @return timer as string
+     */
     public String getPointsTimer() {
         return collectibleTimer > 0 ? String.format("%.1f", collectibleTimer) : null;
     }
 
+    /**
+     * Gets fuel power-up timer.
+     *
+     * @return timer as string
+     */
     public String getFuelTimer() {
         return fuelTimer > 0 ? String.format("%.1f", fuelTimer) : null;
     }
@@ -274,14 +444,7 @@ public class Player extends BaseObject {
                 float valueX = 0;
                 float valueY = 0;
 
-                /*if (currentState != STATES.JAMMED) {
-                    checkMovementConditions(delta);
-                } else {
-                    isAllowedToMoveDown = false;
-                    isAllowedToMoveRight = false;
-                    isAllowedToMoveLeft = false;
-                }*/
-                checkMovementConditions(delta);
+                checkMovementConditions();
 
                 if (isAllowedToMoveUp && controller.isMovingUp()) {
                     valueY = 1;
@@ -317,6 +480,12 @@ public class Player extends BaseObject {
         draw(batch);
     }
 
+    /**
+     * Draws particle effect.
+     *
+     * @param batch batch to draw to
+     * @param delta delta time
+     */
     private void drawEffect(SpriteBatch batch, float delta) {
         ParticleEmitter smoke = effect.findEmitter("engine");
         smoke.getAngle().setHighMax(getRotation() + 50);
@@ -343,14 +512,31 @@ public class Player extends BaseObject {
         effect.draw(batch, delta);
     }
 
+    /**
+     * Gets player center (X).
+     *
+     * @return current position of player (center).
+     */
     public float getCenterX() {
         return getX() + BIG_TILE_SIZE / 2;
     }
 
+    /**
+     * Gets player center (Y).
+     *
+     * @return current position of player (center).
+     */
     public float getCenterY() {
         return getY() + BIG_TILE_SIZE / 2;
     }
 
+    /**
+     * Gets shortest rotation angle.
+     *
+     * @param currentAngle  current angle
+     * @param newAngle      new angle
+     * @return angle value
+     */
     private int getShortestRotation(float currentAngle, float newAngle) {
         float rotateLeft = (360 - currentAngle) + newAngle;
         float rotateRight = currentAngle - newAngle;
@@ -368,6 +554,13 @@ public class Player extends BaseObject {
         return Math.round(rotateLeft <= rotateRight ? rotateLeft : -rotateRight) % 360;
     }
 
+    /**
+     * Rotates player to face given point.
+     *
+     * @param pointX    x point
+     * @param pointY    y point
+     * @param delta     delta time
+     */
     private void rotateToPoint(float pointX, float pointY, float delta) {
         float angle = MathUtils.atan2(
                 (getCenterY() - pointY) - getCenterY(),
@@ -443,6 +636,12 @@ public class Player extends BaseObject {
         }
     }
 
+    /**
+     * Clears shroud tile.
+     *
+     * @param x     tile x
+     * @param y     tile y
+     */
     private void clearShroudTile(float x, float y) {
         TiledMapTileLayer.Cell cell = map.getCellFromPosition(x, y, "shroud");
 
@@ -559,6 +758,12 @@ public class Player extends BaseObject {
         }
     }
 
+    /**
+     * Updates ground status.
+     *
+     * @param x     ground tile x
+     * @param y     ground tile y
+     */
     private void updateGroundStatus(float x, float y) {
         TiledMapTileLayer.Cell groundCell = map.getCellFromPosition(x, y, "ground");
 
@@ -643,7 +848,10 @@ public class Player extends BaseObject {
         collisionInterval = Math.max(collisionInterval - delta, 0);
     }
 
-    private void checkMovementConditions(float delta) {
+    /**
+     * Checks movement conditions.
+     */
+    private void checkMovementConditions() {
         final float GROUND_LEVEL = map.getMapHeight() - BIG_TILE_SIZE * 4;
 
         isAllowedToMoveLeft = true;

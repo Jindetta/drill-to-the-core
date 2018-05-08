@@ -14,6 +14,9 @@ import java.util.Locale;
  * @since   2018-02-01
  */
 public class LocalizationManager {
+    /**
+     * Stores instance of localization bundle.
+     */
     private I18NBundle bundle;
 
     public LocalizationManager() {
@@ -21,7 +24,7 @@ public class LocalizationManager {
     }
 
     /**
-     * Gets locale from currently active profile
+     * Gets locale from currently active profile.
      */
     private Locale getProfileLocale() {
         SettingsManager profile = SettingsManager.getActiveProfile(true);
@@ -34,7 +37,7 @@ public class LocalizationManager {
     }
 
     /**
-     * Gets locale value by identifier
+     * Gets locale value by identifier.
      *
      * @param key   locale identifier
      * @return  localized string
@@ -43,6 +46,13 @@ public class LocalizationManager {
         return bundle.get(key);
     }
 
+    /**
+     * Gets formatted locale value.
+     *
+     * @param key   locale identifier
+     * @param args  list of arguments
+     * @return formatted string
+     */
     public String getFormatted(String key, Object... args) {
         return String.format(getValue(key), args);
     }

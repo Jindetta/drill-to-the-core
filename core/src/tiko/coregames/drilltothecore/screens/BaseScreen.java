@@ -22,10 +22,24 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
  * @since   2018-02-01
  */
 public abstract class BaseScreen extends Stage implements Screen {
+    /**
+     * Defines manager for localization.
+     */
     LocalizationManager localization;
+
+    /**
+     * Defines manager for settings.
+     */
     SettingsManager settings;
 
+    /**
+     * Defines manager for assets.
+     */
     AssetManager assets;
+
+    /**
+     * Defines menu skin.
+     */
     Skin skin;
 
     BaseScreen() {

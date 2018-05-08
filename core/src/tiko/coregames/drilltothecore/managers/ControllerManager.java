@@ -15,20 +15,41 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
  * @since   2018-02-01
  */
 public class ControllerManager {
+    /**
+     * Stores current controller value.
+     */
     private Vector2 currentValue;
 
+    /**
+     * Stores positive threshold data.
+     */
     private Vector2 positiveThreshold;
-    private Vector2 negativeThreshold;
-    private Vector3 baseline;
-
-    private int calibrationIterations;
-    private float calibrationTime;
-
-    private boolean invertedX, invertedY;
 
     /**
-     * Instantiates class.
+     * Stores negative threshold data.
      */
+    private Vector2 negativeThreshold;
+
+    /**
+     * Stores current baseline.
+     */
+    private Vector3 baseline;
+
+    /**
+     * Stores calibration iteration times.
+     */
+    private int calibrationIterations;
+
+    /**
+     * Stores calibration time.
+     */
+    private float calibrationTime;
+
+    /**
+     * Defines inverted states.
+     */
+    private boolean invertedX, invertedY;
+
     public ControllerManager() {
         reset();
     }
@@ -109,14 +130,34 @@ public class ControllerManager {
         }
     }
 
+    /**
+     * Inverts X-axis.
+     *
+     * @param inverted state
+     */
     private void setInvertedX(boolean inverted) {
         invertedX = inverted;
     }
 
+    /**
+     * Inverts Y-axis.
+     *
+     * @param inverted state
+     */
     private void setInvertedY(boolean inverted) {
         invertedY = inverted;
     }
 
+    /**
+     * Gets calibrated value.
+     *
+     * @param value     raw input value
+     * @param baseline  baseline value
+     * @param positive  positive threshold value
+     * @param negative  negative threshold value
+     * @param maxValue  maximum allowed value
+     * @return calibrated output
+     */
     private int calibratedValue(float value, float baseline, float positive, float negative, float maxValue) {
         if (value < MathUtils.lerp(baseline, baseline - maxValue, negative / 10)) {
             return -1;
@@ -147,10 +188,22 @@ public class ControllerManager {
         }
     }
 
+    /**
+     * Gets calibration status.
+     *
+     * @return true if calibration is active, otherwise false
+     */
     public boolean isCalibrating() {
         return baseline != null && calibrationTime > 0;
     }
 
+    /**
+     * Updates raw values.
+     *
+     * @param x accelerometer x value
+     * @param y accelerometer y value
+     * @param z accelerometer z value
+     */
     private void updateValues(float x, float y, float z) {
         if (Math.abs(baseline.y) > Math.abs(baseline.z)) {
             currentValue.set(
@@ -165,18 +218,38 @@ public class ControllerManager {
         }
     }
 
+    /**
+     * Gets upward movement state.
+     *
+     * @return true if moving, otherwise false
+     */
     public boolean isMovingUp() {
         return currentValue.y > 0 || Gdx.input.isKeyPressed(Input.Keys.UP);
     }
 
+    /**
+     * Gets downward movement state.
+     *
+     * @return true if moving, otherwise false
+     */
     public boolean isMovingDown() {
         return currentValue.y < 0 || Gdx.input.isKeyPressed(Input.Keys.DOWN);
     }
 
+    /**
+     * Gets left movement state.
+     *
+     * @return true if moving, otherwise false
+     */
     public boolean isMovingLeft() {
         return currentValue.x < 0 || Gdx.input.isKeyPressed(Input.Keys.LEFT);
     }
 
+    /**
+     * Gets right movement state.
+     *
+     * @return true if moving, otherwise false
+     */
     public boolean isMovingRight() {
         return currentValue.x > 0 || Gdx.input.isKeyPressed(Input.Keys.RIGHT);
     }

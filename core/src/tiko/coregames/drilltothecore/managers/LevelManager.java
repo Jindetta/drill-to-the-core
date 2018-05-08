@@ -33,12 +33,12 @@ public class LevelManager implements Disposable {
     private TiledMap levelData;
 
     /**
-     * Stores map size
+     * Stores map size.
      */
     private int mapWidth, mapHeight, virtualMapDepth;
 
     /**
-     * Stores background image
+     * Stores background image.
      */
     private Texture backgroundImage;
 
@@ -47,6 +47,12 @@ public class LevelManager implements Disposable {
      */
     private OrthogonalTiledMapRenderer levelRenderer;
 
+    /**
+     * Overloads default constuctor.
+     *
+     * @param levelValue    level index
+     * @param assets        AssetManage instance
+     */
     public LevelManager(int levelValue, AssetManager assets) {
         TmxMapLoader loader = new TmxMapLoader();
         StringBuilder path = new StringBuilder("leveldata/");
@@ -113,6 +119,13 @@ public class LevelManager implements Disposable {
         }
     }
 
+    /**
+     * Gets tile by index from tile set.
+     *
+     * @param tileSet   tile set identifier
+     * @param index     index value
+     * @return tile instance
+     */
     public TiledMapTile getTileByIndex(String tileSet, int index) {
         try {
             TiledMapTileSet tiles = levelData.getTileSets().getTileSet(tileSet);
@@ -128,6 +141,12 @@ public class LevelManager implements Disposable {
         return null;
     }
 
+    /**
+     * Gets tile set size.
+     *
+     * @param tileSet   tile set identifier
+     * @return tile set size
+     */
     public int getTileSetSize(String tileSet) {
         if (tileSet != null) {
             TiledMapTileSet tiles = levelData.getTileSets().getTileSet(tileSet);
@@ -174,8 +193,8 @@ public class LevelManager implements Disposable {
     /**
      * Gets spawn point from "spawn" layer.
      *
-     * @param name          Layer name.
-     * @return              Return point as Rectangle.
+     * @param name          Layer name
+     * @return              Return point as Rectangle
      */
     public Vector3 getSpawnPoint(String name) {
         try {
@@ -196,18 +215,38 @@ public class LevelManager implements Disposable {
         return null;
     }
 
+    /**
+     * Gets virtual depth.
+     *
+     * @return virtual depth value
+     */
     public int getVirtualDepth() {
         return virtualMapDepth;
     }
 
+    /**
+     * Gets map width.
+     *
+     * @return map width value.
+     */
     public int getMapWidth() {
         return mapWidth;
     }
 
+    /**
+     * Gets map height.
+     *
+     * @return map height value
+     */
     public int getMapHeight() {
         return mapHeight;
     }
 
+    /**
+     * Sets shroud layer opacity.
+     *
+     * @param value opacity
+     */
     public void setShroudLayerOpacity(float value) {
         TiledMapTileLayer layer = (TiledMapTileLayer) levelData.getLayers().get("shroud");
 
@@ -216,6 +255,14 @@ public class LevelManager implements Disposable {
         }
     }
 
+    /**
+     * Gets cell from given coordinates.
+     *
+     * @param x     x coordinate
+     * @param y     y coordinate
+     * @param name  layer name
+     * @return cell instance
+     */
     public TiledMapTileLayer.Cell getCellFromPosition(float x, float y, String name) {
         try {
             TiledMapTileLayer layer = (TiledMapTileLayer) levelData.getLayers().get(name);
@@ -236,11 +283,11 @@ public class LevelManager implements Disposable {
     /**
      * Gets property from given tile.
      *
-     * @param tile          Tile to read the property from.
-     * @param property      Property name.
-     * @param type          Property type.
-     * @param <T>           Return type.
-     * @return              Return property value or null.
+     * @param tile          Tile to read the property from
+     * @param property      Property name
+     * @param type          Property type
+     * @param <T>           Return type
+     * @return              Return property value or null
      */
     private <T> T getProperty(TiledMapTile tile, String property, Class<T> type) {
         if (tile != null && property != null) {
@@ -257,9 +304,9 @@ public class LevelManager implements Disposable {
     /**
      * Gets "String" property.
      *
-     * @param tile          Tile to read the property from.
-     * @param property      Property name.
-     * @return              Property as String.
+     * @param tile          Tile to read the property from
+     * @param property      Property name
+     * @return              Property as String
      */
     public String getString(TiledMapTile tile, String property, String defaultValue) {
         String value = getProperty(tile, property, String.class);
@@ -281,9 +328,9 @@ public class LevelManager implements Disposable {
     /**
      * Gets "Integer" property.
      *
-     * @param tile          Tile to read the property from.
-     * @param property      Property name.
-     * @return              Property as Integer.
+     * @param tile          Tile to read the property from
+     * @param property      Property name
+     * @return              Property as Integer
      */
     public Integer getInteger(TiledMapTile tile, String property, Integer defaultValue) {
         Integer value = getProperty(tile, property, Integer.class);
@@ -293,18 +340,15 @@ public class LevelManager implements Disposable {
     /**
      * Gets "Float" property.
      *
-     * @param tile          Tile to read the property from.
-     * @param property      Property name.
-     * @return              Property as Float.
+     * @param tile          Tile to read the property from
+     * @param property      Property name
+     * @return              Property as Float
      */
     public Float getFloat(TiledMapTile tile, String property, Float defaultValue) {
         Float value = getProperty(tile, property, Float.class);
         return value != null ? value : defaultValue;
     }
 
-    /**
-     * Disposes all level data.
-     */
     @Override
     public void dispose() {
         levelRenderer.dispose();

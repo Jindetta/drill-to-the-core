@@ -25,9 +25,19 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
  * @since   2018-02-01
  */
 public class SettingsScreen extends BaseScreen {
+    /**
+     * Defines background image.
+     */
     private Image background;
-    private Table settingsTable;
 
+    /**
+     * Defines screen layout.
+     */
+    private Table screenLayout;
+
+    /**
+     * Defines buttons for player colors.
+     */
     private ImageButton[] buttons;
 
     public SettingsScreen() {
@@ -38,8 +48,8 @@ public class SettingsScreen extends BaseScreen {
         background = new Image(assets.get("images/settings-background.png", Texture.class));
         addActor(background);
 
-        settingsTable = new Table();
-        settingsTable.defaults().expand().uniform();
+        screenLayout = new Table();
+        screenLayout.defaults().expand().uniform();
 
         ImageButton calibration = new ImageButton(skin, localization.getValue("calibrate"));
         calibration.addListener(new ClickListener() {
@@ -123,10 +133,10 @@ public class SettingsScreen extends BaseScreen {
             playerColor.add(buttons[i]).pad(MENU_DEFAULT_PADDING);
         }
 
-        settingsTable.add(new ImageButton(skin, localization.getValue("settingsTitle"))).colspan(2).row();
-        settingsTable.add(volumeControls);
-        settingsTable.add(calibration).row();
-        settingsTable.add(playerColor).colspan(2).row();
+        screenLayout.add(new ImageButton(skin, localization.getValue("settingsTitle"))).colspan(2).row();
+        screenLayout.add(volumeControls);
+        screenLayout.add(calibration).row();
+        screenLayout.add(playerColor).colspan(2).row();
 
         ImageButton backButton = new ImageButton(skin, localization.getValue("backButton"));
         backButton.addListener(new ClickListener() {
@@ -136,18 +146,9 @@ public class SettingsScreen extends BaseScreen {
             }
         });
 
-        settingsTable.add(backButton).align(Align.bottomLeft).pad(MENU_DEFAULT_PADDING).colspan(2);
+        screenLayout.add(backButton).align(Align.bottomLeft).pad(MENU_DEFAULT_PADDING).colspan(2);
 
-        addActor(settingsTable);
-    }
-
-    @Override
-    public boolean keyDown(int key) {
-        if (key == Input.Keys.ESCAPE || key == Input.Keys.BACK) {
-            Setup.nextScreen(new MainMenuScreen());
-        }
-
-        return super.keyDown(key);
+        addActor(screenLayout);
     }
 
     @Override
@@ -156,8 +157,8 @@ public class SettingsScreen extends BaseScreen {
         viewport.update(width, height, true);
 
         background.setSize(viewport.getWorldWidth(), viewport.getWorldHeight());
-        settingsTable.setSize(viewport.getWorldWidth(), viewport.getWorldHeight());
-        settingsTable.setPosition(0, 0);
+        screenLayout.setSize(viewport.getWorldWidth(), viewport.getWorldHeight());
+        screenLayout.setPosition(0, 0);
     }
 
     @Override
@@ -171,5 +172,14 @@ public class SettingsScreen extends BaseScreen {
         }
 
         super.render(delta);
+    }
+
+    @Override
+    public boolean keyDown(int key) {
+        if (key == Input.Keys.ESCAPE || key == Input.Keys.BACK) {
+            Setup.nextScreen(new MainMenuScreen());
+        }
+
+        return super.keyDown(key);
     }
 }

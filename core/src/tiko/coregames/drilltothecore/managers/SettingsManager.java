@@ -17,17 +17,37 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
  * @since   2018-02-01
  */
 public class SettingsManager {
-    private boolean defaultProfile;
+    /**
+     * Stores instance of Preferences.
+     */
     private Preferences preferences;
 
+    /**
+     * Gets formatted save name.
+     *
+     * @param value extension
+     * @return complete file name
+     */
     private static String getSaveName(String value) {
         return String.format(Locale.ENGLISH, "DrillToTheCore.%s", value);
     }
 
+    /**
+     * Gets profile identifier key.
+     *
+     * @param index profile index
+     * @return profile identifier
+     */
     private static String getProfileKey(int index) {
         return String.format(Locale.ENGLISH, "profile_%d", index);
     }
 
+    /**
+     * Gets profile file extension.
+     *
+     * @param index profile index
+     * @return complete file name
+     */
     private static String getProfilePath(int index) {
         return getSaveName(getProfileKey(index));
     }
@@ -36,9 +56,14 @@ public class SettingsManager {
         this(getSaveName("profiles"), false);
     }
 
+    /**
+     * Overloads default constructor.
+     *
+     * @param fileName          file path
+     * @param defaultProfile    default profile type
+     */
     private SettingsManager(String fileName, boolean defaultProfile) {
         preferences = Gdx.app.getPreferences(fileName);
-        this.defaultProfile = defaultProfile;
 
         if (defaultProfile) {
             setIntegerValue("sensitivityUp", getIntegerIfExists("sensitivityUp", 1));
@@ -75,12 +100,24 @@ public class SettingsManager {
         saveSettings();
     }
 
+    /**
+     * Checks if a profile exists.
+     *
+     * @param index profile index
+     * @return true if profile exists, otherwise false
+     */
     private static boolean hasProfile(int index) {
         SettingsManager profiles = new SettingsManager();
 
         return profiles.hasValue(getProfileKey(index));
     }
 
+    /**
+     * Gets profile name by index.
+     *
+     * @param index profile index
+     * @return profile name
+     */
     public static String getProfileName(int index) {
         if (hasProfile(index)) {
             SettingsManager profiles = new SettingsManager();
@@ -91,10 +128,22 @@ public class SettingsManager {
         return null;
     }
 
+    /**
+     * Gets default profile.
+     *
+     * @return profile instance
+     */
     public static SettingsManager getDefaultProfile() {
         return new SettingsManager(getSaveName("defaultProfile"), true);
     }
 
+    /**
+     * Gets user profile by index.
+     *
+     * @param index             profile index
+     * @param defaultProfile    fallback to defaut
+     * @return instance to profile
+     */
     public static SettingsManager getUserProfile(int index, boolean defaultProfile) {
         if (hasProfile(index)) {
             return new SettingsManager(getProfilePath(index), false);
@@ -103,12 +152,23 @@ public class SettingsManager {
         return defaultProfile ? getDefaultProfile() : null;
     }
 
+    /**
+     * Gets currently active profile.
+     *
+     * @param defaultProfile    fallback to default
+     * @return instance to profile
+     */
     public static SettingsManager getActiveProfile(boolean defaultProfile) {
         SettingsManager profile = getDefaultProfile();
 
         return getUserProfile(profile.getIntegerIfExists("activeProfile", -1), defaultProfile);
     }
 
+    /**
+     * Sets active profile.
+     *
+     * @param index profile index
+     */
     public static void setActiveProfile(int index) {
         SettingsManager profile = getDefaultProfile();
 
@@ -121,6 +181,13 @@ public class SettingsManager {
         profile.saveSettings();
     }
 
+    /**
+     * Creates a new user profile.
+     *
+     * @param name      profile name
+     * @param setActive set active
+     * @return index to newly created profile
+     */
     public static int createUserProfile(String name, boolean setActive) {
         if (name != null) {
             SettingsManager profiles = new SettingsManager();
@@ -142,6 +209,11 @@ public class SettingsManager {
         return -1;
     }
 
+    /**
+     * Gets list of profile names.
+     *
+     * @return list of profile names
+     */
     public static Array<String> getProfileNames() {
         Array<String> profiles = new Array<>();
 
@@ -159,26 +231,63 @@ public class SettingsManager {
         return profiles;
     }
 
+    /**
+     * Check if settings key exists.
+     *
+     * @param key identifier
+     * @return true if exists, otherwise false
+     */
     public boolean hasValue(String key) {
         return preferences.contains(key);
     }
 
+    /**
+     * Sets string value.
+     *
+     * @param key   identifier
+     * @param value string value
+     */
     public void setStringValue(String key, String value) {
         preferences.putString(key, value);
     }
 
+    /**
+     * Sets boolean value.
+     *
+     * @param key   identifier
+     * @param value boolean value
+     */
     public void setBooleanValue(String key, boolean value) {
         preferences.putBoolean(key, value);
     }
 
+    /**
+     * Sets integer value.
+     *
+     * @param key   identifier
+     * @param value integer value
+     */
     public void setIntegerValue(String key, int value) {
         preferences.putInteger(key, value);
     }
 
+    /**
+     * Gets integer value.
+     *
+     * @param key identifier
+     * @return integer value
+     */
     public int getInteger(String key) {
         return preferences.getInteger(key);
     }
 
+    /**
+     * Gets integer value if it exists.
+     *
+     * @param key           identifier
+     * @param defaultValue  fallback value
+     * @return integer value
+     */
     public int getIntegerIfExists(String key, int defaultValue) {
         if (hasValue(key)) {
             return getInteger(key);
@@ -187,10 +296,23 @@ public class SettingsManager {
         return defaultValue;
     }
 
+    /**
+     * Gets boolean value.
+     *
+     * @param key identifier
+     * @return boolean value
+     */
     public boolean getBoolean(String key) {
         return preferences.getBoolean(key);
     }
 
+    /**
+     * Gets boolean value if it exists.
+     *
+     * @param key           identifier
+     * @param defaultValue  fallback value
+     * @return boolean value
+     */
     public boolean getBooleanIfExists(String key, boolean defaultValue) {
         if (hasValue(key)) {
             return getBoolean(key);
@@ -199,10 +321,23 @@ public class SettingsManager {
         return defaultValue;
     }
 
+    /**
+     * Gets string value.
+     *
+     * @param key identifier
+     * @return string value
+     */
     public String getString(String key) {
         return preferences.getString(key);
     }
 
+    /**
+     * Gets string value if it exists.
+     *
+     * @param key           identifier
+     * @param defaultValue  fallback value
+     * @return string value
+     */
     public String getStringIfExists(String key, String defaultValue) {
         if (hasValue(key)) {
             return getString(key);
@@ -211,15 +346,31 @@ public class SettingsManager {
         return defaultValue;
     }
 
+    /**
+     * Sets current locale.
+     *
+     * @param localeKey locale identifier
+     */
     public void setCurrentLocale(String localeKey) {
         Locale locale = getLocaleById(localeKey);
         setStringValue("locale", locale.getLanguage());
     }
 
+    /**
+     * Gets current locale.
+     *
+     * @return locale identifier
+     */
     public String getLocaleString() {
         return getString("locale");
     }
 
+    /**
+     * Gets locale by identifier.
+     *
+     * @param localeKey identifier
+     * @return instance of Locale
+     */
     public Locale getLocaleById(String localeKey) {
         Locale locale;
 
@@ -236,15 +387,26 @@ public class SettingsManager {
         return locale;
     }
 
+    /**
+     * Removes setting value.
+     *
+     * @param key identifier
+     */
     public void removeKey(String key) {
         preferences.remove(key);
     }
 
+    /**
+     * Resets settings values.
+     */
     public void resetProfile() {
         preferences.clear();
         saveSettings();
     }
 
+    /**
+     * Saves settings.
+     */
     public void saveSettings() {
         preferences.flush();
     }

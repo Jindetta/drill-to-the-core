@@ -33,32 +33,84 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
  * @since   2018-02-01
  */
 public class GameScreen extends BaseScreen {
+    /**
+     * Defines map information.
+     */
     private LevelManager map;
+
+    /**
+     * Defines current level index.
+     */
     private int levelIndex;
 
+    /**
+     * Defines pause window.
+     */
     private Table pauseWindow;
+
+    /**
+     * Defines player object.
+     */
     private Player player;
 
+    /**
+     * Defines total time played.
+     */
     private float totalGameTime;
 
+    /**
+     * Defines screen layout.
+     */
     private Table screenLayout;
+
+    /**
+     * Defines layout for power-ups.
+     */
     private Table powerUpLayout;
 
-    private Label displayScoreValue;
+    /**
+     * Defines label for score popup.
+     */
+    private Label displayScorePopup;
+
+    /**
+     * Defines label for game time.
+     */
     private Label displayGameTime;
 
-    private Label scoreValue, depthValue;
+    /**
+     * Defines label for score.
+     */
+    private Label scoreValue;
+
+    /**
+     * Defines label for depth.
+     */
+    private Label depthValue;
+
     private Label radarBoostValue, speedBoostValue, drillBoostValue, pointBoostValue, fuelBoostValue;
     private Stack radarLayer, speedLayer, drillLayer, pointLayer, fuelLayer;
 
+    /**
+     * Defines progress bar for fuel.
+     */
     private ProgressBar fuelValue;
 
+    /**
+     * Defines manager for sounds.
+     */
     private SoundManager sounds;
 
     public GameScreen() {
         this(0, false);
     }
 
+    /**
+     * Overloads default constructor.
+     *
+     * @param level         level index
+     * @param loadCurrent   load from settings
+     */
     public GameScreen(int level, boolean loadCurrent) {
         super();
         if (loadCurrent) {
@@ -71,6 +123,9 @@ public class GameScreen extends BaseScreen {
         resetLevel();
     }
 
+    /**
+     * Resets level data.
+     */
     private void resetLevel() {
         map = new LevelManager(levelIndex, assets);
         Vector3 playerSpawn = map.getSpawnPoint("player");
@@ -86,6 +141,9 @@ public class GameScreen extends BaseScreen {
         createPauseWindow();
     }
 
+    /**
+     * Creates screen layout.
+     */
     private void createScreenLayout() {
         powerUpLayout = new Table();
         powerUpLayout.defaults().size(125, 25);
@@ -101,23 +159,33 @@ public class GameScreen extends BaseScreen {
         addActor(screenLayout);
     }
 
+    /**
+     * Creates layer for game time and score popup.
+     *
+     * @return table containing elements
+     */
     private Table createDisplayLayer() {
         Table displayLayer = new Table();
 
         displayGameTime = new Label("", skin, "menu");
         displayGameTime.setAlignment(Align.center);
 
-        displayScoreValue = new Label("", skin, "collected");
-        displayScoreValue.setAlignment(Align.center);
-        displayScoreValue.setVisible(false);
+        displayScorePopup = new Label("", skin, "collected");
+        displayScorePopup.setAlignment(Align.center);
+        displayScorePopup.setVisible(false);
 
         displayLayer.add(displayGameTime).padBottom(MENU_DEFAULT_PADDING).row();
-        displayLayer.add(displayScoreValue);
+        displayLayer.add(displayScorePopup);
         displayLayer.pack();
 
         return displayLayer;
     }
 
+    /**
+     * Creates information layer for scores, depth etc.
+     *
+     * @return table containing elements
+     */
     private Table createInformationLayer() {
         Table infoLayer = new Table();
 
@@ -142,6 +210,9 @@ public class GameScreen extends BaseScreen {
         return infoLayer;
     }
 
+    /**
+     * Updates information.
+     */
     private void updateInformationStatus() {
         if (player.getRecentScoreString() != null) {
             SequenceAction sequence = Actions.sequence();
@@ -149,10 +220,10 @@ public class GameScreen extends BaseScreen {
             sequence.addAction(Actions.fadeOut(2));
             sequence.addAction(Actions.visible(false));
 
-            displayScoreValue.setText(player.getRecentScoreString());
-            displayScoreValue.getActions().clear();
-            displayScoreValue.addAction(sequence);
-            displayScoreValue.setVisible(true);
+            displayScorePopup.setText(player.getRecentScoreString());
+            displayScorePopup.getActions().clear();
+            displayScorePopup.addAction(sequence);
+            displayScorePopup.setVisible(true);
         }
 
         powerUpLayout.clear();

@@ -22,8 +22,14 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
  * @since   2018-02-01
  */
 public class LevelSelectScreen extends BaseScreen {
+    /**
+     * Defines background image.
+     */
     private Image background;
 
+    /**
+     * Defines screen layout.
+     */
     private Table screenLayout;
 
     public LevelSelectScreen() {

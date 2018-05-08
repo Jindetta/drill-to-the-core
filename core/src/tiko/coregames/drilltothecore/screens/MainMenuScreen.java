@@ -25,9 +25,24 @@ import static tiko.coregames.drilltothecore.utilities.Constants.*;
  * @since   2018-02-01
  */
 public class MainMenuScreen extends BaseScreen {
+    /**
+     * Defines background image.
+     */
     private Image background;
-    private Table gameMenu, quickMenu;
 
+    /**
+     * Defines menu for options.
+     */
+    private Table gameMenu;
+
+    /**
+     * Defines menu for quick buttons.
+     */
+    private Table quickMenu;
+
+    /**
+     * Defines manager for sounds.
+     */
     private SoundManager sounds;
 
     public MainMenuScreen() {

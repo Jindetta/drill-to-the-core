@@ -27,11 +27,18 @@ import tiko.coregames.drilltothecore.utilities.Debug;
  * @since   2018-02-01
  */
 public class Setup extends Game {
+	/**
+	 * Defines reference to current game instance.
+	 */
 	private static Setup instance;
+
+	/**
+	 * Stores batch information.
+	 */
     private SpriteBatch batch;
 
 	/**
-	 * Gets default SpriteBatch
+	 * Gets default SpriteBatch.
 	 *
 	 * @return batch of current game instancr
 	 */

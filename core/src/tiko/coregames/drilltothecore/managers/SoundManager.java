@@ -17,13 +17,37 @@ import java.util.HashMap;
  * @since   2018-02-01
  */
 public class SoundManager {
+    /**
+     * Stores all sounds.
+     */
     private HashMap<String, String> sounds;
+
+    /**
+     * Stores current background music path.
+     */
     private String musicFile;
+
+    /**
+     * Stores instance of AssetManager.
+     */
     private AssetManager assets;
 
+    /**
+     * Defines muted states.
+     */
     private boolean soundMuted, musicMuted;
+
+    /**
+     * Defines volume states.
+     */
     private float soundVolume, musicVolume;
 
+    /**
+     * Overloads default constructor.
+     *
+     * @param settings  SettingsManager instance
+     * @param assets    AssetsManager instance
+     */
     public SoundManager(SettingsManager settings, AssetManager assets) {
         sounds = new HashMap<>();
         this.assets = assets;
@@ -36,7 +60,7 @@ public class SoundManager {
     }
 
     /**
-     * Adds a new sound to the list.
+     * Adds a new sound to the list (wrapper).
      *
      * @param identifier    sound identifier
      * @param fileName      file path
@@ -45,6 +69,14 @@ public class SoundManager {
         addSound(identifier, fileName, longSound ? Music.class : Sound.class);
     }
 
+    /**
+     * Adds a new sound to the list.
+     *
+     * @param identifier    sound identifier
+     * @param fileName      file path
+     * @param type          class type
+     * @param <T>           generic type
+     */
     private <T> void addSound(String identifier, String fileName, Class<T> type) {
         if (!sounds.containsKey(identifier)) {
             FileHandle file = Gdx.files.internal(fileName);
@@ -58,6 +90,11 @@ public class SoundManager {
         }
     }
 
+    /**
+     * Gets current sound volume.
+     *
+     * @return current volume
+     */
     private float getSoundVolume() {
         return soundMuted ? 0 : soundVolume;
     }
@@ -122,6 +159,11 @@ public class SoundManager {
         }
     }
 
+    /**
+     * Gets current music volume
+     *
+     * @return current volume
+     */
     private float getMusicVolume() {
         return musicMuted ? 0 : musicVolume;
     }
