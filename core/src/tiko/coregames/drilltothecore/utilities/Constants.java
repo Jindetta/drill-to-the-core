@@ -117,7 +117,7 @@ public class Constants {
     /**
      * Defines score for revealing a tile.
      */
-    public static final float SCORE_TILE_REVEALED = .005f;
+    public static final float SCORE_TILE_REVEALED = .0075f;
 
     /**
      * Defines score for picking a power-up.
@@ -127,7 +127,7 @@ public class Constants {
     /**
      * Defines score for opening a ground tile.
      */
-    public static final float SCORE_GROUND_TILE_OPENED = 0.125f;
+    public static final float SCORE_GROUND_TILE_OPENED = .125f;
 
     /**
      * Defines compensation bonus for power up.

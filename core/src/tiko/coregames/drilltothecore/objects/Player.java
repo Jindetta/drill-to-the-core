@@ -167,7 +167,7 @@ public class Player extends BaseObject {
      * @param sounds    instance of SoundManager
      */
     public Player(LevelManager map, float x, float y, SoundManager sounds, AssetManager assets) {
-        super("images/player_atlas.png", assets);
+        super("images/player-atlas.png", assets);
 
         sounds.addSound("collect", "sounds/item-pickup.mp3", false);
         sounds.addSound("engine", "sounds/engine.mp3", true);

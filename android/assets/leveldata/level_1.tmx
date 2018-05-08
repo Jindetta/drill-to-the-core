@@ -5,7 +5,7 @@
   <property name="depth" type="int" value="3200"/>
  </properties>
  <tileset firstgid="1" name="foreground-tiles" tilewidth="8" tileheight="8" tilecount="1440" columns="24">
-  <image source="../images/foreground-tiles.png" width="192" height="480"/>
+  <image source="foreground-tiles.png" width="192" height="480"/>
   <tile id="84">
    <properties>
     <property name="id" value="rock"/>
@@ -1728,10 +1728,10 @@
   </tile>
  </tileset>
  <tileset firstgid="1441" name="shroud" tilewidth="8" tileheight="8" tilecount="8" columns="8">
-  <image source="../images/shroud.png" width="64" height="8"/>
+  <image source="shroud.png" width="64" height="8"/>
  </tileset>
  <tileset firstgid="1449" name="collectibles" tilewidth="32" tileheight="32" tilecount="52" columns="13">
-  <image source="../images/collectibles.png" width="416" height="128"/>
+  <image source="collectibles.png" width="416" height="128"/>
   <tile id="0">
    <properties>
     <property name="id" value="mineralGold"/>
@@ -2089,7 +2089,7 @@
   </tile>
  </tileset>
  <tileset firstgid="1501" name="guide-arrows" tilewidth="32" tileheight="32" tilecount="4" columns="1">
-  <image source="../images/guide-arrows.png" width="32" height="128"/>
+  <image source="guide-arrows.png" width="32" height="128"/>
   <tile id="0">
    <animation>
     <frame tileid="0" duration="100"/>

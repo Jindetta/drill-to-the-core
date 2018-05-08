@@ -42,7 +42,7 @@ public class SettingsScreen extends BaseScreen {
 
     public SettingsScreen() {
         assets.load("images/settings-background.png", Texture.class);
-        assets.load("images/player_atlas.png", Texture.class);
+        assets.load("images/player-atlas.png", Texture.class);
         assets.finishLoading();
 
         background = new Image(assets.get("images/settings-background.png", Texture.class));
