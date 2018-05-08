@@ -6,14 +6,12 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import tiko.coregames.drilltothecore.screens.SplashScreen;
-import tiko.coregames.drilltothecore.utilities.Debug;
 
 /*
 	TODO: Fix profiles at MainMenuScreen (and possibly elsewhere)
 	TODO: Fix language button to work on any platform
 	TODO: Fix CalibrationScreen (add title and proper layout)
 	TODO: Fix SettingsScreen layout
-	TODO: Delete/disable debug information
 	TODO: Fix frame drops (?)
 */
 
@@ -56,34 +54,17 @@ public class Setup extends Game {
 
 	@Override
 	public void create () {
-        Debug.initialize();
+		Gdx.graphics.setTitle("Drill to the Core");
+
 		batch = new SpriteBatch();
 		instance = this;
 
 		setScreen(new SplashScreen());
-
-        Gdx.graphics.setTitle("Drill to the Core");
-	}
-
-    @Override
-    public void resize(int width, int height) {
-        super.resize(width, height);
-        Debug.resize(width, height);
-    }
-
-    @Override
-	public void render () {
-	    super.render();
-
-		batch.begin();
-        Debug.render(batch);
-		batch.end();
 	}
 
 	@Override
 	public void dispose () {
 		setScreen(null);
 		batch.dispose();
-		Debug.dispose();
     }
 }

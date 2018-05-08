@@ -32,7 +32,7 @@ public class Constants {
     /**
      * Defines controller calibration time.
      */
-    public static final float CONTROLLER_CALIBRATION_TIME = 1.5f;
+    public static final float CONTROLLER_CALIBRATION_TIME = 2;
 
     /**
      * Defines maximum amount of profiles.
@@ -53,11 +53,6 @@ public class Constants {
      * Defines default game speed.
      */
     public static final float GAME_SPEED_MODIFIER = 1;
-
-    /**
-     * Defines debug mode status.
-     */
-    public static final boolean DEBUG_MODE = true;
 
     /**
      * Defines level count.
