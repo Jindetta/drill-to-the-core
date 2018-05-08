@@ -373,6 +373,30 @@ public class GameScreen extends BaseScreen {
         draw();
 
         if (player.isDepthGoalAchieved() || player.getFuel() <= 0) {
+            if (player.isDepthGoalAchieved()) {
+                player.addBonusScore(SCORE_COMPLETION_BONUS);
+
+                if (player.getFuelTimer() != null) {
+                    player.addBonusScore(SCORE_POWER_UP_COMPENSATION);
+                }
+
+                if (player.getPointsTimer() != null) {
+                    player.addBonusScore(SCORE_POWER_UP_COMPENSATION);
+                }
+
+                if (player.getDrillTimer() != null) {
+                    player.addBonusScore(SCORE_POWER_UP_COMPENSATION);
+                }
+
+                if (player.getSpeedTimer() != null) {
+                    player.addBonusScore(SCORE_POWER_UP_COMPENSATION);
+                }
+
+                if (player.getRadarViewTimer() != null) {
+                    player.addBonusScore(SCORE_POWER_UP_COMPENSATION);
+                }
+            }
+
             Setup.nextScreen(new EndScreen(player, totalGameTime, levelIndex));
         }
     }

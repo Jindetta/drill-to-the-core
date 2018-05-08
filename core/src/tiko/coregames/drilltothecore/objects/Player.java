@@ -163,7 +163,7 @@ public class Player extends BaseObject {
         baseScore += value;
     }
 
-    private void addBonusScore(float value) {
+    public void addBonusScore(float value) {
         bonusScore += value;
     }
 
@@ -563,9 +563,9 @@ public class Player extends BaseObject {
         TiledMapTileLayer.Cell groundCell = map.getCellFromPosition(x, y, "ground");
 
         if (groundCell != null && groundCell.getTile() != null) {
-            collisionInterval = .15f;
-            addBaseScore(SCORE_GROUND_TILE_OPENED);
+            addBonusScore(SCORE_GROUND_TILE_OPENED);
             groundCell.setTile(null);
+            collisionInterval = .15f;
         }
     }
 

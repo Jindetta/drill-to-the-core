@@ -132,7 +132,17 @@ public class Constants {
     /**
      * Defines score for opening a ground tile
      */
-    public static final float SCORE_GROUND_TILE_OPENED = 1;
+    public static final float SCORE_GROUND_TILE_OPENED = 0.125f;
+
+    /**
+     * Defines compensation bonus for power up
+     */
+    public static final float SCORE_POWER_UP_COMPENSATION = 1000;
+
+    /**
+     * Defines bonus score for completing the level
+     */
+    public static final float SCORE_COMPLETION_BONUS = 5000;
 
     /**
      * Defines splash screen duration
