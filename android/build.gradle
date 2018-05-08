@@ -1,5 +1,12 @@
 android {
     signingConfigs {
+        release {
+            storeFile file("G:/Users/JiN/.android/signed.jks")
+            storePassword "tiko2018"
+            keyAlias "release"
+            keyPassword "tiko2018"
+            v2SigningEnabled true
+        }
     }
     buildToolsVersion "23.0.1"
     compileSdkVersion 20
@@ -25,12 +32,16 @@ android {
         targetSdkVersion 20
         versionCode 1
         versionName "1.0"
+        signingConfig signingConfigs.release
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
+    }
+    productFlavors {
     }
 }
 // called every time gradle gets executed, takes the native dependencies of
