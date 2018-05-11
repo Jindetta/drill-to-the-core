@@ -130,11 +130,21 @@ public class MainMenuScreen extends BaseScreen {
                 settings.saveSettings();
             }
         });
-        final Button languageSelection = new Button(skin, localization.getValue("language"));
-        languageSelection.addListener(new ClickListener() {
+
+        Button languageFinnish = new Button(skin, "lang_fin");
+        languageFinnish.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                settings.setCurrentLocale(localization.getValue("swappedLocale"));
+                settings.setCurrentLocale("fi");
+                needsRefreshing = true;
+            }
+        });
+
+        Button languageEnglish = new Button(skin, "lang_eng");
+        languageEnglish.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                settings.setCurrentLocale("en");
                 needsRefreshing = true;
             }
         });
@@ -181,8 +191,14 @@ public class MainMenuScreen extends BaseScreen {
         });
 
         Table soundButtons = new Table();
+        soundButtons.defaults().size(20);
         soundButtons.add(muteSounds);
         soundButtons.add(muteMusic);
+
+        Table languageButtons = new Table();
+        languageButtons.defaults().pad(MENU_DEFAULT_PADDING);
+        languageButtons.add(languageFinnish);
+        languageButtons.add(languageEnglish);
 
         Table profileButtons = new Table();
         profileButtons.add(profiles).height(20).padRight(MENU_DEFAULT_PADDING);
@@ -190,7 +206,7 @@ public class MainMenuScreen extends BaseScreen {
 
         quickMenu.defaults().uniform();
         quickMenu.add(soundButtons).left().padLeft(SAFE_ZONE_SIZE);
-        quickMenu.add(languageSelection).expandX().center();
+        quickMenu.add(languageButtons).expandX().center();
         quickMenu.add(profileButtons).right().padRight(SAFE_ZONE_SIZE);
 
         addActor(quickMenu);

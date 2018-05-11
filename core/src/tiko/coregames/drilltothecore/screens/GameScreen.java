@@ -19,6 +19,7 @@ import tiko.coregames.drilltothecore.Setup;
 import tiko.coregames.drilltothecore.managers.LevelManager;
 import tiko.coregames.drilltothecore.managers.SoundManager;
 import tiko.coregames.drilltothecore.objects.Player;
+import tiko.coregames.drilltothecore.utilities.SettingsDialog;
 
 import java.util.Locale;
 
@@ -47,6 +48,11 @@ public class GameScreen extends BaseScreen {
      * Defines pause window.
      */
     private Table pauseWindow;
+
+    /**
+     * Defines settings window
+     */
+    private SettingsDialog settingsWindow;
 
     /**
      * Defines player object.
@@ -117,9 +123,9 @@ public class GameScreen extends BaseScreen {
             level = settings.getIntegerIfExists("currentLevel", 0);
         }
 
-        sounds = new SoundManager(settings, assets);
-
         levelIndex = level;
+        sounds = new SoundManager(settings, assets);
+        sounds.playMusic("sounds/level_" + level + "-music.mp3");
         resetLevel();
     }
 
@@ -302,20 +308,22 @@ public class GameScreen extends BaseScreen {
             public void clicked(InputEvent event, float x, float y) {
                 String name = event.getListenerActor().getName();
 
-                switch (name == null ? "" : name) {
-                    case "settingsMenu":
-                        Setup.nextScreen(new SettingsScreen());
-                        return;
-                    case "menu":
-                        Setup.nextScreen(new MainMenuScreen());
-                        break;
-                    case "restart":
-                        resetLevel();
-                        break;
-                }
+                if (!settingsWindow.isVisible()) {
+                    switch (name == null ? "" : name) {
+                        case "settingsMenu":
+                            settingsWindow.setVisible(true);
+                            return;
+                        case "menu":
+                            Setup.nextScreen(new MainMenuScreen());
+                            break;
+                        case "restart":
+                            resetLevel();
+                            break;
+                    }
 
-                pauseWindow.setVisible(false);
-                player.resetCalibration();
+                    GameScreen.this.keyDown(Input.Keys.BACK);
+                    player.resetCalibration();
+                }
             }
         };
 
@@ -345,6 +353,9 @@ public class GameScreen extends BaseScreen {
         pauseWindow.setSize(250, 300);
 
         addActor(pauseWindow);
+
+        settingsWindow = new SettingsDialog(sounds, settings, localization, skin);
+        addActor(settingsWindow);
     }
 
     /**
@@ -412,6 +423,9 @@ public class GameScreen extends BaseScreen {
         screenLayout.setSize(
             camera.viewportWidth - SAFE_ZONE_SIZE * 2, camera.viewportHeight - SAFE_ZONE_SIZE * 2
         );
+
+        settingsWindow.setSize(screenLayout.getWidth(), screenLayout.getHeight());
+        settingsWindow.setPosition(screenLayout.getX(), screenLayout.getY());
     }
 
     @Override
@@ -474,17 +488,12 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public boolean keyDown(int key) {
-        switch (key) {
-            case Input.Keys.MINUS:
-                for (String id : RANDOM_POWER_UPS) {
-                    player.collectItemByName(null, id);
-                }
-                break;
-
-            case Input.Keys.BACK:
-            case Input.Keys.ESCAPE:
+        if (key == Input.Keys.ESCAPE || key == Input.Keys.BACK) {
+            if (settingsWindow.isVisible()) {
+                settingsWindow.setVisible(false);
+            } else {
                 pauseWindow.setVisible(!pauseWindow.isVisible());
-                break;
+            }
         }
 
         return true;

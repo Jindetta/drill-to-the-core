@@ -7,11 +7,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import tiko.coregames.drilltothecore.screens.SplashScreen;
 
-/*
-	TODO: Fix language button to work on any platform
-	TODO: Fix frame drops (?)
-*/
-
 /**
  * Setup class will initialize and start the game.
  *

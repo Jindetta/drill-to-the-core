@@ -52,6 +52,15 @@ public class SoundManager {
         sounds = new HashMap<>();
         this.assets = assets;
 
+        loadSoundSettings(settings);
+    }
+
+    /**
+     * Loads volume/mute settings.
+     *
+     * @param settings  SettingsManager instance
+     */
+    public void loadSoundSettings(SettingsManager settings) {
         soundVolume = (float) settings.getIntegerIfExists("soundVolume", 50) / 100;
         soundMuted = settings.getBooleanIfExists("soundMuted", false);
 
@@ -150,13 +159,7 @@ public class SoundManager {
      */
     public void muteSounds(boolean value) {
         soundMuted = value;
-
-        if (sounds != null && !sounds.isEmpty()) {
-            for (String id : sounds.values()) {
-                Sound sound = assets.get(id);
-                sound.setVolume(0, getSoundVolume());
-            }
-        }
+        update();
     }
 
     /**
@@ -193,10 +196,28 @@ public class SoundManager {
      */
     public void muteMusic(boolean value) {
         musicMuted = value;
+        update();
+    }
 
+    /**
+     * Update volume status.
+     */
+    public void update() {
         if (musicFile != null) {
             Music music = assets.get(musicFile);
             music.setVolume(getMusicVolume());
+        }
+
+        if (sounds != null && !sounds.isEmpty()) {
+            for (String id : sounds.values()) {
+                if (assets.getAssetType(id) == Sound.class) {
+                    Sound sound = assets.get(id);
+                    sound.setVolume(0, getSoundVolume());
+                } else {
+                    Music sound = assets.get(id);
+                    sound.setVolume(getSoundVolume());
+                }
+            }
         }
     }
 }
