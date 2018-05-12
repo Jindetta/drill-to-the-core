@@ -85,6 +85,11 @@ public class GameScreen extends BaseScreen {
     private Label displayGameTime;
 
     /**
+     * Defines label for calibration.
+     */
+    private Label displayCalibration;
+
+    /**
      * Defines label for score.
      */
     private Label scoreValue;
@@ -139,7 +144,7 @@ public class GameScreen extends BaseScreen {
         clear();
 
         if (playerSpawn != null) {
-            player = new Player(map, playerSpawn.x, playerSpawn.y, sounds, assets);
+            player = new Player(map, playerSpawn.x, playerSpawn.y, sounds, settings, assets);
         }
         totalGameTime = 0;
 
@@ -180,8 +185,13 @@ public class GameScreen extends BaseScreen {
         displayScorePopup.setAlignment(Align.center);
         displayScorePopup.setVisible(false);
 
+        displayCalibration = new Label(localization.getValue("calibration"), skin);
+        displayCalibration.setAlignment(Align.center);
+        displayCalibration.setVisible(false);
+
         displayLayer.add(displayGameTime).padBottom(MENU_DEFAULT_PADDING).row();
-        displayLayer.add(displayScorePopup);
+        displayLayer.add(displayScorePopup).padBottom(MENU_DEFAULT_PADDING * 2).row();
+        displayLayer.add(displayCalibration);
         displayLayer.pack();
 
         return displayLayer;
@@ -322,7 +332,7 @@ public class GameScreen extends BaseScreen {
                     }
 
                     GameScreen.this.keyDown(Input.Keys.BACK);
-                    player.resetCalibration();
+                    player.resetCalibration(settings);
                 }
             }
         };
@@ -350,7 +360,7 @@ public class GameScreen extends BaseScreen {
         pauseWindow.add(settingsButton).row();
         pauseWindow.add(menuButton).row();
         pauseWindow.setBackground("LevelCompleteScreen");
-        pauseWindow.setSize(250, 300);
+        pauseWindow.setSize(200, 250);
 
         addActor(pauseWindow);
 
@@ -401,6 +411,8 @@ public class GameScreen extends BaseScreen {
             camera.position.y - pauseWindow.getHeight() / 2
         );
 
+        displayCalibration.setVisible(player.isControllerCalibrating());
+
         displayGameTime.setText(
             String.format(
                 Locale.ENGLISH,
@@ -434,11 +446,13 @@ public class GameScreen extends BaseScreen {
 
         if (!pauseWindow.isVisible()) {
             delta *= GAME_SPEED_MODIFIER;
+
+            if (!player.isControllerCalibrating()) {
+                totalGameTime += delta;
+            }
         } else {
             delta = 0;
         }
-
-        totalGameTime += delta;
 
         Camera worldCamera = getCamera();
         SpriteBatch batch = Setup.getBatch();

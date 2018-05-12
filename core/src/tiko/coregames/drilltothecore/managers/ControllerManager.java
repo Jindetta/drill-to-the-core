@@ -50,14 +50,21 @@ public class ControllerManager {
      */
     private boolean invertedX, invertedY;
 
-    public ControllerManager() {
-        reset();
+    /**
+     * Overloads default constructor.
+     *
+     * @param settings  SettingsManager instance
+     */
+    public ControllerManager(SettingsManager settings) {
+        reset(settings);
     }
 
     /**
      * Resets all values.
+     *
+     * @param settings  SettingsManager instance
      */
-    public void reset() {
+    public void reset(SettingsManager settings) {
         if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
             if (positiveThreshold == null) {
                 positiveThreshold = new Vector2();
@@ -80,7 +87,7 @@ public class ControllerManager {
             calibrationTime = CONTROLLER_CALIBRATION_TIME;
             calibrationIterations = 0;
 
-            applySettings();
+            applySettings(settings);
         }
 
         if (currentValue == null) {
@@ -92,10 +99,10 @@ public class ControllerManager {
 
     /**
      * Applies user settings.
+     *
+     * @param settings  SettingsManager instance
      */
-    private void applySettings() {
-        SettingsManager settings = SettingsManager.getActiveProfile(true);
-
+    private void applySettings(SettingsManager settings) {
         int sensitivityUp = MathUtils.clamp(settings.getInteger("sensitivityUp"), 1, 10);
         int sensitivityDown = MathUtils.clamp(settings.getInteger("sensitivityDown"), 1, 10);
         int sensitivityRight = MathUtils.clamp(settings.getInteger("sensitivityRight"), 1, 10);

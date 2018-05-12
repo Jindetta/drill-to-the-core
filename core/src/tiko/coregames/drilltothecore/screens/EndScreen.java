@@ -12,8 +12,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import tiko.coregames.drilltothecore.Setup;
 import tiko.coregames.drilltothecore.objects.Player;
 
-import java.util.Locale;
-
 import static tiko.coregames.drilltothecore.utilities.Constants.*;
 
 /**
@@ -55,6 +53,13 @@ public class EndScreen extends BaseScreen {
      */
     private Label totalScoreLabel;
 
+    /**
+     * Overloads default constructor.
+     *
+     * @param player        Player instance
+     * @param time          total time
+     * @param levelIndex    level number
+     */
     public EndScreen(Player player, float time, final int levelIndex) {
         assets.load("images/endscreen-background.png", Texture.class);
         assets.finishLoadingAsset("images/endscreen-background.png");

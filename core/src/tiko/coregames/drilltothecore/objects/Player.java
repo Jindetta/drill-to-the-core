@@ -165,8 +165,10 @@ public class Player extends BaseObject {
      * @param x         x coordinate for player spawn
      * @param y         y coordinate for player spawn
      * @param sounds    instance of SoundManager
+     * @param settings  instance of SettingsManager
+     * @param assets    instance of AssetsManager
      */
-    public Player(LevelManager map, float x, float y, SoundManager sounds, AssetManager assets) {
+    public Player(LevelManager map, float x, float y, SoundManager sounds, SettingsManager settings, AssetManager assets) {
         super("images/player-atlas.png", assets);
 
         sounds.addSound("collect", "sounds/item-pickup.mp3", false);
@@ -193,7 +195,7 @@ public class Player extends BaseObject {
         shroudOpacity = 1;
         fuelTimer = 0;
 
-        controller = new ControllerManager();
+        controller = new ControllerManager(settings);
         fuelConsumptionRate = PLAYER_FUEL_IDLE_MULTIPLIER;
         currentIdleTime = PLAYER_IDLE_STATE_DELAY;
 
@@ -339,9 +341,11 @@ public class Player extends BaseObject {
 
     /**
      * Resets calibration values.
+     *
+     * @param settings SettingsManager instance
      */
-    public void resetCalibration() {
-        controller.reset();
+    public void resetCalibration(SettingsManager settings) {
+        controller.reset(settings);
     }
 
     /**
@@ -880,6 +884,15 @@ public class Player extends BaseObject {
         if (getY() + BIG_TILE_SIZE <= 0) {
             setCurrentState(STATES.DONE);
         }
+    }
+
+    /**
+     * Checks if controller is being calibrated.
+     *
+     * @return true if calibration is active, otherwise false
+     */
+    public boolean isControllerCalibrating() {
+        return controller.isCalibrating();
     }
 
     /**
