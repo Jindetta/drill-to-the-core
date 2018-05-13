@@ -57,7 +57,7 @@ public class Constants {
     /**
      * Defines demonstration mode.
      */
-    public static final boolean DEMO_MODE = false;
+    public static final boolean DEMO_MODE = true;
 
     /**
      * Defines level count.
