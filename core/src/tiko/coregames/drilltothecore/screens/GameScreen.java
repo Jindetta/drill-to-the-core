@@ -514,6 +514,14 @@ public class GameScreen extends BaseScreen {
     }
 
     @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        if (pauseWindow.isVisible()) {
+            return super.touchDown(screenX, screenY, pointer, button);
+        }
+        return keyDown(Input.Keys.BACK);
+    }
+
+    @Override
     public void pause() {
         pauseWindow.setVisible(true);
         sounds.pauseLongSound("engine");
